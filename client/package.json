@@ -1,0 +1,52 @@
+{
+  "name": "ng-template",
+  "displayName": "Angular Template",
+  "description": "Angular Template Service",
+  "version": "0.0.1",
+  "publisher": "Google",
+  "engines": {
+    "vscode": "^1.4.0"
+  },
+  "categories": [
+    "Languages"
+  ],
+	"activationEvents": [
+		"onLanguage:ng-template"
+	],
+	"main": "./out/extension",  
+  "contributes": {
+    "languages": [
+      {
+        "id": "ng-template",
+        "aliases": [
+          "Angular Template",
+          "ng",
+          "ng-html"
+        ],
+        "extensions": [
+          ".ng",
+          ".ngml"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "ng-template",
+        "scopeName": "text.html.basic",
+        "path": "./syntaxes/NG.plist"
+      }
+    ]
+  },
+  "scripts": {
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "devDependencies": {
+    "@types/node": "^6.0.38",
+    "typescript": "^2.1.0-dev.20160830",
+    "vscode": "^0.11.15"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^2.4.2-next.12"
+  }
+}

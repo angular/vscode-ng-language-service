@@ -1,0 +1,18 @@
+{
+  "name": "ng-language-service",
+  "description": "Angular loose temlate language service.",
+  "version": "0.0.1",
+  "author": "Google",
+  "license": "MIT",
+  "engines": {
+    "node": "*"
+  },
+  "scripts": {
+    "compile": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc -p .",
+    "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc --watch -p ."
+  },
+  "dependencies": {
+    "typescript": "^2.1.0-dev.20160830",
+    "vscode-languageserver": "^2.4.0-next.9"
+  }
+}

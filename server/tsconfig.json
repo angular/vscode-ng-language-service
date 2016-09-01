@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"target": "ES5",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"sourceMap": true,
+		"outDir": "../client/server",
+		"lib": ["es5", "es2015.promise", "es2015.collection", "es2015.iterable"]
+	},
+	"exclude": [
+		"node_modules"
+	]
+}

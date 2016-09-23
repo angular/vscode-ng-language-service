@@ -1,7 +1,17 @@
+// Portions of this file are under APACHE 2.0 license.
+// See APACHE.txt in this projects root diretory for details.
+
+// Portions of this file are under the MIT license
+// See LICENSE in this projects root directory for details.
+
+// This is a copy and adaptation of the ProjectServer from
+// TypeScript's editorServices.ts copied and adapted under
+// the APACHE 2.0 license. Some utility functions and
+// TypeScript were also lifted.
+
 import * as ts from 'typescript';
 import * as ng from '@angular/language-service';
 
-//*****
 export interface Logger {
   close(): void;
   isVerbose(): boolean;
@@ -421,7 +431,6 @@ function createGetCanonicalFileName(useCaseSensitivefileNames: boolean): (fileNa
         : ((fileName) => fileName.toLowerCase());
 }
 
-//*****
 export class ScriptInfo {
   svc: ScriptVersionCache;
   children: ScriptInfo[] = [];     // files referenced by this file

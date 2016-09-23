@@ -12,7 +12,18 @@
     "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc --watch -p ."
   },
   "dependencies": {
-    "typescript": "^2.1.0-dev.20160830",
-    "vscode-languageserver": "^2.4.0-next.9"
+    "@angular/language-service": "file:///Users/chuckj/src/angular/dist/packages-dist/language-service",
+    "@angular/tsc-wrapped": "file:///Users/chuckj/src/angular/dist/tools/@angular/tsc-wrapped",
+    "reflect-metadata": "^0.1.8",
+    "rxjs": "^5.0.0-beta.12",
+    "typescript": "2.0.2",
+    "vscode-languageserver": "^2.4.0-next.9",
+    "zone.js": "^0.6.25"
+  },
+  "devDependencies": {
+    "@angular/compiler": "file:///Users/chuckj/src/angular/dist/packages-dist/compiler",
+    "@angular/compiler-cli": "file:///Users/chuckj/src/angular/dist/packages-dist/compiler-cli",
+    "@angular/core": "file:///Users/chuckj/src/angular/dist/packages-dist/core",
+    "@types/node": "^6.0.40"
   }
 }

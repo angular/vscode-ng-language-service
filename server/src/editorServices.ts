@@ -1,4 +1,5 @@
 import * as ts from 'typescript';
+import * as ng from '@angular/language-service';
 
 //*****
 export interface Logger {
@@ -35,6 +36,8 @@ function toPath(fileName: string, currentDirectory: string, getCanonicalFileName
   return <ts.Path>fileName;
 }
 
+const hasOwnProperty = Object.prototype.hasOwnProperty;
+
 function createMap<T>(template?: ts.MapLike<T>): ts.Map<T> {
     const map: ts.Map<T> = Object.create(null); // tslint:disable-line:no-null-keyword
 
@@ -46,7 +49,7 @@ function createMap<T>(template?: ts.MapLike<T>): ts.Map<T> {
 
     // Copies keys/values from template. Note that for..in will not throw if
     // template is undefined, and instead will just exit the loop.
-    for (const key in template) if (template.hasOwnProperty(key)) {
+    for (const key in template) if (hasOwnProperty.call(template, key)) {
         map[key] = template[key];
     }
 
@@ -195,7 +198,7 @@ function deduplicate<T>(array: T[], areEqual?: (a: T, b: T) => boolean): T[] {
 function clone<T>(object: T): T {
     const result: any = {};
     for (const id in object) {
-        if (object.hasOwnProperty(id)) {
+        if (hasOwnProperty.call(object, id)) {
             result[id] = (<any>object)[id];
         }
     }
@@ -486,7 +489,7 @@ interface TimestampedResolvedTypeReferenceDirective extends ts.ResolvedTypeRefer
 export class LSHost implements ts.LanguageServiceHost {
   ls: ts.LanguageService;
   compilationSettings: ts.CompilerOptions;
-  filenameToScript: Map<ts.Path, ScriptInfo>; 
+  filenameToScript: Map<ts.Path, ScriptInfo>;
   roots: ScriptInfo[] = [];
 
   private resolvedModuleNames: Map<ts.Path, ts.Map<TimestampedResolvedModule>>;
@@ -737,7 +740,7 @@ export class LSHost implements ts.LanguageServiceHost {
    */
   lineOffsetToPosition(filename: string, line: number, offset: number): number {
       const path = toPath(filename, this.host.getCurrentDirectory(), this.getCanonicalFileName);
-      const script: ScriptInfo = this.filenameToScript.get(path);
+      const script: ScriptInfo = this.getScriptInfo(path);
       const index = script.snap().index;
 
       const lineInfo = index.lineNumberToInfo(line);
@@ -779,6 +782,8 @@ export class Project {
   directoriesWatchedForTsconfig: string[] = [];
   program: ts.Program;
   filenameToSourceFile = createMap<ts.SourceFile>();
+  referencesFile = new Set<string>();
+
   updateGraphSeq = 0;
   /** Used for configured projects which may have multiple open roots */
   openRefCount = 0;
@@ -848,6 +853,13 @@ export class Project {
       return sourceFiles.map(sourceFile => sourceFile.fileName);
   }
 
+  references(info: ScriptInfo): boolean {
+      if (this.languageServiceDiabled) {
+          return undefined;
+      }
+      return this.referencesFile.has(info.fileName);
+  }
+
   getSourceFile(info: ScriptInfo) {
       if (this.languageServiceDiabled) {
           return undefined;
@@ -892,10 +904,20 @@ export class Project {
       }
 
       this.filenameToSourceFile = createMap<ts.SourceFile>();
+      this.referencesFile = new Set();
+
+      // Update all references to TypeScript files
       const sourceFiles = this.program.getSourceFiles();
       for (let i = 0, len = sourceFiles.length; i < len; i++) {
           const normFilename = normalizePath(sourceFiles[i].fileName);
           this.filenameToSourceFile[normFilename] = sourceFiles[i];
+          this.referencesFile.add(normFilename);
+      }
+
+      // Update all referenced angular templates
+      for (let template of this.compilerService.ngService.getTemplateReferences()) {
+          const normFilename = normalizePath(template);
+          this.referencesFile.add(normFilename);
       }
   }
 
@@ -991,7 +1013,13 @@ export function combineProjectOutput<T>(projects: Project[], action: (project: P
 }
 
 export type ProjectServiceEvent =
-  { eventName: "context", data: { project: Project, fileName: string } } | { eventName: "configFileDiag", data: { triggerFile?: string, configFileName: string, diagnostics: ts.Diagnostic[] } }
+  {
+      eventName: "context" | "change" | "opened" | "closed",
+      data: { project: Project, fileName: string }
+  } | {
+      eventName: "configFileDiag",
+      data: { triggerFile?: string, configFileName: string, diagnostics: ts.Diagnostic[] }
+  };
 
 export interface ProjectServiceEventHandler {
   (event: ProjectServiceEvent): void;
@@ -1021,6 +1049,7 @@ export class ProjectService {
   directoryWatchersRefCount = createMap<number>();
   hostConfiguration: HostConfiguration;
   timerForDetectingProjectFileListChanges = createMap<any>();
+  changeSeq = 0;
 
   constructor(public host: ProjectServiceHost, public psLogger: Logger, public eventHandler?: ProjectServiceEventHandler) {
       // ts.disableIncrementalParsing = true;
@@ -1058,6 +1087,12 @@ export class ProjectService {
           if (info && (!info.isOpen)) {
               info.svc.reloadFromFile(info.fileName);
           }
+      }
+  }
+
+  private report(eventName: "context" | "change" | "opened" | "closed", fileName: string, project?: Project) {
+      if (this.eventHandler) {
+          this.eventHandler({eventName, data: {project, fileName}});
       }
   }
 
@@ -1109,7 +1144,7 @@ export class ProjectService {
   }
 
   reportConfigFileDiagnostics(configFileName: string, diagnostics: ts.Diagnostic[], triggerFile?: string) {
-      if (diagnostics && diagnostics.length > 0) {
+      if (diagnostics && diagnostics.length > 0 && this.eventHandler) {
           this.eventHandler({
               eventName: "configFileDiag",
               data: { configFileName, diagnostics, triggerFile }
@@ -1157,7 +1192,7 @@ export class ProjectService {
       this.log("Config file changed: " + project.projectFilename);
       const configFileErrors = this.updateConfiguredProject(project);
       this.updateProjectStructure();
-      if (configFileErrors && configFileErrors.length > 0) {
+      if (configFileErrors && configFileErrors.length > 0 && this.eventHandler) {
           this.eventHandler({ eventName: "configFileDiag", data: { triggerFile: project.projectFilename, configFileName: project.projectFilename, diagnostics: configFileErrors } });
       }
   }
@@ -1235,15 +1270,11 @@ export class ProjectService {
           }
           for (let j = 0, flen = this.openFileRoots.length; j < flen; j++) {
               const openFile = this.openFileRoots[j];
-              if (this.eventHandler) {
-                  this.eventHandler({ eventName: "context", data: { project: openFile.defaultProject, fileName: openFile.fileName } });
-              }
+              this.report("context", openFile.fileName, openFile.defaultProject);
           }
           for (let j = 0, flen = this.openFilesReferenced.length; j < flen; j++) {
               const openFile = this.openFilesReferenced[j];
-              if (this.eventHandler) {
-                  this.eventHandler({ eventName: "context", data: { project: openFile.defaultProject, fileName: openFile.fileName } });
-              }
+              this.report("context", openFile.fileName, openFile.defaultProject);
           }
       }
 
@@ -1321,7 +1352,7 @@ export class ProjectService {
               for (let i = 0, len = this.openFileRoots.length; i < len; i++) {
                   const r = this.openFileRoots[i];
                   // if r referenced by the new project
-                  if (info.defaultProject.getSourceFile(r)) {
+                  if (info.defaultProject.references(r)) {
                       // remove project rooted at r
                       this.removeProject(r.defaultProject);
                       // put r in referenced open file list
@@ -1339,6 +1370,7 @@ export class ProjectService {
           }
       }
       this.updateConfiguredProjectList();
+      this.report("opened", info.fileName, info.defaultProject);
   }
 
   /**
@@ -1406,6 +1438,7 @@ export class ProjectService {
       else {
           this.openFilesReferenced = copyListRemovingItem(info, this.openFilesReferenced);
       }
+      this.report("closed", info.fileName, info.defaultProject);
       info.close();
   }
 
@@ -1416,7 +1449,7 @@ export class ProjectService {
           const inferredProject = this.inferredProjects[i];
           inferredProject.updateGraph();
           if (inferredProject !== excludedProject) {
-              if (inferredProject.getSourceFile(info)) {
+              if (inferredProject.references(info)) {
                   info.defaultProject = inferredProject;
                   referencingProjects.push(inferredProject);
               }
@@ -1425,7 +1458,7 @@ export class ProjectService {
       for (let i = 0, len = this.configuredProjects.length; i < len; i++) {
           const configuredProject = this.configuredProjects[i];
           configuredProject.updateGraph();
-          if (configuredProject.getSourceFile(info)) {
+          if (configuredProject.references(info)) {
               info.defaultProject = configuredProject;
               referencingProjects.push(configuredProject);
           }
@@ -1458,7 +1491,7 @@ export class ProjectService {
       const openFileRootsConfigured: ScriptInfo[] = [];
       for (const info of this.openFileRootsConfigured) {
           const project = info.defaultProject;
-          if (!project || !(project.getSourceFile(info))) {
+          if (!project || !(project.references(info))) {
               info.defaultProject = undefined;
               unattachedOpenFiles.push(info);
           }
@@ -1476,8 +1509,8 @@ export class ProjectService {
       for (let i = 0, len = this.openFilesReferenced.length; i < len; i++) {
           const referencedFile = this.openFilesReferenced[i];
           referencedFile.defaultProject.updateGraph();
-          const sourceFile = referencedFile.defaultProject.getSourceFile(referencedFile);
-          if (sourceFile) {
+          const references = referencedFile.defaultProject.references(referencedFile);
+          if (references) {
               openFilesReferenced.push(referencedFile);
           }
           else {
@@ -1609,8 +1642,58 @@ export class ProjectService {
       const info = this.openFile(fileName, /*openedByClient*/ true, fileContent, scriptKind);
       this.addOpenFile(info);
       this.printProjects();
+      this.report("opened",  info.fileName);
       return { configFileName, configFileErrors };
   }
+
+  /**
+   * Report a client file change.
+   */
+  clientFileChanges(fileName: string, changes: {start: number, end: number, insertText: string}[]): void {
+      const file = normalizePath(fileName);
+      const project = this.getProjectForFile(file);
+      if (project && !project.languageServiceDiabled) {
+          const compilerService = project.compilerService;
+          for (const change of changes) {
+            if (change.start >= 0) {
+                compilerService.host.editScript(file, change.start, change.end, change.insertText);
+                this.changeSeq++;
+            }
+          }
+          this.requestUpdateProjectStructure(this.changeSeq, (n) => n === this.changeSeq);
+      }
+      this.report("change", file, project);
+  }
+
+  /**
+   *
+   */
+  lineOffsetsToPositions(fileName: string, positions: {line: number, col: number}[]): number[] {
+      const file = normalizePath(fileName);
+      const project = this.getProjectForFile(file);
+      if (project && !project.languageServiceDiabled) {
+          const compilerService = project.compilerService;
+          return positions.map(position => compilerService.host.lineOffsetToPosition(file, position.line, position.col));
+      }
+      return undefined;
+  }
+
+  positionsToLineOffsets(fileName: string, offsets: number[]): {line: number, col: number}[] {
+      const file = normalizePath(fileName);
+      const project = this.getProjectForFile(file);
+      if (project && !project.languageServiceDiabled) {
+          const compilerService = project.compilerService;
+          return offsets.map(offset => compilerService.host.positionToLineOffset(fileName, offset)).map(pos => ({line: pos.line, col: pos.offset}));
+      }
+  }
+
+    private requestUpdateProjectStructure(changeSeq: number, matchSeq: (changeSeq: number) => boolean) {
+        this.host.setTimeout(() => {
+            if (matchSeq(changeSeq)) {
+                this.updateProjectStructure();
+            }
+        }, 1500);
+    }
 
   /**
    * This function tries to search for a tsconfig.json for the given file. If we found it,
@@ -1659,6 +1742,7 @@ export class ProjectService {
       if (info) {
           this.closeOpenFile(info);
           info.isOpen = false;
+          this.report("closed", info.fileName)
       }
       this.printProjects();
   }
@@ -1944,6 +2028,7 @@ export class ProjectService {
 export class CompilerService {
   host: LSHost;
   languageService: ts.LanguageService;
+  ngService: ng.LanguageService;
   classifier: ts.Classifier;
   settings: ts.CompilerOptions;
   documentRegistry = ts.createDocumentRegistry();
@@ -1960,6 +2045,7 @@ export class CompilerService {
           this.setCompilerOptions(defaultOpts);
       }
       this.languageService = ts.createLanguageService(this.host, this.documentRegistry);
+      this.ngService = ng.createLanguageServiceFromTypescript(ts, this.host, this.languageService);
       this.classifier = ts.createClassifier();
   }
 

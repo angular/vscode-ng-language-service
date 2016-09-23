@@ -2,5 +2,4 @@ client/node_modules/
 client/out/
 client/server/
 server/node_modules/
-.vscode/
 .DS_Store

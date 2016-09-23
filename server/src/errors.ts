@@ -2,49 +2,49 @@ import {DiagnosticSeverity, IConnection, Range, TextDocumentIdentifier} from 'vs
 import {TextDocuments} from './documents';
 
 export class ErrorCollector {
-	private timer: NodeJS.Timer | undefined;
+  private timer: NodeJS.Timer | undefined;
 
-	constructor(
+  constructor(
     private documents: TextDocuments,
     private connection: IConnection,
     private initialDelay: number = 1500,
     private nextDelay: number = 20) {}
 
-	public requestErrors(...documents: TextDocumentIdentifier[]) {
-		if (this.timer) {
-			clearTimeout(this.timer);
-			this.timer = undefined;
-		}
-		let index = 0;
-		let process: () => void;
+  public requestErrors(...documents: TextDocumentIdentifier[]) {
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = undefined;
+    }
+    let index = 0;
+    let process: () => void;
 
-		process = () => {
-			this.timer = undefined;
-			this.sendErrorsFor(documents[index++]);
-			if (index < documents.length) this.timer = setTimeout(process, this.nextDelay);
-		}
-		this.timer = setTimeout(process, this.initialDelay);
-	}
+    process = () => {
+      this.timer = undefined;
+      this.sendErrorsFor(documents[index++]);
+      if (index < documents.length) this.timer = setTimeout(process, this.nextDelay);
+    }
+    this.timer = setTimeout(process, this.initialDelay);
+  }
 
-	private sendErrorsFor(document: TextDocumentIdentifier) {
-		const {fileName, service} = this.documents.getServiceInfo(document);
-		const diagnostics = service.getDiagnostics(fileName);
-		if (diagnostics) {
-			const offsets = ([] as number[]).concat(...diagnostics.map(d => [d.span.start, d.span.end]));
-			const positions = this.documents.offsetsToPositions(document, offsets);
-			const ranges: Range[] = [];
-			for (let i = 0; i < positions.length; i += 2) {
-				ranges.push(Range.create(positions[i], positions[i+1]));
-			}
-			this.connection.sendDiagnostics({
-				uri: document.uri,
-				diagnostics: diagnostics.map((diagnostic, i) => ({
-					range: ranges[i],
-					message: diagnostic.message,
-					severity: DiagnosticSeverity.Error,
+  private sendErrorsFor(document: TextDocumentIdentifier) {
+    const {fileName, service} = this.documents.getServiceInfo(document);
+    const diagnostics = service.getDiagnostics(fileName);
+    if (diagnostics) {
+      const offsets = ([] as number[]).concat(...diagnostics.map(d => [d.span.start, d.span.end]));
+      const positions = this.documents.offsetsToPositions(document, offsets);
+      const ranges: Range[] = [];
+      for (let i = 0; i < positions.length; i += 2) {
+        ranges.push(Range.create(positions[i], positions[i+1]));
+      }
+      this.connection.sendDiagnostics({
+        uri: document.uri,
+        diagnostics: diagnostics.map((diagnostic, i) => ({
+          range: ranges[i],
+          message: diagnostic.message,
+          severity: DiagnosticSeverity.Error,
           source: 'Angular'
-				}))
-			});
-		}
-	}
+        }))
+      });
+    }
+  }
 }

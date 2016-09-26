@@ -193,7 +193,7 @@ export class TextDocuments {
 
   public offsetsToPositions(document: TextDocumentIdentifier, offsets: number[]): Position[] {
     const file = uriToFileName(document.uri);
-    return this.projectService.positionsToLineOffsets(file, offsets).map(lineOffset => Position.create(lineOffset.line, lineOffset.col));
+    return this.projectService.positionsToLineOffsets(file, offsets).map(lineOffset => Position.create(lineOffset.line - 1, lineOffset.col - 1));
   }
 
   public getNgService(document: TextDocumentIdentifier): LanguageService | undefined {

@@ -11,9 +11,10 @@
     "Languages"
   ],
 	"activationEvents": [
-		"onLanguage:ng-template"
+		"onLanguage:ng-template",
+    "onLanguage:html"
 	],
-	"main": "./out/extension",  
+	"main": "./out/extension",
   "contributes": {
     "languages": [
       {

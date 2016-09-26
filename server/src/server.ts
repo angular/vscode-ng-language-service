@@ -7,6 +7,7 @@
 /// <reference path="../typings/promise.d.ts" />
 /// <reference path="../node_modules/@types/node/index.d.ts" />
 
+import 'reflect-metadata';
 import {
   IPCMessageReader, IPCMessageWriter,
   createConnection, IConnection, TextDocumentSyncKind,

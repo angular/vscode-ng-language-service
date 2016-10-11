@@ -1569,6 +1569,15 @@ export class ProjectService {
       for (let i = 0, len = unattachedOpenFiles.length; i < len; i++) {
           this.addOpenFile(unattachedOpenFiles[i]);
       }
+
+      // Update Angular summaries
+      for (let project of this.configuredProjects) {
+          project.compilerService.ngHost.updateModuleSummary();
+      }
+      for (let project of this.inferredProjects) {
+          project.compilerService.ngHost.updateModuleSummary();
+      }
+
       this.printProjects();
   }
 
@@ -2037,6 +2046,7 @@ export class ProjectService {
 export class CompilerService {
   host: LSHost;
   languageService: ts.LanguageService;
+  ngHost: ng.TypeScriptServiceHost;
   ngService: ng.LanguageService;
   classifier: ts.Classifier;
   settings: ts.CompilerOptions;
@@ -2054,7 +2064,9 @@ export class CompilerService {
           this.setCompilerOptions(defaultOpts);
       }
       this.languageService = ts.createLanguageService(this.host, this.documentRegistry);
-      this.ngService = ng.createLanguageServiceFromTypescript(ts, this.host, this.languageService);
+      this.ngHost = new ng.TypeScriptServiceHost(ts, this.host, this.languageService);
+      this.ngService = ng.createLanguageService(this.ngHost);
+      this.ngHost.setSite(this.ngService);
       this.classifier = ts.createClassifier();
   }
 

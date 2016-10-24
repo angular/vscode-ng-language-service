@@ -100,19 +100,28 @@ class ProjectLoggerImpl implements ProjectLogger {
   }
 }
 
+function removePrefix(value: string, ...prefixes: string[]): string {
+  for (const prefix of prefixes) {
+    if (value && value.startsWith(prefix)) {
+      return value.substr(prefix.length);
+    }
+  }
+  return value;
+}
+
+const privateProtocol = "private:";
 const fileProtocol = "file://";
 function uriToFileName(uri: string): string {
-  if (uri && uri.startsWith(fileProtocol)) {
-    return uri.substr(fileProtocol.length);
-  }
-  return uri;
+  return removePrefix(decodeURI(uri), fileProtocol, privateProtocol);
 }
+
 function fileNameToUri(fileName: string): string {
-  return fileProtocol + fileName;
+  return encodeURI(fileProtocol + fileName);
 }
 
 export interface NgServiceInfo {
   fileName: string;
+  languageId?: string;
   service?: LanguageService;
   offset?: number;
 }
@@ -126,6 +135,7 @@ export class TextDocuments {
   private projectService: ProjectService;
   private logger: ProjectLoggerImpl;
   private host: ProjectServiceHostImpl;
+  private languageIds = new Map<string, string>();
   private changeNumber = 0;
 
   constructor(private event?: (event: TextDocumentEvent) => void) {
@@ -150,6 +160,7 @@ export class TextDocuments {
         // TODO: Report errors
         this.logger.msg(`Config errors encountered and need to be reported: ${configFileErrors.length}\n  ${configFileErrors.map(error => error.messageText).join('\n  ')}`);
       }
+      this.languageIds.set(event.textDocument.uri, event.textDocument.languageId);
     });
 
     connection.onDidCloseTextDocument(event => {
@@ -203,16 +214,17 @@ export class TextDocuments {
   public getServiceInfo(document: TextDocumentIdentifier, position?: Position): NgServiceInfo {
     const fileName = uriToFileName(document.uri);
     const project = this.projectService.getProjectForFile(fileName);
+    const languageId = this.languageIds.get(document.uri);
     if (project) {
       const service = project.compilerService.ngService;
       if (position) {
         // VSCode is 0 based, editor services are 1 based.
         const offset = this.projectService.lineOffsetsToPositions(fileName, [{line: position.line + 1, col: position.character + 1}])[0];
-        return {fileName, service, offset};
+        return {fileName, service, offset, languageId};
       }
-      return {fileName, service};
+      return {fileName, service, languageId};
     }
-    return {fileName};
+    return {fileName, languageId};
   }
 
   public ifUnchanged(f: () => void): () => void {

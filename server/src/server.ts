@@ -64,20 +64,32 @@ connection.onInitialize((params): InitializeResult => {
 
 function compiletionKindToCompletionItemKind(kind: string): number {
   switch (kind) {
+  case 'attribute': return CompletionItemKind.Property;
+  case 'html attribute': return CompletionItemKind.Property;
+  case 'component': return CompletionItemKind.Class;
   case 'element': return CompletionItemKind.Class;
-  case 'attribute': return CompletionItemKind.Field;
   case 'entity': return CompletionItemKind.Text;
-  case 'member': return CompletionItemKind.Property;
+  case 'key': return CompletionItemKind.Class;
+  case 'method': return CompletionItemKind.Method;
+  case 'pipe': return CompletionItemKind.Function;
+  case 'property': return CompletionItemKind.Property;
+  case 'type': return CompletionItemKind.Interface;
+  case 'reference': return CompletionItemKind.Variable;
+  case 'variable': return CompletionItemKind.Variable;
   }
   return CompletionItemKind.Text;
 }
 
 // This handler provides the initial list of the completion items.
 connection.onCompletion((textDocumentPosition: TextDocumentPositionParams): CompletionItem[] => {
-  const {fileName, service, offset} = documents.getServiceInfo(textDocumentPosition.textDocument,
+  const {fileName, service, offset, languageId} = documents.getServiceInfo(textDocumentPosition.textDocument,
     textDocumentPosition.position)
-  if (service) {
-    const result = service.getCompletionsAt(fileName, offset);
+  if (service && offset != null) {
+    let result = service.getCompletionsAt(fileName, offset);
+    if (result && languageId == 'html') {
+      // The HTML elements are provided by the HTML service when the text type is 'html'.
+      result = result.filter(completion => completion.kind != 'element');
+    }
     if (result) {
       return result.map(completion => ({
         label: completion.name,

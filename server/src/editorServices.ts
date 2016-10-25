@@ -9,6 +9,8 @@
 // the APACHE 2.0 license. Some utility functions and
 // TypeScript were also lifted.
 
+import * as path from 'path';
+import * as fs from 'fs';
 import * as ts from 'typescript';
 import * as ng from '@angular/language-service';
 
@@ -799,6 +801,7 @@ export class Project {
 
   constructor(
       public projectService: ProjectService,
+      private logger: Logger,
       public projectOptions?: ProjectOptions,
       public languageServiceDiabled = false) {
       if (projectOptions && projectOptions.files) {
@@ -806,14 +809,14 @@ export class Project {
           projectOptions.compilerOptions['allowNonTsExtensions'] = true;
       }
       if (!languageServiceDiabled) {
-          this.compilerService = new CompilerService(this, projectOptions && projectOptions.compilerOptions);
+          this.compilerService = new CompilerService(this, logger, projectOptions && projectOptions.compilerOptions);
       }
   }
 
   enableLanguageService() {
       // if the language service was disabled, we should re-initiate the compiler service
       if (this.languageServiceDiabled) {
-          this.compilerService = new CompilerService(this, this.projectOptions && this.projectOptions.compilerOptions);
+          this.compilerService = new CompilerService(this, this.logger, this.projectOptions && this.projectOptions.compilerOptions);
       }
       this.languageServiceDiabled = false;
   }
@@ -1072,16 +1075,6 @@ export class ProjectService {
       };
   }
 
-//   getFormatCodeOptions(file?: string) {
-//       if (file) {
-//           const info = this.filenameToScriptInfo[file];
-//           if (info) {
-//               return info.formatCodeOptions;
-//           }
-//       }
-//       return this.hostConfiguration.formatCodeOptions;
-//   }
-
   watchedFileChanged(fileName: string) {
       const info = this.filenameToScriptInfo[fileName];
       if (!info) {
@@ -1210,32 +1203,12 @@ export class ProjectService {
       this.psLogger.msg(msg, type);
   }
 
-//   setHostConfiguration(args: ts.server.protocol.ConfigureRequestArguments) {
-//       if (args.file) {
-//           const info = this.filenameToScriptInfo[args.file];
-//           if (info) {
-//               info.setFormatOptions(args.formatOptions);
-//               this.log("Host configuration update for file " + args.file, "Info");
-//           }
-//       }
-//       else {
-//           if (args.hostInfo !== undefined) {
-//               this.hostConfiguration.hostInfo = args.hostInfo;
-//               this.log("Host information " + args.hostInfo, "Info");
-//           }
-//           if (args.formatOptions) {
-//               mergeFormatOptions(this.hostConfiguration.formatCodeOptions, args.formatOptions);
-//               this.log("Format host information updated", "Info");
-//           }
-//       }
-//   }
-
   closeLog() {
       this.psLogger.close();
   }
 
   createInferredProject(root: ScriptInfo) {
-      const project = new Project(this);
+      const project = new Project(this, this.psLogger);
       project.addRoot(root);
 
       let currentPath = getDirectoryPath(root.fileName);
@@ -1867,24 +1840,6 @@ export class ProjectService {
       }
   }
 
-//   private exceedTotalNonTsFileSizeLimit(fileNames: string[]) {
-//       let totalNonTsFileSize = 0;
-//       if (!this.host.getFileSize) {
-//           return false;
-//       }
-
-//       for (const fileName of fileNames) {
-//           if (hasTypeScriptFileExtension(fileName)) {
-//               continue;
-//           }
-//           totalNonTsFileSize += this.host.getFileSize(fileName);
-//           if (totalNonTsFileSize > maxProgramSizeForNonTsFiles) {
-//               return true;
-//           }
-//       }
-//       return false;
-//   }
-
   openConfigFile(configFilename: string, clientFileName?: string): { project?: Project, errors: ts.Diagnostic[] } {
       const parseConfigFileResult = this.configFileToProjectOptions(configFilename);
       let errors = parseConfigFileResult.errors;
@@ -1892,27 +1847,12 @@ export class ProjectService {
           return { errors };
       }
       const projectOptions = parseConfigFileResult.projectOptions;
-    //   if (!projectOptions.compilerOptions.disableSizeLimit && projectOptions.compilerOptions.allowJs) {
-    //       if (this.exceedTotalNonTsFileSizeLimit(projectOptions.files)) {
-    //           const project = this.createProject(configFilename, projectOptions, /*languageServiceDisabled*/ true);
-
-    //           // for configured projects with languageService disabled, we only watch its config file,
-    //           // do not care about the directory changes in the folder.
-    //           project.projectFileWatcher = this.host.watchFile(
-    //               toPath(configFilename, configFilename, createGetCanonicalFileName(sys.useCaseSensitiveFileNames)),
-    //               _ => this.watchedProjectConfigFileChanged(project));
-    //           return { project, errors };
-    //       }
-    //   }
 
       const project = this.createProject(configFilename, projectOptions);
       for (const rootFilename of projectOptions.files) {
           if (this.host.fileExists(rootFilename)) {
               const info = this.openFile(rootFilename, /*openedByClient*/ clientFileName == rootFilename);
               project.addRoot(info);
-          }
-          else {
-            //   (errors || (errors = [])).push(createCompilerDiagnostic(Diagnostics.File_0_not_found, rootFilename));
           }
       }
       project.finishGraph();
@@ -1955,19 +1895,6 @@ export class ProjectService {
               return errors;
           }
           else {
-            //   if (projectOptions.compilerOptions && !projectOptions.compilerOptions.disableSizeLimit && this.exceedTotalNonTsFileSizeLimit(projectOptions.files)) {
-            //       project.setProjectOptions(projectOptions);
-            //       if (project.languageServiceDiabled) {
-            //           return errors;
-            //       }
-
-            //       project.disableLanguageService();
-            //       if (project.directoryWatcher) {
-            //           project.directoryWatcher.close();
-            //           project.directoryWatcher = undefined;
-            //       }
-            //       return errors;
-            //   }
 
               if (project.languageServiceDiabled) {
                   project.setProjectOptions(projectOptions);
@@ -2036,7 +1963,7 @@ export class ProjectService {
   }
 
   createProject(projectFilename: string, projectOptions?: ProjectOptions, languageServiceDisabled?: boolean) {
-      const project = new Project(this, projectOptions, languageServiceDisabled);
+      const project = new Project(this, this.psLogger, projectOptions, languageServiceDisabled);
       project.projectFilename = projectFilename;
       return project;
   }
@@ -2051,8 +1978,9 @@ export class CompilerService {
   classifier: ts.Classifier;
   settings: ts.CompilerOptions;
   documentRegistry = ts.createDocumentRegistry();
+  ng: typeof ng;
 
-  constructor(public project: Project, opt?: ts.CompilerOptions) {
+  constructor(public project: Project, private logger: Logger, opt?: ts.CompilerOptions) {
       this.host = new LSHost(project.projectService.host, project);
       if (opt) {
           this.setCompilerOptions(opt);
@@ -2063,9 +1991,13 @@ export class CompilerService {
           defaultOpts.allowJs = true;
           this.setCompilerOptions(defaultOpts);
       }
+
+
       this.languageService = ts.createLanguageService(this.host, this.documentRegistry);
-      this.ngHost = new ng.TypeScriptServiceHost(ts, this.host, this.languageService);
-      this.ngService = ng.createLanguageService(this.ngHost);
+
+      this.ng = this.resolveLanguageServiceModule();
+      this.ngHost = new this.ng.TypeScriptServiceHost(ts, this.host, this.languageService);
+      this.ngService = this.ng.createLanguageService(this.ngHost);
       this.ngHost.setSite(this.ngService);
       this.classifier = ts.createClassifier();
   }
@@ -2078,6 +2010,29 @@ export class CompilerService {
   isExternalModule(filename: string): boolean {
       const sourceFile: ts.SourceFile = (this.languageService as any).getNonBoundSourceFile(filename);
       return ts.isExternalModule(sourceFile);
+  }
+
+  resolveLanguageServiceModule(): typeof ng {
+      const host = path.resolve(this.host.getCurrentDirectory(), 'main.ts');
+      const modules = this.host.resolveModuleNames(['@angular/language-service'], host);
+      if (modules && modules[0]) {
+        const resolvedModule = modules[0];
+        const moduleName = path.dirname(resolvedModule.resolvedFileName);
+        if (fs.existsSync(moduleName)) {
+            try {
+                const result: typeof ng = require(moduleName);
+                if (result) return result;
+            } catch(e) {
+                this.log(`Error loading module "${moduleName}"; using local language service instead`);
+                this.log(e.stack);
+            }
+        }
+      }
+      return ng;
+  }
+
+  private log(message: string) {
+      return this.logger.msg(message);
   }
 
   static getDefaultFormatCodeOptions(host: ProjectServiceHost): ts.FormatCodeOptions {

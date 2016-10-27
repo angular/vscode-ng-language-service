@@ -2015,20 +2015,25 @@ export class CompilerService {
   resolveLanguageServiceModule(): typeof ng {
       const host = path.resolve(this.host.getCurrentDirectory(), 'main.ts');
       const modules = this.host.resolveModuleNames(['@angular/language-service'], host);
+      let result = ng;
       if (modules && modules[0]) {
         const resolvedModule = modules[0];
         const moduleName = path.dirname(resolvedModule.resolvedFileName);
         if (fs.existsSync(moduleName)) {
             try {
-                const result: typeof ng = require(moduleName);
-                if (result) return result;
+                result = require(moduleName) || result;
             } catch(e) {
                 this.log(`Error loading module "${moduleName}"; using local language service instead`);
                 this.log(e.stack);
             }
         }
       }
-      return ng;
+      if (typeof result === 'function') {
+          // The language service bundle exposes a function to allow hooking module dependencies
+          // such as TypeScript. However, using require() here is sufficient for us.
+          result = result();
+      }
+      return result;
   }
 
   private log(message: string) {

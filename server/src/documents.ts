@@ -182,8 +182,8 @@ export class TextDocuments {
       if (positions) {
         this.changeNumber++;
         const mappedChanges = event.contentChanges.map((change, i) => {
-          const start = positions[i % 2];
-          const end = positions[i % 2 + 1];
+          const start = positions[i * 2];
+          const end = positions[i * 2 + 1];
           return {start, end, insertText: change.text};
         });
         this.projectService.clientFileChanges(file, mappedChanges);

@@ -2,7 +2,7 @@
   "name": "ng-template",
   "displayName": "Angular Template",
   "description": "Angular Template Service",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "publisher": "Google",
   "engines": {
     "vscode": "^1.4.0"
@@ -12,7 +12,8 @@
   ],
 	"activationEvents": [
 		"onLanguage:ng-template",
-    "onLanguage:html"
+    "onLanguage:html",
+    "onLanguage:typescript"
 	],
 	"main": "./out/extension",
   "contributes": {
@@ -26,7 +27,8 @@
         ],
         "extensions": [
           ".ng",
-          ".ngml"
+          ".ngml",
+          ".ng.html"
         ],
         "configuration": "./language-configuration.json"
       }

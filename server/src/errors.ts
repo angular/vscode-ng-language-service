@@ -7,7 +7,7 @@ export class ErrorCollector {
   constructor(
     private documents: TextDocuments,
     private connection: IConnection,
-    private initialDelay: number = 1500,
+    private initialDelay: number = 750,
     private nextDelay: number = 20) {}
 
   public requestErrors(...documents: TextDocumentIdentifier[]) {
@@ -28,23 +28,25 @@ export class ErrorCollector {
 
   private sendErrorsFor(document: TextDocumentIdentifier) {
     const {fileName, service} = this.documents.getServiceInfo(document);
-    const diagnostics = service.getDiagnostics(fileName);
-    if (diagnostics) {
-      const offsets = ([] as number[]).concat(...diagnostics.map(d => [d.span.start, d.span.end]));
-      const positions = this.documents.offsetsToPositions(document, offsets);
-      const ranges: Range[] = [];
-      for (let i = 0; i < positions.length; i += 2) {
-        ranges.push(Range.create(positions[i], positions[i+1]));
+    if (service) {
+      const diagnostics = service.getDiagnostics(fileName);
+      if (diagnostics) {
+        const offsets = ([] as number[]).concat(...diagnostics.map(d => [d.span.start, d.span.end]));
+        const positions = this.documents.offsetsToPositions(document, offsets);
+        const ranges: Range[] = [];
+        for (let i = 0; i < positions.length; i += 2) {
+          ranges.push(Range.create(positions[i], positions[i+1]));
+        }
+        this.connection.sendDiagnostics({
+          uri: document.uri,
+          diagnostics: diagnostics.map((diagnostic, i) => ({
+            range: ranges[i],
+            message: diagnostic.message,
+            severity: DiagnosticSeverity.Error,
+            source: 'Angular'
+          }))
+        });
       }
-      this.connection.sendDiagnostics({
-        uri: document.uri,
-        diagnostics: diagnostics.map((diagnostic, i) => ({
-          range: ranges[i],
-          message: diagnostic.message,
-          severity: DiagnosticSeverity.Error,
-          source: 'Angular'
-        }))
-      });
     }
   }
 }

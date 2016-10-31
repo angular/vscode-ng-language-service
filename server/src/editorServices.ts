@@ -502,6 +502,7 @@ export class LSHost implements ts.LanguageServiceHost {
   compilationSettings: ts.CompilerOptions;
   filenameToScript: Map<ts.Path, ScriptInfo>;
   roots: ScriptInfo[] = [];
+  version: number = 0;
 
   private resolvedModuleNames: Map<ts.Path, ts.Map<TimestampedResolvedModule>>;
   private resolvedTypeReferenceDirectives: Map<ts.Path, ts.Map<TimestampedResolvedTypeReferenceDirective>>;
@@ -577,6 +578,10 @@ export class LSHost implements ts.LanguageServiceHost {
       }
   }
 
+  getProjectVersion() {
+      return this.version.toString();
+  }
+
   resolveTypeReferenceDirectives(typeDirectiveNames: string[], containingFile: string): ts.ResolvedTypeReferenceDirective[] {
       return this.resolveNamesWithLocalCache(typeDirectiveNames, containingFile, this.resolvedTypeReferenceDirectives, ts.resolveTypeReferenceDirective, m => m.resolvedTypeReferenceDirective);
   }
@@ -602,6 +607,7 @@ export class LSHost implements ts.LanguageServiceHost {
       // conservatively assume that changing compiler options might affect module resolution strategy
       this.resolvedModuleNames.clear();
       this.resolvedTypeReferenceDirectives.clear();
+      this.modified();
   }
 
   lineAffectsRefs(filename: string, line: number) {
@@ -651,6 +657,7 @@ export class LSHost implements ts.LanguageServiceHost {
           this.filenameToScript.delete(info.path);
           this.resolvedModuleNames.delete(info.path);
           this.resolvedTypeReferenceDirectives.delete(info.path);
+          this.modified();
       }
   }
 
@@ -670,6 +677,7 @@ export class LSHost implements ts.LanguageServiceHost {
       if (!this.filenameToScript.has(info.path)) {
           this.filenameToScript.set(info.path, info);
           this.roots.push(info);
+          this.modified();
       }
   }
 
@@ -679,6 +687,7 @@ export class LSHost implements ts.LanguageServiceHost {
           this.roots = copyListRemovingItem(info, this.roots);
           this.resolvedModuleNames.delete(info.path);
           this.resolvedTypeReferenceDirectives.delete(info.path);
+          this.modified();
       }
   }
 
@@ -694,6 +703,7 @@ export class LSHost implements ts.LanguageServiceHost {
       const script = this.getScriptInfo(filename);
       if (script) {
           script.svc.reloadFromFile(tmpfilename, cb);
+          this.modified();
       }
   }
 
@@ -701,6 +711,7 @@ export class LSHost implements ts.LanguageServiceHost {
       const script = this.getScriptInfo(filename);
       if (script) {
           script.editContent(start, end, newText);
+          this.modified();
           return;
       }
 
@@ -773,6 +784,10 @@ export class LSHost implements ts.LanguageServiceHost {
       const path = toPath(filename, this.host.getCurrentDirectory(), this.getCanonicalFileName);
       const script: ScriptInfo = this.filenameToScript.get(path);
       return script.snap().index;
+  }
+
+  private modified() {
+      this.version++;
   }
 }
 
@@ -1544,12 +1559,14 @@ export class ProjectService {
       }
 
       // Update Angular summaries
+      let start = Date.now();
       for (let project of this.configuredProjects) {
           project.compilerService.ngHost.updateModuleSummary();
       }
       for (let project of this.inferredProjects) {
           project.compilerService.ngHost.updateModuleSummary();
       }
+      this.log(`updated: ng - ${Date.now() - start}ms`, "Info");
 
       this.printProjects();
   }
@@ -1997,7 +2014,7 @@ export class CompilerService {
 
       this.ng = this.resolveLanguageServiceModule();
       this.ngHost = new this.ng.TypeScriptServiceHost(ts, this.host, this.languageService);
-      this.ngService = this.ng.createLanguageService(this.ngHost);
+      this.ngService = logServiceTimes(logger, this.ng.createLanguageService(this.ngHost));
       this.ngHost.setSite(this.ngService);
       this.classifier = ts.createClassifier();
   }
@@ -3005,4 +3022,28 @@ export class LineLeaf implements LineCollection {
   lineCount() {
       return 1;
   }
+}
+
+
+function logServiceTimes(logger: Logger, service: ng.LanguageService): ng.LanguageService {
+  function time<T>(name: string, cb: () => T): T {
+    const start = Date.now();
+    const result = cb();
+    logger.msg(`${name}: ${Date.now() - start}ms`);
+    return result;
+  }
+  return {
+    getCompletionsAt(fileName, position) {
+      return time("getCompletions", () => service.getCompletionsAt(fileName, position));
+    },
+    getDiagnostics(fileName) {
+      return time("getDiagnnostics", () => service.getDiagnostics(fileName));
+    },
+    getTemplateReferences() {
+      return time("getTemplateRefrences", () => service.getTemplateReferences());
+    },
+    getPipesAt(fileName, position) {
+      return service.getPipesAt(fileName, position);
+    }
+  };
 }

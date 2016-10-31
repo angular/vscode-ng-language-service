@@ -20,7 +20,7 @@ import {TextDocuments, TextDocumentEvent} from './documents';
 import {ErrorCollector} from './errors';
 
 // Create a connection for the server. The connection uses Node's IPC as a transport
-let connection: IConnection = createConnection(new IPCMessageReader(process), new IPCMessageWriter(process));
+let connection: IConnection = createConnection();
 
 // Create a simple text document manager. The text document manager
 // supports full document sync only

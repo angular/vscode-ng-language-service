@@ -18,12 +18,12 @@
     "@angular/language-service": "file:///Users/chuckj/src/angular/dist/packages-dist/language-service"
   },
   "devDependencies": {
-    "rxjs": "^5.0.0-beta.12",
-    "zone.js": "^0.6.25",
-    "@angular/tsc-wrapped": "file:///Users/chuckj/src/angular/dist/tools/@angular/tsc-wrapped",
     "@angular/compiler": "file:///Users/chuckj/src/angular/dist/packages-dist/compiler",
     "@angular/compiler-cli": "file:///Users/chuckj/src/angular/dist/packages-dist/compiler-cli",
     "@angular/core": "file:///Users/chuckj/src/angular/dist/packages-dist/core",
-    "@types/node": "^6.0.40"
+    "@angular/tsc-wrapped": "file:///Users/chuckj/src/angular/dist/tools/@angular/tsc-wrapped",
+    "@types/node": "^6.0.46",
+    "rxjs": "^5.0.0-beta.12",
+    "zone.js": "^0.6.25"
   }
 }

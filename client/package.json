@@ -1,8 +1,8 @@
 {
   "name": "ng-template",
-  "displayName": "Angular Template",
-  "description": "Angular Template Service",
-  "version": "0.0.5",
+  "displayName": "Angular Langauge Service",
+  "description": "Editor services for Angular templates",
+  "version": "0.0.7",
   "publisher": "Google",
   "engines": {
     "vscode": "^1.4.0"

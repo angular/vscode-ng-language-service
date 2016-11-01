@@ -641,7 +641,11 @@ export class LSHost implements ts.LanguageServiceHost {
   }
 
   getScriptVersion(filename: string) {
-      return this.getScriptInfo(filename).svc.latestVersion().toString();
+      const info = this.getScriptInfo(filename);
+      if (info) {
+          return info.svc.latestVersion().toString();
+      }
+      return "<unknown>";
   }
 
   getCurrentDirectory(): string {

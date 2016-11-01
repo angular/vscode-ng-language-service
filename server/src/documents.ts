@@ -101,12 +101,14 @@ class ProjectLoggerImpl implements ProjectLogger {
   }
 }
 
+declare function unescape(text: string): string;
+
 function uriToFileName(uri: string): string {
   const parsedUrl = url.parse(uri);
   switch (parsedUrl.protocol) {
   case 'file:':
   case 'private:':
-    return parsedUrl.path
+    return unescape(parsedUrl.path);
   }
 }
 

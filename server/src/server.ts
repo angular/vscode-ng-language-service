@@ -84,7 +84,7 @@ function compiletionKindToCompletionItemKind(kind: string): number {
 connection.onCompletion((textDocumentPosition: TextDocumentPositionParams): CompletionItem[] => {
   const {fileName, service, offset, languageId} = documents.getServiceInfo(textDocumentPosition.textDocument,
     textDocumentPosition.position)
-  if (service && offset != null) {
+  if (fileName && service && offset != null) {
     let result = service.getCompletionsAt(fileName, offset);
     if (result && languageId == 'html') {
       // The HTML elements are provided by the HTML service when the text type is 'html'.

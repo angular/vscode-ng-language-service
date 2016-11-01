@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as ts from 'typescript';
+import * as url from 'url';
 
 import {LanguageService} from '@angular/language-service';
 
@@ -100,27 +101,22 @@ class ProjectLoggerImpl implements ProjectLogger {
   }
 }
 
-function removePrefix(value: string, ...prefixes: string[]): string {
-  for (const prefix of prefixes) {
-    if (value && value.startsWith(prefix)) {
-      return value.substr(prefix.length);
-    }
-  }
-  return value;
-}
-
-const privateProtocol = "private:";
-const fileProtocol = "file://";
 function uriToFileName(uri: string): string {
-  return removePrefix(decodeURI(uri), fileProtocol, privateProtocol);
+  const parsedUrl = url.parse(uri);
+  switch (parsedUrl.protocol) {
+  case 'file:':
+  case 'private:':
+    return parsedUrl.path
+  }
 }
 
+const fileProtocol = "file://";
 function fileNameToUri(fileName: string): string {
   return encodeURI(fileProtocol + fileName);
 }
 
 export interface NgServiceInfo {
-  fileName: string;
+  fileName?: string;
   languageId?: string;
   service?: LanguageService;
   offset?: number;
@@ -155,17 +151,21 @@ export class TextDocuments {
     connection.onDidOpenTextDocument(event => {
       // An interersting text document was opened in the client. Inform TypeScirpt's project services about it.
       const file = uriToFileName(event.textDocument.uri);
-      const { configFileName, configFileErrors } = this.projectService.openClientFile(file, event.textDocument.text);
-      if (configFileErrors && configFileErrors.length) {
-        // TODO: Report errors
-        this.logger.msg(`Config errors encountered and need to be reported: ${configFileErrors.length}\n  ${configFileErrors.map(error => error.messageText).join('\n  ')}`);
+      if (file) {
+        const { configFileName, configFileErrors } = this.projectService.openClientFile(file, event.textDocument.text);
+        if (configFileErrors && configFileErrors.length) {
+          // TODO: Report errors
+          this.logger.msg(`Config errors encountered and need to be reported: ${configFileErrors.length}\n  ${configFileErrors.map(error => error.messageText).join('\n  ')}`);
+        }
+        this.languageIds.set(event.textDocument.uri, event.textDocument.languageId);
       }
-      this.languageIds.set(event.textDocument.uri, event.textDocument.languageId);
     });
 
     connection.onDidCloseTextDocument(event => {
       const file = uriToFileName(event.textDocument.uri);
-      this.projectService.closeClientFile(file);
+      if (file) {
+        this.projectService.closeClientFile(file);
+      }
     });
 
     connection.onDidChangeTextDocument(event => {
@@ -195,16 +195,21 @@ export class TextDocuments {
       // If the file is saved, force the content to be reloaded from disk as the content might have changed on save.
       this.changeNumber++;
       const file = uriToFileName(event.textDocument.uri);
-      const savedContent = this.host.readFile(file);
-      this.projectService.closeClientFile(file);
-      this.projectService.openClientFile(file, savedContent);
-      this.changeNumber++;
+      if (file) {
+        const savedContent = this.host.readFile(file);
+        this.projectService.closeClientFile(file);
+        this.projectService.openClientFile(file, savedContent);
+        this.changeNumber++;
+      }
     });
   }
 
   public offsetsToPositions(document: TextDocumentIdentifier, offsets: number[]): Position[] {
     const file = uriToFileName(document.uri);
-    return this.projectService.positionsToLineOffsets(file, offsets).map(lineOffset => Position.create(lineOffset.line - 1, lineOffset.col - 1));
+    if (file) {
+      return this.projectService.positionsToLineOffsets(file, offsets).map(lineOffset => Position.create(lineOffset.line - 1, lineOffset.col - 1));
+    }
+    return [];
   }
 
   public getNgService(document: TextDocumentIdentifier): LanguageService | undefined {
@@ -213,18 +218,20 @@ export class TextDocuments {
 
   public getServiceInfo(document: TextDocumentIdentifier, position?: Position): NgServiceInfo {
     const fileName = uriToFileName(document.uri);
-    const project = this.projectService.getProjectForFile(fileName);
-    const languageId = this.languageIds.get(document.uri);
-    if (project) {
-      const service = project.compilerService.ngService;
-      if (position) {
-        // VSCode is 0 based, editor services are 1 based.
-        const offset = this.projectService.lineOffsetsToPositions(fileName, [{line: position.line + 1, col: position.character + 1}])[0];
-        return {fileName, service, offset, languageId};
+    if (fileName) {
+      const project = this.projectService.getProjectForFile(fileName);
+      const languageId = this.languageIds.get(document.uri);
+      if (project) {
+        const service = project.compilerService.ngService;
+        if (position) {
+          // VSCode is 0 based, editor services are 1 based.
+          const offset = this.projectService.lineOffsetsToPositions(fileName, [{line: position.line + 1, col: position.character + 1}])[0];
+          return {fileName, service, offset, languageId};
+        }
+        return {fileName, service, languageId};
       }
-      return {fileName, service, languageId};
+      return {fileName, languageId};
     }
-    return {fileName, languageId};
   }
 
   public ifUnchanged(f: () => void): () => void {

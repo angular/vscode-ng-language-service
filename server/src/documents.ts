@@ -129,6 +129,12 @@ export interface TextDocumentEvent {
   document: TextDocumentIdentifier;
 }
 
+export interface TextDocumentLine {
+  text: string;
+  line: number;
+  start: number;
+}
+
 export class TextDocuments {
   private projectService: ProjectService;
   private logger: ProjectLoggerImpl;
@@ -212,6 +218,16 @@ export class TextDocuments {
       return this.projectService.positionsToLineOffsets(file, offsets).map(lineOffset => Position.create(lineOffset.line - 1, lineOffset.col - 1));
     }
     return [];
+  }
+
+  public getDocumentLine(document: TextDocumentIdentifier, offset: number): TextDocumentLine {
+    const info = this.getServiceInfo(document);
+    if (info) {
+      const lineInfo = this.projectService.positionToLineOffset(info.fileName, offset);
+      if (lineInfo) {
+        return { line: lineInfo.line, start: offset - lineInfo.offset, text: lineInfo.text };
+      }
+    }
   }
 
   public getNgService(document: TextDocumentIdentifier): LanguageService | undefined {

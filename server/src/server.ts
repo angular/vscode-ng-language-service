@@ -13,11 +13,14 @@ import {
   createConnection, IConnection, TextDocumentSyncKind,
   TextDocument, Diagnostic, DiagnosticSeverity,
   InitializeParams, InitializeResult, TextDocumentPositionParams,
-  CompletionItem, CompletionItemKind, TextDocumentIdentifier, Range
+  CompletionItem, CompletionItemKind, Definition, TextDocumentIdentifier,
+  Position, Range, TextEdit
 } from 'vscode-languageserver';
 
 import {TextDocuments, TextDocumentEvent} from './documents';
 import {ErrorCollector} from './errors';
+
+import {Completion, Span} from '@angular/language-service';
 
 // Create a connection for the server. The connection uses Node's IPC as a transport
 let connection: IConnection = createConnection();
@@ -80,6 +83,45 @@ function compiletionKindToCompletionItemKind(kind: string): number {
   return CompletionItemKind.Text;
 }
 
+const wordRe = /(\w|\(|\)|\[|\]|\*|\-|\_|\.)+/g;
+const special = /\(|\)|\[|\]|\*|\-|\_|\./;
+
+// Convert attribute names with non-\w chracters into a text edit.
+function insertionToEdit(range: Range, insertText: string): TextEdit {
+  if (insertText.match(special) && range) {
+    return TextEdit.replace(range, insertText);
+  }
+}
+
+
+function getReplaceRange(document: TextDocumentIdentifier, offset: number): Range {
+  const line = documents.getDocumentLine(document, offset);
+  if (line && line.text && line.start <= offset && line.start + line.text.length >= offset) {
+    const lineOffset = offset - line.start - 1;
+
+    // Find the word that contains the offset
+    let found: number, len: number;
+    line.text.replace(wordRe, <any>((word: string, _: string, wordOffset: number) => {
+      if (wordOffset <= lineOffset && wordOffset + word.length >= lineOffset && word.match(special)) {
+        found = wordOffset;
+        len = word.length;
+      }
+    }));
+    if (found != null) {
+      return Range.create(Position.create(line.line - 1, found), Position.create(line.line - 1, found + len));
+    }
+  }
+}
+
+function insertTextOf(completion: Completion): string {
+  switch (completion.kind) {
+    case 'attribute':
+    case 'html attribute':
+      return `${completion.name}="{{}}"`
+  }
+  return completion.name;
+}
+
 // This handler provides the initial list of the completion items.
 connection.onCompletion((textDocumentPosition: TextDocumentPositionParams): CompletionItem[] => {
   const {fileName, service, offset, languageId} = documents.getServiceInfo(textDocumentPosition.textDocument,
@@ -91,16 +133,18 @@ connection.onCompletion((textDocumentPosition: TextDocumentPositionParams): Comp
       result = result.filter(completion => completion.kind != 'element');
     }
     if (result) {
+      const replaceRange = getReplaceRange(textDocumentPosition.textDocument, offset);
       return result.map(completion => ({
         label: completion.name,
         kind: compiletionKindToCompletionItemKind(completion.kind),
         detail: completion.kind,
-        sortText: completion.sort
+        sortText: completion.sort,
+        textEdit: insertionToEdit(replaceRange, insertTextOf(completion)),
+        insertText: insertTextOf(completion)
       }));
     }
   }
 });
-
 
 // Listen on the connection
 connection.listen();

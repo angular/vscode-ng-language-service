@@ -781,7 +781,7 @@ export class LSHost implements ts.LanguageServiceHost {
   positionToLineOffset(filename: string, position: number, lineIndex?:  LineIndex): ILineInfo {
       lineIndex = lineIndex || this.getLineIndex(filename);
       const lineOffset = lineIndex.charOffsetToLineNumberAndPos(position);
-      return { line: lineOffset.line, offset: lineOffset.offset + 1 };
+      return { line: lineOffset.line, offset: lineOffset.offset + 1, text: lineOffset.text };
   }
 
   getLineIndex(filename: string): LineIndex {
@@ -1696,6 +1696,15 @@ export class ProjectService {
       if (project && !project.languageServiceDiabled) {
           const compilerService = project.compilerService;
           return offsets.map(offset => compilerService.host.positionToLineOffset(fileName, offset)).map(pos => ({line: pos.line, col: pos.offset}));
+      }
+  }
+
+  positionToLineOffset(fileName: string, offset: number) {
+      const file = normalizePath(fileName);
+      const project = this.getProjectForFile(file);
+      if (project && !project.languageServiceDiabled) {
+          const compilerService = project.compilerService;
+          return compilerService.host.positionToLineOffset(fileName, offset);
       }
   }
 
@@ -3041,7 +3050,7 @@ function logServiceTimes(logger: Logger, service: ng.LanguageService): ng.Langua
       return time("getCompletions", () => service.getCompletionsAt(fileName, position));
     },
     getDiagnostics(fileName) {
-      return time("getDiagnnostics", () => service.getDiagnostics(fileName));
+      return time("getDiagnostics", () => service.getDiagnostics(fileName));
     },
     getTemplateReferences() {
       return time("getTemplateRefrences", () => service.getTemplateReferences());

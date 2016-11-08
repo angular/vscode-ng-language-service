@@ -113,7 +113,7 @@ function uriToFileName(uri: string): string {
 }
 
 const fileProtocol = "file://";
-function fileNameToUri(fileName: string): string {
+export function fileNameToUri(fileName: string): string {
   return encodeURI(fileProtocol + fileName);
 }
 
@@ -215,7 +215,10 @@ export class TextDocuments {
   public offsetsToPositions(document: TextDocumentIdentifier, offsets: number[]): Position[] {
     const file = uriToFileName(document.uri);
     if (file) {
-      return this.projectService.positionsToLineOffsets(file, offsets).map(lineOffset => Position.create(lineOffset.line - 1, lineOffset.col - 1));
+      const lineOffsets = this.projectService.positionsToLineOffsets(file, offsets)
+      if (lineOffsets) {
+        return lineOffsets.map(lineOffset => Position.create(lineOffset.line - 1, lineOffset.col - 1));
+      }
     }
     return [];
   }

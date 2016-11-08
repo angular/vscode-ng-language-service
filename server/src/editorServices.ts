@@ -1677,22 +1677,30 @@ export class ProjectService {
       this.report("change", file, project);
   }
 
-  /**
-   *
-   */
-  lineOffsetsToPositions(fileName: string, positions: {line: number, col: number}[]): number[] {
-      const file = normalizePath(fileName);
-      const project = this.getProjectForFile(file);
-      if (project && !project.languageServiceDiabled) {
-          const compilerService = project.compilerService;
-          return positions.map(position => compilerService.host.lineOffsetToPosition(file, position.line, position.col));
+  forcedGetProjectForFile(fileName: string): Project {
+    const file = normalizePath(fileName);
+    const info = this.filenameToScriptInfo[file];
+    if (info) {
+      let project = info.defaultProject;
+      if (!project) {
+        // Force the association of the info with a default project.
+        this.findReferencingProjects(info);
+        project = info.defaultProject;
       }
-      return undefined;
+      return project;
+    }
+  }
+
+  lineOffsetsToPositions(fileName: string, positions: {line: number, col: number}[]): number[] {
+    const project = this.forcedGetProjectForFile(fileName);
+    if (project && !project.languageServiceDiabled) {
+        const compilerService = project.compilerService;
+        return positions.map(position => compilerService.host.lineOffsetToPosition(fileName, position.line, position.col));
+    }
   }
 
   positionsToLineOffsets(fileName: string, offsets: number[]): {line: number, col: number}[] {
-      const file = normalizePath(fileName);
-      const project = this.getProjectForFile(file);
+      const project = this.forcedGetProjectForFile(fileName);
       if (project && !project.languageServiceDiabled) {
           const compilerService = project.compilerService;
           return offsets.map(offset => compilerService.host.positionToLineOffset(fileName, offset)).map(pos => ({line: pos.line, col: pos.offset}));
@@ -1700,8 +1708,7 @@ export class ProjectService {
   }
 
   positionToLineOffset(fileName: string, offset: number) {
-      const file = normalizePath(fileName);
-      const project = this.getProjectForFile(file);
+      const project = this.forcedGetProjectForFile(fileName);
       if (project && !project.languageServiceDiabled) {
           const compilerService = project.compilerService;
           return compilerService.host.positionToLineOffset(fileName, offset);
@@ -3037,7 +3044,6 @@ export class LineLeaf implements LineCollection {
   }
 }
 
-
 function logServiceTimes(logger: Logger, service: ng.LanguageService): ng.LanguageService {
   function time<T>(name: string, cb: () => T): T {
     const start = Date.now();
@@ -3054,6 +3060,12 @@ function logServiceTimes(logger: Logger, service: ng.LanguageService): ng.Langua
     },
     getTemplateReferences() {
       return time("getTemplateRefrences", () => service.getTemplateReferences());
+    },
+    getDefinitionAt(fileName, position) {
+        return time("getDefinitionAt", () => service.getDefinitionAt(fileName, position));
+    },
+    getHoverAt(fileName, position) {
+        return time("getHoverAt", () => service.getHoverAt(fileName, position));
     },
     getPipesAt(fileName, position) {
       return service.getPipesAt(fileName, position);

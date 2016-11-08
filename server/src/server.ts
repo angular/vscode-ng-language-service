@@ -7,17 +7,19 @@
 /// <reference path="../typings/promise.d.ts" />
 /// <reference path="../node_modules/@types/node/index.d.ts" />
 
+import * as ng from '@angular/language-service';
+
 import 'reflect-metadata';
 import {
   IPCMessageReader, IPCMessageWriter,
   createConnection, IConnection, TextDocumentSyncKind,
   TextDocument, Diagnostic, DiagnosticSeverity,
   InitializeParams, InitializeResult, TextDocumentPositionParams,
-  CompletionItem, CompletionItemKind, Definition, TextDocumentIdentifier,
-  Position, Range, TextEdit
+  CompletionItem, CompletionItemKind, Definition, Location, TextDocumentIdentifier,
+  Position, Range, TextEdit, Hover
 } from 'vscode-languageserver';
 
-import {TextDocuments, TextDocumentEvent} from './documents';
+import {TextDocuments, TextDocumentEvent, fileNameToUri} from './documents';
 import {ErrorCollector} from './errors';
 
 import {Completion, Span} from '@angular/language-service';
@@ -60,7 +62,9 @@ connection.onInitialize((params): InitializeResult => {
       completionProvider: {
         resolveProvider: false,
         triggerCharacters: ['<', '.', '*', '[', '(']
-      }
+      },
+      definitionProvider: true,
+      hoverProvider: true
     }
   }
 });
@@ -92,7 +96,6 @@ function insertionToEdit(range: Range, insertText: string): TextEdit {
     return TextEdit.replace(range, insertText);
   }
 }
-
 
 function getReplaceRange(document: TextDocumentIdentifier, offset: number): Range {
   const line = documents.getDocumentLine(document, offset);
@@ -142,6 +145,55 @@ connection.onCompletion((textDocumentPosition: TextDocumentPositionParams): Comp
         textEdit: insertionToEdit(replaceRange, insertTextOf(completion)),
         insertText: insertTextOf(completion)
       }));
+    }
+  }
+});
+
+function ngDefintionToDefintion(definition: ng.Definition): Definition {
+  const locations = definition.map(d => {
+    const document = TextDocumentIdentifier.create(fileNameToUri(d.fileName));
+    const positions = documents.offsetsToPositions(document, [d.span.start, d.span.end]);
+    return {document, positions}
+  }).filter(d => d.positions.length > 0).map(d => {
+    const range = Range.create(d.positions[0], d.positions[1]);
+    return Location.create(d.document.uri, range);
+  });
+  if (locations && locations.length) {
+    return locations;
+  }
+}
+
+connection.onDefinition((textDocumentPosition: TextDocumentPositionParams): Definition => {
+  const {fileName, service, offset, languageId} = documents.getServiceInfo(textDocumentPosition.textDocument,
+    textDocumentPosition.position)
+  if (fileName && service && offset != null) {
+    let result = service.getDefinitionAt(fileName, offset);
+    if (result) {
+      return ngDefintionToDefintion(result);
+    }
+  }
+});
+
+function ngHoverToHover(hover: ng.Hover, document: TextDocumentIdentifier): Hover {
+  if (hover) {
+    const positions = documents.offsetsToPositions(document, [hover.span.start, hover.span.end]);
+    if (positions) {
+      const range = Range.create(positions[0], positions[1]);
+      return {
+        contents: {language: 'typescript', value: hover.text.map(t => t.text).join('')},
+        range
+      };
+    }
+  }
+}
+
+connection.onHover((textDocumentPosition: TextDocumentPositionParams): Hover => {
+  const {fileName, service, offset, languageId} = documents.getServiceInfo(textDocumentPosition.textDocument,
+    textDocumentPosition.position)
+  if (fileName && service && offset != null) {
+    let result = service.getHoverAt(fileName, offset);
+    if (result) {
+      return ngHoverToHover(result, textDocumentPosition.textDocument);
     }
   }
 });

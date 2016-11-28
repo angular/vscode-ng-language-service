@@ -1565,10 +1565,10 @@ export class ProjectService {
       // Update Angular summaries
       let start = Date.now();
       for (let project of this.configuredProjects) {
-          project.compilerService.ngHost.updateModuleSummary();
+          project.compilerService.ngHost.updateAnalyzedModules();
       }
       for (let project of this.inferredProjects) {
-          project.compilerService.ngHost.updateModuleSummary();
+          project.compilerService.ngHost.updateAnalyzedModules();
       }
       this.log(`updated: ng - ${Date.now() - start}ms`, "Info");
 

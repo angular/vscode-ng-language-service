@@ -12,18 +12,22 @@
     "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc --watch -p ."
   },
   "dependencies": {
+    "@angular/language-service": "github:angular/language-service-builds",
     "reflect-metadata": "^0.1.8",
     "typescript": "2.0.2",
-    "vscode-languageserver": "^2.4.0-next.9",
-    "@angular/language-service": "file:///Users/chuckj/src/angular/dist/packages-dist/language-service"
+    "vscode-languageserver": "^2.4.0-next.9"
   },
   "devDependencies": {
-    "@angular/compiler": "file:///Users/chuckj/src/angular/dist/packages-dist/compiler",
-    "@angular/compiler-cli": "file:///Users/chuckj/src/angular/dist/packages-dist/compiler-cli",
-    "@angular/core": "file:///Users/chuckj/src/angular/dist/packages-dist/core",
-    "@angular/tsc-wrapped": "file:///Users/chuckj/src/angular/dist/tools/@angular/tsc-wrapped",
+    "@angular/compiler": "github:angular/compiler-builds",
+    "@angular/compiler-cli": "github:angular/compiler-cli-builds",
+    "@angular/core": "github:angular/core-builds",
+    "@angular/tsc-wrapped": "^0.4.0",
     "@types/node": "^6.0.46",
-    "rxjs": "^5.0.0-beta.12",
+    "rxjs": "5.0.0-beta.12",
     "zone.js": "^0.6.25"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chuckjaz/vscode-ng-template-service"
   }
 }

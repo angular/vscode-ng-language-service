@@ -9,8 +9,6 @@ This plugin will provide completions in template files and template strings.
 - The langauge service is a separate service from TypeScript and runs a duplicate
   version of the TypeScript language service.
 
-- Only provide completions and diagnostic errors.
-
 See [#7482](https://github.com/angular/angular/issues/7482) for a more details
 status of the current progress.
 

@@ -108,7 +108,11 @@ function uriToFileName(uri: string): string {
   switch (parsedUrl.protocol) {
   case 'file:':
   case 'private:':
-    return unescape(parsedUrl.path);
+    let result = unescape(parsedUrl.path);
+    if (result.match(/^\/\w:/)) {
+      result = result.substr(1);
+    }
+    return result;
   }
 }
 

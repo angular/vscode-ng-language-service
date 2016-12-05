@@ -1,7 +1,7 @@
 {
   "name": "ng-language-service",
-  "description": "Angular loose temlate language service.",
-  "version": "0.0.1",
+  "description": "Angular temlate language service.",
+  "version": "0.0.9",
   "author": "Google",
   "license": "MIT",
   "engines": {

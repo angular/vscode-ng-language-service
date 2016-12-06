@@ -2,7 +2,7 @@
   "name": "ng-template",
   "displayName": "Angular Language Service",
   "description": "Editor services for Angular templates",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "publisher": "Google",
   "engines": {
     "vscode": "^1.4.0"

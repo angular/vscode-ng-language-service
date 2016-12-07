@@ -2,4 +2,5 @@ client/node_modules/
 client/out/
 client/server/
 server/node_modules/
+dist/
 .DS_Store

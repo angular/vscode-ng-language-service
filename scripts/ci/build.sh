@@ -38,7 +38,7 @@ echo 'travis_fold:start:build.vsix'
 (
   mkdir dist
   cd client
-  vsce package --out ../dist/ngls-${SHA}
+  vsce package --out ../dist/ngls.vsix
 )
 echo 'travis_fold:end:build.vsix'
 

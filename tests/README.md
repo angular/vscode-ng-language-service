@@ -1,0 +1,1 @@
+These tests are run in CI in `scripts/ci/test.sh`

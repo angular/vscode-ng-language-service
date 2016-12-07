@@ -1,0 +1,12 @@
+{
+  "name": "tools",
+  "version": "0.0.0",
+  "description": "Tools package for the Angular language service",
+  "devDependencies": {
+    "@types/minimist": "^1.1.29",
+    "@types/node": "0.0.2",
+    "minimist": "^1.2.0",
+    "typescript": "^2.1.4",
+    "vscode-jsonrpc": "^2.4.0"
+  }
+}

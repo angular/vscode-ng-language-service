@@ -3,12 +3,6 @@ sudo: false
 node_js:
   - '6.6.0'
 
-cache:
-  directories:
-     - ./node_modules
-     - ./client/node_modules
-     - ./server/node_modules
-
 env:
   matrix:
     # Order: a slower build first, so that we don't occupy an idle travis worker waiting for others to complete.

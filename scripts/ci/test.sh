@@ -4,6 +4,6 @@ set -ex -o pipefail
 
 echo 'travis_fold:start:TEST'
 
-# Add tests here
+tests/tests.sh
 
 echo 'travis_fold:end:TEST'

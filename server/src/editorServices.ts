@@ -2033,7 +2033,7 @@ export class CompilerService {
       this.languageService = ts.createLanguageService(this.host, this.documentRegistry);
 
       this.ng = this.resolveLanguageServiceModule();
-      this.ngHost = new this.ng.TypeScriptServiceHost(ts, this.host, this.languageService);
+      this.ngHost = new this.ng.TypeScriptServiceHost(this.host, this.languageService);
       this.ngService = logServiceTimes(logger, this.ng.createLanguageService(this.ngHost));
       this.ngHost.setSite(this.ngService);
       this.classifier = ts.createClassifier();

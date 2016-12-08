@@ -101,6 +101,7 @@ class ProjectLoggerImpl implements ProjectLogger {
   }
 }
 
+declare function escape(text: string): string;
 declare function unescape(text: string): string;
 
 function uriToFileName(uri: string): string {
@@ -118,7 +119,10 @@ function uriToFileName(uri: string): string {
 
 const fileProtocol = "file://";
 export function fileNameToUri(fileName: string): string {
-  return encodeURI(fileProtocol + fileName);
+  if (fileName.match(/^\w:/)) {
+    fileName = '/' + fileName;
+  }
+  return fileProtocol + escape(fileName);
 }
 
 export interface NgServiceInfo {
@@ -257,6 +261,7 @@ export class TextDocuments {
       }
       return {fileName, languageId};
     }
+    return {};
   }
 
   public ifUnchanged(f: () => void): () => void {

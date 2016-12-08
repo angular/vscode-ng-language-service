@@ -15,7 +15,7 @@ export function activate(context: ExtensionContext) {
   // Otherwise the run options are used
   let serverOptions: ServerOptions = {
     run : { module: serverModule, transport: TransportKind.ipc },
-    debug: { module: serverModule, transport: TransportKind.ipc /*, options: debugOptions */ }
+    debug: { module: serverModule, transport: TransportKind.ipc /* *, options: debugOptions /* */ }
   }
 
   // Options to control the language client

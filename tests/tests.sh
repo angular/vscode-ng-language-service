@@ -7,14 +7,14 @@ cd $(dirname $0)
 echo build the tools
 (
 	cd tools
-	npm install
-	$(npm bin)/tsc
+	yarn
+	$(yarn bin)/tsc
 )
 
-echo npm install on the project
+echo install project dependencies
 (
 	cd project
-	npm install
+	yarn
 )
 
 echo run startup test

@@ -10,12 +10,12 @@
   "categories": [
     "Languages"
   ],
-	"activationEvents": [
-		"onLanguage:ng-template",
+  "activationEvents": [
+    "onLanguage:ng-template",
     "onLanguage:html",
     "onLanguage:typescript"
-	],
-	"main": "./out/extension",
+  ],
+  "main": "./out/extension",
   "contributes": {
     "languages": [
       {

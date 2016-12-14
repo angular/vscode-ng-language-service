@@ -10,7 +10,7 @@
       "outDir": "${workspaceRoot}/../client/server"
     },
     {
-      "name": "Attach (cmd)",
+      "name": "Attach (tests)",
       "type": "node",
       "request": "attach",
       "port": 5858,

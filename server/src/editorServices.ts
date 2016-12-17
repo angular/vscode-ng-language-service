@@ -33,8 +33,8 @@ export interface ProjectServiceHost {
   resolvePath(path: string): string;
   fileExists(path: string): boolean;
   getDirectories(path: string): string[];
-  watchDirectory?(path: string, callback: ts.DirectoryWatcherCallback, recursive?: boolean): ts.FileWatcher;
-  watchFile?(path: string, callback: ts.FileWatcherCallback): ts.FileWatcher;
+  watchDirectory(path: string, callback: ts.DirectoryWatcherCallback, recursive?: boolean): ts.FileWatcher;
+  watchFile(path: string, callback: ts.FileWatcherCallback): ts.FileWatcher;
   readDirectory(path: string, extensions?: string[], exclude?: string[], include?: string[]): string[];
 
   useCaseSensitiveFileNames: boolean;

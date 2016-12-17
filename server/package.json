@@ -8,8 +8,9 @@
     "node": "*"
   },
   "scripts": {
-    "compile": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc -p .",
-    "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc --watch -p ."
+    "compile": "installServerIntoExtension ../client ./package.json ./tsconfig-build.json && tsc -p tsconfig-build.json",
+    "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc --watch -p tsconfig-build.json",
+    "test": "tsc -p . && jasmine -- dist/**/*_spec.js"
   },
   "dependencies": {
     "@angular/language-service": "^2.3.1",
@@ -21,7 +22,9 @@
     "@angular/compiler": "^2.3.1",
     "@angular/compiler-cli": "^2.3.1",
     "@angular/core": "^2.3.1",
+    "@types/jasmine": "^2.5.38",
     "@types/node": "^6.0.46",
+    "jasmine": "^2.5.2",
     "rxjs": "5.0.0-rc.4",
     "zone.js": "^0.7.2"
   },

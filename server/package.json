@@ -8,8 +8,8 @@
     "node": "*"
   },
   "scripts": {
-    "compile": "installServerIntoExtension ../client ./package.json ./tsconfig-build.json && tsc -p tsconfig-build.json",
-    "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc --watch -p tsconfig-build.json",
+    "compile": "installServerIntoExtension ../client ./package.json ./tsconfig-build.json && cp yarn.lock ../client/server && tsc -p tsconfig-build.json",
+    "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && cp yarn.lock ../client/server && tsc --watch -p .",
     "test": "tsc -p . && jasmine -- dist/**/*_spec.js"
   },
   "dependencies": {

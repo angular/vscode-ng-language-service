@@ -13,7 +13,7 @@ cd ../..
 echo 'travis_fold:start:build.server'
 (
   cd server
-  npm run compile
+  yarn run compile
 )
 echo 'travis_fold:end:build.server'
 
@@ -21,7 +21,7 @@ echo 'travis_fold:end:build.server'
 echo 'travis_fold:start:build.client'
 (
   cd client
-  $(npm bin)/tsc
+  $(yarn bin)/tsc
 )
 echo 'travis_fold:end:build.client'
 
@@ -29,7 +29,7 @@ echo 'travis_fold:end:build.client'
 echo 'travis_fold:start:build.server.deps'
 (
   cd client/server
-  npm install --prod
+  yarn install --production
 )
 echo 'travis_fold:end:build.server.deps'
 

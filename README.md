@@ -14,7 +14,7 @@ status of the current progress.
 
 ## Using
 
-Relaeses are at https://github.com/angular/vscode-ng-language-service/releases. Use 'install from VSIX' in VS Code editor extensions pane.
+Releases are at https://github.com/angular/vscode-ng-language-service/releases. Use 'install from VSIX' in VS Code editor extensions pane.
 
 ## Attribution
 

@@ -12,6 +12,10 @@ This plugin will provide completions in template files and template strings.
 See [#7482](https://github.com/angular/angular/issues/7482) for a more details
 status of the current progress.
 
+## Using
+
+Releases are at https://github.com/angular/vscode-ng-language-service/releases. Use 'install from VSIX' in VS Code editor extensions pane.
+
 ## Attribution
 
 This project was adapted from the example language service client provided

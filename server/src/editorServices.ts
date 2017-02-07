@@ -282,7 +282,7 @@ export function parseAndReEmitConfigJSONFile(content: string) {
     const options: ts.TranspileOptions = {
         fileName: "config.js",
         compilerOptions: {
-            target: ts.ScriptTarget.ES6,
+            target: ts.ScriptTarget.Latest,
             removeComments: true
         },
         reportDiagnostics: true

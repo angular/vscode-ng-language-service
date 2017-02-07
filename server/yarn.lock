@@ -18,9 +18,9 @@
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-2.3.1.tgz#be6e91fdfdd7498506604263e051797cf67a47be"
 
-"@angular/language-service@^2.3.1":
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-2.3.1.tgz#a78242024d2ea51ee6e510305b829cc923a9b4ae"
+"@angular/language-service@^2.4.6":
+  version "2.4.6"
+  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-2.4.6.tgz#83ba96dea955b04c6c5898a72f4b4e590d7f3506"
 
 "@angular/tsc-wrapped@0.5.0":
   version "0.5.0"
@@ -127,9 +127,9 @@ reflect-metadata@^0.1.2, reflect-metadata@^0.1.8:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.8.tgz#72426d570b60776e3688968bd5ab9537a15cecf6"
 
-rxjs@5.0.0-rc.4:
-  version "5.0.0-rc.4"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.0.0-rc.4.tgz#a4d08bc5d7f30d48ed7130e2995490c326a325c4"
+rxjs@5.0:
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.0.3.tgz#fc8bdf464ebf938812748e4196788f392fef9754"
   dependencies:
     symbol-observable "^1.0.1"
 
@@ -156,9 +156,9 @@ tsickle@^0.2:
     source-map "^0.5.6"
     source-map-support "^0.4.2"
 
-typescript@2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.0.2.tgz#a63f848074498a4dfa7f293afda0835d501d9540"
+typescript@2.1:
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.1.5.tgz#6fe9479e00e01855247cea216e7561bafcdbcd4a"
 
 vscode-jsonrpc@^2.4.0:
   version "2.4.0"

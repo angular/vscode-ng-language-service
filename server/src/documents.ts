@@ -186,24 +186,26 @@ export class TextDocuments {
 
     connection.onDidChangeTextDocument(event => {
       const file = uriToFileName(event.textDocument.uri);
-      const positions = this.projectService.lineOffsetsToPositions(file,
-        ([] as {line: number, col: number}[]).concat(...event.contentChanges.map(change => [{
-          // VSCode is 0 based, editor services is 1 based.
-          line: change.range.start.line + 1,
-          col: change.range.start.character + 1
-        }, {
-          line: change.range.end.line + 1,
-          col: change.range.end.character + 1
-        }])));
-      if (positions) {
-        this.changeNumber++;
-        const mappedChanges = event.contentChanges.map((change, i) => {
-          const start = positions[i * 2];
-          const end = positions[i * 2 + 1];
-          return {start, end, insertText: change.text};
-        });
-        this.projectService.clientFileChanges(file, mappedChanges);
-        this.changeNumber++;
+      if (file) {
+        const positions = this.projectService.lineOffsetsToPositions(file,
+          ([] as {line: number, col: number}[]).concat(...event.contentChanges.map(change => [{
+            // VSCode is 0 based, editor services is 1 based.
+            line: change.range.start.line + 1,
+            col: change.range.start.character + 1
+          }, {
+            line: change.range.end.line + 1,
+            col: change.range.end.character + 1
+          }])));
+        if (positions) {
+          this.changeNumber++;
+          const mappedChanges = event.contentChanges.map((change, i) => {
+            const start = positions[i * 2];
+            const end = positions[i * 2 + 1];
+            return {start, end, insertText: change.text};
+          });
+          this.projectService.clientFileChanges(file, mappedChanges);
+          this.changeNumber++;
+        }
       }
     });
 

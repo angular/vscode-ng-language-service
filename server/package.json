@@ -1,7 +1,7 @@
 {
   "name": "ng-language-service",
-  "description": "Angular temlate language service.",
-  "version": "0.0.9",
+  "description": "Angular template language service.",
+  "version": "0.0.12",
   "author": "Google",
   "license": "MIT",
   "engines": {
@@ -13,9 +13,9 @@
     "test": "tsc -p . && jasmine -- dist/**/*_spec.js"
   },
   "dependencies": {
-    "@angular/language-service": "^2.3.1",
+    "@angular/language-service": "^2.4.6",
     "reflect-metadata": "^0.1.8",
-    "typescript": "2.0.2",
+    "typescript": "2.1",
     "vscode-languageserver": "^2.4.0-next.9"
   },
   "devDependencies": {
@@ -25,7 +25,7 @@
     "@types/jasmine": "^2.5.38",
     "@types/node": "^6.0.46",
     "jasmine": "^2.5.2",
-    "rxjs": "5.0.0-rc.4",
+    "rxjs": "^5.0",
     "zone.js": "^0.7.2"
   },
   "repository": {

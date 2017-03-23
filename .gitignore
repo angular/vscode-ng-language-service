@@ -3,4 +3,5 @@ client/out/
 client/server/
 server/node_modules/
 dist/
+tests/**/yarn.lock
 .DS_Store

@@ -7,6 +7,9 @@
 /// <reference path="../typings/promise.d.ts" />
 /// <reference path="../node_modules/@types/node/index.d.ts" />
 
+// Force TypeScript to use the non-polling version of the file watchers.
+process.env["TSC_NONPOLLING_WATCHER"] = true;
+
 import * as ng from '@angular/language-service';
 
 import 'reflect-metadata';

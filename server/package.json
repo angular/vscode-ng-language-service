@@ -13,15 +13,15 @@
     "test": "tsc -p . && jasmine -- dist/**/*_spec.js"
   },
   "dependencies": {
-    "@angular/language-service": "^2.4.6",
+    "@angular/language-service": "^4.0.0",
     "reflect-metadata": "^0.1.8",
     "typescript": "2.1",
     "vscode-languageserver": "^2.4.0-next.9"
   },
   "devDependencies": {
-    "@angular/compiler": "^2.3.1",
-    "@angular/compiler-cli": "^2.3.1",
-    "@angular/core": "^2.3.1",
+    "@angular/compiler": "^4.0.0",
+    "@angular/compiler-cli": "^4.0.0",
+    "@angular/core": "^4.0.0",
     "@types/jasmine": "^2.5.38",
     "@types/node": "^6.0.46",
     "jasmine": "^2.5.2",

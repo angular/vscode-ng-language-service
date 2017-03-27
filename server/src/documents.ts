@@ -164,7 +164,7 @@ export class TextDocuments {
     // Connect the logger to the connection
     this.logger.connect(connection.console);
 
-    connection.onDidOpenTextDocument(event => {
+    connection.onDidOpenTextDocument(event => this.logErrors(() => {
       // An interersting text document was opened in the client. Inform TypeScirpt's project services about it.
       const file = uriToFileName(event.textDocument.uri);
       if (file) {
@@ -175,16 +175,16 @@ export class TextDocuments {
         }
         this.languageIds.set(event.textDocument.uri, event.textDocument.languageId);
       }
-    });
+    }));
 
-    connection.onDidCloseTextDocument(event => {
+    connection.onDidCloseTextDocument(event => this.logErrors(() => {
       const file = uriToFileName(event.textDocument.uri);
       if (file) {
         this.projectService.closeClientFile(file);
       }
-    });
+    }));
 
-    connection.onDidChangeTextDocument(event => {
+    connection.onDidChangeTextDocument(event => this.logErrors(() => {
       const file = uriToFileName(event.textDocument.uri);
       if (file) {
         const positions = this.projectService.lineOffsetsToPositions(file,
@@ -207,9 +207,9 @@ export class TextDocuments {
           this.changeNumber++;
         }
       }
-    });
+    }));
 
-    connection.onDidSaveTextDocument(event => {
+    connection.onDidSaveTextDocument(event => this.logErrors(() => {
       // If the file is saved, force the content to be reloaded from disk as the content might have changed on save.
       this.changeNumber++;
       const file = uriToFileName(event.textDocument.uri);
@@ -219,7 +219,7 @@ export class TextDocuments {
         this.projectService.openClientFile(file, savedContent);
         this.changeNumber++;
       }
-    });
+    }));
   }
 
   public offsetsToPositions(document: TextDocumentIdentifier, offsets: number[]): Position[] {
@@ -271,6 +271,15 @@ export class TextDocuments {
     return () => {
       if (currentChange == this.changeNumber) f();
     };
+  }
+
+  private logErrors(f: () => void) {
+    try {
+      f();
+    } catch (e) {
+      if (e.message && e.stack) this.logger.msg(`SERVER ERROR: ${e.message}\n${e.stack}`);
+      throw e;
+    }
   }
 
   private handleProjectEvent(event: ProjectServiceEvent) {

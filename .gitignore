@@ -4,4 +4,5 @@ client/server/
 server/node_modules/
 dist/
 tests/**/yarn.lock
+**/.idea/
 .DS_Store

@@ -2,7 +2,8 @@
 
 This plugin to VS Code provides Angular language services for Angular.
 
-This plugin will provide completions in template files and template strings.
+This plugin will provide completions in template files and template strings and
+diagnostics for templates and Angular annotations.
 
 ## Limitations
 

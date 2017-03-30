@@ -12,7 +12,6 @@ process.env["TSC_NONPOLLING_WATCHER"] = true;
 
 import * as ng from '@angular/language-service';
 
-import 'reflect-metadata';
 import {
   IPCMessageReader, IPCMessageWriter,
   createConnection, IConnection, TextDocumentSyncKind,

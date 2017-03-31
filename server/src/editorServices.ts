@@ -2033,6 +2033,8 @@ export class CompilerService {
       this.languageService = ts.createLanguageService(this.host, this.documentRegistry);
 
       this.ng = this.resolveLanguageServiceModule();
+      this.log(`Angular Language Service: ${this.ng.VERSION.full}`);
+      this.log(`TypeScript: ${ts.version}`);
       this.ngHost = new this.ng.TypeScriptServiceHost(this.host, this.languageService);
       this.ngService = logServiceTimes(logger, this.ng.createLanguageService(this.ngHost));
       this.ngHost.setSite(this.ngService);

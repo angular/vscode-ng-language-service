@@ -165,7 +165,16 @@ function ngDefintionToDefintion(definition: ng.Definition): Definition {
   }
 }
 
-connection.onDefinition((textDocumentPosition: TextDocumentPositionParams): Definition => {
+function logErrors<T>(f: () => T): T {
+  try {
+    return f();
+  } catch (e) {
+    if (e.message && e.stack) connection.console.error(`SERVER ERROR: ${e.message}\n${e.stack}`);
+    throw e;
+  }
+}
+
+connection.onDefinition((textDocumentPosition: TextDocumentPositionParams): Definition => logErrors(() => {
   const {fileName, service, offset, languageId} = documents.getServiceInfo(textDocumentPosition.textDocument,
     textDocumentPosition.position)
   if (fileName && service && offset != null) {
@@ -174,7 +183,7 @@ connection.onDefinition((textDocumentPosition: TextDocumentPositionParams): Defi
       return ngDefintionToDefintion(result);
     }
   }
-});
+}));
 
 function ngHoverToHover(hover: ng.Hover, document: TextDocumentIdentifier): Hover {
   if (hover) {
@@ -189,7 +198,7 @@ function ngHoverToHover(hover: ng.Hover, document: TextDocumentIdentifier): Hove
   }
 }
 
-connection.onHover((textDocumentPosition: TextDocumentPositionParams): Hover => {
+connection.onHover((textDocumentPosition: TextDocumentPositionParams): Hover => logErrors(() => {
   const {fileName, service, offset, languageId} = documents.getServiceInfo(textDocumentPosition.textDocument,
     textDocumentPosition.position)
   if (fileName && service && offset != null) {
@@ -198,7 +207,7 @@ connection.onHover((textDocumentPosition: TextDocumentPositionParams): Hover => 
       return ngHoverToHover(result, textDocumentPosition.textDocument);
     }
   }
-});
+}));
 
 // Listen on the connection
 connection.listen();

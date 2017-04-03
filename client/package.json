@@ -3,7 +3,8 @@
   "displayName": "Angular Language Service",
   "description": "Editor services for Angular templates",
   "version": "0.1.0",
-  "publisher": "Google",
+  "publisher": "Angular",
+  "icon": "angular.png",
   "engines": {
     "vscode": "^1.4.0"
   },
@@ -51,5 +52,9 @@
   },
   "dependencies": {
     "vscode-languageclient": "^2.4.2-next.12"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/angular/vscode-ng-template-service"
   }
 }

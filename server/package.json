@@ -1,7 +1,7 @@
 {
   "name": "ng-language-service",
   "description": "Angular Language Service.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Angular",
   "license": "MIT",
   "engines": {

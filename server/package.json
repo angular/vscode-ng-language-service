@@ -2,7 +2,7 @@
   "name": "ng-language-service",
   "description": "Angular Language Service.",
   "version": "0.1.0",
-  "author": "Google",
+  "author": "Angular",
   "license": "MIT",
   "engines": {
     "node": "*"
@@ -13,7 +13,7 @@
     "test": "tsc -p . && jasmine -- dist/**/*_spec.js"
   },
   "dependencies": {
-    "@angular/language-service": "^4.0.1",
+    "@angular/language-service": "angular/language-service-builds",
     "typescript": "2.1",
     "vscode-languageserver": "^2.4.0-next.9"
   },

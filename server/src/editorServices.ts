@@ -1230,23 +1230,6 @@ export class ProjectService {
       const project = new Project(this, this.psLogger);
       project.addRoot(root);
 
-      let currentPath = getDirectoryPath(root.fileName);
-      let parentPath = getDirectoryPath(currentPath);
-      while (currentPath != parentPath) {
-          if (!project.projectService.directoryWatchersForTsconfig[currentPath]) {
-              this.log("Add watcher for: " + currentPath);
-              project.projectService.directoryWatchersForTsconfig[currentPath] =
-                  this.host.watchDirectory(currentPath, fileName => this.directoryWatchedForTsconfigChanged(fileName));
-              project.projectService.directoryWatchersRefCount[currentPath] = 1;
-          }
-          else {
-              project.projectService.directoryWatchersRefCount[currentPath] += 1;
-          }
-          project.directoriesWatchedForTsconfig.push(currentPath);
-          currentPath = parentPath;
-          parentPath = getDirectoryPath(parentPath);
-      }
-
       project.finishGraph();
       this.inferredProjects.push(project);
       return project;

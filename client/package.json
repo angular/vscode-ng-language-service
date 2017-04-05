@@ -33,13 +33,6 @@
         ],
         "configuration": "./language-configuration.json"
       }
-    ],
-    "grammars": [
-      {
-        "language": "ng-template",
-        "scopeName": "text.html.basic",
-        "path": "./syntaxes/NG.plist"
-      }
     ]
   },
   "scripts": {

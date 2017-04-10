@@ -19,8 +19,8 @@
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-4.0.1.tgz#0b110a001012076ea696460ccd922707bcdf51ba"
 
 "@angular/language-service@angular/language-service-builds":
-  version "4.1.0-beta.0-bde9771"
-  resolved "https://codeload.github.com/angular/language-service-builds/tar.gz/b02e6027783d752ff0696a42217eecb7a0ce7fd9"
+  version "4.1.0-beta.0-96aa236"
+  resolved "https://codeload.github.com/angular/language-service-builds/tar.gz/fb0106fb07f90b159d9b23b4430b1304ed6943af"
 
 "@angular/tsc-wrapped@4.0.1":
   version "4.0.1"
@@ -41,8 +41,8 @@ balanced-match@^0.4.1:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-0.4.2.tgz#cb3f3e3c732dc0f01ee70b403f302e61d7709838"
 
 brace-expansion@^1.0.0:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.6.tgz#7197d7eaa9b87e648390ea61fc66c84427420df9"
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.7.tgz#3effc3c50e000531fb720eaff80f0ae8ef23cf59"
   dependencies:
     balanced-match "^0.4.1"
     concat-map "0.0.1"

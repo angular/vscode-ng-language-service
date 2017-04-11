@@ -5,6 +5,10 @@ This plugin to VS Code provides Angular language services for Angular.
 This plugin will provide completions in template files and template strings and
 diagnostics for templates and Angular annotations.
 
+## Installation
+
+To install the current experimental version, download the latest `ngls.vsix` file https://github.com/angular/vscode-ng-language-service/releases, then select "Install from VSIX" under the extensions menu to install it.
+
 ## Limitations
 
 - The language service is a separate service from TypeScript and runs a duplicate

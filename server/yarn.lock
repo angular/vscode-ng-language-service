@@ -162,24 +162,28 @@ tsickle@^0.21.0:
     source-map "^0.5.6"
     source-map-support "^0.4.2"
 
-typescript@2.1:
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.1.6.tgz#40c7e6e9e5da7961b7718b55505f9cac9487a607"
+tslib@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.7.1.tgz#bc8004164691923a79fe8378bbeb3da2017538ec"
 
-vscode-jsonrpc@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/vscode-jsonrpc/-/vscode-jsonrpc-2.4.0.tgz#51396030e13179555c939b791c29598058b8fbb4"
+typescript@^2.3.4:
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.3.4.tgz#3d38321828231e434f287514959c37a82b629f42"
 
-vscode-languageserver-types@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/vscode-languageserver-types/-/vscode-languageserver-types-1.0.4.tgz#439a52f040c89cf6599d88ed9a1b5a9abdca11b7"
+vscode-jsonrpc@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/vscode-jsonrpc/-/vscode-jsonrpc-3.2.0.tgz#c92b946ac385c8b41439b842b6bd07d517b64a7d"
 
-vscode-languageserver@^2.4.0-next.9:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/vscode-languageserver/-/vscode-languageserver-2.6.2.tgz#c06d817a55c7c9e97bd0535424fc0d5754d61ea9"
+vscode-languageserver-types@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/vscode-languageserver-types/-/vscode-languageserver-types-3.2.0.tgz#8874ed92dbfa66df5fb0e2bf73f614cf9483be8f"
+
+vscode-languageserver@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/vscode-languageserver/-/vscode-languageserver-3.2.2.tgz#9a7b66e1252838ea51a0061145089a2b88a9516a"
   dependencies:
-    vscode-jsonrpc "^2.4.0"
-    vscode-languageserver-types "^1.0.4"
+    vscode-jsonrpc "^3.2.0"
+    vscode-languageserver-types "^3.2.0"
 
 wrappy@1:
   version "1.0.2"

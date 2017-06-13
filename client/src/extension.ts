@@ -26,8 +26,7 @@ export function activate(context: ExtensionContext) {
       fileEvents: [
         workspace.createFileSystemWatcher('**/tsconfig.json'),
         workspace.createFileSystemWatcher('**/*.ts')
-      ],
-      textDocumentFilter: document => document.fileName.endsWith('.ts')
+      ]
     },
   }
 

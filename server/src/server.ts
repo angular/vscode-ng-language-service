@@ -70,7 +70,7 @@ connection.onInitialize((params): InitializeResult => {
   }
 });
 
-function compiletionKindToCompletionItemKind(kind: string): number {
+function compiletionKindToCompletionItemKind(kind: string): CompletionItemKind {
   switch (kind) {
   case 'attribute': return CompletionItemKind.Property;
   case 'html attribute': return CompletionItemKind.Property;

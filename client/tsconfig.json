@@ -5,11 +5,10 @@
 		"moduleResolution": "node",
 		"outDir": "out",
 		"sourceMap": true,
-		"noLib": true,
+		"lib": [
+			"es2015"
+		],
+		"skipLibCheck": true,
 		"types": []
-	},
-	"exclude": [
-		"node_modules",
-		"server"
-	]
+	}
 }

@@ -1,5 +1,3 @@
-/// <reference path="../node_modules/vscode/typings/index.d.ts" />
-
 import * as path from 'path';
 
 import { workspace, Disposable, ExtensionContext } from 'vscode';

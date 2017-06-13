@@ -40,8 +40,8 @@
   },
   "devDependencies": {
     "@types/node": "^6.0.38",
-    "typescript": "^2.1.0-dev.20160830",
-    "vscode": "^0.11.15"
+    "typescript": "^2.3.4",
+    "vscode": "^1.1.0"
   },
   "dependencies": {
     "vscode-languageclient": "^2.4.2-next.12"

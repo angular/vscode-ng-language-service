@@ -121,7 +121,7 @@ function insertTextOf(completion: Completion): string {
   switch (completion.kind) {
     case 'attribute':
     case 'html attribute':
-      return `${completion.name}="{{}}"`
+      return `${completion.name}=`;
   }
   return completion.name;
 }

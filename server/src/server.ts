@@ -4,7 +4,6 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
-/// <reference path="../typings/promise.d.ts" />
 /// <reference path="../node_modules/@types/node/index.d.ts" />
 
 // Force TypeScript to use the non-polling version of the file watchers.
@@ -71,7 +70,7 @@ connection.onInitialize((params): InitializeResult => {
   }
 });
 
-function compiletionKindToCompletionItemKind(kind: string): number {
+function compiletionKindToCompletionItemKind(kind: string): CompletionItemKind {
   switch (kind) {
   case 'attribute': return CompletionItemKind.Property;
   case 'html attribute': return CompletionItemKind.Property;

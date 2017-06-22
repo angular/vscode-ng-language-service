@@ -1,5 +1,3 @@
-/// <reference path="../node_modules/vscode/typings/index.d.ts" />
-
 import * as path from 'path';
 
 import { workspace, Disposable, ExtensionContext } from 'vscode';
@@ -28,8 +26,7 @@ export function activate(context: ExtensionContext) {
       fileEvents: [
         workspace.createFileSystemWatcher('**/tsconfig.json'),
         workspace.createFileSystemWatcher('**/*.ts')
-      ],
-      textDocumentFilter: document => document.fileName.endsWith('.ts')
+      ]
     },
   }
 

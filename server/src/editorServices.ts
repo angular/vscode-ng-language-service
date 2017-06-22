@@ -524,7 +524,7 @@ export class LSHost implements ts.LanguageServiceHost {
     //   }
   }
 
-  private resolveNamesWithLocalCache<T extends Timestamped & { failedLookupLocations: string[] }, R>(
+  private resolveNamesWithLocalCache<T extends Timestamped & { failedLookupLocations?: string[] }, R>(
       names: string[],
       containingFile: string,
       cache: Map<ts.Path, ts.Map<T>>,
@@ -574,6 +574,9 @@ export class LSHost implements ts.LanguageServiceHost {
 
           // consider situation if we have no candidate locations as valid resolution.
           // after all there is no point to invalidate it if we have no idea where to look for the module.
+          if (resolution.failedLookupLocations === undefined) {
+              return true;
+          }
           return resolution.failedLookupLocations.length === 0;
       }
   }

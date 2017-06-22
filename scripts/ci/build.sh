@@ -7,6 +7,11 @@ cd $(dirname $0)
 source ./env.sh
 cd ../..
 
+# Clean up from last build
+(
+  rm -rf client/server
+)
+
 # Build the server
 (
   cd server

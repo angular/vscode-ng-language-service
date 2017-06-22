@@ -23,10 +23,8 @@
     tslib "^1.7.1"
 
 "@angular/language-service@angular/language-service-builds":
-  version "4.2.2-5e79449"
-  resolved "https://codeload.github.com/angular/language-service-builds/tar.gz/b6baf963ddbde7f6f78e1d261250c136043a17d4"
-  dependencies:
-    tslib "^1.7.1"
+  version "4.3.0-beta.0-1fc0d05"
+  resolved "https://codeload.github.com/angular/language-service-builds/tar.gz/d720ee66d466388f94ef89f65c040e463655bf17"
 
 "@angular/tsc-wrapped@4.2.2":
   version "4.2.2"

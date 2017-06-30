@@ -1,6 +1,6 @@
 # Angular Language Service
 
-![demo](client/R67RcGftRS.gif)
+![demo](./R67RcGftRS.gif)
 
 ## Using
 

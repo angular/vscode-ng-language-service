@@ -18,20 +18,22 @@
   ],
   "main": "./out/extension",
   "contributes": {
-    "languages": [{
-      "id": "ng-template",
-      "aliases": [
-        "Angular Template",
-        "ng",
-        "ng-html"
-      ],
-      "extensions": [
-        ".ng",
-        ".ngml",
-        ".ng.html"
-      ],
-      "configuration": "./language-configuration.json"
-    }]
+    "languages": [
+      {
+        "id": "ng-template",
+        "aliases": [
+          "Angular Template",
+          "ng",
+          "ng-html"
+        ],
+        "extensions": [
+          ".ng",
+          ".ngml",
+          ".ng.html"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "tsc -p ./",

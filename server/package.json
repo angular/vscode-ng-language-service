@@ -13,9 +13,10 @@
     "test": "tsc -p . && jasmine dist/**/*_spec.js"
   },
   "dependencies": {
-    "@angular/language-service": "angular/language-service-builds",
+    "@angular/language-service": "^4.3.2",
     "typescript": "^2.3.4",
-    "vscode-languageserver": "^3.2.2"
+    "vscode-jsonrpc": "~3.2.0",
+    "vscode-languageserver": "~3.2.2"
   },
   "devDependencies": {
     "@angular/compiler": "^4.0.1",
@@ -29,6 +30,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/chuckjaz/vscode-ng-template-service"
+    "url": "https://github.com/angular/vscode-ng-language-service"
   }
 }

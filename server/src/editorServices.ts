@@ -590,7 +590,7 @@ export class LSHost implements ts.LanguageServiceHost {
   }
 
   resolveModuleNames(moduleNames: string[], containingFile: string): ts.ResolvedModule[] {
-      return this.resolveNamesWithLocalCache<TimestampedResolvedModule, ts.ResolvedModule>(moduleNames, containingFile, this.resolvedModuleNames, ts.resolveModuleName, m => m.resolvedModule);
+      return this.resolveNamesWithLocalCache(moduleNames, containingFile, this.resolvedModuleNames, ts.resolveModuleName, m => m.resolvedModule);
   }
 
   getDefaultLibFileName() {

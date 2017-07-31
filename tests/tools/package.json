@@ -7,6 +7,6 @@
     "@types/node": "0.0.2",
     "minimist": "^1.2.0",
     "typescript": "^2.1.4",
-    "vscode-jsonrpc": "^2.4.0"
+    "vscode-jsonrpc": "^3.3.1"
   }
 }

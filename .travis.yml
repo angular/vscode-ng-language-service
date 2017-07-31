@@ -29,3 +29,4 @@ deploy:
   on:
     repo: angular/vscode-ng-language-service
     tags: true
+    

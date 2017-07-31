@@ -50,6 +50,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/angular/vscode-ng-template-service"
+    "url": "https://github.com/angular/vscode-ng-language-service"
   }
 }

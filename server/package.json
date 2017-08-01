@@ -1,7 +1,7 @@
 {
   "name": "ng-language-service",
   "description": "Angular Language Service.",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "author": "Angular",
   "license": "MIT",
   "engines": {
@@ -29,6 +29,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/chuckjaz/vscode-ng-template-service"
+    "url": "https://github.com/angular/vscode-ng-language-service"
   }
 }

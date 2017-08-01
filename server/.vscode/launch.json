@@ -1,13 +1,13 @@
 {
   "version": "0.1.0",
-  "configurations": [
-    {
+  "configurations": [{
       "name": "Attach",
       "type": "node",
       "request": "attach",
       "port": 6004,
       "sourceMaps": true,
-      "outDir": "${workspaceRoot}/../client/server"
+      "outFiles": ["${workspaceRoot}/../client/server/**/*.js"],
+      "protocol": "legacy"
     },
     {
       "name": "Attach (tests)",
@@ -15,7 +15,7 @@
       "request": "attach",
       "port": 5858,
       "sourceMaps": true,
-      "outDir": "${workspaceRoot}/../client/server"
+      "outFiles": ["${workspaceRoot}/../client/server/**/*.js"]
     }
   ]
 }

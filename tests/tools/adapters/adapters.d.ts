@@ -1,1 +1,0 @@
-type Thenable<T> = PromiseLike<T>;

@@ -4,9 +4,9 @@
   "description": "Tools package for the Angular language service",
   "devDependencies": {
     "@types/minimist": "^1.1.29",
-    "@types/node": "0.0.2",
+    "@types/node": "^6.0.81",
     "minimist": "^1.2.0",
     "typescript": "^2.1.4",
-    "vscode-jsonrpc": "^2.4.0"
+    "vscode-jsonrpc": "~3.2.0"
   }
 }

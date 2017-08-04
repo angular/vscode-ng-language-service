@@ -3035,7 +3035,15 @@ export class LineLeaf implements LineCollection {
 function logServiceTimes(logger: Logger, service: ng.LanguageService): ng.LanguageService {
   function time<T>(name: string, cb: () => T): T {
     const start = Date.now();
-    const result = cb();
+    let result: T = null;
+    try{
+        result = cb();
+    } catch (error) {
+        logger.msg(
+            `Error for ${name}:\n` +
+            `    ${error.stack || error}`
+        );
+    }
     logger.msg(`${name}: ${Date.now() - start}ms`);
     return result;
   }

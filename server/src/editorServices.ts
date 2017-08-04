@@ -590,7 +590,7 @@ export class LSHost implements ts.LanguageServiceHost {
   }
 
   resolveModuleNames(moduleNames: string[], containingFile: string): ts.ResolvedModule[] {
-      return this.resolveNamesWithLocalCache(moduleNames, containingFile, this.resolvedModuleNames, ts.resolveModuleName, m => m.resolvedModule);
+      return this.resolveNamesWithLocalCache<TimestampedResolvedModule, ts.ResolvedModule>(moduleNames, containingFile, this.resolvedModuleNames, ts.resolveModuleName, m => m.resolvedModule);
   }
 
   getDefaultLibFileName() {
@@ -3035,7 +3035,15 @@ export class LineLeaf implements LineCollection {
 function logServiceTimes(logger: Logger, service: ng.LanguageService): ng.LanguageService {
   function time<T>(name: string, cb: () => T): T {
     const start = Date.now();
-    const result = cb();
+    let result: T = null;
+    try{
+        result = cb();
+    } catch (error) {
+        logger.msg(
+            `Error for ${name}:\n` +
+            `    ${error.stack || error}`
+        );
+    }
     logger.msg(`${name}: ${Date.now() - start}ms`);
     return result;
   }

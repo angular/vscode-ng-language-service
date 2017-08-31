@@ -2749,6 +2749,7 @@ export class LineNode implements LineCollection {
       // assume (rangeStart < this.totalChars) && (rangeLength <= this.totalChars)
       let childIndex = 0;
       let child = this.children[0];
+      if (!child) return;
       let childCharCount = child.charCount();
       // find sub-tree containing start
       let adjustedStart = rangeStart;
@@ -2757,6 +2758,7 @@ export class LineNode implements LineCollection {
           adjustedStart -= childCharCount;
           childIndex++;
           child = this.children[childIndex];
+          if (!child) break;
           childCharCount = child.charCount();
       }
       // Case I: both start and end of range in same subtree
@@ -2781,6 +2783,7 @@ export class LineNode implements LineCollection {
               adjustedLength -= childCharCount;
               childIndex++;
               child = this.children[childIndex];
+              if (!child) break;
               childCharCount = child.charCount();
           }
           if (adjustedLength > 0) {

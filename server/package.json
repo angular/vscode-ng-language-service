@@ -1,7 +1,7 @@
 {
-  "name": "ng-language-service",
+  "name": "ng-template",
   "description": "Angular Language Service.",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "author": "Angular",
   "license": "MIT",
   "engines": {

@@ -3058,7 +3058,7 @@ function logServiceTimes(logger: Logger, service: ng.LanguageService): ng.Langua
       return time("getDiagnostics", () => service.getDiagnostics(fileName));
     },
     getTemplateReferences() {
-      return time("getTemplateRefrences", () => service.getTemplateReferences());
+      return time("getTemplateReferences", () => service.getTemplateReferences());
     },
     getDefinitionAt(fileName, position) {
         return time("getDefinitionAt", () => service.getDefinitionAt(fileName, position));

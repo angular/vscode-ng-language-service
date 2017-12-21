@@ -1,7 +1,7 @@
 import * as path from 'path';
 
 import { workspace, Disposable, ExtensionContext } from 'vscode';
-import { LanguageClient, LanguageClientOptions, SettingMonitor, ServerOptions, TransportKind } from 'vscode-languageclient';
+import { LanguageClient, LanguageClientOptions, SettingMonitor, ServerOptions, TransportKind, RevealOutputChannelOn } from 'vscode-languageclient';
 
 export function activate(context: ExtensionContext) {
   // The server is implemented in node
@@ -28,6 +28,9 @@ export function activate(context: ExtensionContext) {
         workspace.createFileSystemWatcher('**/*.ts')
       ]
     },
+
+    // Don't let our output console pop open
+    revealOutputChannelOn: RevealOutputChannelOn.Never
   }
 
   // Create the language client and start the client.

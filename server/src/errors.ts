@@ -1,5 +1,6 @@
 import {DiagnosticSeverity, IConnection, Range, TextDocumentIdentifier} from 'vscode-languageserver';
 import {TextDocuments} from './documents';
+import {DiagnosticMessageChain} from '@angular/language-service/src/types';
 
 export class ErrorCollector {
   private timer: NodeJS.Timer | undefined;
@@ -41,7 +42,7 @@ export class ErrorCollector {
           uri: document.uri,
           diagnostics: diagnostics.map((diagnostic, i) => ({
             range: ranges[i],
-            message: diagnostic.message,
+            message: flattenChain(diagnostic.message, ''),
             severity: DiagnosticSeverity.Error,
             source: 'Angular'
           }))
@@ -49,4 +50,14 @@ export class ErrorCollector {
       }
     }
   }
+}
+
+function flattenChain(message: string | DiagnosticMessageChain, prefix: string) {
+  if (typeof message === 'string') {
+    return `${prefix}${message}`;
+  }
+  if (message.next) {
+    return `${prefix}${message.message}\n${flattenChain(message.next, prefix + '  ')}`;
+  }
+  return `${prefix}${message.message}`
 }

@@ -1,1 +1,1 @@
-[{"jsonrpc":"2.0","id":2,"result":null}]
+[{"jsonrpc":"2.0","id":0,"result":{"capabilities":{"textDocumentSync":2,"completionProvider":{"resolveProvider":false,"triggerCharacters":["<",".","*","[","("]},"definitionProvider":true,"hoverProvider":true}}},{"jsonrpc":"2.0","id":2,"result":null}]

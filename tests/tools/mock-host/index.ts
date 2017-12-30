@@ -47,6 +47,12 @@ try {
       writer.write(message as any);
     }
   }
+
+  // Do not terminate the process for 5 seconds to allow messages to
+  // propagate. vscode-jsonrpc detects the process exit and terminates
+  // the service. This prevents the detection from causing the test
+  // to fail.
+  setTimeout(() => {}, 5000);
 } catch(e) {
   console.error(`Error: ${e.message}`);
   process.exit(2);

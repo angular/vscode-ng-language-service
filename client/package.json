@@ -5,6 +5,7 @@
   "version": "0.1.7",
   "publisher": "Angular",
   "icon": "angular.png",
+  "keywords": ["Angular", "multi-root ready"],
   "engines": {
     "vscode": "^1.4.0"
   },

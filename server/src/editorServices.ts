@@ -825,26 +825,26 @@ export class Project {
       public projectService: ProjectService,
       private logger: Logger,
       public projectOptions?: ProjectOptions,
-      public languageServiceDiabled = false) {
+      public languageServiceDisabled = false) {
       if (projectOptions && projectOptions.files) {
           // If files are listed explicitly, allow all extensions
           projectOptions.compilerOptions['allowNonTsExtensions'] = true;
       }
-      if (!languageServiceDiabled) {
+      if (!languageServiceDisabled) {
           this.compilerService = new CompilerService(this, logger, projectOptions && projectOptions.compilerOptions);
       }
   }
 
   enableLanguageService() {
       // if the language service was disabled, we should re-initiate the compiler service
-      if (this.languageServiceDiabled) {
+      if (this.languageServiceDisabled) {
           this.compilerService = new CompilerService(this, this.logger, this.projectOptions && this.projectOptions.compilerOptions);
       }
-      this.languageServiceDiabled = false;
+      this.languageServiceDisabled = false;
   }
 
   disableLanguageService() {
-      this.languageServiceDiabled = true;
+      this.languageServiceDisabled = true;
   }
 
   addOpenRef() {
@@ -861,7 +861,7 @@ export class Project {
   }
 
   getRootFiles() {
-      if (this.languageServiceDiabled) {
+      if (this.languageServiceDisabled) {
           // When the languageService was disabled, only return file list if it is a configured project
           return this.projectOptions ? this.projectOptions.files : undefined;
       }
@@ -870,7 +870,7 @@ export class Project {
   }
 
   getFileNames() {
-      if (this.languageServiceDiabled) {
+      if (this.languageServiceDisabled) {
           if (!this.projectOptions) {
               return undefined;
           }
@@ -888,14 +888,14 @@ export class Project {
   }
 
   references(info: ScriptInfo): boolean {
-      if (this.languageServiceDiabled) {
+      if (this.languageServiceDisabled) {
           return undefined;
       }
       return this.referencesFile.has(info.fileName);
   }
 
   getSourceFile(info: ScriptInfo) {
-      if (this.languageServiceDiabled) {
+      if (this.languageServiceDisabled) {
           return undefined;
       }
 
@@ -903,7 +903,7 @@ export class Project {
   }
 
   getSourceFileFromName(filename: string, requireOpen?: boolean) {
-      if (this.languageServiceDiabled) {
+      if (this.languageServiceDisabled) {
           return undefined;
       }
 
@@ -916,7 +916,7 @@ export class Project {
   }
 
   isRoot(info: ScriptInfo) {
-      if (this.languageServiceDiabled) {
+      if (this.languageServiceDisabled) {
           return undefined;
       }
 
@@ -924,7 +924,7 @@ export class Project {
   }
 
   removeReferencedFile(info: ScriptInfo) {
-      if (this.languageServiceDiabled) {
+      if (this.languageServiceDisabled) {
           return;
       }
 
@@ -933,7 +933,7 @@ export class Project {
   }
 
   updateFileMap() {
-      if (this.languageServiceDiabled) {
+      if (this.languageServiceDisabled) {
           return;
       }
 
@@ -956,7 +956,7 @@ export class Project {
   }
 
   finishGraph() {
-      if (this.languageServiceDiabled) {
+      if (this.languageServiceDisabled) {
           return;
       }
 
@@ -965,7 +965,7 @@ export class Project {
   }
 
   updateGraph() {
-      if (this.languageServiceDiabled) {
+      if (this.languageServiceDisabled) {
           return;
       }
 
@@ -979,7 +979,7 @@ export class Project {
 
   // add a root file to project
   addRoot(info: ScriptInfo) {
-      if (this.languageServiceDiabled) {
+      if (this.languageServiceDisabled) {
           return;
       }
 
@@ -988,7 +988,7 @@ export class Project {
 
   // remove a root file from project
   removeRoot(info: ScriptInfo) {
-      if (this.languageServiceDiabled) {
+      if (this.languageServiceDisabled) {
           return;
       }
 
@@ -996,7 +996,7 @@ export class Project {
   }
 
   filesToString() {
-      if (this.languageServiceDiabled) {
+      if (this.languageServiceDisabled) {
           if (this.projectOptions) {
               let strBuilder = "";
               this.projectOptions.files.forEach(
@@ -1015,7 +1015,7 @@ export class Project {
       this.projectOptions = projectOptions;
       if (projectOptions.compilerOptions) {
           projectOptions.compilerOptions['allowNonTsExtensions'] = true;
-          if (!this.languageServiceDiabled) {
+          if (!this.languageServiceDisabled) {
               this.compilerService.setCompilerOptions(projectOptions.compilerOptions);
           }
       }
@@ -1650,7 +1650,7 @@ export class ProjectService {
   clientFileChanges(fileName: string, changes: {start: number, end: number, insertText: string}[]): void {
       const file = normalizePath(fileName);
       const project = this.getProjectForFile(file);
-      if (project && !project.languageServiceDiabled) {
+      if (project && !project.languageServiceDisabled) {
           const compilerService = project.compilerService;
           for (const change of changes) {
             if (change.start >= 0) {
@@ -1679,7 +1679,7 @@ export class ProjectService {
 
   lineOffsetsToPositions(fileName: string, positions: {line: number, col: number}[]): number[] {
     const project = this.forcedGetProjectForFile(fileName);
-    if (project && !project.languageServiceDiabled) {
+    if (project && !project.languageServiceDisabled) {
         const compilerService = project.compilerService;
         return positions.map(position => compilerService.host.lineOffsetToPosition(fileName, position.line, position.col));
     }
@@ -1687,7 +1687,7 @@ export class ProjectService {
 
   positionsToLineOffsets(fileName: string, offsets: number[]): {line: number, col: number}[] {
       const project = this.forcedGetProjectForFile(fileName);
-      if (project && !project.languageServiceDiabled) {
+      if (project && !project.languageServiceDisabled) {
           const compilerService = project.compilerService;
           return offsets.map(offset => compilerService.host.positionToLineOffset(fileName, offset)).map(pos => ({line: pos.line, col: pos.offset}));
       }
@@ -1695,7 +1695,7 @@ export class ProjectService {
 
   positionToLineOffset(fileName: string, offset: number) {
       const project = this.forcedGetProjectForFile(fileName);
-      if (project && !project.languageServiceDiabled) {
+      if (project && !project.languageServiceDisabled) {
           const compilerService = project.compilerService;
           return compilerService.host.positionToLineOffset(fileName, offset);
       }
@@ -1919,7 +1919,7 @@ export class ProjectService {
           }
           else {
 
-              if (project.languageServiceDiabled) {
+              if (project.languageServiceDisabled) {
                   project.setProjectOptions(projectOptions);
                   project.enableLanguageService();
                   project.directoryWatcher = this.host.watchDirectory(

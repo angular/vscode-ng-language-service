@@ -524,7 +524,7 @@ export class LSHost implements ts.LanguageServiceHost {
     //   }
   }
 
-  private resolveNamesWithLocalCache<T extends Timestamped & { failedLookupLocations?: string[] }, R>(
+  private resolveNamesWithLocalCache<T extends Timestamped & { failedLookupLocations?: ReadonlyArray<string> }, R>(
       names: string[],
       containingFile: string,
       cache: Map<ts.Path, ts.Map<T>>,

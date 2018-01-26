@@ -23,9 +23,9 @@
   dependencies:
     tslib "^1.7.1"
 
-"@angular/language-service@5.2.x":
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-5.2.1.tgz#438bc1f61bab5ba2e0eeb687ae6be9e6ab0edb18"
+"@angular/language-service@angular/language-service-builds#63940f8ce4222b9f3d89812a5f92ed61c75efe90":
+  version "5.2.2-250c8da"
+  resolved "https://codeload.github.com/angular/language-service-builds/tar.gz/63940f8ce4222b9f3d89812a5f92ed61c75efe90"
 
 "@types/jasmine@^2.5.38":
   version "2.8.3"

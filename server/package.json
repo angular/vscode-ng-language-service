@@ -13,20 +13,20 @@
     "test": "tsc -p . && jasmine dist/**/*_spec.js"
   },
   "dependencies": {
-    "@angular/language-service": "angular/language-service-builds#63940f8ce4222b9f3d89812a5f92ed61c75efe90",
-    "typescript": "2.6.x",
-    "vscode-jsonrpc": "^3.2.0",
-    "vscode-languageserver": "^3.2.2"
+    "@angular/language-service": "^5.2.9",
+    "typescript": "~2.7.2",
+    "vscode-jsonrpc": "^3.6.0",
+    "vscode-languageserver": "^4.0.0"
   },
   "devDependencies": {
-    "@angular/compiler": "5.2.x",
-    "@angular/compiler-cli": "5.2.x",
-    "@angular/core": "5.2.x",
-    "@types/jasmine": "^2.5.38",
+    "@angular/compiler": "^5.2.9",
+    "@angular/compiler-cli": "^5.2.9",
+    "@angular/core": "^5.2.9",
+    "@types/jasmine": "^2.8.6",
     "@types/node": "^6.0.46",
-    "jasmine": "^2.5.2",
-    "rxjs": "^5.0",
-    "zone.js": "^0.7.2"
+    "jasmine": "^3.1.0",
+    "rxjs": "^5.5.8",
+    "zone.js": "^0.8.20"
   },
   "repository": {
     "type": "git",

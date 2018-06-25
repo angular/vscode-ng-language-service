@@ -2040,7 +2040,7 @@ export class CompilerService {
   resolveLanguageServiceModule(): typeof ng {
       const host = path.resolve(this.host.getCurrentDirectory(), 'main.ts');
       const modules = this.host.resolveModuleNames(['@angular/language-service'], host);
-      let result = ng;
+      let result = ng as any; // quick fix - never type has no call signature
       if (modules && modules[0]) {
         const resolvedModule = modules[0];
         const moduleName = path.dirname(resolvedModule.resolvedFileName);

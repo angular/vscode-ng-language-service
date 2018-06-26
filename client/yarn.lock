@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@types/node@^6.0.38":
-  version "6.0.85"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.85.tgz#ec02bfe54a61044f2be44f13b389c6a0e8ee05ae"
+"@types/node@^8.0.47":
+  version "8.10.20"
+  resolved "https://registry.npmjs.org/@types/node/-/node-8.10.20.tgz#fe674ea52e13950ab10954433a7824438aabbcac"
 
 ajv@^4.9.1:
   version "4.11.8"
@@ -1443,9 +1443,9 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
 
-typescript@^2.3.4:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.4.2.tgz#f8395f85d459276067c988aa41837a8f82870844"
+typescript@^2.9.2:
+  version "2.9.2"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-2.9.2.tgz#1cbf61d05d6b96269244eb6a3bce4bd914e0f00c"
 
 unique-stream@^2.0.2:
   version "2.2.1"
@@ -1545,20 +1545,26 @@ vinyl@~2.0.1:
     remove-trailing-separator "^1.0.1"
     replace-ext "^1.0.0"
 
-vscode-jsonrpc@^3.2.0, vscode-jsonrpc@~3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/vscode-jsonrpc/-/vscode-jsonrpc-3.2.0.tgz#c92b946ac385c8b41439b842b6bd07d517b64a7d"
+vscode-jsonrpc@^3.6.2:
+  version "3.6.2"
+  resolved "https://registry.npmjs.org/vscode-jsonrpc/-/vscode-jsonrpc-3.6.2.tgz#3b5eef691159a15556ecc500e9a8a0dd143470c8"
 
-vscode-languageclient@~3.2.2:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/vscode-languageclient/-/vscode-languageclient-3.2.2.tgz#7843839614aa099f172b4e5f8967d42b58d77f0d"
+vscode-languageclient@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.npmjs.org/vscode-languageclient/-/vscode-languageclient-4.2.1.tgz#26fb0fd18687fcb2b81f358e4e7375a17ac42515"
   dependencies:
-    vscode-jsonrpc "^3.2.0"
-    vscode-languageserver-types "^3.2.0"
+    vscode-languageserver-protocol "^3.8.1"
 
-vscode-languageserver-types@^3.2.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/vscode-languageserver-types/-/vscode-languageserver-types-3.3.0.tgz#8964dc7c2247536fbefd2d6836bf3febac80dd00"
+vscode-languageserver-protocol@^3.8.1:
+  version "3.8.1"
+  resolved "https://registry.npmjs.org/vscode-languageserver-protocol/-/vscode-languageserver-protocol-3.8.1.tgz#ee3ce042f7f49f559a6a552e3f505001fa565154"
+  dependencies:
+    vscode-jsonrpc "^3.6.2"
+    vscode-languageserver-types "^3.8.1"
+
+vscode-languageserver-types@^3.8.1:
+  version "3.8.2"
+  resolved "https://registry.npmjs.org/vscode-languageserver-types/-/vscode-languageserver-types-3.8.2.tgz#2550b8d852195328a735c56dbf4e72b8da31613f"
 
 vscode@^1.1.0:
   version "1.1.4"

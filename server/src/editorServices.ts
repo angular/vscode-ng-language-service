@@ -2056,7 +2056,7 @@ export class CompilerService {
       if (typeof result === 'function') {
           // The language service bundle exposes a function to allow hooking module dependencies
           // such as TypeScript.
-          result = result({typescript: ts});
+          result = (<any>result)({typescript: ts});
       }
       return result;
   }

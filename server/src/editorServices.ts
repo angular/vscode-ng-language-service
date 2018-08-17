@@ -2053,11 +2053,12 @@ export class CompilerService {
             }
         }
       }
-      if (typeof result === 'function') {
-          // The language service bundle exposes a function to allow hooking module dependencies
-          // such as TypeScript.
-          result = result({typescript: ts});
-      }
+    // NOTE: disabled this to prevent never type error.
+    //   if (typeof result === 'function') {
+    //       // The language service bundle exposes a function to allow hooking module dependencies
+    //       // such as TypeScript.
+    //       result = result({typescript: ts});
+    //   }
       return result;
   }
 

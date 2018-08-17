@@ -43,13 +43,13 @@
     "postinstall": "node ./node_modules/vscode/bin/install"
   },
   "devDependencies": {
-    "@types/node": "^6.0.38",
-    "typescript": "^2.3.4",
-    "vscode": "^1.1.0"
+    "@types/node": "^10.7.1",
+    "typescript": "^2.7.x",
+    "vscode": "^1.1.21"
   },
   "dependencies": {
-    "vscode-languageclient": "~3.2.2",
-    "vscode-jsonrpc": "~3.2.0"
+    "vscode-languageclient": "~5.0.0",
+    "vscode-jsonrpc": "~3.6.2"
   },
   "repository": {
     "type": "git",

@@ -10,7 +10,7 @@
     "vscode": "^1.4.0"
   },
   "categories": [
-    "Languages"
+    "Programming Languages"
   ],
   "activationEvents": [
     "onLanguage:ng-template",
@@ -48,7 +48,7 @@
     "vscode": "^1.1.21"
   },
   "dependencies": {
-    "vscode-languageclient": "~5.0.0",
+    "vscode-languageclient": "~4.4.2",
     "vscode-jsonrpc": "~3.6.2"
   },
   "repository": {

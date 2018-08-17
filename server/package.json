@@ -14,19 +14,20 @@
   },
   "dependencies": {
     "@angular/language-service": "6.1.x",
-    "typescript": "2.7.x",
-    "vscode-jsonrpc": "^3.6.2",
-    "vscode-languageserver": "^5.0.0"
-  },
-  "devDependencies": {
     "@angular/compiler": "6.1.x",
     "@angular/compiler-cli": "6.1.x",
     "@angular/core": "6.1.x",
-    "@types/jasmine": "^2.8.8",
-    "@types/node": "^10.7.1",
-    "jasmine": "^3.2.0",
+    "typescript": "2.7.x",
+    "tslib": "^1.9.3",
+    "vscode-jsonrpc": "^3.6.2",
+    "vscode-languageserver": "^4.4.2",
     "rxjs": "^6.2.2",
     "zone.js": "^0.8.26"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^2.8.8",
+    "@types/node": "^10.7.1",
+    "jasmine": "^3.2.0"
   },
   "repository": {
     "type": "git",

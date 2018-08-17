@@ -1147,7 +1147,7 @@ safe-buffer@^5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
 
-semver@^5.4.1, semver@^5.5.0:
+semver@^5.4.1:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.5.0.tgz#dc4bbc7a6ca9d916dee5d43516f0092b58f7b8ab"
 
@@ -1408,11 +1408,10 @@ vscode-jsonrpc@^3.6.2, vscode-jsonrpc@~3.6.2:
   version "3.6.2"
   resolved "https://registry.yarnpkg.com/vscode-jsonrpc/-/vscode-jsonrpc-3.6.2.tgz#3b5eef691159a15556ecc500e9a8a0dd143470c8"
 
-vscode-languageclient@~5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/vscode-languageclient/-/vscode-languageclient-5.0.0.tgz#c5859ad0c3d4dc02dfb901c55e5d7c8cafb2979e"
+vscode-languageclient@~4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/vscode-languageclient/-/vscode-languageclient-4.4.2.tgz#a341a7b4ac403e481f011ed4572854646e8968c4"
   dependencies:
-    semver "^5.5.0"
     vscode-languageserver-protocol "^3.10.3"
 
 vscode-languageserver-protocol@^3.10.3:

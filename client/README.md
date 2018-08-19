@@ -12,4 +12,4 @@ and external templates including:
 * Quick info
 * Go to definition
 
-This extension uses `@angular/language-service@5.2.2-250c8da` and `typescript@2.6.2`.
+This extension uses `@angular/language-service@6.1.x` and `typescript@2.7.x`.

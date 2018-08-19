@@ -1,7 +1,7 @@
 {
   "name": "ng-template",
   "description": "Angular Language Service.",
-  "version": "0.1.9",
+  "version": "0.1.10-beta",
   "author": "Angular",
   "license": "MIT",
   "engines": {

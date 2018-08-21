@@ -122,6 +122,7 @@ if (isGolden) {
   let index = 0;
   console.log('listening...')
   reader.listen(data => {
+    console.log(data)
     if (!isLogMessage(data)) {
       if (index >= expected.length) {
         console.log(`Received an unexpected additional message ${JSON.stringify(data)}`);

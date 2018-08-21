@@ -41,9 +41,10 @@ try {
     content = content.replace(RE_PWD, args['pwd']);
   }
   const json = JSON.parse(content);
-  
+
   if (Array.isArray(json)) {
     for (const message of json) {
+      console.error(`Sending request: ${JSON.stringify(message)}`);
       writer.write(message as any);
     }
   }
@@ -52,7 +53,7 @@ try {
   // propagate. vscode-jsonrpc detects the process exit and terminates
   // the service. This prevents the detection from causing the test
   // to fail.
-  setTimeout(() => {}, 5000);
+  setTimeout(() => {}, 6000);
 } catch(e) {
   console.error(`Error: ${e.message}`);
   process.exit(2);

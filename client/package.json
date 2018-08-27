@@ -2,7 +2,7 @@
   "name": "ng-template",
   "displayName": "Angular Language Service",
   "description": "Editor services for Angular templates",
-  "version": "0.1.10-beta",
+  "version": "0.1.10",
   "publisher": "Angular",
   "icon": "angular.png",
   "keywords": ["Angular", "multi-root ready"],

@@ -35,5 +35,5 @@ cd ../..
   rm -rf dist && mkdir dist
   cd client
 
-  vsce package --out ../dist/ngls.vsix
+  $(yarn bin)/vsce package --out ../dist/ngls.vsix
 )

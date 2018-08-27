@@ -5,7 +5,10 @@
   "version": "0.1.10-beta",
   "publisher": "Angular",
   "icon": "angular.png",
-  "keywords": ["Angular", "multi-root ready"],
+  "keywords": [
+    "Angular",
+    "multi-root ready"
+  ],
   "engines": {
     "vscode": "^1.4.0"
   },
@@ -45,6 +48,7 @@
   "devDependencies": {
     "@types/node": "^10.7.1",
     "typescript": "^2.7.x",
+    "vsce": "^1.46.0",
     "vscode": "^1.1.21"
   },
   "dependencies": {

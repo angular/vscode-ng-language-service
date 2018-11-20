@@ -7,10 +7,13 @@ echo 'travis_fold:start:TEST'
 # Server unit tests
 (
   cd server
-  npm run test
+  yarn run test
 )
 
 # Server smoke test
-tests/tests.sh
+(
+  cd tests/tools
+  yarn run test
+)
 
 echo 'travis_fold:end:TEST'

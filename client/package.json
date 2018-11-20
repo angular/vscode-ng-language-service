@@ -10,7 +10,7 @@
     "multi-root ready"
   ],
   "engines": {
-    "vscode": "^1.4.0"
+    "vscode": "^1.20.0"
   },
   "categories": [
     "Programming Languages"
@@ -46,14 +46,14 @@
     "postinstall": "node ./node_modules/vscode/bin/install"
   },
   "devDependencies": {
-    "@types/node": "^10.7.1",
-    "typescript": "^2.7.x",
-    "vsce": "^1.46.0",
-    "vscode": "^1.1.21"
+    "@types/node": "^10.12.10",
+    "typescript": "^3.1.6",
+    "vsce": "^1.53.2",
+    "vscode": "^1.1.22"
   },
   "dependencies": {
-    "vscode-languageclient": "~4.4.2",
-    "vscode-jsonrpc": "~3.6.2"
+    "vscode-jsonrpc": "~4.0.0",
+    "vscode-languageclient": "~5.1.1"
   },
   "repository": {
     "type": "git",

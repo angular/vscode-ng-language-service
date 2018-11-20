@@ -1,1 +1,1 @@
-These tests are run in CI in `scripts/ci/test.sh`
+These tests are run in CI in `scripts/test.sh`.

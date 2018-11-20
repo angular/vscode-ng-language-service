@@ -5,7 +5,7 @@ set -ex -o pipefail
 # Setup the environment
 cd $(dirname $0)
 source ./env.sh
-cd ../..
+cd ..
 
 # Clean up from last build
 (

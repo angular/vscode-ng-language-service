@@ -1,6 +1,6 @@
 # Angular Language Service
 
-![demo](client/R67RcGftRS.gif)
+![demo](R67RcGftRS.gif)
 
 ## Using
 
@@ -12,4 +12,4 @@ and external templates including:
 * Quick info
 * Go to definition
 
-This extension uses `@angular/language-service@6.1.x` and `typescript@2.7.x`.
+This extension uses `@angular/language-service@7.1.x` and `typescript@3.1.x`.

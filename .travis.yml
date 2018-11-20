@@ -2,7 +2,7 @@ language: node_js
 sudo: false
 
 node_js:
-  - '8.11'
+  - '10.13.0'
 
 env:
   matrix:
@@ -10,14 +10,14 @@ env:
    - CI_MODE=normal
 
 install:
-  - ./scripts/ci/install.sh
+  - ./scripts/install.sh
 
 script:
-  - ./scripts/ci/build.sh
-  - ./scripts/ci/test.sh
+  - ./scripts/build.sh
+  - ./scripts/test.sh
 
 after_script:
-  - ./scripts/ci/cleanup.sh
+  - ./scripts/cleanup.sh
 
 deploy:
   provider: releases

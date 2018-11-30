@@ -1,6 +1,6 @@
 # Angular Language Service
 
-![demo](R67RcGftRS.gif)
+![demo](https://github.com/angular/vscode-ng-language-service/raw/master/client/R67RcGftRS.gif)
 
 ## Using
 

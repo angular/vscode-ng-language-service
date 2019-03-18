@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-"@types/jasmine@^3.3.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.3.0.tgz#6b0e4b0192367d77e438ff660ccc4487c9602e7b"
-  integrity sha512-0VU8WsYEOYmoxVtUuafB66/+9G8gMdGAC3dhCE/CMpjXgNIz9fwC6g41kRlNxFgpQI/uX/aWNLArNg7KmeFYvw==
+"@types/jasmine@^3.3.9":
+  version "3.3.9"
+  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.3.9.tgz#ee886a9113db567e722a8a0c37f0e6283f2cefa3"
+  integrity sha512-vw3VyFPa9mlba6NZPBZC3q2Zrnkgy5xuCVI43/tTLX6umdYrYvcFtQUKi2zH3PjFZQ9XCxNM/NMrM9uk8TPOzg==
 
-"@types/node@^10.12.10":
-  version "10.12.10"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.10.tgz#4fa76e6598b7de3f0cb6ec3abacc4f59e5b3a2ce"
-  integrity sha512-8xZEYckCbUVgK8Eg7lf5Iy4COKJ5uXlnIOnePN0WUwSQggy9tolM+tDJf7wMOnT/JT/W9xDYIaYggt3mRV2O5w==
+"@types/node@^11.10.4":
+  version "11.10.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.10.4.tgz#3f5fc4f0f322805f009e00ab35a2ff3d6b778e42"
+  integrity sha512-wa09itaLE8L705aXd8F80jnFpxz3Y1/KRHfKsYL2bPc0XF+wEWu8sR9n5bmeu8Ba1N9z2GRNzm/YdHcghLkLKg==
 
 balanced-match@^1.0.0:
   version "1.0.0"
@@ -65,10 +65,10 @@ jasmine-core@~3.3.0:
   resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-3.3.0.tgz#dea1cdc634bc93c7e0d4ad27185df30fa971b10e"
   integrity sha512-3/xSmG/d35hf80BEN66Y6g9Ca5l/Isdeg/j6zvbTYlTzeKinzmaTM4p9am5kYqOmE05D7s1t8FGjzdSnbUbceA==
 
-jasmine@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/jasmine/-/jasmine-3.3.0.tgz#4f64e4aba2f9cbd30418957468c024c3b4c82551"
-  integrity sha512-haZzMvmoWSI2VCKfDgPqyEOPBQA7C1fgtIMgKNU4hVMcrVkWU5NPOWQqOTA6mVFyKcSUUrnkXu/ZEgY0bRnd6A==
+jasmine@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/jasmine/-/jasmine-3.3.1.tgz#d61bb1dd8888859bd11ea83074a78ee13d949905"
+  integrity sha512-/vU3/H7U56XsxIXHwgEuWpCgQ0bRi2iiZeUpx7Nqo8n1TpoDHfZhkPIc7CO8I4pnMzYsi3XaSZEiy8cnTfujng==
   dependencies:
     glob "^7.0.6"
     jasmine-core "~3.3.0"
@@ -92,10 +92,10 @@ path-is-absolute@^1.0.0:
   resolved "https://registry.yarnpkg.com/path-is-absolute/-/path-is-absolute-1.0.1.tgz#174b9268735534ffbc7ace6bf53a5a9e1b5c5f5f"
   integrity sha1-F0uSaHNVNP+8es5r9TpanhtcX18=
 
-typescript@^3.1.6:
-  version "3.1.6"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.1.6.tgz#b6543a83cfc8c2befb3f4c8fba6896f5b0c9be68"
-  integrity sha512-tDMYfVtvpb96msS1lDX9MEdHrW4yOuZ4Kdc4Him9oU796XldPYF/t2+uKoX0BBa0hXXwDlqYQbXY5Rzjzc5hBA==
+typescript@^3.3.3333:
+  version "3.3.3333"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.3333.tgz#171b2c5af66c59e9431199117a3bcadc66fdcfd6"
+  integrity sha512-JjSKsAfuHBE/fB2oZ8NxtRTk5iGcg6hkYXMnZ3Wc+b2RSqejEqTaem11mHASMnFilHrax3sLK0GDzcJrekZYLw==
 
 vscode-jsonrpc@~4.0.0:
   version "4.0.0"

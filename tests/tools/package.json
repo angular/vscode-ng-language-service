@@ -8,10 +8,10 @@
     "test": "tsc -p tsconfig.json && jasmine dist/index.js"
   },
   "devDependencies": {
-    "@types/jasmine": "^3.3.0",
-    "@types/node": "^10.12.10",
-    "jasmine": "^3.3.0",
-    "typescript": "^3.1.6",
+    "@types/jasmine": "^3.3.9",
+    "@types/node": "^11.10.4",
+    "jasmine": "^3.3.1",
+    "typescript": "^3.3.3333",
     "vscode-jsonrpc": "~4.0.0"
   }
 }

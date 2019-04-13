@@ -13,6 +13,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as ts from 'typescript';
 import * as ng from '@angular/language-service';
+import * as JSON5 from 'json5';
 
 export interface Logger {
   close(): void;
@@ -292,7 +293,7 @@ export function parseAndReEmitConfigJSONFile(content: string) {
     // also, the emitted result will have "(" in the beginning and ");" in the end. We need to strip these
     // as well
     const trimmedOutput = outputText.trim();
-    const configJsonObject = JSON.parse(trimmedOutput.substring(1, trimmedOutput.length - 2));
+    const configJsonObject = JSON5.parse(trimmedOutput.substring(1, trimmedOutput.length - 2));
     for (const diagnostic of diagnostics) {
         diagnostic.start = diagnostic.start - 1;
     }

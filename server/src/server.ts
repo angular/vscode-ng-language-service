@@ -4,7 +4,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
-/// <reference path="../node_modules/@types/node/index.d.ts" />
+
 
 // Force TypeScript to use the non-polling version of the file watchers.
 process.env["TSC_NONPOLLING_WATCHER"] = String(true);

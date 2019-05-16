@@ -1,7 +1,7 @@
 {
   "name": "ng-template",
   "description": "Angular Language Service.",
-  "version": "0.1.12",
+  "version": "0.800.0-rc.0",
   "author": "Angular",
   "license": "MIT",
   "engines": {
@@ -13,21 +13,18 @@
     "test": "tsc -p . && jasmine dist/**/*_spec.js"
   },
   "dependencies": {
-    "@angular/compiler": "7.2.8",
-    "@angular/compiler-cli": "7.2.8",
-    "@angular/core": "7.2.8",
-    "@angular/language-service": "7.2.8",
+    "@angular/core": "8.0.0-rc.4",
+    "@angular/compiler": "8.0.0-rc.4",
+    "@angular/compiler-cli": "8.0.0-rc.4",
+    "@angular/language-service": "8.0.0-rc.4",
     "rxjs": "^6.4.0",
-    "tslib": "^1.9.3",
-    "typescript": "~3.2.2",
-    "vscode-jsonrpc": "^4.0.0",
-    "vscode-languageserver": "^5.1.0",
-    "zone.js": "^0.8.26"
+    "typescript": "~3.4.2",
+    "vscode-languageserver": "^5.1.0"
   },
   "devDependencies": {
-    "@types/jasmine": "^3.3.9",
-    "@types/node": "10.9.4",
-    "jasmine": "^3.3.1"
+    "@types/jasmine": "^3.3.12",
+    "@types/node": "^10.9.4",
+    "jasmine": "^3.4.0"
   },
   "repository": {
     "type": "git",

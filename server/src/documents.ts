@@ -1,4 +1,3 @@
-import * as fs from 'fs';
 import * as ts from 'typescript';
 import * as url from 'url';
 
@@ -6,9 +5,7 @@ import {LanguageService} from '@angular/language-service';
 
 import {
   IConnection, TextDocumentSyncKind, RemoteConsole,
-	TextDocument, TextDocumentIdentifier, Diagnostic, DiagnosticSeverity,
-	InitializeParams, InitializeResult, TextDocumentPositionParams,
-	CompletionItem, CompletionItemKind, Position
+	TextDocumentIdentifier, Position
 } from 'vscode-languageserver';
 
 import {Logger as ProjectLogger, ProjectService, ProjectServiceEvent, ProjectServiceHost} from './editorServices';

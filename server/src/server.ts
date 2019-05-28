@@ -12,10 +12,7 @@ process.env["TSC_NONPOLLING_WATCHER"] = String(true);
 import * as ng from '@angular/language-service';
 
 import {
-  IPCMessageReader, IPCMessageWriter,
-  createConnection, IConnection, TextDocumentSyncKind,
-  TextDocument, Diagnostic, DiagnosticSeverity,
-  InitializeParams, InitializeResult, TextDocumentPositionParams,
+  createConnection, IConnection, InitializeResult, TextDocumentPositionParams,
   CompletionItem, CompletionItemKind, Definition, Location, TextDocumentIdentifier,
   Position, Range, TextEdit, Hover
 } from 'vscode-languageserver';
@@ -23,7 +20,7 @@ import {
 import {TextDocuments, TextDocumentEvent, fileNameToUri} from './documents';
 import {ErrorCollector} from './errors';
 
-import {Completion, Span} from '@angular/language-service';
+import {Completion} from '@angular/language-service';
 
 // Create a connection for the server. The connection uses Node's IPC as a transport
 let connection: IConnection = createConnection();

@@ -5,6 +5,8 @@ This plugin to VS Code provides Angular language services for Angular.
 This plugin will provide completions in template files and template strings and
 diagnostics for templates and Angular annotations.
 
+Download the extension from [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=Angular.ng-template).
+
 ## Limitations
 
 - The language service is a separate service from TypeScript and runs a duplicate

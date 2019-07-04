@@ -1996,7 +1996,7 @@ export class ProjectService {
 export class CompilerService {
   host: LSHost;
   languageService: ts.LanguageService;
-  ngHost: ng.TypeScriptServiceHost;
+  ngHost: ng.TypeScriptServiceHost & { setSite?: (ls:ng.LanguageService) => void };
   ngService: ng.LanguageService;
   classifier: ts.Classifier;
   settings: ts.CompilerOptions;
@@ -2023,7 +2023,9 @@ export class CompilerService {
       this.log(`TypeScript: ${ts.version}`);
       this.ngHost = new this.ng.TypeScriptServiceHost(this.host, this.languageService);
       this.ngService = logServiceTimes(logger, this.ng.createLanguageService(this.ngHost));
-      this.ngHost.setSite(this.ngService);
+      if(this.ngHost.setSite){
+          this.ngHost.setSite(this.ngService);
+      }
       this.classifier = ts.createClassifier();
   }
 

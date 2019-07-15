@@ -2,7 +2,7 @@
   "name": "ng-template",
   "displayName": "Angular Language Service",
   "description": "Editor services for Angular templates",
-  "version": "0.801.0",
+  "version": "0.801.1",
   "publisher": "Angular",
   "icon": "angular.png",
   "keywords": [
@@ -10,7 +10,7 @@
     "multi-root ready"
   ],
   "engines": {
-    "vscode": "^1.20.0"
+    "vscode": "^1.30.0"
   },
   "categories": [
     "Programming Languages"
@@ -48,7 +48,7 @@
   "devDependencies": {
     "@types/node": "^10.9.4",
     "typescript": "~3.4.2",
-    "vsce": "^1.62.0",
+    "vsce": "^1.65.0",
     "vscode": "^1.1.35"
   },
   "dependencies": {

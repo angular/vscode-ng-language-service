@@ -231,6 +231,11 @@ denodeify@^1.2.1:
   resolved "https://registry.yarnpkg.com/denodeify/-/denodeify-1.2.1.tgz#3a36287f5034e699e7577901052c2e6c94251631"
   integrity sha1-OjYof1A05pnnV3kBBSwubJQlFjE=
 
+didyoumean@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/didyoumean/-/didyoumean-1.2.1.tgz#e92edfdada6537d484d73c0172fd1eba0c4976ff"
+  integrity sha1-6S7f2tplN9SE1zwBcv0eugxJdv8=
+
 diff@3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/diff/-/diff-3.5.0.tgz#800c0dd1e0a8bfbc95835c202ad220fe317e5a12"
@@ -914,16 +919,17 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vsce@^1.62.0:
-  version "1.62.0"
-  resolved "https://registry.yarnpkg.com/vsce/-/vsce-1.62.0.tgz#dbcc241721cb05e1d0ff4bc6eb14f81808d006a8"
-  integrity sha512-KXtPBsdC0K27hmDksINyjoRl9BiuTB+ntmoJEDbbO3GIc+L3wfOclaSy8iYqddnpSA33YDkhKzKXhT0JGzrG/A==
+vsce@^1.65.0:
+  version "1.65.0"
+  resolved "https://registry.yarnpkg.com/vsce/-/vsce-1.65.0.tgz#8aa4ef92fdd7f57495e074e54caea404ed29ccb2"
+  integrity sha512-1bGyeoaxjhNVz9fVAqUzGWc1e5CxsxZFpVSnS/anRVyZju0y4DJCPi685WkBsRYU/lfp3AI1smpatuSfb2Lllg==
   dependencies:
     azure-devops-node-api "^7.2.0"
     chalk "^2.4.2"
     cheerio "^1.0.0-rc.1"
     commander "^2.8.1"
     denodeify "^1.2.1"
+    didyoumean "^1.2.1"
     glob "^7.0.6"
     lodash "^4.17.10"
     markdown-it "^8.3.1"

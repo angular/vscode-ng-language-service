@@ -277,28 +277,6 @@ function getBaseFileName(path: string) {
     return i < 0 ? path : path.substring(i + 1);
 }
 
-
-export function parseAndReEmitConfigJSONFile(content: string) {
-    const options: ts.TranspileOptions = {
-        fileName: "config.js",
-        compilerOptions: {
-            target: ts.ScriptTarget.Latest,
-            removeComments: true
-        },
-        reportDiagnostics: true
-    };
-    const { outputText, diagnostics } = ts.transpileModule("(" + content + ")", options);
-    // Becasue the content was wrapped in "()", the start position of diagnostics needs to be subtract by 1
-    // also, the emitted result will have "(" in the beginning and ");" in the end. We need to strip these
-    // as well
-    const trimmedOutput = outputText.trim();
-    const configJsonObject = JSON.parse(trimmedOutput.substring(1, trimmedOutput.length - 2));
-    for (const diagnostic of diagnostics) {
-        diagnostic.start = diagnostic.start - 1;
-    }
-    return { configJsonObject, diagnostics };
-}
-
 function reduceProperties<T, U>(map: ts.Map<T>, callback: (aggregate: U, value: T, key: string) => U, initial: U): U {
     let result = initial;
     for (const key in map) {
@@ -1841,9 +1819,11 @@ export class ProjectService {
       // file references will be relative to dirPath (or absolute)
       const dirPath = getDirectoryPath(configFilename);
       const contents = this.host.readFile(configFilename);
-      const { configJsonObject, diagnostics } = parseAndReEmitConfigJSONFile(contents);
-      errors = concatenate(errors, diagnostics);
-      const parsedCommandLine = ts.parseJsonConfigFileContent(configJsonObject, this.host, dirPath, /*existingOptions*/ {}, configFilename);
+      const {config, error} = ts.parseConfigFileTextToJson(configFilename, contents);
+      if (error) {
+        errors.push(error);
+      }
+      const parsedCommandLine = ts.parseJsonConfigFileContent(config, this.host, dirPath, /*existingOptions*/ {}, configFilename);
       errors = concatenate(errors, parsedCommandLine.errors);
 //      Debug.assert(!!parsedCommandLine.fileNames);
 

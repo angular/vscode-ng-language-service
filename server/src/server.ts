@@ -4,11 +4,6 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
-
-
-// Force TypeScript to use the non-polling version of the file watchers.
-process.env["TSC_NONPOLLING_WATCHER"] = String(true);
-
 import * as ng from '@angular/language-service';
 
 import {

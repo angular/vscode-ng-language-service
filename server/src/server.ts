@@ -5,12 +5,8 @@
  * ------------------------------------------------------------------------------------------ */
 
 import * as ng from '@angular/language-service';
-
-import {
-  createConnection, IConnection, InitializeResult, TextDocumentPositionParams,
-  CompletionItem, CompletionItemKind, Definition, Location, TextDocumentIdentifier,
-  Position, Range, TextEdit, Hover
-} from 'vscode-languageserver';
+import * as ts from 'typescript';
+import * as lsp from 'vscode-languageserver';
 
 import {TextDocuments, TextDocumentEvent, fileNameToUri} from './documents';
 import {ErrorCollector} from './errors';
@@ -18,11 +14,11 @@ import {ErrorCollector} from './errors';
 import {Completion} from '@angular/language-service';
 
 // Create a connection for the server. The connection uses Node's IPC as a transport
-let connection: IConnection = createConnection();
+const connection: lsp.IConnection = lsp.createConnection();
 
 // Create a simple text document manager. The text document manager
 // supports full document sync only
-let documents: TextDocuments = new TextDocuments(handleTextEvent);
+const documents: TextDocuments = new TextDocuments(handleTextEvent);
 
 
 // Setup the error collector that watches for document events and requests errors
@@ -45,7 +41,7 @@ documents.listen(connection);
 // After the server has started the client sends an initilize request. The server receives
 // in the passed params the rootPath of the workspace plus the client capabilites.
 let workspaceRoot: string;
-connection.onInitialize((params): InitializeResult => {
+connection.onInitialize((params): lsp.InitializeResult => {
   workspaceRoot = params.rootPath;
   return {
     capabilities: {
@@ -62,7 +58,8 @@ connection.onInitialize((params): InitializeResult => {
   }
 });
 
-function compiletionKindToCompletionItemKind(kind: string): CompletionItemKind {
+function compiletionKindToCompletionItemKind(kind: string): lsp.CompletionItemKind {
+  const {CompletionItemKind} = lsp;
   switch (kind) {
   case 'attribute': return CompletionItemKind.Property;
   case 'html attribute': return CompletionItemKind.Property;
@@ -84,13 +81,13 @@ const wordRe = /(\w|\(|\)|\[|\]|\*|\-|\_|\.)+/g;
 const special = /\(|\)|\[|\]|\*|\-|\_|\./;
 
 // Convert attribute names with non-\w chracters into a text edit.
-function insertionToEdit(range: Range, insertText: string): TextEdit {
+function insertionToEdit(range: lsp.Range, insertText: string): lsp.TextEdit {
   if (insertText.match(special) && range) {
-    return TextEdit.replace(range, insertText);
+    return lsp.TextEdit.replace(range, insertText);
   }
 }
 
-function getReplaceRange(document: TextDocumentIdentifier, offset: number): Range {
+function getReplaceRange(document: lsp.TextDocumentIdentifier, offset: number): lsp.Range {
   const line = documents.getDocumentLine(document, offset);
   if (line && line.text && line.start <= offset && line.start + line.text.length >= offset) {
     const lineOffset = offset - line.start - 1;
@@ -104,7 +101,7 @@ function getReplaceRange(document: TextDocumentIdentifier, offset: number): Rang
       }
     }));
     if (found != null) {
-      return Range.create(Position.create(line.line - 1, found), Position.create(line.line - 1, found + len));
+      return lsp.Range.create(line.line - 1, found, line.line - 1, found + len);
     }
   }
 }
@@ -119,7 +116,7 @@ function insertTextOf(completion: Completion): string {
 }
 
 // This handler provides the initial list of the completion items.
-connection.onCompletion((textDocumentPosition: TextDocumentPositionParams): CompletionItem[] => {
+connection.onCompletion((textDocumentPosition: lsp.TextDocumentPositionParams): lsp.CompletionItem[] => {
   const {fileName, service, offset, languageId} = documents.getServiceInfo(textDocumentPosition.textDocument,
     textDocumentPosition.position)
   if (fileName && service && offset != null) {
@@ -142,14 +139,14 @@ connection.onCompletion((textDocumentPosition: TextDocumentPositionParams): Comp
   }
 });
 
-function ngDefintionToDefintion(definition: ng.Definition): Definition {
+function ngDefinitionToDefinition(definition: ng.Definition): lsp.Definition {
   const locations = definition.map(d => {
-    const document = TextDocumentIdentifier.create(fileNameToUri(d.fileName));
+    const document = lsp.TextDocumentIdentifier.create(fileNameToUri(d.fileName));
     const positions = documents.offsetsToPositions(document, [d.span.start, d.span.end]);
     return {document, positions}
   }).filter(d => d.positions.length > 0).map(d => {
-    const range = Range.create(d.positions[0], d.positions[1]);
-    return Location.create(d.document.uri, range);
+    const range = lsp.Range.create(d.positions[0], d.positions[1]);
+    return lsp.Location.create(d.document.uri, range);
   });
   if (locations && locations.length) {
     return locations;
@@ -165,22 +162,51 @@ function logErrors<T>(f: () => T): T {
   }
 }
 
-connection.onDefinition((textDocumentPosition: TextDocumentPositionParams): Definition => logErrors(() => {
-  const {fileName, service, offset, languageId} = documents.getServiceInfo(textDocumentPosition.textDocument,
-    textDocumentPosition.position)
+connection.onDefinition((params: lsp.TextDocumentPositionParams) => logErrors(() => {
+  const {textDocument, position} = params;
+  const {fileName, service, offset} = documents.getServiceInfo(textDocument, position);
   if (fileName && service && offset != null) {
     let result = service.getDefinitionAt(fileName, offset);
-    if (result) {
-      return ngDefintionToDefintion(result);
+    if (!result) {
+      return;
     }
+    if (Array.isArray(result)) {
+      // Backwards compatibility with old ng.Location[] (ng.Definition)
+      return ngDefinitionToDefinition(result);
+    }
+    const {textSpan, definitions} = result as ts.DefinitionInfoAndBoundSpan;
+    if (!definitions || !definitions.length) {
+      return;
+    }
+    const [start, end] = documents.offsetsToPositions(textDocument, [
+      textSpan.start,
+      textSpan.start + textSpan.length,
+    ]);
+    const originSelectionRange = lsp.Range.create(
+      start.line - 1, start.character - 1, end.line - 1, end.character - 1);
+    return definitions.map((d) => {
+      const targetUri = lsp.TextDocumentIdentifier.create(fileNameToUri(d.fileName));
+      const [start, end] = documents.offsetsToPositions(targetUri, [
+        d.textSpan.start,
+        d.textSpan.start + d.textSpan.length,
+      ]);
+      const targetRange = lsp.Range.create(
+        start.line - 1, start.character - 1, end.line -1, end.character - 1);
+      return {
+        originSelectionRange,
+        targetUri : targetUri.uri,
+        targetRange,
+        targetSelectionRange: targetRange,
+      };
+    });
   }
 }));
 
-function ngHoverToHover(hover: ng.Hover, document: TextDocumentIdentifier): Hover {
+function ngHoverToHover(hover: ng.Hover, document: lsp.TextDocumentIdentifier): lsp.Hover {
   if (hover) {
     const positions = documents.offsetsToPositions(document, [hover.span.start, hover.span.end]);
     if (positions) {
-      const range = Range.create(positions[0], positions[1]);
+      const range = lsp.Range.create(positions[0], positions[1]);
       return {
         contents: {language: 'typescript', value: hover.text.map(t => t.text).join('')},
         range
@@ -189,16 +215,55 @@ function ngHoverToHover(hover: ng.Hover, document: TextDocumentIdentifier): Hove
   }
 }
 
-connection.onHover((textDocumentPosition: TextDocumentPositionParams): Hover => logErrors(() => {
-  const {fileName, service, offset, languageId} = documents.getServiceInfo(textDocumentPosition.textDocument,
-    textDocumentPosition.position)
+connection.onHover((params: lsp.TextDocumentPositionParams): lsp.Hover => logErrors(() => {
+  const {position, textDocument} = params;
+  const {fileName, service, offset} = documents.getServiceInfo(textDocument, position);
   if (fileName && service && offset != null) {
-    let result = service.getHoverAt(fileName, offset);
-    if (result) {
-      return ngHoverToHover(result, textDocumentPosition.textDocument);
+    const result = service.getHoverAt(fileName, offset);
+    if (!result) {
+      return;
     }
+    if (isNgHover(result)) {
+      // Backwards compatibility with old ng.Hover
+      return ngHoverToHover(result, params.textDocument);
+    }
+    const {kind, kindModifiers, textSpan, displayParts, documentation} = result as ts.QuickInfo;
+    let desc = kindModifiers ? kindModifiers + ' ' : '';
+    if (displayParts) {
+      // displayParts does not contain info about kindModifiers
+      // but displayParts does contain info about kind
+      desc += displayParts.map(dp => dp.text).join('');
+    }
+    else {
+      desc += kind;
+    }
+    const contents: lsp.MarkedString[] = [{
+      language: 'typescript',
+      value: desc,
+    }];
+    if (documentation) {
+      for (const d of documentation) {
+        contents.push(d.text);
+      }
+    }
+    const [start, end] = documents.offsetsToPositions(textDocument, [
+      textSpan.start,
+      textSpan.start + textSpan.length,
+    ]);
+    return {
+      contents,
+      range: lsp.Range.create(
+        start.line - 1, start.character - 1, end.line - 1, end.character - 1),
+    };
   }
 }));
+
+function isNgHover(result: ng.Hover): result is ng.Hover {
+  if (result.span && Array.isArray(result.text)) {
+    return true;
+  }
+  return false;
+}
 
 // Listen on the connection
 connection.listen();

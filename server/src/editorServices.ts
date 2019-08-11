@@ -802,6 +802,7 @@ export class Project {
   constructor(
       public projectService: ProjectService,
       private logger: Logger,
+      private documentRegistry: ts.DocumentRegistry,
       public projectOptions?: ProjectOptions,
       public languageServiceDisabled = false) {
       if (projectOptions && projectOptions.files) {
@@ -809,14 +810,14 @@ export class Project {
           projectOptions.compilerOptions['allowNonTsExtensions'] = true;
       }
       if (!languageServiceDisabled) {
-          this.compilerService = new CompilerService(this, logger, projectOptions && projectOptions.compilerOptions);
+          this.compilerService = new CompilerService(this, logger, this.documentRegistry, projectOptions && projectOptions.compilerOptions);
       }
   }
 
   enableLanguageService() {
       // if the language service was disabled, we should re-initiate the compiler service
       if (this.languageServiceDisabled) {
-          this.compilerService = new CompilerService(this, this.logger, this.projectOptions && this.projectOptions.compilerOptions);
+          this.compilerService = new CompilerService(this, this.logger, this.documentRegistry, this.projectOptions && this.projectOptions.compilerOptions);
       }
       this.languageServiceDisabled = false;
   }
@@ -1043,6 +1044,7 @@ export interface HostConfiguration {
 }
 
 export class ProjectService {
+  documentRegistry = ts.createDocumentRegistry();
   filenameToScriptInfo = createMap<ScriptInfo>();
   // open, non-configured root files
   openFileRoots: ScriptInfo[] = [];
@@ -1208,7 +1210,7 @@ export class ProjectService {
   }
 
   createInferredProject(root: ScriptInfo) {
-      const project = new Project(this, this.psLogger);
+      const project = new Project(this, this.psLogger, this.documentRegistry);
       project.addRoot(root);
 
       project.finishGraph();
@@ -1987,7 +1989,7 @@ export class ProjectService {
   }
 
   createProject(projectFilename: string, projectOptions?: ProjectOptions, languageServiceDisabled?: boolean) {
-      const project = new Project(this, this.psLogger, projectOptions, languageServiceDisabled);
+      const project = new Project(this, this.psLogger, this.documentRegistry, projectOptions, languageServiceDisabled);
       project.projectFilename = projectFilename;
       return project;
   }
@@ -2001,10 +2003,9 @@ export class CompilerService {
   ngService: ng.LanguageService;
   classifier: ts.Classifier;
   settings: ts.CompilerOptions;
-  documentRegistry = ts.createDocumentRegistry();
   ng: typeof ng;
 
-  constructor(public project: Project, private logger: Logger, opt?: ts.CompilerOptions) {
+  constructor(public project: Project, private logger: Logger, public documentRegistry: ts.DocumentRegistry, opt?: ts.CompilerOptions) {
       this.host = new LSHost(project.projectService.host, project);
       if (opt) {
           this.setCompilerOptions(opt);

@@ -7,3 +7,4 @@ integration/out
 dist/
 **/.idea/
 .DS_Store
+**/tsconfig.tsbuildinfo

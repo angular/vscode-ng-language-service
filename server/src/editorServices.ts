@@ -630,7 +630,7 @@ export class LSHost implements ts.LanguageServiceHost {
   }
 
   getCurrentDirectory(): string {
-      return "";
+      return this.host.getCurrentDirectory();
   }
 
   getScriptIsOpen(filename: string) {
@@ -1248,16 +1248,6 @@ export class ProjectService {
       this.printProjects();
   }
 
-  updateConfiguredProjectList() {
-      const configuredProjects: Project[] = [];
-      for (let i = 0, len = this.configuredProjects.length; i < len; i++) {
-          if (this.configuredProjects[i].openRefCount > 0) {
-              configuredProjects.push(this.configuredProjects[i]);
-          }
-      }
-      this.configuredProjects = configuredProjects;
-  }
-
   removeProject(project: Project) {
       this.log("remove project: " + project.getRootFiles().toString());
       if (project.isConfiguredProject()) {
@@ -1336,7 +1326,6 @@ export class ProjectService {
               this.openFileRoots.push(info);
           }
       }
-      this.updateConfiguredProjectList();
       this.report("opened", info.fileName, info.defaultProject);
   }
 
@@ -1379,7 +1368,7 @@ export class ProjectService {
 
           this.openFileRootsConfigured = openFileRootsConfigured;
       }
-      if (removedProject) {
+      if (removedProject && !removedProject.isConfiguredProject()) {
           this.removeProject(removedProject);
           const openFilesReferenced: ScriptInfo[] = [];
           const orphanFiles: ScriptInfo[] = [];
@@ -1736,9 +1725,6 @@ export class ProjectService {
                       return { configFileName, configFileErrors: configResult.errors };
                   }
               }
-          }
-          else {
-              this.updateConfiguredProject(project);
           }
           return { configFileName };
       }

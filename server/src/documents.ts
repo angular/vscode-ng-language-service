@@ -211,9 +211,7 @@ export class TextDocuments {
       this.changeNumber++;
       const file = uriToFileName(event.textDocument.uri);
       if (file) {
-        const savedContent = this.host.readFile(file);
-        this.projectService.closeClientFile(file);
-        this.projectService.openClientFile(file, savedContent);
+        this.projectService.reloadScript(file);
         this.changeNumber++;
       }
     }));

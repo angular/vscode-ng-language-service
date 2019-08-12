@@ -1641,6 +1641,15 @@ export class ProjectService {
       this.report("change", file, project);
   }
 
+  reloadScript(filename: string): void {
+    const info: ScriptInfo = this.filenameToScriptInfo[filename];
+    if (info) {
+        info.svc.reloadFromFile(filename);
+        this.changeSeq++;
+        this.report("change", info.fileName)
+    }
+  }
+
   forcedGetProjectForFile(fileName: string): Project {
     const file = normalizePath(fileName);
     const info = this.filenameToScriptInfo[file];

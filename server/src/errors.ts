@@ -33,9 +33,13 @@ export class ErrorCollector {
     if (service) {
       const diagnostics = service.getDiagnostics(fileName);
       if (!diagnostics || !diagnostics.length) {
+        this.connection.sendDiagnostics({
+          uri: document.uri,
+          diagnostics: [],
+        });
         return;
       }
-      if (diagnostics[0].message) {
+      if (diagnostics[0].span) {
         // Backwards compatibility with old ng.Diagnostic[]
         const offsets = ([] as number[]).concat(...diagnostics.map(d => [d.span.start, d.span.end]));
         const positions = this.documents.offsetsToPositions(document, offsets);

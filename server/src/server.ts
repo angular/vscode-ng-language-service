@@ -194,16 +194,14 @@ connection.onDefinition((params: lsp.TextDocumentPositionParams) => logErrors(()
       textSpan.start,
       textSpan.start + textSpan.length,
     ]);
-    const originSelectionRange = lsp.Range.create(
-      start.line - 1, start.character - 1, end.line - 1, end.character - 1);
+    const originSelectionRange = lsp.Range.create(start, end);
     return definitions.map((d) => {
       const targetUri = lsp.TextDocumentIdentifier.create(fileNameToUri(d.fileName));
       const [start, end] = documents.offsetsToPositions(targetUri, [
         d.textSpan.start,
         d.textSpan.start + d.textSpan.length,
       ]);
-      const targetRange = lsp.Range.create(
-        start.line - 1, start.character - 1, end.line -1, end.character - 1);
+      const targetRange = lsp.Range.create(start, end);
       return {
         originSelectionRange,
         targetUri : targetUri.uri,

@@ -116,17 +116,20 @@ function insertTextOf(completion: Completion): string {
 }
 
 // This handler provides the initial list of the completion items.
-connection.onCompletion((textDocumentPosition: lsp.TextDocumentPositionParams): lsp.CompletionItem[] => {
-  const {fileName, service, offset, languageId} = documents.getServiceInfo(textDocumentPosition.textDocument,
-    textDocumentPosition.position)
+connection.onCompletion((params: lsp.TextDocumentPositionParams): lsp.CompletionItem[] => {
+  const {position, textDocument} = params;
+  const {fileName, service, offset, languageId} = documents.getServiceInfo(textDocument, position);
   if (fileName && service && offset != null) {
     let result = service.getCompletionsAt(fileName, offset);
-    if (result && languageId == 'html') {
-      // The HTML elements are provided by the HTML service when the text type is 'html'.
-      result = result.filter(completion => completion.kind != 'element');
+    if (!result) {
+      return;
     }
-    if (result) {
-      const replaceRange = getReplaceRange(textDocumentPosition.textDocument, offset);
+    if (Array.isArray(result)) {  // old ng.Completion[]
+      if (languageId == 'html') {
+        // The HTML elements are provided by the HTML service when the text type is 'html'.
+        result = result.filter(completion => completion.kind != 'element');
+      }
+      const replaceRange = getReplaceRange(params.textDocument, offset);
       return result.map(completion => ({
         label: completion.name,
         kind: compiletionKindToCompletionItemKind(completion.kind),
@@ -136,6 +139,15 @@ connection.onCompletion((textDocumentPosition: lsp.TextDocumentPositionParams): 
         insertText: insertTextOf(completion)
       }));
     }
+    const entries = (result as ts.CompletionInfo).entries;
+    return entries.map(entry => {
+      const item = lsp.CompletionItem.create(entry.name);
+      item.kind = compiletionKindToCompletionItemKind(entry.kind);
+      item.detail = entry.kind;
+      item.sortText = entry.sortText;
+      item.textEdit = lsp.TextEdit.insert(position, entry.name);
+      return item;
+    });
   }
 });
 

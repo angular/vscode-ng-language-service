@@ -1528,11 +1528,23 @@ export class ProjectService {
 
       // Update Angular summaries
       let start = Date.now();
-      for (let project of this.configuredProjects) {
-          project.compilerService.ngHost.updateAnalyzedModules();
+      for (const project of this.configuredProjects) {
+          const ngHost = project.compilerService.ngHost;
+          if (ngHost.updateAnalyzedModules) {
+              // For backwards compatibility
+              ngHost.updateAnalyzedModules();
+          } else {
+              ngHost.getAnalyzedModules();
+          }
       }
-      for (let project of this.inferredProjects) {
-          project.compilerService.ngHost.updateAnalyzedModules();
+      for (const project of this.inferredProjects) {
+          const ngHost = project.compilerService.ngHost;
+          if (ngHost.updateAnalyzedModules) {
+              // For backwards compatibility
+              ngHost.updateAnalyzedModules();
+          } else {
+              ngHost.getAnalyzedModules();
+          }
       }
       this.log(`updated: ng - ${Date.now() - start}ms`, "Info");
 

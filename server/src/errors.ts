@@ -1,6 +1,7 @@
 import {DiagnosticSeverity, IConnection, Range, TextDocumentIdentifier} from 'vscode-languageserver';
 import {TextDocuments} from './documents';
 import {DiagnosticMessageChain} from '@angular/language-service/src/types';
+import * as ts from 'typescript';
 
 export class ErrorCollector {
   private timer: NodeJS.Timer | undefined;
@@ -31,7 +32,11 @@ export class ErrorCollector {
     const {fileName, service} = this.documents.getServiceInfo(document);
     if (service) {
       const diagnostics = service.getDiagnostics(fileName);
-      if (diagnostics) {
+      if (!diagnostics || !diagnostics.length) {
+        return;
+      }
+      if (diagnostics[0].message) {
+        // Backwards compatibility with old ng.Diagnostic[]
         const offsets = ([] as number[]).concat(...diagnostics.map(d => [d.span.start, d.span.end]));
         const positions = this.documents.offsetsToPositions(document, offsets);
         const ranges: Range[] = [];
@@ -43,6 +48,28 @@ export class ErrorCollector {
           diagnostics: diagnostics.map((diagnostic, i) => ({
             range: ranges[i],
             message: flattenChain(diagnostic.message, ''),
+            severity: DiagnosticSeverity.Error,
+            source: 'Angular'
+          }))
+        });
+      }
+      else {
+        const tsDiagnostics = diagnostics as unknown as ts.Diagnostic[];
+        const offsets = ([] as number[]).concat(...tsDiagnostics.map(d => {
+          const start = d.start || 0;
+          const end = start + (d.length || 0);
+          return [start, end];
+        }));
+        const positions = this.documents.offsetsToPositions(document, offsets);
+        const ranges: Range[] = [];
+        for (let i = 0; i < positions.length; i += 2) {
+          ranges.push(Range.create(positions[i], positions[i+1]));
+        }
+        this.connection.sendDiagnostics({
+          uri: document.uri,
+          diagnostics: tsDiagnostics.map((diagnostic, i) => ({
+            range: ranges[i],
+            message: ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n'),
             severity: DiagnosticSeverity.Error,
             source: 'Angular'
           }))

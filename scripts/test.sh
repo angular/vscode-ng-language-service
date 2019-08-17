@@ -2,18 +2,14 @@
 
 set -ex -o pipefail
 
-echo 'travis_fold:start:TEST'
+# Install test project dependencies
+(
+  cd integration/project
+  yarn
+)
 
 # Server unit tests
-(
-  cd server
-  yarn run test
-)
+yarn run test
 
 # Server smoke test
-(
-  cd tests/tools
-  yarn run test
-)
-
-echo 'travis_fold:end:TEST'
+yarn run test:integration

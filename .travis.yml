@@ -2,7 +2,7 @@ language: node_js
 sudo: false
 
 node_js:
-  - '10.13.0'
+  - '10.16.3'
 
 env:
   matrix:

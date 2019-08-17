@@ -8,9 +8,8 @@ class ResponseEmitter extends EventEmitter {}
 
 describe('Angular Language Service', () => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000; /* 10 seconds */
-  const {PWD} = process.env;
-  const PROJECT_PATH = resolve(PWD!, '../project');
-  const SERVER_PATH = resolve(PWD!, '../../client/server/server.js');
+  const PROJECT_PATH = resolve(__dirname, '../project');
+  const SERVER_PATH = resolve(__dirname, '../../server/out/src/server.js');
   const responseEmitter = new ResponseEmitter();
   let server: ChildProcess;
 
@@ -454,34 +453,6 @@ describe('Angular Language Service', () => {
           'sortText': 'sup',
           'insertText': 'sup'
         },
-        {
-          'label': 'padStart',
-          'kind': 2,
-          'detail': 'method',
-          'sortText': 'padStart',
-          'insertText': 'padStart'
-        },
-        {
-          'label': 'padEnd',
-          'kind': 2,
-          'detail': 'method',
-          'sortText': 'padEnd',
-          'insertText': 'padEnd'
-        },
-        {
-          'label': 'trimLeft',
-          'kind': 2,
-          'detail': 'method',
-          'sortText': 'trimLeft',
-          'insertText': 'trimLeft'
-        },
-        {
-          'label': 'trimRight',
-          'kind': 2,
-          'detail': 'method',
-          'sortText': 'trimRight',
-          'insertText': 'trimRight'
-        }
       ]
     });
   });

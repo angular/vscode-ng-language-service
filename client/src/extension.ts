@@ -5,7 +5,7 @@ import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind, Re
 
 export function activate(context: ExtensionContext) {
   // The server is implemented in node
-  const serverModule = context.asAbsolutePath(path.join('server', 'server.js'));
+  const serverModule = context.asAbsolutePath(path.join('server', 'out', 'src', 'server.js'));
   const options = {
     module: serverModule,
     transport: TransportKind.ipc,

@@ -1,17 +1,9 @@
 {
-	"compilerOptions": {
-		"target": "ES5",
-		"module": "commonjs",
-		"moduleResolution": "node",
-		"sourceMap": true,
-		"outDir": "dist",
-        "lib": [
-            "es2017",
-            "dom"
-        ],
-		"types": []
-	},
-	"exclude": [
-		"node_modules"
-	]
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "strict": false,
+    "composite": true,
+    "outDir": "out"
+  },
+  "include": ["src"]
 }

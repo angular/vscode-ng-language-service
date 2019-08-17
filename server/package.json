@@ -1,33 +1,20 @@
 {
-  "name": "ng-template",
-  "description": "Angular Language Service.",
-  "version": "0.802.2",
+  "name": "ng-template-server",
+  "description": "Angular Language Service server",
+  "private": true,
   "author": "Angular",
   "license": "MIT",
   "engines": {
-    "node": ">=10.9.0 <11.0.0"
-  },
-  "scripts": {
-    "compile": "node $(yarn bin)/installServerIntoExtension ../client ./package.json ./tsconfig-build.json && cp yarn.lock ../client/server && tsc -p tsconfig-build.json",
-    "watch": "node $(yarn bin)/installServerIntoExtension ../client ./package.json ./tsconfig.json && cp yarn.lock ../client/server && tsc --watch -p .",
-    "test": "tsc -p . && jasmine dist/**/*_spec.js"
+    "node": "*"
   },
   "dependencies": {
-    "@angular/compiler": "8.2.2",
-    "@angular/compiler-cli": "8.2.2",
-    "@angular/core": "8.2.2",
-    "@angular/language-service": "8.2.2",
-    "rxjs": "^6.4.0",
-    "typescript": "~3.5.3",
-    "vscode-languageserver": "^5.2.1"
+    "vscode-languageserver": "~5.2.1"
   },
   "devDependencies": {
-    "@types/jasmine": "^3.3.13",
-    "@types/node": "^10.9.4",
-    "jasmine": "^3.4.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/angular/vscode-ng-language-service"
+    "@angular/compiler": "^8.2.2",
+    "@angular/compiler-cli": "^8.2.2",
+    "@angular/core": "^8.2.2",
+    "@angular/language-service": "^8.2.2",
+    "rxjs": "^6.4.0"
   }
 }

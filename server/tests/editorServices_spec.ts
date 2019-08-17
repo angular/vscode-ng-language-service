@@ -1,7 +1,4 @@
-/// <reference path="../node_modules/@types/jasmine/index.d.ts" />
-
-import * as ts from 'typescript';
-import {LineIndexSnapshot, Logger, ProjectService, ProjectServiceHost, ScriptInfo} from '../src/editorServices';
+import {LineIndexSnapshot, ProjectService, ScriptInfo} from '../src/editorServices';
 
 import * as u from './test_utils';
 import {QUICKSTART} from './test_data';
@@ -54,7 +51,7 @@ describe('editor services', () => {
 
         it('should be able to get the expected line columns', () => {
           for (let i = 0; i < len; i++) {
-            const expected = lineColOf(i, lineStarts);
+            const expected = lineColOf(i, lineStarts)!;
             const result = projectService.positionsToLineOffsets(fileName, [i]);
             expect(result).toEqual([expected]);
           }
@@ -62,7 +59,7 @@ describe('editor services', () => {
 
         it('should be able to turn line columns in offsets', () => {
           for (let i = 0; i < len; i++) {
-            const expected = lineColOf(i, lineStarts);
+            const expected = lineColOf(i, lineStarts)!;
             const result = projectService.lineOffsetsToPositions(fileName, [expected]);
             expect(result).toEqual([i]);
           }
@@ -72,10 +69,10 @@ describe('editor services', () => {
 
     const fileName = '/app/app.component.ts';
     describe('with LF', () => {
-      tests(fileName, u.read(fileName, QUICKSTART));
+      tests(fileName, u.read(fileName, QUICKSTART)!);
     });
     describe('with LF/CR', () => {
-      tests(fileName, u.read(fileName, QUICKSTART).replace(/\n/g, '\r\n'));
+      tests(fileName, u.read(fileName, QUICKSTART)!.replace(/\n/g, '\r\n'));
     });
   });
 });

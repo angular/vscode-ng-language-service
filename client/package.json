@@ -1,61 +1,20 @@
 {
-  "name": "ng-template",
-  "displayName": "Angular Language Service",
-  "description": "Editor services for Angular templates",
-  "version": "0.802.2",
-  "publisher": "Angular",
-  "icon": "angular.png",
-  "keywords": [
-    "Angular",
-    "multi-root ready"
-  ],
+  "name": "ng-template-client",
+  "description": "Angular Language Service client",
+  "private": true,
+  "author": "Angular",
+  "license": "MIT",
   "engines": {
     "vscode": "^1.30.0"
-  },
-  "categories": [
-    "Programming Languages"
-  ],
-  "activationEvents": [
-    "onLanguage:ng-template",
-    "onLanguage:html",
-    "onLanguage:typescript"
-  ],
-  "main": "./out/extension",
-  "contributes": {
-    "languages": [
-      {
-        "id": "ng-template",
-        "aliases": [
-          "Angular Template",
-          "ng",
-          "ng-html"
-        ],
-        "extensions": [
-          ".ng",
-          ".ngml",
-          ".ng.html"
-        ],
-        "configuration": "./language-configuration.json"
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "tsc -p ./",
-    "compile": "tsc -watch -p ./",
-    "update-vscode": "node ./node_modules/vscode/bin/install",
-    "postinstall": "node ./node_modules/vscode/bin/install"
-  },
-  "devDependencies": {
-    "@types/node": "^10.9.4",
-    "typescript": "~3.5.3",
-    "vsce": "^1.66.0",
-    "vscode": "^1.1.36"
   },
   "dependencies": {
     "vscode-languageclient": "~5.2.1"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/angular/vscode-ng-language-service"
+  "devDependencies": {
+    "vscode": "^1.1.36"
+  },
+  "scripts": {
+    "update-vscode": "vscode-install",
+    "postinstall": "vscode-install"
   }
 }

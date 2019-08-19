@@ -1,4 +1,4 @@
-import {LineIndexSnapshot, ProjectService, ScriptInfo} from '../src/editorServices';
+import {LineIndexSnapshot, ProjectService, ScriptInfo} from '../editorServices';
 
 import * as u from './test_utils';
 import {QUICKSTART} from './test_data';

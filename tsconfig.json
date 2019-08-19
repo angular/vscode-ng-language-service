@@ -6,13 +6,7 @@
     "sourceMap": true,
     "strict": true
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules",
-    ".vscode-test"
-  ],
+  "files": [],
   "references": [
     { "path": "./client" },
     { "path": "./server" }

@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import {Logger, ProjectServiceHost} from '../src/editorServices';
+import {Logger, ProjectServiceHost} from '../editorServices';
 
 export type MockData = string | MockDirectory;
 

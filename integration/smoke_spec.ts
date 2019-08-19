@@ -9,7 +9,7 @@ class ResponseEmitter extends EventEmitter {}
 describe('Angular Language Service', () => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000; /* 10 seconds */
   const PROJECT_PATH = resolve(__dirname, '../project');
-  const SERVER_PATH = resolve(__dirname, '../../server/out/src/server.js');
+  const SERVER_PATH = resolve(__dirname, '../../server/out/server.js');
   const responseEmitter = new ResponseEmitter();
   let server: ChildProcess;
 

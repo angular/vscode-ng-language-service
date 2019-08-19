@@ -4,24 +4,34 @@ import { workspace, ExtensionContext } from 'vscode';
 import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind, RevealOutputChannelOn } from 'vscode-languageclient';
 
 export function activate(context: ExtensionContext) {
-  // The server is implemented in node
-  const serverModule = context.asAbsolutePath(path.join('server', 'out', 'src', 'server.js'));
-  const options = {
-    module: serverModule,
-    transport: TransportKind.ipc,
-    options: {
-      env: {
-        // Force TypeScript to use the non-polling version of the file watchers.
-        TSC_NONPOLLING_WATCHER: true,
-      },
-    },
-  };
 
   // If the extension is launched in debug mode then the debug server options are used
   // Otherwise the run options are used
   const serverOptions: ServerOptions = {
-    run : options,
-    debug: options,
+    run : {
+      module: context.asAbsolutePath(path.join('server', 'server.js')),
+      transport: TransportKind.ipc,
+      options: {
+        env: {
+          // Force TypeScript to use the non-polling version of the file watchers.
+          TSC_NONPOLLING_WATCHER: true,
+        },
+      },
+    },
+    debug: {
+      module: context.asAbsolutePath(path.join('server', 'out', 'server.js')),
+      transport: TransportKind.ipc,
+      options: {
+        env: {
+          // Force TypeScript to use the non-polling version of the file watchers.
+          TSC_NONPOLLING_WATCHER: true,
+          NG_DEBUG: true,
+        },
+        execArgv: [
+          "--inspect=6009",	// If this is changed, update .vscode/launch.json as well
+        ]
+      },
+    },
   }
 
   // Options to control the language client

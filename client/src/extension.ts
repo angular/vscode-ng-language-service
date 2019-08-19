@@ -52,7 +52,7 @@ export function activate(context: ExtensionContext) {
   }
 
   // Create the language client and start the client.
-  const disposable = new LanguageClient('Angular Language Service', serverOptions, clientOptions, true).start();
+  const disposable = new LanguageClient('Angular Language Service', serverOptions, clientOptions).start();
 
   // Push the disposable to the context's subscriptions so that the
   // client can be deactivated on extension deactivation

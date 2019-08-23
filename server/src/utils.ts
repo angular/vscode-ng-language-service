@@ -1,4 +1,5 @@
 import * as lsp from 'vscode-languageserver';
+import * as ts from 'typescript/lib/tsserverlibrary'; // used as types only
 import {URI} from 'vscode-uri';
 
 enum Scheme {

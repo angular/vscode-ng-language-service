@@ -23,11 +23,14 @@
   "main": "./client/out/extension",
   "scripts": {
     "compile": "tsc -b",
+    "compile:test": "tsc -b server/src/tests",
+    "compile:integration": "tsc -b integration",
     "watch": "tsc -b -w",
-    "postinstall": "cd client && yarn && cd ../server && yarn && cd ..",
+    "postinstall": "vscode-install && cd client && yarn && cd ../server && yarn && cd ..",
     "package": "rm -rf dist && node scripts/package.js",
-    "test": "tsc -b server/src/tests && jasmine server/out/tests/*_spec.js",
-    "test:integration": "tsc -b integration && jasmine integration/out/*_spec.js"
+    "test": "yarn compile:test && jasmine server/out/tests/*_spec.js",
+    "test:lsp": "yarn compile:integration && jasmine integration/out/lsp/*_spec.js",
+    "test:e2e": "yarn compile:integration && ./scripts/e2e.sh"
   },
   "dependencies": {
     "typescript": "~3.5.3"
@@ -37,6 +40,7 @@
     "@types/node": "^10.9.4",
     "jasmine": "^3.4.0",
     "vsce": "^1.66.0",
+    "vscode": "^1.1.36",
     "vscode-jsonrpc": "^4.0.0"
   },
   "repository": {

@@ -6,5 +6,8 @@
   "references": [
     { "path": "../server/tsconfig.json" }
   ],
-  "include": ["*.ts"]
+  "include": [
+    "e2e",
+    "lsp"
+  ]
 }

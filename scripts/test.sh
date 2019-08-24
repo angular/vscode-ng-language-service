@@ -11,5 +11,9 @@ set -ex -o pipefail
 # Server unit tests
 yarn run test
 
-# Server smoke test
-yarn run test:integration
+# Smoke test for LSP
+yarn run test:lsp
+
+# E2E test that brings up full vscode
+# TODO: Disabled for now because it cannot be run on Travis
+# yarn run test:e2e

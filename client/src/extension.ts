@@ -71,7 +71,9 @@ export function activate(context: ExtensionContext) {
   }
 
   // Create the language client and start the client.
-  const client = new LanguageClient('Angular Language Service', serverOptions, clientOptions);
+  const forceDebug =  !!process.env['NG_DEBUG'];
+  const client = new LanguageClient(
+    'Angular Language Service', serverOptions, clientOptions, forceDebug);
   const disposable = client.start();
 
   // Push the disposable to the context's subscriptions so that the

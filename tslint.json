@@ -1,0 +1,30 @@
+{
+  "rulesDirectory": [
+    "node_modules/tslint-eslint-rules/dist/rules"
+  ],
+  "rules": {
+    "file-header": [
+      true,
+      "Copyright Google Inc\\."
+    ],
+    "no-console": [
+      true,
+      "log"
+    ],
+    "no-duplicate-imports": true,
+    "no-duplicate-variable": true,
+    "no-var-keyword": true,
+    "semicolon": [
+      true
+    ],
+    "variable-name": [
+      true,
+      "ban-keywords"
+    ],
+    "no-inner-declarations": [
+      true,
+      "function"
+    ],
+    "no-debugger": true
+  }
+}

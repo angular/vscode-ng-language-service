@@ -39,6 +39,8 @@
     "@types/jasmine": "^3.4.0",
     "@types/node": "^10.9.4",
     "jasmine": "^3.4.0",
+    "tslint": "^5.19.0",
+    "tslint-eslint-rules": "^5.4.0",
     "vsce": "^1.66.0",
     "vscode": "^1.1.36",
     "vscode-jsonrpc": "^4.0.0"

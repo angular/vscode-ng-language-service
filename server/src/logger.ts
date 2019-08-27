@@ -79,9 +79,13 @@ export class Logger implements ts.server.Logger {
       private readonly logFilename: string,
       private readonly traceToConsole: boolean,
       private readonly level: ts.server.LogLevel) {
-    if (this.logFilename) {
+    if (logFilename) {
       try {
-        this.fd = fs.openSync(this.logFilename, 'w');
+        const dir = path.dirname(logFilename);
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir);
+        }
+        this.fd = fs.openSync(logFilename, 'w');
       } catch {
         // swallow the error and keep logging disabled if file cannot be opened
       }

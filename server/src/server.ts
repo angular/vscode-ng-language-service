@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
 import * as lsp from 'vscode-languageserver';
 import * as ts from 'typescript/lib/tsserverlibrary'; // used as value
 import {createLogger} from './logger';
@@ -57,7 +65,7 @@ connection.onInitialize((params: lsp.InitializeParams): lsp.InitializeResult => 
       definitionProvider: true,
       hoverProvider: true,
     },
-  }
+  };
 });
 
 connection.onDidOpenTextDocument((params: lsp.DidOpenTextDocumentParams) => {

@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
 import * as path from 'path';
 
 import { workspace, ExtensionContext } from 'vscode';
@@ -47,7 +55,7 @@ export function activate(context: ExtensionContext) {
         ]
       },
     },
-  }
+  };
 
   // Options to control the language client
   const clientOptions: LanguageClientOptions = {
@@ -68,7 +76,7 @@ export function activate(context: ExtensionContext) {
 
     // Don't let our output console pop open
     revealOutputChannelOn: RevealOutputChannelOn.Never
-  }
+  };
 
   // Create the language client and start the client.
   const forceDebug =  !!process.env['NG_DEBUG'];

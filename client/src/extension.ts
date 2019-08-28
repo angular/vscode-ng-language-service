@@ -8,8 +8,9 @@
 
 import * as path from 'path';
 
-import { workspace, ExtensionContext } from 'vscode';
+import { workspace, ExtensionContext, window, ProgressLocation } from 'vscode';
 import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind, RevealOutputChannelOn } from 'vscode-languageclient';
+import { projectLoadingNotification } from './protocol';
 
 export function activate(context: ExtensionContext) {
 
@@ -87,4 +88,27 @@ export function activate(context: ExtensionContext) {
   // Push the disposable to the context's subscriptions so that the
   // client can be deactivated on extension deactivation
   context.subscriptions.push(disposable);
+
+  client.onReady().then(()=>{
+
+    const projectLoadingTasks = new Map<string, { resolve: () => void }>();
+
+    client.onNotification(projectLoadingNotification.start, (projectName: string) => {
+      window.withProgress({
+        location: ProgressLocation.Window,
+        title: 'Initializing Angular language features',
+      }, () => new Promise((resolve) => {
+        projectLoadingTasks.set(projectName, { resolve });
+      }));
+    });
+  
+    client.onNotification(projectLoadingNotification.finish, (projectName: string) => {
+        const task = projectLoadingTasks.get(projectName);
+        if(task){
+          task.resolve();
+          projectLoadingTasks.delete(projectName);
+        }
+    });
+
+  });
 }

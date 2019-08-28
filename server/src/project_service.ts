@@ -10,6 +10,7 @@ import * as ts from 'typescript/lib/tsserverlibrary'; // used as value
 import * as lsp from 'vscode-languageserver';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
 import {filePathToUri} from './utils';
+import { projectLoadingNotification } from './protocol';
 
 // NOTE:
 // There are three types of `project`:
@@ -124,12 +125,24 @@ export class ProjectService {
    * @param event
    */
   private handleProjectServiceEvent(event: ts.server.ProjectServiceEvent) {
-    if (event.eventName !== ts.server.ProjectsUpdatedInBackgroundEvent) {
-      return;
+    switch (event.eventName) {
+      case ts.server.ProjectLoadingStartEvent:
+        this.connection.sendNotification(
+          projectLoadingNotification.start, event.data.project.projectName);
+        break;
+      case ts.server.ProjectLoadingFinishEvent:
+        this.connection.sendNotification(
+          projectLoadingNotification.finish, event.data.project.projectName);
+        break;
+      case ts.server.ProjectsUpdatedInBackgroundEvent:
+        // ProjectsUpdatedInBackgroundEvent is sent whenever diagnostics are
+        // requested via project.refreshDiagnostics()
+        this.refreshDiagnostics(event.data.openFiles);
+        break;
     }
-    // ProjectsUpdatedInBackgroundEvent is sent whenever diagnostics are
-    // requested via project.refreshDiagnostics()
-    const {openFiles} = event.data;
+  }
+  
+  private refreshDiagnostics(openFiles: string[]) {
     for (const fileName of openFiles) {
       const scriptInfo = this.tsProjSvc.getScriptInfo(fileName);
       if (!scriptInfo) {

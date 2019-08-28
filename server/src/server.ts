@@ -233,13 +233,14 @@ connection.onCompletion((params: lsp.CompletionParams) => {
   if (!scriptInfo) {
     return;
   }
+  const {fileName} = scriptInfo;
   const project = projSvc.getDefaultProjectForScriptInfo(scriptInfo);
   if (!project) {
     return;
   }
   const offset = lspPositionToTsPosition(scriptInfo, position);
   const langSvc = project.getLanguageService();
-  const completions = langSvc.getCompletionsAtPosition(filePath, offset, {
+  const completions = langSvc.getCompletionsAtPosition(fileName, offset, {
     // options
   });
   if (!completions || !completions.entries.length) {

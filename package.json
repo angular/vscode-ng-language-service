@@ -25,6 +25,7 @@
     "compile": "tsc -b",
     "compile:test": "tsc -b server/src/tests",
     "compile:integration": "tsc -b integration",
+    "format": "scripts/format.sh",
     "watch": "tsc -b -w",
     "postinstall": "vscode-install && cd client && yarn && cd ../server && yarn && cd ..",
     "package": "rm -rf dist && node scripts/package.js",
@@ -38,6 +39,7 @@
   "devDependencies": {
     "@types/jasmine": "^3.4.0",
     "@types/node": "^10.9.4",
+    "clang-format": "^1.2.4",
     "jasmine": "^3.4.0",
     "tslint": "^5.19.0",
     "tslint-eslint-rules": "^5.4.0",

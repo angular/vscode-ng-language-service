@@ -2,6 +2,8 @@
 
 set -ex -o pipefail
 
-yarn clang-format -i client/**/*.ts
-yarn clang-format -i integration/**/*.ts
-yarn clang-format -i server/**/*.ts
+find . -name "*.ts" \
+  -not -path "*/project/*" \
+  -not -path "*/node_modules/*" \
+  -not -path "*/out/*" \
+  -exec yarn clang-format -i {} +

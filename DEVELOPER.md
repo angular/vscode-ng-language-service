@@ -11,9 +11,9 @@ files on each save.
 1. Install the
 [`Clang-Format` extension](https://marketplace.visualstudio.com/items?itemName=xaver.clang-format)
 for VS Code.
-
-VS Code will automatically pick up relevant settings from this repository's
-[`.vscode/settings.json`](./.vscode/settings.json).
+2. Copy [`.vscode/recommended-settings.json`](./.vscode/recommended-settings.json) to a new
+   `.vscode/settings.json` file. VS Code will automatically pick up relevant formatting options for
+   the workspace from this file.
 
 ### WebStorm / IntelliJ
 

@@ -9,5 +9,6 @@ integration/out
 dist/
 **/.idea/
 **/tsconfig.tsbuildinfo
+.vscode/settings.json
 .vimrc
 .nvimrc

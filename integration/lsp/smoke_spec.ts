@@ -93,10 +93,8 @@ describe('Angular Language Service', () => {
       'result': {
         'capabilities': {
           'textDocumentSync': 2,
-          'completionProvider': {
-            'resolveProvider': false,
-            'triggerCharacters': ['<', '.', '*', '[', '(']
-          },
+          'completionProvider':
+              {'resolveProvider': false, 'triggerCharacters': ['<', '.', '*', '[', '(']},
           'definitionProvider': true,
           'hoverProvider': true
         }
@@ -123,10 +121,8 @@ describe('Angular Language Service', () => {
       'result': {
         'capabilities': {
           'textDocumentSync': 2,
-          'completionProvider': {
-            'resolveProvider': false,
-            'triggerCharacters': ['<', '.', '*', '[', '(']
-          },
+          'completionProvider':
+              {'resolveProvider': false, 'triggerCharacters': ['<', '.', '*', '[', '(']},
           'definitionProvider': true,
           'hoverProvider': true
         }
@@ -150,15 +146,9 @@ describe('Angular Language Service', () => {
       'jsonrpc': '2.0',
       'method': 'textDocument/didChange',
       'params': {
-        'textDocument': {
-          'uri': `file://${PROJECT_PATH}/app/app.component.ts`,
-          'version': 2
-        },
+        'textDocument': {'uri': `file://${PROJECT_PATH}/app/app.component.ts`, 'version': 2},
         'contentChanges': [{
-          'range': {
-            'start': {'line': 4, 'character': 29},
-            'end': {'line': 4, 'character': 29}
-          },
+          'range': {'start': {'line': 4, 'character': 29}, 'end': {'line': 4, 'character': 29}},
           'rangeLength': 0,
           'text': '.'
         }]
@@ -176,767 +166,407 @@ describe('Angular Language Service', () => {
     });
     // TODO: Match the response with a golden file instead of hardcoding result.
     expect(response).toEqual({
-      "jsonrpc": "2.0",
-      "id": 1,
-      "result": [
+      'jsonrpc': '2.0',
+      'id': 1,
+      'result': [
         {
-          "label": "toString",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "toString",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "toString"
+          'label': 'toString',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'toString',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'toString'
           }
         },
         {
-          "label": "charAt",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "charAt",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "charAt"
+          'label': 'charAt',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'charAt',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'charAt'
           }
         },
         {
-          "label": "charCodeAt",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "charCodeAt",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "charCodeAt"
+          'label': 'charCodeAt',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'charCodeAt',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'charCodeAt'
           }
         },
         {
-          "label": "concat",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "concat",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "concat"
+          'label': 'concat',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'concat',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'concat'
           }
         },
         {
-          "label": "indexOf",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "indexOf",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "indexOf"
+          'label': 'indexOf',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'indexOf',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'indexOf'
           }
         },
         {
-          "label": "lastIndexOf",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "lastIndexOf",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "lastIndexOf"
+          'label': 'lastIndexOf',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'lastIndexOf',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'lastIndexOf'
           }
         },
         {
-          "label": "localeCompare",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "localeCompare",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "localeCompare"
+          'label': 'localeCompare',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'localeCompare',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'localeCompare'
           }
         },
         {
-          "label": "match",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "match",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "match"
+          'label': 'match',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'match',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'match'
           }
         },
         {
-          "label": "replace",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "replace",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "replace"
+          'label': 'replace',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'replace',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'replace'
           }
         },
         {
-          "label": "search",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "search",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "search"
+          'label': 'search',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'search',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'search'
           }
         },
         {
-          "label": "slice",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "slice",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "slice"
+          'label': 'slice',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'slice',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'slice'
           }
         },
         {
-          "label": "split",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "split",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "split"
+          'label': 'split',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'split',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'split'
           }
         },
         {
-          "label": "substring",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "substring",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "substring"
+          'label': 'substring',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'substring',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'substring'
           }
         },
         {
-          "label": "toLowerCase",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "toLowerCase",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "toLowerCase"
+          'label': 'toLowerCase',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'toLowerCase',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'toLowerCase'
           }
         },
         {
-          "label": "toLocaleLowerCase",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "toLocaleLowerCase",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "toLocaleLowerCase"
+          'label': 'toLocaleLowerCase',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'toLocaleLowerCase',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'toLocaleLowerCase'
           }
         },
         {
-          "label": "toUpperCase",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "toUpperCase",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "toUpperCase"
+          'label': 'toUpperCase',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'toUpperCase',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'toUpperCase'
           }
         },
         {
-          "label": "toLocaleUpperCase",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "toLocaleUpperCase",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "toLocaleUpperCase"
+          'label': 'toLocaleUpperCase',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'toLocaleUpperCase',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'toLocaleUpperCase'
           }
         },
         {
-          "label": "trim",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "trim",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "trim"
+          'label': 'trim',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'trim',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'trim'
           }
         },
         {
-          "label": "length",
-          "kind": 10,
-          "detail": "property",
-          "sortText": "length",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "length"
+          'label': 'length',
+          'kind': 10,
+          'detail': 'property',
+          'sortText': 'length',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'length'
           }
         },
         {
-          "label": "substr",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "substr",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "substr"
+          'label': 'substr',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'substr',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'substr'
           }
         },
         {
-          "label": "valueOf",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "valueOf",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "valueOf"
+          'label': 'valueOf',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'valueOf',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'valueOf'
           }
         },
         {
-          "label": "codePointAt",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "codePointAt",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "codePointAt"
+          'label': 'codePointAt',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'codePointAt',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'codePointAt'
           }
         },
         {
-          "label": "includes",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "includes",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "includes"
+          'label': 'includes',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'includes',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'includes'
           }
         },
         {
-          "label": "endsWith",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "endsWith",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "endsWith"
+          'label': 'endsWith',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'endsWith',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'endsWith'
           }
         },
         {
-          "label": "normalize",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "normalize",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "normalize"
+          'label': 'normalize',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'normalize',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'normalize'
           }
         },
         {
-          "label": "repeat",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "repeat",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "repeat"
+          'label': 'repeat',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'repeat',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'repeat'
           }
         },
         {
-          "label": "startsWith",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "startsWith",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "startsWith"
+          'label': 'startsWith',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'startsWith',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'startsWith'
           }
         },
         {
-          "label": "anchor",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "anchor",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "anchor"
+          'label': 'anchor',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'anchor',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'anchor'
           }
         },
         {
-          "label": "big",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "big",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "big"
+          'label': 'big',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'big',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'big'
           }
         },
         {
-          "label": "blink",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "blink",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "blink"
+          'label': 'blink',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'blink',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'blink'
           }
         },
         {
-          "label": "bold",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "bold",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "bold"
+          'label': 'bold',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'bold',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'bold'
           }
         },
         {
-          "label": "fixed",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "fixed",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "fixed"
+          'label': 'fixed',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'fixed',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'fixed'
           }
         },
         {
-          "label": "fontcolor",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "fontcolor",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "fontcolor"
+          'label': 'fontcolor',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'fontcolor',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'fontcolor'
           }
         },
         {
-          "label": "fontsize",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "fontsize",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "fontsize"
+          'label': 'fontsize',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'fontsize',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'fontsize'
           }
         },
         {
-          "label": "italics",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "italics",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "italics"
+          'label': 'italics',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'italics',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'italics'
           }
         },
         {
-          "label": "link",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "link",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "link"
+          'label': 'link',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'link',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'link'
           }
         },
         {
-          "label": "small",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "small",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "small"
+          'label': 'small',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'small',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'small'
           }
         },
         {
-          "label": "strike",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "strike",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "strike"
+          'label': 'strike',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'strike',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'strike'
           }
         },
         {
-          "label": "sub",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "sub",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "sub"
+          'label': 'sub',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'sub',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'sub'
           }
         },
         {
-          "label": "sup",
-          "kind": 2,
-          "detail": "method",
-          "sortText": "sup",
-          "textEdit": {
-            "range": {
-              "start": {
-                "line": 4,
-                "character": 30
-              },
-              "end": {
-                "line": 4,
-                "character": 30
-              }
-            },
-            "newText": "sup"
+          'label': 'sup',
+          'kind': 2,
+          'detail': 'method',
+          'sortText': 'sup',
+          'textEdit': {
+            'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
+            'newText': 'sup'
           }
         }
       ]

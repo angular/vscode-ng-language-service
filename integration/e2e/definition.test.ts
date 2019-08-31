@@ -1,6 +1,7 @@
-import * as vscode from 'vscode';
-import * as path from 'path';
 import * as assert from 'assert';
+import * as path from 'path';
+import * as vscode from 'vscode';
+
 import {activate} from './helper';
 
 const DEFINITION_COMMAND = 'vscode.executeDefinitionProvider';
@@ -20,10 +21,7 @@ describe('Angular LS', () => {
     // For a complete list of standard commands, see
     // https://code.visualstudio.com/api/references/commands
     const definitions = await vscode.commands.executeCommand(
-      DEFINITION_COMMAND,
-      docUri,
-      position
-    ) as vscode.Location[];
+                            DEFINITION_COMMAND, docUri, position) as vscode.Location[];
     assert.equal(definitions.length, 1);
     const def = definitions[0];
     assert.equal(def.uri.fsPath, docPath);  // in the same document

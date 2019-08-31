@@ -6,9 +6,9 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import { NotificationType } from 'vscode-languageserver';
+import {NotificationType} from 'vscode-languageserver';
 
 export const projectLoadingNotification = {
-  start: new NotificationType<string,string>('angular-language-service/projectLoadingStart'),
-  finish: new NotificationType<string,string>('angular-language-service/projectLoadingFinish')
+  start: new NotificationType<string, string>('angular-language-service/projectLoadingStart'),
+  finish: new NotificationType<string, string>('angular-language-service/projectLoadingFinish')
 };

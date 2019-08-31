@@ -6,11 +6,12 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import * as ts from 'typescript/lib/tsserverlibrary'; // used as value
+import * as ts from 'typescript/lib/tsserverlibrary';  // used as value
 import * as lsp from 'vscode-languageserver';
+
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
+import {projectLoadingNotification} from './protocol';
 import {filePathToUri} from './utils';
-import { projectLoadingNotification } from './protocol';
 
 // NOTE:
 // There are three types of `project`:
@@ -44,8 +45,7 @@ export class ProjectService {
   ) {
     const pluginProbeLocation =
         options.get('pluginProbeLocation') || serverHost.getCurrentDirectory();
-    connection.console.info(
-        `Angular LS probe location: ${pluginProbeLocation}`);
+    connection.console.info(`Angular LS probe location: ${pluginProbeLocation}`);
     // TODO: Should load TypeScript from workspace.
     this.tsProjSvc = new ts.server.ProjectService({
       host: serverHost,
@@ -88,8 +88,7 @@ export class ProjectService {
    * an inferred project.
    * @param scriptInfo
    */
-  getDefaultProjectForScriptInfo(scriptInfo: ts.server.ScriptInfo): ts.server.Project
-      |undefined {
+  getDefaultProjectForScriptInfo(scriptInfo: ts.server.ScriptInfo): ts.server.Project|undefined {
     let project = this.tsProjSvc.getDefaultProjectForFile(
         scriptInfo.fileName,
         // ensureProject tries to find a default project for the scriptInfo if
@@ -128,11 +127,11 @@ export class ProjectService {
     switch (event.eventName) {
       case ts.server.ProjectLoadingStartEvent:
         this.connection.sendNotification(
-          projectLoadingNotification.start, event.data.project.projectName);
+            projectLoadingNotification.start, event.data.project.projectName);
         break;
       case ts.server.ProjectLoadingFinishEvent:
         this.connection.sendNotification(
-          projectLoadingNotification.finish, event.data.project.projectName);
+            projectLoadingNotification.finish, event.data.project.projectName);
         break;
       case ts.server.ProjectsUpdatedInBackgroundEvent:
         // ProjectsUpdatedInBackgroundEvent is sent whenever diagnostics are
@@ -141,7 +140,7 @@ export class ProjectService {
         break;
     }
   }
-  
+
   private refreshDiagnostics(openFiles: string[]) {
     for (const fileName of openFiles) {
       const scriptInfo = this.tsProjSvc.getScriptInfo(fileName);
@@ -158,8 +157,7 @@ export class ProjectService {
       // not be updated.
       this.connection.sendDiagnostics({
         uri: filePathToUri(fileName),
-        diagnostics:
-            diagnostics.map(d => tsDiagnosticToLspDiagnostic(d, scriptInfo)),
+        diagnostics: diagnostics.map(d => tsDiagnosticToLspDiagnostic(d, scriptInfo)),
       });
     }
   }

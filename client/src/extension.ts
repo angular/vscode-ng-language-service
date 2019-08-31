@@ -7,13 +7,12 @@
  */
 
 import * as path from 'path';
+import {ExtensionContext, ProgressLocation, window, workspace} from 'vscode';
+import {LanguageClient, LanguageClientOptions, RevealOutputChannelOn, ServerOptions, TransportKind} from 'vscode-languageclient';
 
-import { workspace, ExtensionContext, window, ProgressLocation } from 'vscode';
-import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind, RevealOutputChannelOn } from 'vscode-languageclient';
-import { projectLoadingNotification } from './protocol';
+import {projectLoadingNotification} from './protocol';
 
 export function activate(context: ExtensionContext) {
-
   // Log file does not yet exist on disk. It is up to the server to create the
   // file.
   const logFile = path.join(context.logPath, 'nglangsvc.log');
@@ -21,7 +20,7 @@ export function activate(context: ExtensionContext) {
   // If the extension is launched in debug mode then the debug server options are used
   // Otherwise the run options are used
   const serverOptions: ServerOptions = {
-    run : {
+    run: {
       module: context.asAbsolutePath(path.join('server', 'server.js')),
       transport: TransportKind.ipc,
       args: [
@@ -39,8 +38,10 @@ export function activate(context: ExtensionContext) {
       module: context.asAbsolutePath(path.join('server', 'out', 'server.js')),
       transport: TransportKind.ipc,
       args: [
-        '--logFile', logFile,
-        '--logVerbosity', 'verbose',
+        '--logFile',
+        logFile,
+        '--logVerbosity',
+        'verbose',
       ],
       options: {
         env: {
@@ -80,35 +81,35 @@ export function activate(context: ExtensionContext) {
   };
 
   // Create the language client and start the client.
-  const forceDebug =  !!process.env['NG_DEBUG'];
-  const client = new LanguageClient(
-    'Angular Language Service', serverOptions, clientOptions, forceDebug);
+  const forceDebug = !!process.env['NG_DEBUG'];
+  const client =
+      new LanguageClient('Angular Language Service', serverOptions, clientOptions, forceDebug);
   const disposable = client.start();
 
   // Push the disposable to the context's subscriptions so that the
   // client can be deactivated on extension deactivation
   context.subscriptions.push(disposable);
 
-  client.onReady().then(()=>{
-
-    const projectLoadingTasks = new Map<string, { resolve: () => void }>();
+  client.onReady().then(() => {
+    const projectLoadingTasks = new Map<string, {resolve: () => void}>();
 
     client.onNotification(projectLoadingNotification.start, (projectName: string) => {
-      window.withProgress({
-        location: ProgressLocation.Window,
-        title: 'Initializing Angular language features',
-      }, () => new Promise((resolve) => {
-        projectLoadingTasks.set(projectName, { resolve });
-      }));
-    });
-  
-    client.onNotification(projectLoadingNotification.finish, (projectName: string) => {
-        const task = projectLoadingTasks.get(projectName);
-        if(task){
-          task.resolve();
-          projectLoadingTasks.delete(projectName);
-        }
+      window.withProgress(
+          {
+            location: ProgressLocation.Window,
+            title: 'Initializing Angular language features',
+          },
+          () => new Promise((resolve) => {
+            projectLoadingTasks.set(projectName, {resolve});
+          }));
     });
 
+    client.onNotification(projectLoadingNotification.finish, (projectName: string) => {
+      const task = projectLoadingTasks.get(projectName);
+      if (task) {
+        task.resolve();
+        projectLoadingTasks.delete(projectName);
+      }
+    });
   });
 }

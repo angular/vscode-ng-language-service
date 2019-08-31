@@ -6,13 +6,14 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import * as ts from 'typescript/lib/tsserverlibrary';  // used as value
 import * as lsp from 'vscode-languageserver';
-import * as ts from 'typescript/lib/tsserverlibrary'; // used as value
-import {createLogger} from './logger';
-import {ServerHost} from './server_host';
-import {ProjectService} from './project_service';
-import {uriToFilePath, filePathToUri, tsTextSpanToLspRange, lspRangeToTsPositions, lspPositionToTsPosition} from './utils';
+
 import {tsCompletionEntryToLspCompletionItem} from './completion';
+import {createLogger} from './logger';
+import {ProjectService} from './project_service';
+import {ServerHost} from './server_host';
+import {filePathToUri, lspPositionToTsPosition, lspRangeToTsPositions, tsTextSpanToLspRange, uriToFilePath} from './utils';
 
 enum LanguageId {
   TS = 'typescript',
@@ -45,10 +46,11 @@ const {tsProjSvc} = projSvc;
 // Log initialization info
 connection.console.info(`Log file: ${logger.getLogFileName()}`);
 if (process.env.NG_DEBUG) {
-  logger.info("Angular Language Service is under DEBUG mode");
+  logger.info('Angular Language Service is under DEBUG mode');
 }
 if (process.env.TSC_NONPOLLING_WATCHER !== 'true') {
-  connection.console.warn(`Using less efficient polling watcher. Set TSC_NONPOLLING_WATCHER to true.`);
+  connection.console.warn(
+      `Using less efficient polling watcher. Set TSC_NONPOLLING_WATCHER to true.`);
 }
 
 // After the server has started the client sends an initilize request.
@@ -92,8 +94,8 @@ connection.onDidOpenTextDocument((params: lsp.DidOpenTextDocumentParams) => {
     connection.console.error(`Failed to find project for ${filePath}`);
     return;
   }
-  project.markAsDirty();	// Must mark project as dirty to rebuild the program.
-  project.refreshDiagnostics();	// Show initial diagnostics
+  project.markAsDirty();         // Must mark project as dirty to rebuild the program.
+  project.refreshDiagnostics();  // Show initial diagnostics
 });
 
 connection.onDidCloseTextDocument((params: lsp.DidCloseTextDocumentParams) => {
@@ -136,8 +138,7 @@ connection.onDidSaveTextDocument((params: lsp.DidSaveTextDocumentParams) => {
   }
   if (text) {
     scriptInfo.open(text);
-  }
-  else {
+  } else {
     scriptInfo.reloadFromFile();
   }
 });
@@ -203,8 +204,7 @@ connection.onHover((params: lsp.TextDocumentPositionParams) => {
     // displayParts does not contain info about kindModifiers
     // but displayParts does contain info about kind
     desc += displayParts.map(dp => dp.text).join('');
-  }
-  else {
+  } else {
     desc += kind;
   }
   const contents: lsp.MarkedString[] = [{
@@ -240,9 +240,11 @@ connection.onCompletion((params: lsp.CompletionParams) => {
   }
   const offset = lspPositionToTsPosition(scriptInfo, position);
   const langSvc = project.getLanguageService();
-  const completions = langSvc.getCompletionsAtPosition(fileName, offset, {
-    // options
-  });
+  const completions = langSvc.getCompletionsAtPosition(
+      fileName, offset,
+      {
+          // options
+      });
   if (!completions || !completions.entries.length) {
     return;
   }

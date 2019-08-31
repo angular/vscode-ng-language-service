@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import * as ts from 'typescript/lib/tsserverlibrary'; // used as value
+import * as ts from 'typescript/lib/tsserverlibrary';  // used as value
 import * as lsp from 'vscode-languageserver';
 import {tsTextSpanToLspRange} from './utils';
 
@@ -14,8 +14,7 @@ import {tsTextSpanToLspRange} from './utils';
  * Convert ts.DiagnosticCategory to lsp.DiagnosticSeverity
  * @param category diagnostic category
  */
-function tsDiagnosticCategoryToLspDiagnosticSeverity(
-    category: ts.DiagnosticCategory) {
+function tsDiagnosticCategoryToLspDiagnosticSeverity(category: ts.DiagnosticCategory) {
   switch (category) {
     case ts.DiagnosticCategory.Warning:
       return lsp.DiagnosticSeverity.Warning;

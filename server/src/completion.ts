@@ -28,8 +28,7 @@ enum CompletionKind {
  * Convert Angular's CompletionKind to LSP CompletionItemKind.
  * @param kind Angular's CompletionKind
  */
-function ngCompletionKindToLspCompletionItemKind(kind: CompletionKind):
-    lsp.CompletionItemKind {
+function ngCompletionKindToLspCompletionItemKind(kind: CompletionKind): lsp.CompletionItemKind {
   switch (kind) {
     case CompletionKind.attribute:
     case CompletionKind.htmlAttribute:

@@ -8,7 +8,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import * as ts from 'typescript/lib/tsserverlibrary'; // used as value
+import * as ts from 'typescript/lib/tsserverlibrary';  // used as value
 
 // NOTES:
 // Be very careful about logging. There are two types of logging:
@@ -34,8 +34,7 @@ import * as ts from 'typescript/lib/tsserverlibrary'; // used as value
  * @param options Logging options.
  */
 export function createLogger(options: Map<string, string>) {
-  const logFile = options.get('logFile') ||
-      path.join(fs.mkdtempSync('ng_'), 'ngserver.log');
+  const logFile = options.get('logFile') || path.join(fs.mkdtempSync('ng_'), 'ngserver.log');
   const logVerbosity = options.get('logVerbosity') || 'normal';
   let logLevel: ts.server.LogLevel;
   switch (logVerbosity) {
@@ -65,8 +64,7 @@ function noop(_?: {}|null|undefined): void {}  // tslint:disable-line no-empty
 function nowString() {
   // E.g. "12:34:56.789"
   const d = new Date();
-  return `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}.${
-      d.getMilliseconds()}`;
+  return `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}.${d.getMilliseconds()}`;
 }
 
 export class Logger implements ts.server.Logger {
@@ -76,8 +74,7 @@ export class Logger implements ts.server.Logger {
   private firstInGroup = true;
 
   constructor(
-      private readonly logFilename: string,
-      private readonly traceToConsole: boolean,
+      private readonly logFilename: string, private readonly traceToConsole: boolean,
       private readonly level: ts.server.LogLevel) {
     if (logFilename) {
       try {
@@ -140,8 +137,7 @@ export class Logger implements ts.server.Logger {
 
     s = `[${nowString()}] ${s}\n`;
     if (!this.inGroup || this.firstInGroup) {
-      const prefix =
-          Logger.padStringRight(type + ' ' + this.seq.toString(), '          ');
+      const prefix = Logger.padStringRight(type + ' ' + this.seq.toString(), '          ');
       s = prefix + s;
     }
     this.write(s);
@@ -158,8 +154,7 @@ export class Logger implements ts.server.Logger {
     if (this.fd >= 0) {
       const buf = Buffer.from(s);
       // tslint:disable-next-line no-null-keyword
-      fs.writeSync(
-          this.fd, buf, 0, buf.length, /*position*/ null!);  // TODO: GH#18217
+      fs.writeSync(this.fd, buf, 0, buf.length, /*position*/ null!);  // TODO: GH#18217
     }
     if (this.traceToConsole) {
       console.warn(s);

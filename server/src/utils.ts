@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import * as ts from 'typescript/lib/tsserverlibrary';  // used as types only
 import * as lsp from 'vscode-languageserver';
-import * as ts from 'typescript/lib/tsserverlibrary'; // used as types only
 import {URI} from 'vscode-uri';
 
 enum Scheme {
@@ -20,7 +20,8 @@ enum Scheme {
  */
 export function uriToFilePath(uri: string): string {
   // Note: uri.path is different from uri.fsPath
-  // See https://github.com/microsoft/vscode-uri/blob/413805221cc6ed167186ab3103d3248d6f7161f2/src/index.ts#L622-L645
+  // See
+  // https://github.com/microsoft/vscode-uri/blob/413805221cc6ed167186ab3103d3248d6f7161f2/src/index.ts#L622-L645
   const {scheme, fsPath} = URI.parse(uri);
   if (scheme !== Scheme.File) {
     return '';
@@ -47,13 +48,11 @@ export function filePathToUri(filePath: string): string {
  * @param scriptInfo Used to determine the offsets.
  * @param textSpan
  */
-export function tsTextSpanToLspRange(
-    scriptInfo: ts.server.ScriptInfo, textSpan: ts.TextSpan) {
+export function tsTextSpanToLspRange(scriptInfo: ts.server.ScriptInfo, textSpan: ts.TextSpan) {
   const start = scriptInfo.positionToLineOffset(textSpan.start);
   const end = scriptInfo.positionToLineOffset(textSpan.start + textSpan.length);
   // ScriptInfo (TS) is 1-based, LSP is 0-based.
-  return lsp.Range.create(
-      start.line - 1, start.offset - 1, end.line - 1, end.offset - 1);
+  return lsp.Range.create(start.line - 1, start.offset - 1, end.line - 1, end.offset - 1);
 }
 
 /**
@@ -62,8 +61,7 @@ export function tsTextSpanToLspRange(
  * @param scriptInfo Used to determine the offsets.
  * @param position
  */
-export function lspPositionToTsPosition(
-    scriptInfo: ts.server.ScriptInfo, position: lsp.Position) {
+export function lspPositionToTsPosition(scriptInfo: ts.server.ScriptInfo, position: lsp.Position) {
   const {line, character} = position;
   // ScriptInfo (TS) is 1-based, LSP is 0-based.
   return scriptInfo.lineOffsetToPosition(line + 1, character + 1);

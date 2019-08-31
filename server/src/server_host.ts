@@ -6,12 +6,13 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import * as ts from 'typescript/lib/tsserverlibrary'; // used as value
+import * as ts from 'typescript/lib/tsserverlibrary';  // used as value
 
 /**
  * `ServerHost` is a wrapper around `ts.sys` for the Node system. In Node, all
  * optional methods of `ts.System` are implemented.
- * See https://github.com/microsoft/TypeScript/blob/ec39d412876d0dcf704fc886d5036cb625220d2f/src/compiler/sys.ts#L716
+ * See
+ * https://github.com/microsoft/TypeScript/blob/ec39d412876d0dcf704fc886d5036cb625220d2f/src/compiler/sys.ts#L716
  */
 export class ServerHost implements ts.server.ServerHost {
   readonly args: string[];
@@ -48,15 +49,13 @@ export class ServerHost implements ts.server.ServerHost {
    * @pollingInterval - this parameter is used in polling-based watchers and
    * ignored in watchers that use native OS file watching
    */
-  watchFile(
-      path: string, callback: ts.FileWatcherCallback,
-      pollingInterval?: number): ts.FileWatcher {
+  watchFile(path: string, callback: ts.FileWatcherCallback, pollingInterval?: number):
+      ts.FileWatcher {
     return ts.sys.watchFile!(path, callback, pollingInterval);
   }
 
-  watchDirectory(
-      path: string, callback: ts.DirectoryWatcherCallback,
-      recursive?: boolean): ts.FileWatcher {
+  watchDirectory(path: string, callback: ts.DirectoryWatcherCallback, recursive?: boolean):
+      ts.FileWatcher {
     return ts.sys.watchDirectory!(path, callback, recursive);
   }
 
@@ -89,9 +88,8 @@ export class ServerHost implements ts.server.ServerHost {
   }
 
   readDirectory(
-      path: string, extensions?: ReadonlyArray<string>,
-      exclude?: ReadonlyArray<string>, include?: ReadonlyArray<string>,
-      depth?: number): string[] {
+      path: string, extensions?: ReadonlyArray<string>, exclude?: ReadonlyArray<string>,
+      include?: ReadonlyArray<string>, depth?: number): string[] {
     return ts.sys.readDirectory(path, extensions, exclude, include, depth);
   }
 
@@ -135,8 +133,7 @@ export class ServerHost implements ts.server.ServerHost {
     return ts.sys.realpath!(path);
   }
 
-  setTimeout(callback: (...args: any[]) => void, ms: number, ...args: any[]):
-      any {
+  setTimeout(callback: (...args: any[]) => void, ms: number, ...args: any[]): any {
     return ts.sys.setTimeout!(callback, ms, ...args);
   }
 

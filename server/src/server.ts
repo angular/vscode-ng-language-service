@@ -164,15 +164,21 @@ connection.onDefinition((params: lsp.TextDocumentPositionParams) => {
   if (!definition || !definition.definitions) {
     return;
   }
-  const results: lsp.Location[] = [];
+  const originSelectionRange = tsTextSpanToLspRange(scriptInfo, definition.textSpan);
+  const results: lsp.LocationLink[] = [];
   for (const d of definition.definitions) {
     const scriptInfo = tsProjSvc.getScriptInfo(d.fileName);
     if (!scriptInfo) {
       continue;
     }
-    const uri = filePathToUri(d.fileName);
+    const targetUri = filePathToUri(d.fileName);
     const range = tsTextSpanToLspRange(scriptInfo, d.textSpan);
-    results.push(lsp.Location.create(uri, range));
+    results.push({
+      originSelectionRange,
+      targetUri,
+      targetRange: range,
+      targetSelectionRange: range,
+    });
   }
   return results;
 });

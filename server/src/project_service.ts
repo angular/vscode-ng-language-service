@@ -38,8 +38,8 @@ export class ProjectService {
   public readonly tsProjSvc: ts.server.ProjectService;
 
   constructor(
-      private readonly serverHost: ts.server.ServerHost,
-      private readonly logger: ts.server.Logger,
+      serverHost: ts.server.ServerHost,
+      logger: ts.server.Logger,
       private readonly connection: lsp.IConnection,
       options: Map<string, string>,
   ) {

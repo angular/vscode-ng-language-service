@@ -43,6 +43,9 @@ const serverHost = new ServerHost();
 const projSvc = new ProjectService(serverHost, logger, connection, options);
 const {tsProjSvc} = projSvc;
 
+// Empty definition range for files without `scriptInfo`
+const EMPTY_RANGE = lsp.Range.create(0, 0, 0, 0);
+
 // Log initialization info
 connection.console.info(`Log file: ${logger.getLogFileName()}`);
 if (process.env.NG_DEBUG) {
@@ -176,8 +179,7 @@ connection.onDefinition((params: lsp.TextDocumentPositionParams) => {
     if (!scriptInfo && d.textSpan.length > 0) {
       continue;
     }
-    const ZERO_RANGE = lsp.Range.create(0, 0, 0, 0);  // for files without `scriptInfo`
-    const range = scriptInfo ? tsTextSpanToLspRange(scriptInfo, d.textSpan) : ZERO_RANGE;
+    const range = scriptInfo ? tsTextSpanToLspRange(scriptInfo, d.textSpan) : EMPTY_RANGE;
 
     const targetUri = filePathToUri(d.fileName);
     results.push({

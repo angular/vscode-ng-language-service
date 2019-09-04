@@ -168,11 +168,18 @@ connection.onDefinition((params: lsp.TextDocumentPositionParams) => {
   const results: lsp.LocationLink[] = [];
   for (const d of definition.definitions) {
     const scriptInfo = tsProjSvc.getScriptInfo(d.fileName);
-    if (!scriptInfo) {
+
+    // Some definitions, like definitions of CSS files, may not be recorded files with a
+    // `scriptInfo` but are still valid definitions because they are files that exist. In this case,
+    // check to make sure that the text span of the definition is zero so that the file doesn't have
+    // to be read; if the span is non-zero, we can't do anything with this definition.
+    if (!scriptInfo && d.textSpan.length > 0) {
       continue;
     }
+    const ZERO_RANGE = lsp.Range.create(0, 0, 0, 0);  // for files without `scriptInfo`
+    const range = scriptInfo ? tsTextSpanToLspRange(scriptInfo, d.textSpan) : ZERO_RANGE;
+
     const targetUri = filePathToUri(d.fileName);
-    const range = tsTextSpanToLspRange(scriptInfo, d.textSpan);
     results.push({
       originSelectionRange,
       targetUri,

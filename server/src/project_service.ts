@@ -61,6 +61,17 @@ export class ProjectService {
       allowLocalPluginLoads: false,  // do not load plugins from tsconfig.json
     });
 
+    this.tsProjSvc.setHostConfiguration({
+      formatOptions: this.tsProjSvc.getHostFormatCodeOptions(),
+      extraFileExtensions: [
+        {
+          extension: '.html',
+          isMixedContent: false,
+          scriptKind: ts.ScriptKind.External,
+        },
+      ],
+    });
+
     this.tsProjSvc.configurePlugin({
       pluginName: '@angular/language-service',
       configuration: {

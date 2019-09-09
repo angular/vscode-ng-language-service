@@ -1,6 +1,7 @@
 {
   "name": "ng-template-server",
   "description": "Angular Language Service server",
+  "version": "0.900.0-next.0",
   "private": true,
   "author": "Angular",
   "license": "MIT",

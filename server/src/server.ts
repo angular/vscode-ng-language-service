@@ -260,7 +260,7 @@ connection.onCompletion((params: lsp.CompletionParams) => {
       {
           // options
       });
-  if (!completions || !completions.entries.length) {
+  if (!completions) {
     return;
   }
   return completions.entries.map((e) => tsCompletionEntryToLspCompletionItem(e, position));

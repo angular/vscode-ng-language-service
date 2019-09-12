@@ -128,7 +128,10 @@ connection.onDidChangeTextDocument((params: lsp.DidChangeTextDocumentParams) => 
     }
   }
 
-  const project = scriptInfo.getDefaultProject();
+  const project = projSvc.getDefaultProjectForScriptInfo(scriptInfo);
+  if (!project) {
+    return;
+  }
   project.refreshDiagnostics();
 });
 

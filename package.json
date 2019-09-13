@@ -16,6 +16,15 @@
   "categories": [
     "Programming Languages"
   ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "angular.restartNgServer",
+        "title": "Restart Angular Language server",
+        "category": "Angular"
+      }
+    ]
+  },
   "activationEvents": [
     "onLanguage:html",
     "onLanguage:typescript"

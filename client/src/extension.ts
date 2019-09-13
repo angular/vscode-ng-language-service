@@ -7,22 +7,23 @@
  */
 
 import * as path from 'path';
-import {ExtensionContext, ProgressLocation, window, workspace} from 'vscode';
-import {LanguageClient, LanguageClientOptions, RevealOutputChannelOn, ServerOptions, TransportKind} from 'vscode-languageclient';
+import * as vscode from 'vscode';
+import * as lsp from 'vscode-languageclient';
 
+import {registerCommands} from './commands';
 import {projectLoadingNotification} from './protocol';
 
-export function activate(context: ExtensionContext) {
+export function activate(context: vscode.ExtensionContext) {
   // Log file does not yet exist on disk. It is up to the server to create the
   // file.
   const logFile = path.join(context.logPath, 'nglangsvc.log');
 
   // If the extension is launched in debug mode then the debug server options are used
   // Otherwise the run options are used
-  const serverOptions: ServerOptions = {
+  const serverOptions: lsp.ServerOptions = {
     run: {
       module: context.asAbsolutePath(path.join('server', 'server.js')),
-      transport: TransportKind.ipc,
+      transport: lsp.TransportKind.ipc,
       args: [
         '--logFile', logFile,
         // TODO: Might want to turn off logging completely.
@@ -36,7 +37,7 @@ export function activate(context: ExtensionContext) {
     },
     debug: {
       module: context.asAbsolutePath(path.join('server', 'out', 'server.js')),
-      transport: TransportKind.ipc,
+      transport: lsp.TransportKind.ipc,
       args: [
         '--logFile',
         logFile,
@@ -60,7 +61,7 @@ export function activate(context: ExtensionContext) {
   };
 
   // Options to control the language client
-  const clientOptions: LanguageClientOptions = {
+  const clientOptions: lsp.LanguageClientOptions = {
     // Register the server for Angular templates and TypeScript documents
     documentSelector: [
       // scheme: 'file' means listen to changes to files on disk only
@@ -72,31 +73,33 @@ export function activate(context: ExtensionContext) {
     synchronize: {
       fileEvents: [
         // Notify the server about file changes to tsconfig.json contained in the workspace
-        workspace.createFileSystemWatcher('**/tsconfig.json'),
+        vscode.workspace.createFileSystemWatcher('**/tsconfig.json'),
       ]
     },
 
     // Don't let our output console pop open
-    revealOutputChannelOn: RevealOutputChannelOn.Never
+    revealOutputChannelOn: lsp.RevealOutputChannelOn.Never
   };
 
   // Create the language client and start the client.
   const forceDebug = !!process.env['NG_DEBUG'];
   const client =
-      new LanguageClient('Angular Language Service', serverOptions, clientOptions, forceDebug);
-  const disposable = client.start();
+      new lsp.LanguageClient('Angular Language Service', serverOptions, clientOptions, forceDebug);
 
   // Push the disposable to the context's subscriptions so that the
   // client can be deactivated on extension deactivation
-  context.subscriptions.push(disposable);
+  context.subscriptions.push(
+      ...registerCommands(client),
+      client.start(),
+  );
 
   client.onReady().then(() => {
     const projectLoadingTasks = new Map<string, {resolve: () => void}>();
 
     client.onNotification(projectLoadingNotification.start, (projectName: string) => {
-      window.withProgress(
+      vscode.window.withProgress(
           {
-            location: ProgressLocation.Window,
+            location: vscode.ProgressLocation.Window,
             title: 'Initializing Angular language features',
           },
           () => new Promise((resolve) => {

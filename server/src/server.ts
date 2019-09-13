@@ -160,7 +160,7 @@ connection.onDefinition((params: lsp.TextDocumentPositionParams) => {
 
   const {fileName} = scriptInfo;
   const project = projSvc.getDefaultProjectForScriptInfo(scriptInfo);
-  if (!project) {
+  if (!project || !project.languageServiceEnabled) {
     return;
   }
 
@@ -207,7 +207,7 @@ connection.onHover((params: lsp.TextDocumentPositionParams) => {
   }
   const {fileName} = scriptInfo;
   const project = tsProjSvc.getDefaultProjectForFile(fileName, true /* ensureProject */);
-  if (!project) {
+  if (!project || !project.languageServiceEnabled) {
     return;
   }
   const offset = lspPositionToTsPosition(scriptInfo, position);
@@ -253,7 +253,7 @@ connection.onCompletion((params: lsp.CompletionParams) => {
   }
   const {fileName} = scriptInfo;
   const project = projSvc.getDefaultProjectForScriptInfo(scriptInfo);
-  if (!project) {
+  if (!project || !project.languageServiceEnabled) {
     return;
   }
   const offset = lspPositionToTsPosition(scriptInfo, position);

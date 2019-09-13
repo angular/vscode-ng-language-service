@@ -159,7 +159,7 @@ export class ProjectService {
         continue;
       }
       const project = this.getDefaultProjectForScriptInfo(scriptInfo);
-      if (!project) {
+      if (!project || !project.languageServiceEnabled) {
         continue;
       }
       const ngLS = project.getLanguageService();

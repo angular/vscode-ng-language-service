@@ -20,7 +20,7 @@
     "commands": [
       {
         "command": "angular.restartNgServer",
-        "title": "Restart Angular server",
+        "title": "Restart Angular Language server",
         "category": "Angular"
       }
     ]

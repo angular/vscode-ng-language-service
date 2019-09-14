@@ -34,12 +34,7 @@ export function uriToFilePath(uri: string): string {
  * @param filePath
  */
 export function filePathToUri(filePath: string): string {
-  return URI
-      .from({
-        scheme: Scheme.File,
-        path: filePath,
-      })
-      .toString();
+  return URI.file(filePath).toString();
 }
 
 /**

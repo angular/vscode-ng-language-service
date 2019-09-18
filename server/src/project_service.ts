@@ -12,6 +12,7 @@ import * as lsp from 'vscode-languageserver';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
 import {projectLoadingNotification} from './protocol';
 import {filePathToUri} from './utils';
+import {NgVersionProvider} from './version_provider';
 
 // NOTE:
 // There are three types of `project`:
@@ -43,9 +44,7 @@ export class ProjectService {
       private readonly connection: lsp.IConnection,
       options: Map<string, string>,
   ) {
-    const pluginProbeLocation =
-        options.get('pluginProbeLocation') || serverHost.getCurrentDirectory();
-    connection.console.info(`Angular LS probe location: ${pluginProbeLocation}`);
+    const pluginProbeLocation = options.get('pluginProbeLocation');
     // TODO: Should load TypeScript from workspace.
     this.tsProjSvc = new ts.server.ProjectService({
       host: serverHost,
@@ -57,7 +56,7 @@ export class ProjectService {
       suppressDiagnosticEvents: false,
       eventHandler: (e) => this.handleProjectServiceEvent(e),
       globalPlugins: ['@angular/language-service'],
-      pluginProbeLocations: [pluginProbeLocation],
+      pluginProbeLocations: this.getPluginProbeLocations(pluginProbeLocation),
       allowLocalPluginLoads: false,  // do not load plugins from tsconfig.json
     });
 
@@ -171,5 +170,34 @@ export class ProjectService {
         diagnostics: diagnostics.map(d => tsDiagnosticToLspDiagnostic(d, scriptInfo)),
       });
     }
+  }
+
+  /**
+   * Determine valid directories where `@angular/language-service` could be
+   * found.
+   * @param probeLocation
+   */
+  private getPluginProbeLocations(probeLocation?: string): string[] {
+    const versionProvider = new NgVersionProvider(probeLocation);
+    const pluginProbeLocations = [];
+    const localVersion = versionProvider.localVersion;
+    if (localVersion) {
+      pluginProbeLocations.push(localVersion.dirName);
+    }
+    const bundledVersion = versionProvider.bundledVersion;
+    if (bundledVersion) {
+      pluginProbeLocations.push(bundledVersion.dirName);
+    }
+    if (pluginProbeLocations.length) {
+      this.connection.console.info(
+          `Angular LS probe locations: [${pluginProbeLocations.join(', ')}]`);
+    } else {
+      let msg = 'Failed to find @angular/language service';
+      if (probeLocation) {
+        msg += ` in ${probeLocation}`;
+      }
+      this.connection.console.error(msg);
+    }
+    return pluginProbeLocations;
   }
 }

@@ -23,12 +23,13 @@ enum LanguageId {
 // Parse startup options
 const options = new Map<string, string>();
 for (let i = 0; i < process.argv.length; ++i) {
-  const argv = process.argv[i];
-  if (argv === '--logFile') {
+  const arg = process.argv[i];
+  if (arg === '--logFile') {
     options.set('logFile', process.argv[i + 1]);
-  }
-  if (argv === '--logVerbosity') {
+  } else if (arg === '--logVerbosity') {
     options.set('logVerbosity', process.argv[i + 1]);
+  } else if (arg === '--pluginProbeLocation') {
+    options.set('pluginProbeLocation', process.argv[i + 1]);
   }
 }
 

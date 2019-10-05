@@ -29,15 +29,18 @@ import * as ts from 'typescript/lib/tsserverlibrary';
 // TLDR: To log to development console, always use connection.console.log().
 // Never use console.log(), console.info(), etc directly.
 
+export interface LoggerOptions {
+  logFile?: string;
+  logVerbosity?: string;
+}
+
 /**
  * Create a logger instance to write to file.
  * @param options Logging options.
  */
-export function createLogger(options: Map<string, string>) {
-  const logFile = options.get('logFile') || path.join(fs.mkdtempSync('ng_'), 'ngserver.log');
-  const logVerbosity = options.get('logVerbosity') || 'normal';
+export function createLogger(options: LoggerOptions): Logger {
   let logLevel: ts.server.LogLevel;
-  switch (logVerbosity) {
+  switch (options.logVerbosity) {
     case 'terse':
       logLevel = ts.server.LogLevel.terse;
       break;
@@ -48,11 +51,15 @@ export function createLogger(options: Map<string, string>) {
       logLevel = ts.server.LogLevel.verbose;
       break;
     case 'normal':
+      logLevel = ts.server.LogLevel.normal;
+      break;
     default:
       logLevel = ts.server.LogLevel.terse;
       break;
   }
-  return new Logger(logFile, false /* traceToConsole */, logLevel);
+  // If logFile is not provided then just trace to console.
+  const traceToConsole = !options.logFile;
+  return new Logger(traceToConsole, logLevel, options.logFile);
 }
 
 // TODO: Code below is from TypeScript's repository. Maybe create our own
@@ -74,8 +81,10 @@ export class Logger implements ts.server.Logger {
   private firstInGroup = true;
 
   constructor(
-      private readonly logFilename: string, private readonly traceToConsole: boolean,
-      private readonly level: ts.server.LogLevel) {
+      private readonly traceToConsole: boolean,
+      private readonly level: ts.server.LogLevel,
+      private readonly logFilename?: string,
+  ) {
     if (logFilename) {
       try {
         const dir = path.dirname(logFilename);

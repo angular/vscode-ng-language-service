@@ -17,7 +17,14 @@ export function activate(context: vscode.ExtensionContext) {
   // Log file does not yet exist on disk. It is up to the server to create the
   // file.
   const logFile = path.join(context.logPath, 'nglangsvc.log');
-  const pluginProbeLocation = context.asAbsolutePath('server');
+  const ngProbeLocations = [
+    process.cwd(),                     // workspace version
+    context.asAbsolutePath('server'),  // bundled version
+  ];
+  const tsProbeLocations = [
+    process.cwd(),          // workspace version
+    context.extensionPath,  // bundled version
+  ];
 
   // If the extension is launched in debug mode then the debug server options are used
   // Otherwise the run options are used
@@ -29,8 +36,10 @@ export function activate(context: vscode.ExtensionContext) {
         '--logFile',
         logFile,
         // TODO: Might want to turn off logging completely.
-        '--pluginProbeLocation',
-        pluginProbeLocation,
+        '--ngProbeLocations',
+        ngProbeLocations.join(','),
+        '--tsProbeLocations',
+        tsProbeLocations.join(','),
       ],
       options: {
         env: {
@@ -47,8 +56,10 @@ export function activate(context: vscode.ExtensionContext) {
         logFile,
         '--logVerbosity',
         'verbose',
-        '--pluginProbeLocation',
-        pluginProbeLocation,
+        '--ngProbeLocations',
+        ngProbeLocations.join(','),
+        '--tsProbeLocations',
+        tsProbeLocations.join(','),
       ],
       options: {
         env: {

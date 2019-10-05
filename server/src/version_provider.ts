@@ -9,60 +9,62 @@
 import * as path from 'path';
 
 /**
- * Represents a valid directory where `@angular/language-service` could be
- * found, as well as its version.
+ * Represents a valid node module that has been successfully resolved.
  */
-interface NgVersion {
-  dirName: string;
+export interface NodeModule {
+  resolvedPath: string;
   version?: string;
 }
 
-const NGLANGSVC = `@angular/language-service/package.json`;
-
-export class NgVersionProvider {
-  constructor(private readonly probeLocation?: string) {}
-
-  /**
-   * Return the version that is found via the probe location, if provided.
-   */
-  get bundledVersion(): NgVersion|undefined {
-    if (!this.probeLocation) {
-      return;
-    }
-    return this.resolve(this.probeLocation);
-  }
-
-  /**
-   * Return the version that is found via current directory, if any.
-   */
-  get localVersion(): NgVersion|undefined {
-    return this.resolve(process.cwd());
-  }
-
-  private resolve(dirName: string): NgVersion|undefined {
+function resolve(packageName: string, paths: string[]): NodeModule|undefined {
+  try {
     // Here, use native NodeJS require instead of ServerHost.require because
     // we want the full path of the resolution provided by native
     // `require.resolve()`, which ServerHost does not provide.
-    let result: NgVersion|undefined;
-    try {
-      // require.resolve() throws if module resolution fails.
-      const resolutionPath = require.resolve(NGLANGSVC, {
-        paths: [dirName],
-      });
-      if (!resolutionPath) {
-        return;
-      }
-      result = {
-        dirName: path.dirname(resolutionPath),
-        version: undefined,
-      };
-      // require would throw if package.json is not strict JSON
-      const packageJson = require(resolutionPath);
-      if (packageJson && packageJson.version) {
-        result.version = packageJson.version;
-      }
-    } finally {
-      return result;
+    const resolvedPath = require.resolve(`${packageName}/package.json`, {paths});
+    const packageJson = require(resolvedPath);
+    return {
+      resolvedPath: path.dirname(resolvedPath),
+      version: packageJson.version,
+    };
+  } catch {
+  }
+}
+
+function minVersion(nodeModule: NodeModule, minMajor: number): boolean {
+  if (!nodeModule.version) {
+    return false;
+  }
+  const [majorStr] = nodeModule.version.split('.');
+  if (!majorStr) {
+    return false;
+  }
+  const major = Number(majorStr);
+  if (isNaN(major)) {
+    return false;
+  }
+  return major >= minMajor;
+}
+
+/**
+ * Resolve the node module with the specified `packageName` that satisfies
+ * the specified minimum major version.
+ * @param packageName
+ * @param minMajor
+ * @param probeLocations
+ */
+export function resolveWithMinMajor(
+    packageName: string, minMajor: number, probeLocations: string[]): NodeModule {
+  for (const location of probeLocations) {
+    const nodeModule = resolve(packageName, [location]);
+    if (!nodeModule) {
+      continue;
+    }
+    if (minVersion(nodeModule, minMajor)) {
+      return nodeModule;
     }
   }
+  throw new Error(
+      `Failed to resolve '${packageName}' with minimum major version '${minMajor}' from ` +
+      JSON.stringify(probeLocations, null, 2));
 }

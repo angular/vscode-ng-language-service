@@ -6,24 +6,23 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {NgVersionProvider} from '../version_provider';
+import {resolveWithMinMajor} from '../version_provider';
 
-describe('NgVersionProvider', () => {
-  const probeLocation = __dirname;
+describe('resolveWithMinMajor', () => {
+  const probeLocations = [__dirname];
 
-  it('should find bundled version', () => {
-    const provider = new NgVersionProvider(probeLocation);
-    const bundledVersion = provider.bundledVersion;
-    expect(bundledVersion).toBeDefined();
-    const {dirName, version} = bundledVersion!;
-    expect(dirName).toMatch(/@angular\/language-service$/);
-    expect(version).toBeTruthy();
+  it('should find typescript >= v2', () => {
+    const result = resolveWithMinMajor('typescript', 2, probeLocations);
+    expect(result.version).toBe('3.5.3');
   });
 
-  it('should not find local version', () => {
-    const provider = new NgVersionProvider(probeLocation);
-    const localVersion = provider.localVersion;
-    // Don't expect to find `@angular/language-service` in current directory.
-    expect(localVersion).toBeUndefined();
+  it('should find typescript v3', () => {
+    const result = resolveWithMinMajor('typescript', 3, probeLocations);
+    expect(result.version).toBe('3.5.3');
+  });
+
+  it('should fail to find typescript v4', () => {
+    expect(() => resolveWithMinMajor('typescript', 4, probeLocations))
+        .toThrowError(/^Failed to resolve 'typescript'/);
   });
 });

@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import commonjs from 'rollup-plugin-commonjs';
-import nodeResolve from 'rollup-plugin-node-resolve';
 
 module.exports = [
   {
@@ -16,7 +15,6 @@ module.exports = [
       'vscode-languageclient',
     ],
     plugins: [
-      nodeResolve(),
       commonjs(),
     ],
   },
@@ -35,8 +33,12 @@ module.exports = [
       'vscode-uri',
     ],
     plugins: [
-      nodeResolve(),
-      commonjs(),
+      commonjs({
+        ignore: [
+          // leave require statements unconverted.
+          'conditional-runtime-dependency',
+        ],
+      }),
     ],
   },
 ];

@@ -7,20 +7,17 @@ function define(modules, cb) {
     const arg = process.argv[index + 1];
     return arg.split(',');
   }
-  const TSSERVER = 'typescript/lib/tsserverlibrary';
-  let tsserverPath;
-  try {
-    tsserverPath = require.resolve(TSSERVER, {
-      paths: parseStringArray('--typeScriptProbeLocations'),
-    });
-  }
-  catch {}
-  const resolvedModules = modules.map(m => {
-    if (m === 'typescript') {
-      throw new Error(`'typescript' should never be used. Use '${TSSERVER}' instead.`)
+  function resolve(packageName, paths) {
+    try {
+      return require.resolve(packageName, {paths});
     }
-    if (tsserverPath && m === TSSERVER) {
-      return require(tsserverPath);
+    catch {}
+  }
+  const TSSERVER = 'typescript/lib/tsserverlibrary';
+  const resolvedModules = modules.map(m => {
+    if (m === TSSERVER || m === 'typescript') {
+      const tsProbeLocations = parseStringArray('--tsProbeLocations');
+      m = resolve(TSSERVER, tsProbeLocations) || TSSERVER;
     }
     return require(m);
   });

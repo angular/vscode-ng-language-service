@@ -8,6 +8,7 @@ class ResponseEmitter extends EventEmitter {}
 
 describe('Angular Language Service', () => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000; /* 10 seconds */
+  const PACKAGE_ROOT = resolve(__dirname, '../../..');
   const PROJECT_PATH = resolve(__dirname, '../../project');
   const SERVER_PATH = resolve(__dirname, '../../../server/out/server.js');
   const responseEmitter = new ResponseEmitter();
@@ -31,12 +32,21 @@ describe('Angular Language Service', () => {
   }
 
   beforeEach(() => {
-    server = fork(SERVER_PATH, ['--node-ipc'], {
-      cwd: PROJECT_PATH,
-      env: {
-        TSC_NONPOLLING_WATCHER: 'true',
-      },
-    });
+    server = fork(
+        SERVER_PATH,
+        [
+          '--node-ipc',
+          '--tsProbeLocations',
+          PACKAGE_ROOT,
+          '--ngProbeLocations',
+          PROJECT_PATH,
+        ],
+        {
+          cwd: PROJECT_PATH,
+          env: {
+            TSC_NONPOLLING_WATCHER: 'true',
+          },
+        });
     server.on('error', fail);
     server.on('close', (code, signal) => {
       console.log(`Server 'close' event received`, code, signal);

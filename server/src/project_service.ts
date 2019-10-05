@@ -7,58 +7,31 @@
  */
 
 import * as ts from 'typescript/lib/tsserverlibrary';
-import * as lsp from 'vscode-languageserver';
 
-import {tsDiagnosticToLspDiagnostic} from './diagnostic';
-import {projectLoadingNotification} from './protocol';
-import {filePathToUri} from './utils';
-import {NgVersionProvider} from './version_provider';
-
-// NOTE:
-// There are three types of `project`:
-// 1. Configured project - basically all source files that belong to a tsconfig
-// 2. Inferred project - other files that do not belong to a tsconfig
-// 3. External project - not used in this context
-// For more info, see link below.
-// https://github.com/Microsoft/TypeScript/wiki/Standalone-Server-%28tsserver%29#project-system
+/**
+ * NOTE:
+ * There are three types of `project`:
+ * 1. Configured project - basically all source files that belong to a tsconfig
+ * 2. Inferred project - other files that do not belong to a tsconfig
+ * 3. External project - not used in this context
+ * For more info, see link below.
+ * https://github.com/Microsoft/TypeScript/wiki/Standalone-Server-%28tsserver%29#project-system
+ */
 
 /**
  * `ProjectService` is a singleton service for the entire lifespan of the
  * language server. This specific implementation is a very thin wrapper
  * around TypeScript's `ProjectService`. On creation, it spins up tsserver and
- * loads `@angular/language-service` as a tsserver plugin.
- * Care must be taken to load `@angular/language-service` from the project or
- * workspace. This extension shoud not bundle its own
- * `@angular/language-service`, not even as a backup. This is to ensure that
- * the extension becomes a no-op when non-Angular TS projects are opened.
+ * loads `@angular/language-service` as a global plugin.
  * `ProjectService` is used to manage both TS document as well as HTML.
  * Using tsserver to handle non-TS files is fine as long as the ScriptKind is
  * configured correctly and `getSourceFile()` is never called on non-TS files.
  */
 export class ProjectService {
-  public readonly tsProjSvc: ts.server.ProjectService;
+  private readonly tsProjSvc: ts.server.ProjectService;
 
-  constructor(
-      serverHost: ts.server.ServerHost,
-      logger: ts.server.Logger,
-      private readonly connection: lsp.IConnection,
-      options: Map<string, string>,
-  ) {
-    const pluginProbeLocation = options.get('pluginProbeLocation');
-    // TODO: Should load TypeScript from workspace.
-    this.tsProjSvc = new ts.server.ProjectService({
-      host: serverHost,
-      logger,
-      cancellationToken: ts.server.nullCancellationToken,
-      useSingleInferredProject: true,
-      useInferredProjectPerProjectRoot: true,
-      typingsInstaller: ts.server.nullTypingsInstaller,
-      suppressDiagnosticEvents: false,
-      eventHandler: (e) => this.handleProjectServiceEvent(e),
-      globalPlugins: ['@angular/language-service'],
-      pluginProbeLocations: this.getPluginProbeLocations(pluginProbeLocation),
-      allowLocalPluginLoads: false,  // do not load plugins from tsconfig.json
-    });
+  constructor(options: ts.server.ProjectServiceOptions) {
+    this.tsProjSvc = new ts.server.ProjectService(options);
 
     this.tsProjSvc.setHostConfiguration({
       formatOptions: this.tsProjSvc.getHostFormatCodeOptions(),
@@ -74,20 +47,37 @@ export class ProjectService {
     this.tsProjSvc.configurePlugin({
       pluginName: '@angular/language-service',
       configuration: {
-        'angularOnly': true,
+        angularOnly: true,
       },
     });
+  }
 
-    const globalPlugins = this.tsProjSvc.globalPlugins;
-    if (globalPlugins.includes('@angular/language-service')) {
-      // TODO: Even if the plugin fails to load, it still remains a global plugin
-      // in TS ProjectService. Figure out a a better way to determine the status
-      // of the plugin. For now, best way to check is manually inspect the
-      // log file.
-      connection.console.info('Success: @angular/language-service loaded');
-    } else {
-      connection.console.error('Failed to load @angular/language-service');
-    }
+  /**
+   * Open file whose contents is managed by the client
+   * @param filename is absolute pathname
+   * @param fileContent is a known version of the file content that is more up to date than the one
+   *     on disk
+   */
+  openClientFile(
+      fileName: string, fileContent?: string, scriptKind?: ts.ScriptKind,
+      projectRootPath?: string): ts.server.OpenConfiguredProjectResult {
+    return this.tsProjSvc.openClientFile(fileName, fileContent, scriptKind, projectRootPath);
+  }
+
+  /**
+   * Close file whose contents is managed by the client
+   * @param filename is absolute pathname
+   */
+  closeClientFile(uncheckedFileName: string): void {
+    this.tsProjSvc.closeClientFile(uncheckedFileName);
+  }
+
+  findProject(projectName: string): ts.server.Project|undefined {
+    return this.tsProjSvc.findProject(projectName);
+  }
+
+  getScriptInfo(uncheckedFileName: string): ts.server.ScriptInfo|undefined {
+    return this.tsProjSvc.getScriptInfo(uncheckedFileName);
   }
 
   /**
@@ -125,79 +115,5 @@ export class ProjectService {
     }
 
     return project;
-  }
-
-  /**
-   * An event handler that gets invoked whenever the program changes and
-   * TS ProjectService sends `ProjectUpdatedInBackgroundEvent`. This particular
-   * event is used to trigger diagnostic checks.
-   * @param event
-   */
-  private handleProjectServiceEvent(event: ts.server.ProjectServiceEvent) {
-    switch (event.eventName) {
-      case ts.server.ProjectLoadingStartEvent:
-        this.connection.sendNotification(
-            projectLoadingNotification.start, event.data.project.projectName);
-        break;
-      case ts.server.ProjectLoadingFinishEvent:
-        this.connection.sendNotification(
-            projectLoadingNotification.finish, event.data.project.projectName);
-        break;
-      case ts.server.ProjectsUpdatedInBackgroundEvent:
-        // ProjectsUpdatedInBackgroundEvent is sent whenever diagnostics are
-        // requested via project.refreshDiagnostics()
-        this.refreshDiagnostics(event.data.openFiles);
-        break;
-    }
-  }
-
-  private refreshDiagnostics(openFiles: string[]) {
-    for (const fileName of openFiles) {
-      const scriptInfo = this.tsProjSvc.getScriptInfo(fileName);
-      if (!scriptInfo) {
-        continue;
-      }
-      const project = this.getDefaultProjectForScriptInfo(scriptInfo);
-      if (!project || !project.languageServiceEnabled) {
-        continue;
-      }
-      const ngLS = project.getLanguageService();
-      const diagnostics = ngLS.getSemanticDiagnostics(fileName);
-      // Need to send diagnostics even if it's empty otherwise editor state will
-      // not be updated.
-      this.connection.sendDiagnostics({
-        uri: filePathToUri(fileName),
-        diagnostics: diagnostics.map(d => tsDiagnosticToLspDiagnostic(d, scriptInfo)),
-      });
-    }
-  }
-
-  /**
-   * Determine valid directories where `@angular/language-service` could be
-   * found.
-   * @param probeLocation
-   */
-  private getPluginProbeLocations(probeLocation?: string): string[] {
-    const versionProvider = new NgVersionProvider(probeLocation);
-    const pluginProbeLocations = [];
-    const localVersion = versionProvider.localVersion;
-    if (localVersion) {
-      pluginProbeLocations.push(localVersion.dirName);
-    }
-    const bundledVersion = versionProvider.bundledVersion;
-    if (bundledVersion) {
-      pluginProbeLocations.push(bundledVersion.dirName);
-    }
-    if (pluginProbeLocations.length) {
-      this.connection.console.info(
-          `Angular LS probe locations: [${pluginProbeLocations.join(', ')}]`);
-    } else {
-      let msg = 'Failed to find @angular/language service';
-      if (probeLocation) {
-        msg += ` in ${probeLocation}`;
-      }
-      this.connection.console.error(msg);
-    }
-    return pluginProbeLocations;
   }
 }

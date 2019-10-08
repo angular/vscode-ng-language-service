@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import * as ts from 'typescript/lib/tsserverlibrary';  // used as value
+import * as ts from 'typescript/lib/tsserverlibrary';
 import * as lsp from 'vscode-languageserver';
 
 import {tsCompletionEntryToLspCompletionItem} from './completion';
@@ -48,6 +48,7 @@ const {tsProjSvc} = projSvc;
 const EMPTY_RANGE = lsp.Range.create(0, 0, 0, 0);
 
 // Log initialization info
+connection.console.info(`TypeScript version: ${ts.version}`);
 connection.console.info(`Log file: ${logger.getLogFileName()}`);
 if (process.env.NG_DEBUG) {
   logger.info('Angular Language Service is under DEBUG mode');

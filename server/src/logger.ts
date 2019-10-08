@@ -8,7 +8,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import * as ts from 'typescript/lib/tsserverlibrary';  // used as value
+import * as ts from 'typescript/lib/tsserverlibrary';
 
 // NOTES:
 // Be very careful about logging. There are two types of logging:

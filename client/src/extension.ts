@@ -23,7 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
   // Otherwise the run options are used
   const serverOptions: lsp.ServerOptions = {
     run: {
-      module: context.asAbsolutePath(path.join('server', 'server.js')),
+      module: context.asAbsolutePath(path.join('server')),
       transport: lsp.TransportKind.ipc,
       args: [
         '--logFile',
@@ -40,7 +40,7 @@ export function activate(context: vscode.ExtensionContext) {
       },
     },
     debug: {
-      module: context.asAbsolutePath(path.join('server', 'out', 'server.js')),
+      module: context.asAbsolutePath(path.join('dist', 'server')),
       transport: lsp.TransportKind.ipc,
       args: [
         '--logFile',

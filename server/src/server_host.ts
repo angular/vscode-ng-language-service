@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import * as ts from 'typescript/lib/tsserverlibrary';  // used as value
+import * as ts from 'typescript/lib/tsserverlibrary';
 
 /**
  * `ServerHost` is a wrapper around `ts.sys` for the Node system. In Node, all

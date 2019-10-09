@@ -13,6 +13,7 @@ install:
   - ./scripts/install.sh
 
 script:
+  - set -euxo pipefail
   - ./scripts/lint.sh
   - ./scripts/build.sh
   - ./scripts/test.sh

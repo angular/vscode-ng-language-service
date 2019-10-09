@@ -81,10 +81,17 @@ export class Session {
         this.connection.sendNotification(
             projectLoadingNotification.start, event.data.project.projectName);
         break;
-      case ts.server.ProjectLoadingFinishEvent:
+      case ts.server.ProjectLoadingFinishEvent: {
+        const {project} = event.data;
+        if (!isAngularProject(project)) {
+          project.disableLanguageService();
+          this.connection.console.info(`Disabling language service for ${
+              project.projectName} because it is not an Angular project.`);
+        }
         this.connection.sendNotification(
             projectLoadingNotification.finish, event.data.project.projectName);
         break;
+      }
       case ts.server.ProjectsUpdatedInBackgroundEvent:
         // ProjectsUpdatedInBackgroundEvent is sent whenever diagnostics are
         // requested via project.refreshDiagnostics()
@@ -159,7 +166,6 @@ export class Session {
       this.connection.console.error(`Failed to find project for ${filePath}`);
       return;
     }
-    project.markAsDirty();         // Must mark project as dirty to rebuild the program.
     project.refreshDiagnostics();  // Show initial diagnostics
   }
 
@@ -372,4 +378,21 @@ export class Session {
   listen() {
     this.connection.listen();
   }
+}
+
+/**
+ * Return true if the specified `project` contains the Angular core declaration.
+ * @param project
+ */
+function isAngularProject(project: ts.server.Project): boolean {
+  project.markAsDirty();  // Must mark project as dirty to rebuild the program.
+  if (project.isNonTsProject()) {
+    return false;
+  }
+  for (const fileName of project.getFileNames()) {
+    if (fileName.endsWith('@angular/core/core.d.ts')) {
+      return true;
+    }
+  }
+  return false;
 }

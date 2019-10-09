@@ -145,7 +145,8 @@ export class Session {
     const result = this.projectService.openClientFile(filePath, text, scriptKind);
 
     const {configFileName, configFileErrors} = result;
-    if (configFileErrors) {
+    if (configFileErrors && configFileErrors.length) {
+      // configFileErrors is an empty array even if there's no error, so check length.
       this.connection.console.error(configFileErrors.map(e => e.messageText).join('\n'));
     }
     if (!configFileName) {

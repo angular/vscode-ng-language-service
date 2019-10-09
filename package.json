@@ -35,7 +35,7 @@
     "compile:test": "tsc -b server/src/tests",
     "compile:integration": "tsc -b integration",
     "format": "scripts/format.sh",
-    "watch": "tsc -b -w & rollup -c -w",
+    "watch": "tsc -b -w",
     "postinstall": "vscode-install && cd client && yarn && cd ../server && yarn && cd ..",
     "package": "rm -rf dist && node scripts/package.js",
     "test": "yarn compile:test && jasmine server/out/tests/*_spec.js",

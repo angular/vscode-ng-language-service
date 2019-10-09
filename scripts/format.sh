@@ -7,3 +7,7 @@ find . -name "*.ts" \
   -not -path "*/node_modules/*" \
   -not -path "*/out/*" \
   -exec yarn clang-format -i {} +
+
+if [[ ! -z "${CI_MODE}" ]]; then
+  git diff --diff-filter=ACMRT --exit-code || (echo "Files not formatted; please run 'yarn format'." && exit 1)
+fi

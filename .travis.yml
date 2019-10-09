@@ -16,7 +16,7 @@ script:
   - ./scripts/lint.sh
   - ./scripts/build.sh
   - ./scripts/test.sh
-  - ./scripts/format.sh && git diff --diff-filter=ACMRT --exit-code || (echo "Files not formatted; please run 'yarn format'." && exit 1)
+  - ./scripts/format.sh
 
 after_script:
   - ./scripts/cleanup.sh

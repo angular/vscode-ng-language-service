@@ -49,7 +49,7 @@ export function activate(context: vscode.ExtensionContext) {
       },
     },
     debug: {
-      module: context.asAbsolutePath(path.join('dist', 'server')),
+      module: context.asAbsolutePath(path.join('server', 'out', 'server.js')),
       transport: lsp.TransportKind.ipc,
       args: [
         '--logFile',

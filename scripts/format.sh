@@ -3,6 +3,7 @@
 set -ex -o pipefail
 
 find . -name "*.ts" \
+  -not -path "*/.vscode*" \
   -not -path "*/project/*" \
   -not -path "*/node_modules/*" \
   -not -path "*/out/*" \

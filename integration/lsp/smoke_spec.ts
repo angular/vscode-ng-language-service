@@ -39,7 +39,7 @@ describe('Angular Language Service', () => {
           '--tsProbeLocations',
           PACKAGE_ROOT,
           '--ngProbeLocations',
-          PROJECT_PATH,
+          SERVER_PATH,
         ],
         {
           cwd: PROJECT_PATH,

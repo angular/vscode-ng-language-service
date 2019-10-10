@@ -5,8 +5,5 @@
     "@angular/core": "~8.2.2",
     "rxjs": "^6.4.0",
     "zone.js": "^0.10.2"
-  },
-  "devDependencies": {
-    "@angular/language-service": "^9.0.0-next.9"
   }
 }

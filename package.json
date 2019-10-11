@@ -23,7 +23,17 @@
         "title": "Restart Angular Language server",
         "category": "Angular"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Angular Language Service",
+      "properties": {
+        "angular.ngdk": {
+          "type": ["string", "null"],
+          "default": null,
+          "description": "Specifies the folder path to @angular/language-service."
+        }
+      }
+    }
   },
   "activationEvents": [
     "onLanguage:html",

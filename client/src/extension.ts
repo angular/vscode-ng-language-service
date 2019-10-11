@@ -17,15 +17,8 @@ export function activate(context: vscode.ExtensionContext) {
   // Log file does not yet exist on disk. It is up to the server to create the
   // file.
   const logFile = path.join(context.logPath, 'nglangsvc.log');
-  const ngProbeLocations = [
-    process.cwd(),                     // workspace version
-    context.asAbsolutePath('server'),  // bundled version
-  ];
-  const tsProbeLocations = [
-    process.cwd(),          // workspace version
-    context.extensionPath,  // bundled version
-  ];
-
+  const ngProbeLocations = getProbeLocations('angular.ngdk', context.asAbsolutePath('server'));
+  const tsProbeLocations = getProbeLocations('typescript.tsdk', context.extensionPath);
   // If the extension is launched in debug mode then the debug server options are used
   // Otherwise the run options are used
   const serverOptions: lsp.ServerOptions = {
@@ -132,4 +125,21 @@ export function activate(context: vscode.ExtensionContext) {
       }
     });
   });
+}
+
+function getProbeLocations(configName: string, bundled: string): string[] {
+  const locations = [];
+  // Always use config value if it's specified
+  const configValue = vscode.workspace.getConfiguration().get(configName);
+  if (configValue) {
+    locations.push(configValue as string);
+  }
+  // If not, look in workspaces currently open
+  const workspaceFolders = vscode.workspace.workspaceFolders || [];
+  for (const folder of workspaceFolders) {
+    locations.push(folder.uri.fsPath);
+  }
+  // If all else fails, load the bundled version
+  locations.push(bundled);
+  return locations;
 }

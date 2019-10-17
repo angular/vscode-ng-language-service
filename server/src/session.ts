@@ -83,11 +83,12 @@ export class Session {
         break;
       case ts.server.ProjectLoadingFinishEvent: {
         const {project} = event.data;
-        if (!isAngularProject(project)) {
-          project.disableLanguageService();
-          this.connection.console.info(`Disabling language service for ${
-              project.projectName} because it is not an Angular project.`);
-        }
+        // https://github.com/angular/vscode-ng-language-service/issues/416
+        // if (!isAngularProject(project)) {
+        //   project.disableLanguageService();
+        //   this.connection.console.info(`Disabling language service for ${
+        //       project.projectName} because it is not an Angular project.`);
+        // }
         this.connection.sendNotification(
             projectLoadingNotification.finish, event.data.project.projectName);
         break;

@@ -64,7 +64,7 @@
     "rollup-plugin-commonjs": "^10.1.0",
     "tslint": "^5.19.0",
     "tslint-eslint-rules": "^5.4.0",
-    "vsce": "^1.66.0",
+    "vsce": "^1.68.0",
     "vscode": "^1.1.36",
     "vscode-jsonrpc": "^4.0.0"
   },

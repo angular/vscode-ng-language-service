@@ -31,6 +31,17 @@
           "type": ["string", "null"],
           "default": null,
           "description": "Specifies the folder path to @angular/language-service."
+        },
+        "angular.log": {
+          "type": "string",
+          "enum": [
+            "off",
+            "terse",
+            "normal",
+            "verbose"
+          ],
+          "default": "terse",
+          "description": "Enables logging of the Angular server to a file. This log can be used to diagnose Angular Server issues. The log may contain file paths, source code, and other potentially sensitive information from your project."
         }
       }
     }

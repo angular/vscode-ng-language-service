@@ -14,26 +14,13 @@ import {registerCommands} from './commands';
 import {projectLoadingNotification} from './protocol';
 
 export function activate(context: vscode.ExtensionContext) {
-  // Log file does not yet exist on disk. It is up to the server to create the
-  // file.
-  const logFile = path.join(context.logPath, 'nglangsvc.log');
-  const ngProbeLocations = getProbeLocations('angular.ngdk', context.asAbsolutePath('server'));
-  const tsProbeLocations = getProbeLocations('typescript.tsdk', context.extensionPath);
   // If the extension is launched in debug mode then the debug server options are used
   // Otherwise the run options are used
   const serverOptions: lsp.ServerOptions = {
     run: {
       module: context.asAbsolutePath(path.join('server')),
       transport: lsp.TransportKind.ipc,
-      args: [
-        '--logFile',
-        logFile,
-        // TODO: Might want to turn off logging completely.
-        '--ngProbeLocations',
-        ngProbeLocations.join(','),
-        '--tsProbeLocations',
-        tsProbeLocations.join(','),
-      ],
+      args: constructArgs(context, false /* debug */),
       options: {
         env: {
           // Force TypeScript to use the non-polling version of the file watchers.
@@ -44,16 +31,7 @@ export function activate(context: vscode.ExtensionContext) {
     debug: {
       module: context.asAbsolutePath(path.join('server', 'out', 'server.js')),
       transport: lsp.TransportKind.ipc,
-      args: [
-        '--logFile',
-        logFile,
-        '--logVerbosity',
-        'verbose',
-        '--ngProbeLocations',
-        ngProbeLocations.join(','),
-        '--tsProbeLocations',
-        tsProbeLocations.join(','),
-      ],
+      args: constructArgs(context, true /* debug */),
       options: {
         env: {
           // Force TypeScript to use the non-polling version of the file watchers.
@@ -127,10 +105,15 @@ export function activate(context: vscode.ExtensionContext) {
   });
 }
 
-function getProbeLocations(configName: string, bundled: string): string[] {
+/**
+ * Return the paths for the module that corresponds to the specified `configValue`,
+ * and use the specified `bundled` as fallback if none is provided.
+ * @param configName
+ * @param bundled
+ */
+function getProbeLocations(configValue: string|null, bundled: string): string[] {
   const locations = [];
   // Always use config value if it's specified
-  const configValue = vscode.workspace.getConfiguration().get(configName);
   if (configValue) {
     locations.push(configValue as string);
   }
@@ -142,4 +125,32 @@ function getProbeLocations(configName: string, bundled: string): string[] {
   // If all else fails, load the bundled version
   locations.push(bundled);
   return locations;
+}
+
+/**
+ * Construct the arguments that's used to spawn the server process.
+ * @param ctx vscode extension context
+ * @param debug true if debug mode is on
+ */
+function constructArgs(ctx: vscode.ExtensionContext, debug: boolean): string[] {
+  const config = vscode.workspace.getConfiguration();
+  const args: string[] = [];
+
+  const ngLog: string = config.get('angular.log', 'off');
+  if (ngLog !== 'off') {
+    // Log file does not yet exist on disk. It is up to the server to create the file.
+    const logFile = path.join(ctx.logPath, 'nglangsvc.log');
+    args.push('--logFile', logFile);
+    args.push('--logVerbosity', debug ? 'verbose' : ngLog);
+  }
+
+  const ngdk: string|null = config.get('angular.ngdk', null);
+  const ngProbeLocations = getProbeLocations(ngdk, ctx.asAbsolutePath('server'));
+  args.push('--ngProbeLocations', ngProbeLocations.join(','));
+
+  const tsdk: string|null = config.get('typescript.tsdk', null);
+  const tsProbeLocations = getProbeLocations(tsdk, ctx.extensionPath);
+  args.push('--tsProbeLocations', tsProbeLocations.join(','));
+
+  return args;
 }

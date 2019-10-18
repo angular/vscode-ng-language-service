@@ -162,7 +162,9 @@ export class Session {
       this.connection.console.error(`Failed to find project for ${filePath}`);
       return;
     }
-    project.refreshDiagnostics();  // Show initial diagnostics
+    if (project.languageServiceEnabled) {
+      project.refreshDiagnostics();  // Show initial diagnostics
+    }
   }
 
   private onDidCloseTextDocument(params: lsp.DidCloseTextDocumentParams) {
@@ -193,7 +195,7 @@ export class Session {
     }
 
     const project = this.projectService.getDefaultProjectForScriptInfo(scriptInfo);
-    if (!project) {
+    if (!project || !project.languageServiceEnabled) {
       return;
     }
     project.refreshDiagnostics();

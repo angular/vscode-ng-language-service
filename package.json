@@ -53,7 +53,7 @@
     "test:e2e": "yarn compile:integration && ./scripts/e2e.sh"
   },
   "dependencies": {
-    "typescript": "~3.5.3"
+    "typescript": "~3.6.4"
   },
   "devDependencies": {
     "@types/jasmine": "^3.4.0",

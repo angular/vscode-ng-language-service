@@ -12,7 +12,7 @@ and external templates including:
 * Quick info
 * Go to definition
 
-This extension uses `typescript@3.5.x`.
+This extension uses `typescript@3.6.x`.
 
 **NOTE**: Please make sure `@angular/language-service` >= v9.0.0 is installed
 in your project otherwise the extension would not work.

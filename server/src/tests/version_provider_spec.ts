@@ -13,12 +13,12 @@ describe('resolveWithMinMajor', () => {
 
   it('should find typescript >= v2', () => {
     const result = resolveWithMinMajor('typescript', 2, probeLocations);
-    expect(result.version).toBe('3.5.3');
+    expect(result.version).toBe('3.6.4');
   });
 
   it('should find typescript v3', () => {
     const result = resolveWithMinMajor('typescript', 3, probeLocations);
-    expect(result.version).toBe('3.5.3');
+    expect(result.version).toBe('3.6.4');
   });
 
   it('should fail to find typescript v4', () => {

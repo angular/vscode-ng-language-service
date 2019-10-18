@@ -32,6 +32,7 @@ Options:
   --tsProbeLocations: Path of typescript. Required.
 
 Additional options supported by vscode-languageserver:
+  --clientProcessId=<number>: Automatically kills the server if the client process dies.
   --node-ipc: Communicate using Node's IPC. This is the default.
   --stdio: Communicate over stdin/stdout.
   --socket=<number>: Communicate using Unix socket.

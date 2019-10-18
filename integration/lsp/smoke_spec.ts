@@ -87,7 +87,7 @@ describe('Angular Language Service', () => {
          * process. If the parent process is not alive then the server should
          * exit (see exit notification) its process.
          */
-        'processId': server.pid,
+        'processId': process.pid,
         'rootUri': `file://${PROJECT_PATH}`,
         'capabilities': {},
         /**
@@ -119,7 +119,7 @@ describe('Angular Language Service', () => {
       'id': 0,
       'method': 'initialize',
       'params': {
-        'processId': server.pid,
+        'processId': process.pid,
         'rootUri': `file://${PROJECT_PATH}`,
         'capabilities': {},
         'trace': 'off'
@@ -580,6 +580,55 @@ describe('Angular Language Service', () => {
           }
         }
       ]
+    });
+  });
+
+  it('should work with external template', async () => {
+    const r0 = await send({
+      jsonrpc: '2.0',
+      id: 0,
+      method: 'initialize',
+      params: {
+        processId: process.pid,
+        rootUri: `file://${PROJECT_PATH}`,
+        capabilities: {},
+      }
+    });
+    expect(r0).toBeDefined();
+    const n0 = await send({
+      jsonrpc: '2.0',
+      method: 'textDocument/didOpen',
+      params: {
+        textDocument: {
+          uri: `file://${PROJECT_PATH}/app/foo.component.html`,
+          languageId: 'typescript',
+          version: 1,
+        }
+      }
+    });
+    expect(n0).toBe(null);  // no response expected from notification
+    const r1 = await send({
+      jsonrpc: '2.0',
+      id: 1,
+      method: 'textDocument/hover',
+      params: {
+        textDocument: {uri: `file://${PROJECT_PATH}/app/foo.component.html`},
+        position: {line: 0, character: 3}
+      }
+    });
+    expect(r1).toEqual({
+      jsonrpc: '2.0',
+      id: 1,
+      result: {
+        contents: [{
+          language: 'typescript',
+          value: '(property) FooComponent.title',
+        }],
+        range: {
+          start: {line: 0, character: 2},
+          end: {line: 0, character: 7},
+        }
+      }
     });
   });
 });

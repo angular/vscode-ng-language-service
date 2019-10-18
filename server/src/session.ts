@@ -153,7 +153,6 @@ export class Session {
       this.connection.console.error(configFileErrors.map(e => e.messageText).join('\n'));
     }
     if (!configFileName) {
-      // TODO: This could happen if the first file opened is HTML. Fix this.
       this.connection.console.error(`No config file for ${filePath}`);
       return;
     }

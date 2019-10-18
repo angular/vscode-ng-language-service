@@ -83,13 +83,9 @@ export class Session {
         break;
       case ts.server.ProjectLoadingFinishEvent: {
         const {project} = event.data;
-        if (!isAngularProject(project)) {
-          project.disableLanguageService();
-          this.connection.console.info(`Disabling language service for ${
-              project.projectName} because it is not an Angular project.`);
-        }
-        this.connection.sendNotification(
-            projectLoadingNotification.finish, event.data.project.projectName);
+        // Disable language service if project is not Angular
+        this.checkIsAngularProject(project);
+        this.connection.sendNotification(projectLoadingNotification.finish, project.projectName);
         break;
       }
       case ts.server.ProjectsUpdatedInBackgroundEvent:
@@ -378,19 +374,54 @@ export class Session {
   listen() {
     this.connection.listen();
   }
+
+  /**
+   * Determine if the specified `project` is Angular, and disable the language
+   * service if not.
+   * @param project
+   */
+  private checkIsAngularProject(project: ts.server.Project) {
+    const NG_CORE = '@angular/core/core.d.ts';
+    const {projectName} = project;
+    if (!project.languageServiceEnabled) {
+      const msg = `Language service is already disabled for ${projectName}. ` +
+          `This could be due to non-TS files that exceeded the size limit (${
+                      ts.server.maxProgramSizeForNonTsFiles} bytes).` +
+          `Please check log file for details.`;
+      this.connection.console.info(msg);  // log to remote console to inform users
+      project.log(msg);  // log to file, so that it's easier to correlate with ts entries
+      return;
+    }
+    if (!isAngularProject(project, NG_CORE)) {
+      project.disableLanguageService();
+      const totalFiles = project.getFileNames().length;
+      const msg =
+          `Disabling language service for ${projectName} because it is not an Angular project. ` +
+          `There are ${totalFiles} files in the project but '${NG_CORE}' is not detected.`;
+      this.connection.console.info(msg);
+      project.log(msg);
+      if (project.getExcludedFiles().some(f => f.endsWith(NG_CORE))) {
+        const msg =
+            `Please check your tsconfig.json to make sure 'node_modules' directory is not excluded.`;
+        this.connection.console.info(msg);
+        project.log(msg);
+      }
+    }
+  }
 }
 
 /**
  * Return true if the specified `project` contains the Angular core declaration.
  * @param project
+ * @param ngCore path that uniquely identifies `@angular/core`.
  */
-function isAngularProject(project: ts.server.Project): boolean {
+function isAngularProject(project: ts.server.Project, ngCore: string): boolean {
   project.markAsDirty();  // Must mark project as dirty to rebuild the program.
   if (project.isNonTsProject()) {
     return false;
   }
   for (const fileName of project.getFileNames()) {
-    if (fileName.endsWith('@angular/core/core.d.ts')) {
+    if (fileName.endsWith(ngCore)) {
       return true;
     }
   }

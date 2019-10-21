@@ -31,40 +31,43 @@ function resolve(packageName: string, paths: string[]): NodeModule|undefined {
   }
 }
 
-function minVersion(nodeModule: NodeModule, minMajor: number): boolean {
+export function minVersion(nodeModule: NodeModule, minMajor: number, minMinor: number): boolean {
   if (!nodeModule.version) {
     return false;
   }
-  const [majorStr] = nodeModule.version.split('.');
+  const [majorStr, minorStr] = nodeModule.version.split('.');
   if (!majorStr) {
     return false;
   }
   const major = Number(majorStr);
-  if (isNaN(major)) {
+  const minor = Number(minorStr);
+  if (isNaN(major) || isNaN(minor)) {
     return false;
   }
-  return major >= minMajor;
+  return major > minMajor || (major == minMajor && minor >= minMinor);
 }
 
 /**
  * Resolve the node module with the specified `packageName` that satisfies
- * the specified minimum major version.
+ * the specified minimum major and minor version.
  * @param packageName
- * @param minMajor
  * @param probeLocations
+ * @param minMajor
+ * @param minMinor
  */
-export function resolveWithMinMajor(
-    packageName: string, minMajor: number, probeLocations: string[]): NodeModule {
+export function resolveWithMinVersion(
+    packageName: string, probeLocations: string[], minMajor: number, minMinor: number): NodeModule {
   for (const location of probeLocations) {
     const nodeModule = resolve(packageName, [location]);
     if (!nodeModule) {
       continue;
     }
-    if (minVersion(nodeModule, minMajor)) {
+    if (minVersion(nodeModule, minMajor, minMinor)) {
       return nodeModule;
     }
   }
   throw new Error(
-      `Failed to resolve '${packageName}' with minimum major version '${minMajor}' from ` +
+      `Failed to resolve '${packageName}' with minimum major '${minMajor}' and minor '${
+          minMinor}' version from ` +
       JSON.stringify(probeLocations, null, 2));
 }

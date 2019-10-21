@@ -9,7 +9,7 @@
 import {createLogger} from './logger';
 import {ServerHost} from './server_host';
 import {Session} from './session';
-import {resolveWithMinMajor} from './version_provider';
+import {resolveWithMinVersion} from './version_provider';
 
 // Parse command line arguments
 const help = hasArgument('--help');
@@ -43,8 +43,8 @@ Additional options supported by vscode-languageserver:
 // Create a logger that logs to file. OK to emit verbose entries.
 const logger = createLogger({logFile, logVerbosity});
 
-const ts = resolveWithMinMajor('typescript', 3, tsProbeLocations);
-const ng = resolveWithMinMajor('@angular/language-service', 9, ngProbeLocations);
+const ts = resolveWithMinVersion('typescript', tsProbeLocations, 3, 6);
+const ng = resolveWithMinVersion('@angular/language-service', ngProbeLocations, 9, 0);
 
 // ServerHost provides native OS functionality
 const host = new ServerHost();

@@ -67,7 +67,6 @@ export function resolveWithMinVersion(
     }
   }
   throw new Error(
-      `Failed to resolve '${packageName}' with minimum major '${minMajor}' and minor '${
-          minMinor}' version from ` +
+      `Failed to resolve '${packageName}' with version >= ${minMajor}.${minMinor}.0' from ` +
       JSON.stringify(probeLocations, null, 2));
 }

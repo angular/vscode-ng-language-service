@@ -1,6 +1,6 @@
 # v0.900.0
 This release is a substantial overhaul of the Angular language service that brings
-signficant performance improvements.
+significant performance improvements.
 
 New features:
 - Added "go to definition" for `templateUrl` and `styleUrls`.

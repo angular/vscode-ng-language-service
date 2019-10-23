@@ -11,7 +11,7 @@ rm -rf dist
 yarn run compile
 
 # Copy files to package root
-cp package.json yarn.lock angular.png README.md dist
+cp package.json yarn.lock angular.png CHANGELOG.md README.md dist
 # Copy files to client directory
 cp client/package.json client/yarn.lock dist/client
 # Copy files to server directory

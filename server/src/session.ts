@@ -38,6 +38,7 @@ const EMPTY_RANGE = lsp.Range.create(0, 0, 0, 0);
 export class Session {
   private readonly connection: lsp.IConnection;
   private readonly projectService: ProjectService;
+  private diagnosticsTimeout: NodeJS.Timeout|null = null;
 
   constructor(options: SessionOptions) {
     // Create a connection for the server. The connection uses Node's IPC as a transport.
@@ -91,16 +92,38 @@ export class Session {
       case ts.server.ProjectsUpdatedInBackgroundEvent:
         // ProjectsUpdatedInBackgroundEvent is sent whenever diagnostics are
         // requested via project.refreshDiagnostics()
-        this.refreshDiagnostics(event.data.openFiles);
+        this.triggerDiagnostics(event.data.openFiles);
         break;
     }
   }
 
   /**
-   * Retrieve Angular diagnostics for the specified `openFiles`.
+   * Retrieve Angular diagnostics for the specified `openFiles` after a specific
+   * `delay`, or renew the request if there's already a pending one.
+   * @param openFiles
+   * @param delay time to wait before sending request (milliseconds)
+   */
+  private triggerDiagnostics(openFiles: string[], delay: number = 200) {
+    // Do not immediately send a diagnostics request. Send only after user has
+    // stopped typing after the specified delay.
+    if (this.diagnosticsTimeout) {
+      // If there's an existing timeout, cancel it
+      clearTimeout(this.diagnosticsTimeout);
+    }
+    // Set a new timeout
+    this.diagnosticsTimeout = setTimeout(() => {
+      this.diagnosticsTimeout = null;  // clear the timeout
+      this.sendPendingDiagnostics(openFiles);
+      // Default delay is 200ms, consistent with TypeScript. See
+      // https://github.com/microsoft/vscode/blob/7b944a16f52843b44cede123dd43ae36c0405dfd/extensions/typescript-language-features/src/features/bufferSyncSupport.ts#L493)
+    }, delay);
+  }
+
+  /**
+   * Execute diagnostics request for each of the specified `openFiles`.
    * @param openFiles
    */
-  private refreshDiagnostics(openFiles: string[]) {
+  private sendPendingDiagnostics(openFiles: string[]) {
     for (const fileName of openFiles) {
       const scriptInfo = this.projectService.getScriptInfo(fileName);
       if (!scriptInfo) {

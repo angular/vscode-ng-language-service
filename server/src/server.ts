@@ -57,6 +57,7 @@ const session = new Session({
 });
 
 // Log initialization info
+session.info(`Angular language server process ID: ${process.pid}`);
 session.info(`Using typescript v${ts.version} from ${ts.resolvedPath}`);
 session.info(`Using @angular/language-service v${ng.version} from ${ng.resolvedPath}`);
 session.info(`Log file: ${logger.getLogFileName()}`);

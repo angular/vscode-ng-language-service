@@ -1,14 +1,14 @@
 {
   "name": "@angular/language-server",
   "description": "LSP server for Angular Language Service",
-  "version": "0.900.0-rc.1",
+  "version": "0.900.0-rc.2",
   "author": "Angular",
   "license": "MIT",
   "engines": {
     "node": ">=10.9.0 <13.0.0"
   },
   "dependencies": {
-    "@angular/language-service": "^9.0.0-rc.1",
+    "@angular/language-service": "^9.0.0-rc.2",
     "vscode-languageserver": "~5.2.1",
     "vscode-uri": "^2.0.3"
   }

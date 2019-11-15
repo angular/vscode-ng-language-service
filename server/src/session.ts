@@ -353,7 +353,8 @@ export class Session {
     if (!completions) {
       return;
     }
-    return completions.entries.map((e) => tsCompletionEntryToLspCompletionItem(e, position));
+    return completions.entries.map(
+        (e) => tsCompletionEntryToLspCompletionItem(e, position, scriptInfo));
   }
 
   /**

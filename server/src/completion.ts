@@ -6,7 +6,10 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import * as ts from 'typescript/lib/tsserverlibrary';
 import * as lsp from 'vscode-languageserver';
+
+import {tsTextSpanToLspRange} from './utils';
 
 // TODO: Move this to `@angular/language-service`.
 enum CompletionKind {
@@ -57,9 +60,11 @@ function ngCompletionKindToLspCompletionItemKind(kind: CompletionKind): lsp.Comp
  * Convert ts.CompletionEntry to LSP Completion Item.
  * @param entry completion entry
  * @param position position where completion is requested.
+ * @param scriptInfo
  */
 export function tsCompletionEntryToLspCompletionItem(
-    entry: ts.CompletionEntry, position: lsp.Position): lsp.CompletionItem {
+    entry: ts.CompletionEntry, position: lsp.Position,
+    scriptInfo: ts.server.ScriptInfo): lsp.CompletionItem {
   const item = lsp.CompletionItem.create(entry.name);
   // Even though `entry.kind` is typed as ts.ScriptElementKind, it's
   // really Angular's CompletionKind. This is because ts.ScriptElementKind does
@@ -69,6 +74,12 @@ export function tsCompletionEntryToLspCompletionItem(
   item.kind = ngCompletionKindToLspCompletionItemKind(kind);
   item.detail = entry.kind;
   item.sortText = entry.sortText;
-  item.textEdit = lsp.TextEdit.insert(position, entry.name);
+  // Text that actually gets inserted to the document. It could be different
+  // from 'entry.name'. For example, a method name could be 'greet', but the
+  // insertText is 'greet()'.
+  const insertText = entry.insertText || entry.name;
+  item.textEdit = entry.replacementSpan ?
+      lsp.TextEdit.replace(tsTextSpanToLspRange(scriptInfo, entry.replacementSpan), insertText) :
+      lsp.TextEdit.insert(position, insertText);
   return item;
 }

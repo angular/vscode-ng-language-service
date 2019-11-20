@@ -220,7 +220,7 @@ export class Session {
     if (!project || !project.languageServiceEnabled) {
       return;
     }
-    this.triggerDiagnostics([scriptInfo.fileName]);
+    project.refreshDiagnostics();
   }
 
   private onDidSaveTextDocument(params: lsp.DidSaveTextDocumentParams) {

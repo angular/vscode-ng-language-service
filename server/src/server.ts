@@ -10,7 +10,7 @@ import {generateHelpMessage, parseCommandLine} from './cmdline_utils';
 import {createLogger} from './logger';
 import {ServerHost} from './server_host';
 import {Session} from './session';
-import {resolveWithMinMajor} from './version_provider';
+import {resolveNgLangSvc, resolveTsServer} from './version_provider';
 
 // Parse command line arguments
 const options = parseCommandLine(process.argv);
@@ -26,9 +26,8 @@ const logger = createLogger({
   logVerbosity: options.logVerbosity,
 });
 
-const {tsProbeLocations, ngProbeLocations} = options;
-const ts = resolveWithMinMajor('typescript', 3, tsProbeLocations);
-const ng = resolveWithMinMajor('@angular/language-service', 9, ngProbeLocations);
+const ts = resolveTsServer(options.tsProbeLocations);
+const ng = resolveNgLangSvc(options.ngProbeLocations);
 
 // ServerHost provides native OS functionality
 const host = new ServerHost();

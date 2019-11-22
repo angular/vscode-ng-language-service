@@ -6,43 +6,27 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import {generateHelpMessage, parseCommandLine} from './cmdline_utils';
 import {createLogger} from './logger';
 import {ServerHost} from './server_host';
 import {Session} from './session';
 import {resolveWithMinMajor} from './version_provider';
 
 // Parse command line arguments
-const help = hasArgument('--help');
-const logFile = findArgument('--logFile');
-const logVerbosity = findArgument('--logVerbosity');
-const ngProbeLocations = parseStringArray('--ngProbeLocations');
-const tsProbeLocations = parseStringArray('--tsProbeLocations');
+const options = parseCommandLine(process.argv);
 
-if (help) {
-  const {argv} = process;
-  console.error(`Angular Language Service that implements the Language Server Protocol (LSP).
-
-Usage: ${argv[0]} ${argv[1]} [options]
-
-Options:
-  --help: Prints help message.
-  --logFile: Location to log messages. Logging is disabled if not provided.
-  --logVerbosity: terse|normal|verbose|requestTime. See ts.server.LogLevel.
-  --ngProbeLocations: Path of @angular/language-service. Required.
-  --tsProbeLocations: Path of typescript. Required.
-
-Additional options supported by vscode-languageserver:
-  --clientProcessId=<number>: Automatically kills the server if the client process dies.
-  --node-ipc: Communicate using Node's IPC. This is the default.
-  --stdio: Communicate over stdin/stdout.
-  --socket=<number>: Communicate using Unix socket.
-`);
+if (options.help) {
+  console.error(generateHelpMessage(process.argv));
   process.exit(0);
 }
 
 // Create a logger that logs to file. OK to emit verbose entries.
-const logger = createLogger({logFile, logVerbosity});
+const logger = createLogger({
+  logFile: options.logFile,
+  logVerbosity: options.logVerbosity,
+});
 
+const {tsProbeLocations, ngProbeLocations} = options;
 const ts = resolveWithMinMajor('typescript', 3, tsProbeLocations);
 const ng = resolveWithMinMajor('@angular/language-service', 9, ngProbeLocations);
 
@@ -69,23 +53,3 @@ if (process.env.TSC_NONPOLLING_WATCHER !== 'true') {
 }
 
 session.listen();
-
-function hasArgument(argName: string): boolean {
-  return process.argv.includes(argName);
-}
-
-function findArgument(argName: string): string|undefined {
-  const index = process.argv.indexOf(argName);
-  if (index < 0 || index === process.argv.length - 1) {
-    return;
-  }
-  return process.argv[index + 1];
-}
-
-function parseStringArray(argName: string): string[] {
-  const arg = findArgument(argName);
-  if (!arg) {
-    return [];
-  }
-  return arg.split(',');
-}

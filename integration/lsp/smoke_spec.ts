@@ -10,7 +10,7 @@ describe('Angular Language Service', () => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000; /* 10 seconds */
   const PACKAGE_ROOT = resolve(__dirname, '../../..');
   const PROJECT_PATH = resolve(__dirname, '../../project');
-  const SERVER_PATH = resolve(__dirname, '../../../server/out/server.js');
+  const SERVER_PATH = resolve(__dirname, '../../../dist/server/index.js');
   const responseEmitter = new ResponseEmitter();
   let server: ChildProcess;
 

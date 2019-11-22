@@ -28,7 +28,10 @@
       "title": "Angular Language Service",
       "properties": {
         "angular.ngdk": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "default": null,
           "description": "Specifies the folder path to @angular/language-service."
         },
@@ -52,7 +55,8 @@
   ],
   "main": "./client/out/extension",
   "scripts": {
-    "compile": "tsc -b && rollup -c",
+    "compile": "yarn compile:banner && tsc -b && rollup -c",
+    "compile:banner": "tsc -p server/banner.tsconfig.json && rollup -c banner.rollup.config.js",
     "compile:test": "tsc -b server/src/tests",
     "compile:integration": "tsc -b integration",
     "format": "scripts/format.sh",

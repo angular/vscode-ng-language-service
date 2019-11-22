@@ -6,5 +6,8 @@
     "rootDir": "src"
   },
   "include": ["src/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "src/banner.ts",
+    "node_modules"
+  ]
 }

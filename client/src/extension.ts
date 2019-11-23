@@ -115,7 +115,7 @@ function getProbeLocations(configValue: string|null, bundled: string): string[] 
   const locations = [];
   // Always use config value if it's specified
   if (configValue) {
-    locations.push(configValue as string);
+    locations.push(configValue);
   }
   // If not, look in workspaces currently open
   const workspaceFolders = vscode.workspace.workspaceFolders || [];
@@ -144,6 +144,22 @@ function constructArgs(ctx: vscode.ExtensionContext, debug: boolean): string[] {
     args.push('--logVerbosity', debug ? 'verbose' : ngLog);
   }
 
+  // Due to a bug in tsserver, ngProbeLocation is not honored when tsserver
+  // loads the plugin. tsserver would look for @angular/language-service in its
+  // peer node_modules directory, and use that if it finds one. To work around
+  // this bug, always load typescript from the bundled location for now, so that
+  // the bundled @angular/language-service is always chosen.
+  // See the following links:
+  // 1. https://github.com/angular/vscode-ng-language-service/issues/437
+  // 2. https://github.com/microsoft/TypeScript/issues/34616
+  // 3. https://github.com/microsoft/TypeScript/pull/34656
+  // TODO: Remove workaround once
+  // https://github.com/microsoft/TypeScript/commit/f689982c9f2081bc90d2192eee96b404f75c4705
+  // is released and Angular is switched over to the new TypeScript version.
+  args.push('--ngProbeLocations', ctx.asAbsolutePath('server'));
+  args.push('--tsProbeLocations', ctx.extensionPath);
+
+  /*
   const ngdk: string|null = config.get('angular.ngdk', null);
   const ngProbeLocations = getProbeLocations(ngdk, ctx.asAbsolutePath('server'));
   args.push('--ngProbeLocations', ngProbeLocations.join(','));
@@ -151,6 +167,7 @@ function constructArgs(ctx: vscode.ExtensionContext, debug: boolean): string[] {
   const tsdk: string|null = config.get('typescript.tsdk', null);
   const tsProbeLocations = getProbeLocations(tsdk, ctx.extensionPath);
   args.push('--tsProbeLocations', tsProbeLocations.join(','));
+  */
 
   return args;
 }

@@ -6,23 +6,69 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {resolveWithMinMajor} from '../version_provider';
+import {resolveNgLangSvc, resolveTsServer, Version} from '../version_provider';
 
-describe('resolveWithMinMajor', () => {
+describe('Node Module Resolver', () => {
   const probeLocations = [__dirname];
 
-  it('should find typescript >= v2', () => {
-    const result = resolveWithMinMajor('typescript', 2, probeLocations);
-    expect(result.version).toBe('3.6.4');
+  it('should be able to resolve tsserver', () => {
+    const result = resolveTsServer(probeLocations);
+    expect(result).toBeDefined();
+    expect(result.resolvedPath).toMatch(/typescript\/lib\/tsserverlibrary.js$/);
   });
 
-  it('should find typescript v3', () => {
-    const result = resolveWithMinMajor('typescript', 3, probeLocations);
-    expect(result.version).toBe('3.6.4');
+  it('should be able to resolve Angular language service', () => {
+    const result = resolveNgLangSvc(probeLocations);
+    expect(result).toBeDefined();
+    expect(result.resolvedPath).toMatch(/language-service.umd.js$/);
+  });
+});
+
+describe('Version', () => {
+  it('should parse version string correctly', () => {
+    const cases: Array<[string, number, number, number]> = [
+      // version string | major | minor | patch
+      ['1', 1, 0, 0],
+      ['1.2', 1, 2, 0],
+      ['1.2.3', 1, 2, 3],
+      ['9.0.0-rc.1+126.sha-0c38aae.with-local-changes', 9, 0, 0],
+    ];
+    for (const [versionStr, major, minor, patch] of cases) {
+      const v = new Version(versionStr);
+      expect(v.major).toBe(major);
+      expect(v.minor).toBe(minor);
+      expect(v.patch).toBe(patch);
+    }
   });
 
-  it('should fail to find typescript v4', () => {
-    expect(() => resolveWithMinMajor('typescript', 4, probeLocations))
-        .toThrowError(/^Failed to resolve 'typescript'/);
+  it('should compare versions correctly', () => {
+    const cases: Array<[string, string, boolean]> = [
+      // lhs | rhs | result
+      ['1', '1', true],
+      ['1', '2', false],
+      ['2', '2.0', true],
+      ['2', '2.1', false],
+      ['2', '2.0.0', true],
+      ['2', '2.0.1', false],
+
+      ['1.2', '1', true],
+      ['1.2', '2', false],
+      ['2.2', '2.1', true],
+      ['2.2', '2.7', false],
+      ['3.2', '3.2.0', true],
+      ['3.2', '3.2.1', false],
+
+      ['1.2.3', '1', true],
+      ['1.2.3', '2', false],
+      ['2.2.3', '2.1', true],
+      ['2.2.3', '2.3', false],
+      ['3.2.3', '3.2.2', true],
+      ['3.2.3', '3.2.4', false],
+    ];
+    for (const [s1, s2, result] of cases) {
+      const v1 = new Version(s1);
+      const v2 = new Version(s2);
+      expect(v1.greaterThanOrEqual(v2)).toBe(result, `Expect ${v1} >= ${v2}`);
+    }
   });
 });

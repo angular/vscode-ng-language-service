@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import * as lsp from 'vscode-languageclient';
@@ -17,35 +18,8 @@ export function activate(context: vscode.ExtensionContext) {
   // If the extension is launched in debug mode then the debug server options are used
   // Otherwise the run options are used
   const serverOptions: lsp.ServerOptions = {
-    run: {
-      module: context.asAbsolutePath(path.join('server')),
-      transport: lsp.TransportKind.ipc,
-      args: constructArgs(context, false /* debug */),
-      options: {
-        env: {
-          // Force TypeScript to use the non-polling version of the file watchers.
-          TSC_NONPOLLING_WATCHER: true,
-        },
-      },
-    },
-    debug: {
-      module: context.asAbsolutePath(path.join('server', 'out', 'server.js')),
-      transport: lsp.TransportKind.ipc,
-      args: constructArgs(context, true /* debug */),
-      options: {
-        env: {
-          // Force TypeScript to use the non-polling version of the file watchers.
-          TSC_NONPOLLING_WATCHER: true,
-          NG_DEBUG: true,
-        },
-        execArgv: [
-          // do not lazily evaluate the code so all breakpoints are respected
-          '--nolazy',
-          // If debugging port is changed, update .vscode/launch.json as well
-          '--inspect=6009',
-        ]
-      },
-    },
+    run: getServerOptions(context, false /* debug */),
+    debug: getServerOptions(context, true /* debug */),
   };
 
   // Options to control the language client
@@ -170,4 +144,41 @@ function constructArgs(ctx: vscode.ExtensionContext, debug: boolean): string[] {
   */
 
   return args;
+}
+
+function getServerOptions(ctx: vscode.ExtensionContext, debug: boolean): lsp.NodeModule {
+  // Environment variables for server process
+  const prodEnv = {
+    // Force TypeScript to use the non-polling version of the file watchers.
+    TSC_NONPOLLING_WATCHER: true,
+  };
+  const devEnv = {
+    ...prodEnv,
+    NG_DEBUG: true,
+  };
+
+  // Node module for the language server
+  const prodBundle = ctx.asAbsolutePath('server');
+  const devBundle = ctx.asAbsolutePath(path.join('server', 'out', 'server.js'));
+
+  // Argv options for Node.js
+  const prodExecArgv: string[] = [];
+  const devExecArgv: string[] = [
+    // do not lazily evaluate the code so all breakpoints are respected
+    '--nolazy',
+    // If debugging port is changed, update .vscode/launch.json as well
+    '--inspect=6009',
+  ];
+
+  return {
+    // VS Code Insider launches extensions in debug mode by default but users
+    // install prod bundle so we have to check whether dev bundle exists.
+    module: debug && fs.existsSync(devBundle) ? devBundle : prodBundle,
+    transport: lsp.TransportKind.ipc,
+    args: constructArgs(ctx, debug),
+    options: {
+      env: debug ? devEnv : prodEnv,
+      execArgv: debug ? devExecArgv : prodExecArgv,
+    },
+  };
 }

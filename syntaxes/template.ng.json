@@ -17,6 +17,7 @@
           "name": "punctuation.separator.key-value.ts"
         }
       },
+      "end": "(?=,|})",
       "patterns": [
         {
           "include": "#ts-paren-expression"

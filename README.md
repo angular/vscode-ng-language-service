@@ -29,3 +29,7 @@ The extension can also be installed with the following command:
 ```
 code --install-extension /path/to/ngls.vsix
 ```
+
+## Angular Language Service for Other Editors
+
+- [coc-angular](https://github.com/iamcco/coc-angular) for (Neo)vim

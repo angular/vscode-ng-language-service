@@ -1,0 +1,73 @@
+{
+  "scopeName": "template.ng",
+  "injectionSelector": "L:meta.decorator.ts",
+  "patterns": [
+    {
+      "include": "#ts-decorator"
+    }
+  ],
+  "repository": {
+    "ts-decorator": {
+      "begin": "(template)\\s*(:)",
+      "beginCaptures": {
+        "1": {
+          "name": "meta.object-literal.key.ts"
+        },
+        "2": {
+          "name": "punctuation.separator.key-value.ts"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#ts-paren-expression"
+        },
+        {
+          "include": "#ng-template"
+        }
+      ]
+    },
+
+    "ts-paren-expression": {
+      "begin": "\\G\\s*\\(",
+      "beginCaptures": {
+        "1": {
+          "name": "meta.brace.round.ts"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "meta.brace.round.ts"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#ts-paren-expression"
+        },
+        {
+          "include": "#ng-template"
+        }
+      ]
+    },
+
+    "ng-template": {
+      "begin": "\\G\\s*([`|'|\"])",
+      "beginCaptures": {
+        "1": {
+          "name": "string"
+        }
+      },
+      "end": "\\1",
+      "endCaptures": {
+        "0": {
+          "name": "string"
+        }
+      },
+      "patterns": [
+        {
+          "include": "text.html.basic"
+        }
+      ]
+    }
+  }
+}

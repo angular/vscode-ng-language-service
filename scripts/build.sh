@@ -6,6 +6,7 @@ set -ex -o pipefail
 rm -rf client/out
 rm -rf server/out
 rm -rf dist
+rm -rf **/*.tsbuildinfo
 
 # Build the client and server
 yarn run compile

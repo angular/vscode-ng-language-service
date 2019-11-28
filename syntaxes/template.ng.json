@@ -14,7 +14,7 @@
           "name": "meta.object-literal.key.ts"
         },
         "2": {
-          "name": "punctuation.separator.key-value.ts"
+          "name": "meta.object-literal.key.ts punctuation.separator.key-value.ts"
         }
       },
       "end": "(?=,|})",
@@ -29,7 +29,7 @@
     },
 
     "ts-paren-expression": {
-      "begin": "\\G\\s*\\(",
+      "begin": "\\G\\s*(\\()",
       "beginCaptures": {
         "1": {
           "name": "meta.brace.round.ts"

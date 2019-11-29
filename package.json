@@ -77,7 +77,8 @@
     "package": "rm -rf dist && node scripts/package.js",
     "test": "yarn compile:test && jasmine server/out/tests/*_spec.js",
     "test:lsp": "yarn compile:integration && jasmine integration/out/lsp/*_spec.js",
-    "test:e2e": "yarn compile:integration && ./scripts/e2e.sh"
+    "test:e2e": "yarn compile:integration && ./scripts/e2e.sh",
+    "test:syntax": "./scripts/syntax.sh"
   },
   "dependencies": {
     "typescript": "~3.6.4"
@@ -93,7 +94,8 @@
     "tslint-eslint-rules": "^5.4.0",
     "vsce": "^1.69.0",
     "vscode": "^1.1.36",
-    "vscode-jsonrpc": "^4.0.0"
+    "vscode-jsonrpc": "^4.0.0",
+    "vscode-tmgrammar-test": "^0.0.8"
   },
   "repository": {
     "type": "git",

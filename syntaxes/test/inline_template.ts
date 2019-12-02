@@ -1,4 +1,5 @@
 // SYNTAX TEST "template.ng"
+/* clang-format off */
 
 @Component({
 //// Property key/value test

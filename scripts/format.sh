@@ -7,7 +7,6 @@ find . -name "*.ts" \
   -not -path "*/project/*" \
   -not -path "*/node_modules/*" \
   -not -path "*/out/*" \
-  -not -path "*/syntaxes/test/*" \
   -exec yarn clang-format -i {} +
 
 if [[ ! -z "${CI_MODE}" ]]; then

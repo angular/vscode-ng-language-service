@@ -15,8 +15,5 @@ ARGS=$(cat<<ARGS
 ARGS
 )
 
-# Unit tests
-yarn vscode-tmgrammar-test $ARGS
-
 # Snapshot tests
 yarn vscode-tmgrammar-snap $ARGS "$@"

@@ -2,7 +2,7 @@
 # Usage:
 #   scripts/syntax.sh [-u]
 #
-# Parameters
+# Arguments:
 #   -u update snapshot files
 
 set -ex -o pipefail

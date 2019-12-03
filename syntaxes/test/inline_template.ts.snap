@@ -1,0 +1,98 @@
+>// SYNTAX TEST "template.ng"
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+>/* clang-format off */
+#^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+>
+>@Component({
+#^^^^^^^^^^^^^ template.ng
+>//// Property key/value test
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+>  template: '<div></div>',
+#^^ template.ng
+#  ^^^^^^^^ template.ng meta.object-literal.key.ts
+#          ^ template.ng meta.object-literal.key.ts punctuation.separator.key-value.ts
+#           ^ template.ng
+#            ^ template.ng string
+#             ^^^^^^^^^^^ template.ng
+#                        ^ template.ng string
+#                         ^^ template.ng
+>
+>//// String delimiter tests
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+>  template: `<div></div>`,
+#^^ template.ng
+#  ^^^^^^^^ template.ng meta.object-literal.key.ts
+#          ^ template.ng meta.object-literal.key.ts punctuation.separator.key-value.ts
+#           ^ template.ng
+#            ^ template.ng string
+#             ^^^^^^^^^^^ template.ng
+#                        ^ template.ng string
+#                         ^^ template.ng
+>  template: "<div></div>",
+#^^ template.ng
+#  ^^^^^^^^ template.ng meta.object-literal.key.ts
+#          ^ template.ng meta.object-literal.key.ts punctuation.separator.key-value.ts
+#           ^ template.ng
+#            ^ template.ng string
+#             ^^^^^^^^^^^ template.ng
+#                        ^ template.ng string
+#                         ^^ template.ng
+>  template: '<div></div>',
+#^^ template.ng
+#  ^^^^^^^^ template.ng meta.object-literal.key.ts
+#          ^ template.ng meta.object-literal.key.ts punctuation.separator.key-value.ts
+#           ^ template.ng
+#            ^ template.ng string
+#             ^^^^^^^^^^^ template.ng
+#                        ^ template.ng string
+#                         ^^ template.ng
+>
+>//// Parenthesization tests
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+>  template: ( (( '<div></div>' )) ),
+#^^ template.ng
+#  ^^^^^^^^ template.ng meta.object-literal.key.ts
+#          ^ template.ng meta.object-literal.key.ts punctuation.separator.key-value.ts
+#           ^ template.ng
+#            ^ template.ng meta.brace.round.ts
+#             ^ template.ng
+#              ^ template.ng meta.brace.round.ts
+#               ^ template.ng meta.brace.round.ts
+#                ^ template.ng
+#                 ^ template.ng string
+#                  ^^^^^^^^^^^ template.ng
+#                             ^ template.ng string
+#                              ^ template.ng
+#                               ^ template.ng meta.brace.round.ts
+#                                ^ template.ng meta.brace.round.ts
+#                                 ^ template.ng
+#                                  ^ template.ng meta.brace.round.ts
+#                                   ^^ template.ng
+>
+>//// Comments tests
+#^^^^^^^^^^^^^^^^^^^^ template.ng
+>  // template: '<div></div>'
+#^^^^^ template.ng
+#     ^^^^^^^^ template.ng meta.object-literal.key.ts
+#             ^ template.ng meta.object-literal.key.ts punctuation.separator.key-value.ts
+#              ^ template.ng
+#               ^ template.ng string
+#                ^^^^^^^^^^^ template.ng
+#                           ^ template.ng string
+>  /*
+#^^^^^ template.ng
+>   * template: '<div></div>'
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+>   */
+#^^^^^^ template.ng
+>  /**
+#^^^^^^ template.ng
+>   * template: '<div></div>'
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+>   */
+#^^^^^^ template.ng
+>})
+#^^^ template.ng
+>export class TMComponent{}
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+>

@@ -1,6 +1,6 @@
 {
   "scopeName": "template.ng",
-  "injectionSelector": "L:meta.decorator.ts",
+  "injectionSelector": "L:meta.decorator.ts -comment",
   "patterns": [
     {
       "include": "#ts-decorator"

@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+# Usage:
+#   scripts/syntax.sh [-u]
+#
+# Parameters
+#   -u update snapshot files
 
 set -ex -o pipefail
 
@@ -14,4 +19,4 @@ ARGS
 yarn vscode-tmgrammar-test $ARGS
 
 # Snapshot tests
-yarn vscode-tmgrammar-snap $ARGS
+yarn vscode-tmgrammar-snap $ARGS "$@"

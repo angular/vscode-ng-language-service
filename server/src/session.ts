@@ -161,14 +161,18 @@ export class Session {
   }
 
   private onDidOpenTextDocument(params: lsp.DidOpenTextDocumentParams) {
-    const {uri, text, languageId} = params.textDocument;
+    const {uri, languageId} = params.textDocument;
     const filePath = uriToFilePath(uri);
     if (!filePath) {
       return;
     }
-
     const scriptKind = languageId === LanguageId.TS ? ts.ScriptKind.TS : ts.ScriptKind.External;
-    const result = this.projectService.openClientFile(filePath, text, scriptKind);
+    // Since we are only keeping track of changes of files that are already on
+    // disk (see documentSelector.scheme in extension.ts), the content on disk
+    // is up-to-date when a file is first opened in the editor.
+    // In this case, we should not pass fileContent to projectService.
+    const fileContent = undefined;
+    const result = this.projectService.openClientFile(filePath, fileContent, scriptKind);
 
     const {configFileName, configFileErrors} = result;
     if (configFileErrors && configFileErrors.length) {

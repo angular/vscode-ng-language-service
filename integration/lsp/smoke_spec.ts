@@ -186,7 +186,7 @@ describe('Angular Language Service', () => {
           'sortText': 'toString',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'toString'
+            'newText': 'toString()'
           }
         },
         {
@@ -196,7 +196,7 @@ describe('Angular Language Service', () => {
           'sortText': 'charAt',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'charAt'
+            'newText': 'charAt()'
           }
         },
         {
@@ -206,7 +206,7 @@ describe('Angular Language Service', () => {
           'sortText': 'charCodeAt',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'charCodeAt'
+            'newText': 'charCodeAt()'
           }
         },
         {
@@ -216,7 +216,7 @@ describe('Angular Language Service', () => {
           'sortText': 'concat',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'concat'
+            'newText': 'concat()'
           }
         },
         {
@@ -226,7 +226,7 @@ describe('Angular Language Service', () => {
           'sortText': 'indexOf',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'indexOf'
+            'newText': 'indexOf()'
           }
         },
         {
@@ -236,7 +236,7 @@ describe('Angular Language Service', () => {
           'sortText': 'lastIndexOf',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'lastIndexOf'
+            'newText': 'lastIndexOf()'
           }
         },
         {
@@ -246,7 +246,7 @@ describe('Angular Language Service', () => {
           'sortText': 'localeCompare',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'localeCompare'
+            'newText': 'localeCompare()'
           }
         },
         {
@@ -256,7 +256,7 @@ describe('Angular Language Service', () => {
           'sortText': 'match',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'match'
+            'newText': 'match()'
           }
         },
         {
@@ -266,7 +266,7 @@ describe('Angular Language Service', () => {
           'sortText': 'replace',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'replace'
+            'newText': 'replace()'
           }
         },
         {
@@ -276,7 +276,7 @@ describe('Angular Language Service', () => {
           'sortText': 'search',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'search'
+            'newText': 'search()'
           }
         },
         {
@@ -286,7 +286,7 @@ describe('Angular Language Service', () => {
           'sortText': 'slice',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'slice'
+            'newText': 'slice()'
           }
         },
         {
@@ -296,7 +296,7 @@ describe('Angular Language Service', () => {
           'sortText': 'split',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'split'
+            'newText': 'split()'
           }
         },
         {
@@ -306,7 +306,7 @@ describe('Angular Language Service', () => {
           'sortText': 'substring',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'substring'
+            'newText': 'substring()'
           }
         },
         {
@@ -316,7 +316,7 @@ describe('Angular Language Service', () => {
           'sortText': 'toLowerCase',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'toLowerCase'
+            'newText': 'toLowerCase()'
           }
         },
         {
@@ -326,7 +326,7 @@ describe('Angular Language Service', () => {
           'sortText': 'toLocaleLowerCase',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'toLocaleLowerCase'
+            'newText': 'toLocaleLowerCase()'
           }
         },
         {
@@ -336,7 +336,7 @@ describe('Angular Language Service', () => {
           'sortText': 'toUpperCase',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'toUpperCase'
+            'newText': 'toUpperCase()'
           }
         },
         {
@@ -346,7 +346,7 @@ describe('Angular Language Service', () => {
           'sortText': 'toLocaleUpperCase',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'toLocaleUpperCase'
+            'newText': 'toLocaleUpperCase()'
           }
         },
         {
@@ -356,7 +356,7 @@ describe('Angular Language Service', () => {
           'sortText': 'trim',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'trim'
+            'newText': 'trim()'
           }
         },
         {
@@ -376,7 +376,7 @@ describe('Angular Language Service', () => {
           'sortText': 'substr',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'substr'
+            'newText': 'substr()'
           }
         },
         {
@@ -386,7 +386,7 @@ describe('Angular Language Service', () => {
           'sortText': 'valueOf',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'valueOf'
+            'newText': 'valueOf()'
           }
         },
         {
@@ -396,7 +396,7 @@ describe('Angular Language Service', () => {
           'sortText': 'codePointAt',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'codePointAt'
+            'newText': 'codePointAt()'
           }
         },
         {
@@ -406,7 +406,7 @@ describe('Angular Language Service', () => {
           'sortText': 'includes',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'includes'
+            'newText': 'includes()'
           }
         },
         {
@@ -416,7 +416,7 @@ describe('Angular Language Service', () => {
           'sortText': 'endsWith',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'endsWith'
+            'newText': 'endsWith()'
           }
         },
         {
@@ -426,7 +426,7 @@ describe('Angular Language Service', () => {
           'sortText': 'normalize',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'normalize'
+            'newText': 'normalize()'
           }
         },
         {
@@ -436,7 +436,7 @@ describe('Angular Language Service', () => {
           'sortText': 'repeat',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'repeat'
+            'newText': 'repeat()'
           }
         },
         {
@@ -446,7 +446,7 @@ describe('Angular Language Service', () => {
           'sortText': 'startsWith',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'startsWith'
+            'newText': 'startsWith()'
           }
         },
         {
@@ -456,7 +456,7 @@ describe('Angular Language Service', () => {
           'sortText': 'anchor',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'anchor'
+            'newText': 'anchor()'
           }
         },
         {
@@ -466,7 +466,7 @@ describe('Angular Language Service', () => {
           'sortText': 'big',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'big'
+            'newText': 'big()'
           }
         },
         {
@@ -476,7 +476,7 @@ describe('Angular Language Service', () => {
           'sortText': 'blink',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'blink'
+            'newText': 'blink()'
           }
         },
         {
@@ -486,7 +486,7 @@ describe('Angular Language Service', () => {
           'sortText': 'bold',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'bold'
+            'newText': 'bold()'
           }
         },
         {
@@ -496,7 +496,7 @@ describe('Angular Language Service', () => {
           'sortText': 'fixed',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'fixed'
+            'newText': 'fixed()'
           }
         },
         {
@@ -506,7 +506,7 @@ describe('Angular Language Service', () => {
           'sortText': 'fontcolor',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'fontcolor'
+            'newText': 'fontcolor()'
           }
         },
         {
@@ -516,7 +516,7 @@ describe('Angular Language Service', () => {
           'sortText': 'fontsize',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'fontsize'
+            'newText': 'fontsize()'
           }
         },
         {
@@ -526,7 +526,7 @@ describe('Angular Language Service', () => {
           'sortText': 'italics',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'italics'
+            'newText': 'italics()'
           }
         },
         {
@@ -536,7 +536,7 @@ describe('Angular Language Service', () => {
           'sortText': 'link',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'link'
+            'newText': 'link()'
           }
         },
         {
@@ -546,7 +546,7 @@ describe('Angular Language Service', () => {
           'sortText': 'small',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'small'
+            'newText': 'small()'
           }
         },
         {
@@ -556,7 +556,7 @@ describe('Angular Language Service', () => {
           'sortText': 'strike',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'strike'
+            'newText': 'strike()'
           }
         },
         {
@@ -566,7 +566,7 @@ describe('Angular Language Service', () => {
           'sortText': 'sub',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'sub'
+            'newText': 'sub()'
           }
         },
         {
@@ -576,7 +576,7 @@ describe('Angular Language Service', () => {
           'sortText': 'sup',
           'textEdit': {
             'range': {'start': {'line': 4, 'character': 30}, 'end': {'line': 4, 'character': 30}},
-            'newText': 'sup'
+            'newText': 'sup()'
           }
         }
       ]

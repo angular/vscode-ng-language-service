@@ -81,7 +81,7 @@
     "test:syntax": "./scripts/syntax.sh"
   },
   "dependencies": {
-    "typescript": "~3.6.4"
+    "typescript": "~3.7.0"
   },
   "devDependencies": {
     "@types/jasmine": "^3.4.0",

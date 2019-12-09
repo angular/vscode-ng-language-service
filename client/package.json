@@ -5,6 +5,6 @@
   "author": "Angular",
   "license": "MIT",
   "dependencies": {
-    "vscode-languageclient": "~5.2.1"
+    "vscode-languageclient": "5.2.1"
   }
 }

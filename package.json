@@ -92,7 +92,7 @@
     "rollup-plugin-commonjs": "10.1.0",
     "tslint": "5.19.0",
     "tslint-eslint-rules": "5.4.0",
-    "vsce": "1.70.0",
+    "vsce": "1.71.0",
     "vscode": "1.1.36",
     "vscode-jsonrpc": "4.0.0",
     "vscode-tmgrammar-test": "0.0.8"

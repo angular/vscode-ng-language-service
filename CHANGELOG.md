@@ -1,3 +1,14 @@
+# v0.900.2
+
+This release upgrades `@angular/language-service` to v9.0.0-rc.6.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#900-rc6-2019-12-11).
+
+Bug fixes:
+- Fixed accessing a string index signature using dot notation
+- Remove `getExternalFiles()`
+- Fixed JS primitive type name
+- Simplify resolution logic in banner
+
 # v0.900.1
 
 Bug fixes:

@@ -41,9 +41,6 @@ export interface LoggerOptions {
 export function createLogger(options: LoggerOptions): Logger {
   let logLevel: ts.server.LogLevel;
   switch (options.logVerbosity) {
-    case 'terse':
-      logLevel = ts.server.LogLevel.terse;
-      break;
     case 'requestTime':
       logLevel = ts.server.LogLevel.requestTime;
       break;

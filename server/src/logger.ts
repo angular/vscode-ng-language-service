@@ -50,6 +50,7 @@ export function createLogger(options: LoggerOptions): Logger {
     case 'normal':
       logLevel = ts.server.LogLevel.normal;
       break;
+    case 'terse':
     default:
       logLevel = ts.server.LogLevel.terse;
       break;

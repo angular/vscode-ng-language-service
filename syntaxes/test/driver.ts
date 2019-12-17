@@ -19,12 +19,6 @@ interface TestCase {
   testFile: string;
 }
 
-function isTestCase(tc: any): tc is TestCase {
-  return tc && (tc.scopeName && typeof tc.scopeName === 'string') &&
-      (tc.grammarFiles && typeof tc.grammarFiles[0] === 'string') &&
-      (tc.testFile && typeof tc.testFile === 'string');
-}
-
 const dummyGrammarDir = path.join(__dirname, 'dummy');
 const DUMMY_GRAMMARS =
     fs.readdirSync(dummyGrammarDir).map((file: string) => path.join(dummyGrammarDir, file));
@@ -56,11 +50,6 @@ async function snapshotTest({scopeName, grammarFiles, testFile}: TestCase): Prom
 describe('snapshot tests', async () => {
   it('should pass all cases', async () => {
     for (let tc of SNAPSHOT_TEST_CASES) {
-      if (!isTestCase(tc)) {
-        fail(
-            `Test specified incorrectly; must include scopeName, grammarFiles, and testFile properties.`);
-      }
-
       const ec = await snapshotTest(tc);
       expect(ec).toBe(0);
     }

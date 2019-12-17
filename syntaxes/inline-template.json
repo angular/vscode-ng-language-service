@@ -1,13 +1,13 @@
 {
-  "scopeName": "template.ng",
+  "scopeName": "inline-template.ng",
   "injectionSelector": "L:meta.decorator.ts -comment",
   "patterns": [
     {
-      "include": "#ts-decorator"
+      "include": "#inline-template"
     }
   ],
   "repository": {
-    "ts-decorator": {
+    "inline-template": {
       "begin": "(template)\\s*(:)",
       "beginCaptures": {
         "1": {

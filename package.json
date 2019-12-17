@@ -50,8 +50,8 @@
     },
     "grammars": [
       {
-        "path": "./syntaxes/template.ng.json",
-        "scopeName": "template.ng",
+        "path": "./syntaxes/inline-template.json",
+        "scopeName": "inline-template.ng",
         "injectTo": [
           "source.ts"
         ],

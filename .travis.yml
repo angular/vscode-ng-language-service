@@ -17,7 +17,6 @@ script:
   - ./scripts/build.sh
   - ./scripts/test.sh
   - ./scripts/format.sh
-  - ./scripts/syntax.sh
 
 after_script:
   - ./scripts/cleanup.sh

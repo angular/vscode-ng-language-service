@@ -71,6 +71,7 @@
     "compile:banner": "tsc -p server/banner.tsconfig.json && rollup -c banner.rollup.config.js",
     "compile:test": "tsc -b server/src/tests",
     "compile:integration": "tsc -b integration",
+    "compile:syntaxes-test": "tsc -b syntaxes/test",
     "format": "scripts/format.sh",
     "watch": "tsc -b -w",
     "postinstall": "vscode-install && cd client && yarn && cd ../server && yarn && cd ..",
@@ -78,7 +79,7 @@
     "test": "yarn compile:test && jasmine server/out/tests/*_spec.js",
     "test:lsp": "yarn compile:integration && jasmine integration/out/lsp/*_spec.js",
     "test:e2e": "yarn compile:integration && ./scripts/e2e.sh",
-    "test:syntax": "./scripts/syntax.js"
+    "test:syntaxes": "yarn compile:syntaxes-test && jasmine syntaxes/test/driver.js"
   },
   "dependencies": {
     "typescript": "~3.6.4"

@@ -1,0 +1,7 @@
+[
+  {
+    "scopeName": "inline-template.ng",
+    "grammarFiles": ["syntaxes/inline-template.json"],
+    "testFile": "syntaxes/test/data/inline-template.ts"
+  }
+]

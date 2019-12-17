@@ -50,32 +50,33 @@ export function activate(context: vscode.ExtensionContext) {
 
   // Push the disposable to the context's subscriptions so that the
   // client can be deactivated on extension deactivation
-  context.subscriptions.push(
-      ...registerCommands(client),
-      client.start(),
-  );
+  context.subscriptions.push(...registerCommands(client), client.start());
 
-  client.onReady().then(() => {
-    const projectLoadingTasks = new Map<string, {resolve: () => void}>();
+  client.onDidChangeState((e) => {
+    let task: {resolve: () => void}|undefined;
+    if (e.newState == lsp.State.Running) {
+      client.onNotification(projectLoadingNotification.start, () => {
+        if (task) {
+          task.resolve();
+          task = undefined;
+        }
+        vscode.window.withProgress(
+            {
+              location: vscode.ProgressLocation.Window,
+              title: 'Initializing Angular language features',
+            },
+            () => new Promise((resolve) => {
+              task = {resolve};
+            }));
+      });
 
-    client.onNotification(projectLoadingNotification.start, (projectName: string) => {
-      vscode.window.withProgress(
-          {
-            location: vscode.ProgressLocation.Window,
-            title: 'Initializing Angular language features',
-          },
-          () => new Promise((resolve) => {
-            projectLoadingTasks.set(projectName, {resolve});
-          }));
-    });
-
-    client.onNotification(projectLoadingNotification.finish, (projectName: string) => {
-      const task = projectLoadingTasks.get(projectName);
-      if (task) {
-        task.resolve();
-        projectLoadingTasks.delete(projectName);
-      }
-    });
+      client.onNotification(projectLoadingNotification.finish, () => {
+        if (task) {
+          task.resolve();
+          task = undefined;
+        }
+      });
+    }
   });
 }
 

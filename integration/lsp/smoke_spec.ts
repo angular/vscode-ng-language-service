@@ -54,7 +54,9 @@ describe('Angular Language Service', () => {
     });
     server.on('message', (data: Message) => {
       if (isNotificationMessage(data)) {
-        console.log('[server]', data.params.message);
+        const toLog = ['[server]', data.method];
+        if (data.params && data.params.message) toLog.push(data.params.message);
+        console.log(...toLog);
       } else {
         responseEmitter.emit('response', data);
       }

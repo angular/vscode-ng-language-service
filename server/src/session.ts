@@ -39,6 +39,7 @@ export class Session {
   private readonly connection: lsp.IConnection;
   private readonly projectService: ProjectService;
   private diagnosticsTimeout: NodeJS.Timeout|null = null;
+  private isProjectLoading = false;
 
   constructor(options: SessionOptions) {
     // Create a connection for the server. The connection uses Node's IPC as a transport.
@@ -79,14 +80,17 @@ export class Session {
   private handleProjectServiceEvent(event: ts.server.ProjectServiceEvent) {
     switch (event.eventName) {
       case ts.server.ProjectLoadingStartEvent:
-        this.connection.sendNotification(
-            projectLoadingNotification.start, event.data.project.projectName);
+        this.isProjectLoading = true;
+        this.connection.sendNotification(projectLoadingNotification.start);
         break;
       case ts.server.ProjectLoadingFinishEvent: {
         const {project} = event.data;
         // Disable language service if project is not Angular
         this.checkIsAngularProject(project);
-        this.connection.sendNotification(projectLoadingNotification.finish, project.projectName);
+        if (this.isProjectLoading) {
+          this.isProjectLoading = false;
+          this.connection.sendNotification(projectLoadingNotification.finish);
+        }
         break;
       }
       case ts.server.ProjectsUpdatedInBackgroundEvent:
@@ -172,24 +176,35 @@ export class Session {
     // is up-to-date when a file is first opened in the editor.
     // In this case, we should not pass fileContent to projectService.
     const fileContent = undefined;
-    const result = this.projectService.openClientFile(filePath, fileContent, scriptKind);
+    try {
+      const result = this.projectService.openClientFile(filePath, fileContent, scriptKind);
 
-    const {configFileName, configFileErrors} = result;
-    if (configFileErrors && configFileErrors.length) {
-      // configFileErrors is an empty array even if there's no error, so check length.
-      this.connection.console.error(configFileErrors.map(e => e.messageText).join('\n'));
-    }
-    if (!configFileName) {
-      this.connection.console.error(`No config file for ${filePath}`);
-      return;
-    }
-    const project = this.projectService.findProject(configFileName);
-    if (!project) {
-      this.connection.console.error(`Failed to find project for ${filePath}`);
-      return;
-    }
-    if (project.languageServiceEnabled) {
-      project.refreshDiagnostics();  // Show initial diagnostics
+      const {configFileName, configFileErrors} = result;
+      if (configFileErrors && configFileErrors.length) {
+        // configFileErrors is an empty array even if there's no error, so check length.
+        this.connection.console.error(configFileErrors.map(e => e.messageText).join('\n'));
+      }
+      if (!configFileName) {
+        this.connection.console.error(`No config file for ${filePath}`);
+        return;
+      }
+      const project = this.projectService.findProject(configFileName);
+      if (!project) {
+        this.connection.console.error(`Failed to find project for ${filePath}`);
+        return;
+      }
+      if (project.languageServiceEnabled) {
+        project.refreshDiagnostics();  // Show initial diagnostics
+      }
+    } catch (error) {
+      if (this.isProjectLoading) {
+        this.isProjectLoading = false;
+        this.connection.sendNotification(projectLoadingNotification.finish);
+      }
+      if (error.stack) {
+        this.error(error.stack);
+      }
+      throw error;
     }
   }
 

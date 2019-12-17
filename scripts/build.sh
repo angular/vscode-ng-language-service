@@ -19,7 +19,7 @@ cp client/package.json client/yarn.lock dist/client
 cp server/package.json server/yarn.lock server/README.md dist/server
 # Copy files to syntaxes directory
 mkdir dist/syntaxes
-cp syntaxes/template.ng.json dist/syntaxes
+cp syntaxes/*.json dist/syntaxes
 
 pushd dist
 yarn install --production --ignore-scripts

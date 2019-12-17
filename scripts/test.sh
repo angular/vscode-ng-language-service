@@ -17,3 +17,6 @@ yarn run test:lsp
 # E2E test that brings up full vscode
 # TODO: Disabled for now because it cannot be run on Travis
 # yarn run test:e2e
+
+# Syntaxes tests
+yarn run test:syntaxes

@@ -10,7 +10,7 @@ set -ex -o pipefail
 DUMMY_GRAMMARS=$(find syntaxes/test -name '*-dummy.json' -exec echo "-g {}" \; | tr '\n' ' ')
 ARGS=$(cat<<ARGS
   -s inline-template.ng 
-  -g syntaxes/template.ng.json $DUMMY_GRAMMARS 
+  -g syntaxes/inline-template.json $DUMMY_GRAMMARS
   -t syntaxes/test/**/*.ts
 ARGS
 )

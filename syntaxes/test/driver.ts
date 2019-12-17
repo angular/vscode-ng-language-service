@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 // Usage:
-//   yarn test:syntax [-u]
+//   yarn test:syntaxes [options]
 //
-// Arguments:
-//   -u update snapshot files
+// Options:
+//   -u, --update    update snapshot files (always passes)
 
 import 'jasmine';
+
 import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';

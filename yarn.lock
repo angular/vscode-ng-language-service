@@ -33,10 +33,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.7.2.tgz#c4e63af5e8823ce9cc3f0b34f7b998c2171f0c44"
   integrity sha512-dyYO+f6ihZEtNPDcWNR1fkoTDf3zAK3lAABDze3mz6POyIercH0lEUawUFXlG8xaQZmm1yEBON/4TsYv/laDYg==
 
-"@types/node@10.17.10":
-  version "10.17.10"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.10.tgz#929a0064c4fb99af3ec0ca981649e4d049de2b72"
-  integrity sha512-K9E84otvA2HQBTp0TWPwWf/986N6v0v7ers6q7wL48w5SXKzYjqlYkaxHYMwWRzQdgZg5p6eI7L0D6FLJYY7ag==
+"@types/node@^12.12.20":
+  version "12.12.20"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.20.tgz#7b693038ce661fe57a7ffa4679440b5e7c5e8b99"
+  integrity sha512-VAe+DiwpnC/g448uN+/3gRl4th0BTdrR9gSLIOHA+SUQskaYZQDOHG7xmjiE7JUhjbXnbXytf6Ih+/pA6CtMFQ==
 
 acorn@^7.1.0:
   version "7.1.0"

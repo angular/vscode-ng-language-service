@@ -78,7 +78,7 @@
     "test": "yarn compile:test && jasmine server/out/tests/*_spec.js",
     "test:lsp": "yarn compile:integration && jasmine integration/out/lsp/*_spec.js",
     "test:e2e": "yarn compile:integration && ./scripts/e2e.sh",
-    "test:syntax": "./scripts/syntax.sh"
+    "test:syntax": "./scripts/syntax.js"
   },
   "dependencies": {
     "typescript": "~3.6.4"

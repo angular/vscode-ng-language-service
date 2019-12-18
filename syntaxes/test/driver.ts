@@ -14,6 +14,7 @@ import * as util from 'util';
 import * as SNAPSHOT_TEST_CASES from './cases.json';
 
 interface TestCase {
+  name: string;
   scopeName: string;
   grammarFiles: string[];
   testFile: string;
@@ -48,10 +49,10 @@ async function snapshotTest({scopeName, grammarFiles, testFile}: TestCase): Prom
 }
 
 describe('snapshot tests', async () => {
-  it('should pass all cases', async () => {
-    for (let tc of SNAPSHOT_TEST_CASES) {
+  for (let tc of SNAPSHOT_TEST_CASES) {
+    it(`should work for ${tc.name}`, async () => {
       const ec = await snapshotTest(tc);
       expect(ec).toBe(0);
-    }
-  });
+    });
+  }
 });

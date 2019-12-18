@@ -56,7 +56,9 @@
           "source.ts"
         ],
         "embeddedLanguages": {
-          "source.html": "html"
+          "text.html": "html",
+          "source.css": "css",
+          "source.js": "javascript"
         }
       },
       {

@@ -84,6 +84,7 @@
           "name": "string"
         }
       },
+      "contentName": "source.css",
       "patterns": [
         {
           "include": "source.css"

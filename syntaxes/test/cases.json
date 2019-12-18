@@ -3,5 +3,10 @@
     "scopeName": "inline-template.ng",
     "grammarFiles": ["syntaxes/inline-template.json"],
     "testFile": "syntaxes/test/data/inline-template.ts"
+  },
+  {
+    "scopeName": "inline-styles.ng",
+    "grammarFiles": ["syntaxes/inline-styles.json"],
+    "testFile": "syntaxes/test/data/inline-styles.ts"
   }
 ]

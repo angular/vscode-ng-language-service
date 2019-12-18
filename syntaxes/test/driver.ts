@@ -3,7 +3,7 @@
 //   yarn test:syntaxes [options]
 //
 // Options:
-//   -u, --update    update snapshot files (always passes)
+//   -u    update snapshot files (always passes)
 
 import 'jasmine';
 

@@ -54,10 +54,14 @@
         "scopeName": "inline-template.ng",
         "injectTo": [
           "source.ts"
-        ],
-        "embeddedLanguages": {
-          "source.html": "html"
-        }
+        ]
+      },
+      {
+        "path": "./syntaxes/inline-styles.json",
+        "scopeName": "inline-styles.ng",
+        "injectTo": [
+          "source.ts"
+        ]
       }
     ]
   },

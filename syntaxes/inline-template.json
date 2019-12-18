@@ -64,6 +64,7 @@
           "name": "string"
         }
       },
+      "contentName": "text.html",
       "patterns": [
         {
           "include": "text.html.basic"

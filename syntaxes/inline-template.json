@@ -68,6 +68,9 @@
       "patterns": [
         {
           "include": "text.html.basic"
+        },
+        {
+          "include": "template.ng"
         }
       ]
     }

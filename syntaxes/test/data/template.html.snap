@@ -1,0 +1,9 @@
+><!-- Interpolation test -->
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+><div>{{ call(1 + 2 + 3) }}</div>
+#^^^^^ template.ng
+#     ^^ template.ng punctuation.definition.block.ts
+#       ^^^^^^^^^^^^^^^^^ template.ng source.js
+#                        ^^ template.ng punctuation.definition.block.ts
+#                          ^^^^^^^ template.ng
+>

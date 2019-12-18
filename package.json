@@ -70,6 +70,18 @@
         "embeddedLanguages": {
           "source.css": "css"
         }
+      },
+      {
+        "path": "./syntaxes/template.json",
+        "scopeName": "template.ng",
+        "injectTo": [
+          "text.html"
+        ],
+        "embeddedLanguages": {
+          "text.html": "html",
+          "source.css": "css",
+          "source.js": "javascript"
+        }
       }
     ]
   },

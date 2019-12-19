@@ -1,3 +1,18 @@
+# v0.900.3
+
+This release upgrades `@angular/language-service` to v9.0.0-rc.7.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#900-rc7-2019-12-18).
+
+New features:
+- add textmate grammar for inline CSS styles
+- add syntax highlighting grammar for interpolations
+
+Bug fixes:
+- reset loading status when the language service fails to load the project
+- correctly specify embedded languages in an Angular template
+- HTML path should include last node before cursor
+- Proper completions for properties and events
+
 # v0.900.2
 
 This release upgrades `@angular/language-service` to v9.0.0-rc.6.

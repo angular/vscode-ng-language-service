@@ -11,6 +11,9 @@ assignees: ''
 
 A clear and concise description of what the bug is.
 
+If the bug is caused or experienced by a particular source code, please provide a minimal
+reproduction of that source code.
+
 **To Reproduce**
 
 Steps to reproduce the behavior:

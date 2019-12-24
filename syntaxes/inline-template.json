@@ -67,7 +67,7 @@
       "contentName": "text.html",
       "patterns": [
         {
-          "include": "text.html.basic"
+          "include": "text.html.derivative"
         },
         {
           "include": "template.ng"

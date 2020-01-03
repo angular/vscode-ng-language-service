@@ -110,7 +110,7 @@
   },
   "devDependencies": {
     "@types/jasmine": "3.5.0",
-    "@types/node": "12.12.23",
+    "@types/node": "12.12.24",
     "clang-format": "1.3.0",
     "jasmine": "3.5.0",
     "rollup": "1.27.13",

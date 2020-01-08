@@ -624,7 +624,7 @@ describe('Angular Language Service', () => {
       result: {
         contents: [{
           language: 'typescript',
-          value: '(property) FooComponent.title',
+          value: '(property) FooComponent.title: string',
         }],
         range: {
           start: {line: 0, character: 2},

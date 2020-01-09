@@ -1,3 +1,19 @@
+# v0.900.4
+
+This release upgrades `@angular/language-service` to v9.0.0-rc.8.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#900-rc8-2020-01-08).
+
+New features:
+- Append symbol type to hover tooltip (#34515) (381b895)
+- Show documentation on hover (#34506) (1660095)
+- Add textmate grammar for template property bindings
+
+Bug fixes:
+- completions after "let x of |" in ngFor (#34473) (ca8b584)
+- correctly parse expressions in an attribute (#34517) (7a0d6e7)
+- pipe method should not include parentheses (#34485) (2845596)
+- whitelist all html elements
+
 # v0.900.3
 
 This release upgrades `@angular/language-service` to v9.0.0-rc.7.

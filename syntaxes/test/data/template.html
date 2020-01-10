@@ -3,3 +3,7 @@
 
 <!-- Property binding test -->
 <div [ ngStyle ]="{'max-width.px': i * 2 + 5}"></div>
+<div [@animation.trigger]="val"></div>
+<div [my-property]="val"></div>
+<div [my_property]="val"></div>
+<div attr="[]" [cutAcross]="false"></div>

@@ -17,4 +17,36 @@
 #                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng source.js
 #                                             ^ template.ng punctuation.definition.string.end.html string.quoted.html
 #                                              ^^^^^^^^ template.ng
+><div [@animation.trigger]="val"></div>
+#^^^^^ template.ng
+#     ^^^^^^^^^^^^^^^^^^^^ template.ng entity.other.attribute-name.html
+#                         ^ template.ng punctuation.separator.key-value.html
+#                          ^ template.ng punctuation.definition.string.begin.html string.quoted.html
+#                           ^^^ template.ng source.js
+#                              ^ template.ng punctuation.definition.string.end.html string.quoted.html
+#                               ^^^^^^^^ template.ng
+><div [my-property]="val"></div>
+#^^^^^ template.ng
+#     ^^^^^^^^^^^^^ template.ng entity.other.attribute-name.html
+#                  ^ template.ng punctuation.separator.key-value.html
+#                   ^ template.ng punctuation.definition.string.begin.html string.quoted.html
+#                    ^^^ template.ng source.js
+#                       ^ template.ng punctuation.definition.string.end.html string.quoted.html
+#                        ^^^^^^^^ template.ng
+><div [my_property]="val"></div>
+#^^^^^ template.ng
+#     ^^^^^^^^^^^^^ template.ng entity.other.attribute-name.html
+#                  ^ template.ng punctuation.separator.key-value.html
+#                   ^ template.ng punctuation.definition.string.begin.html string.quoted.html
+#                    ^^^ template.ng source.js
+#                       ^ template.ng punctuation.definition.string.end.html string.quoted.html
+#                        ^^^^^^^^ template.ng
+><div attr="[]" [cutAcross]="false"></div>
+#^^^^^^^^^^^^^^^ template.ng
+#               ^^^^^^^^^^^ template.ng entity.other.attribute-name.html
+#                          ^ template.ng punctuation.separator.key-value.html
+#                           ^ template.ng punctuation.definition.string.begin.html string.quoted.html
+#                            ^^^^^ template.ng source.js
+#                                 ^ template.ng punctuation.definition.string.end.html string.quoted.html
+#                                  ^^^^^^^^ template.ng
 >

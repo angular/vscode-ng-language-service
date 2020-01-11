@@ -32,7 +32,7 @@
     },
 
     "ngBinding": {
-      "begin": "([\\[\\(]{1,2})(@?[-_a-zA-Z0-9.$]*)([\\]\\)]{1,2})(=)([\"'])",
+      "begin": "([\\[\\(]{1,2})(?:\\s*)(@?[-_a-zA-Z0-9.$]*)(?:\\s*)([\\]\\)]{1,2})(=)([\"'])",
       "beginCaptures": {
         "1": {
           "name": "punctuation.definition.ng-binding.begin.html"

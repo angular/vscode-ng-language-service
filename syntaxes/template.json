@@ -6,7 +6,7 @@
       "include": "#interpolation"
     },
     {
-      "include": "#propertyBinding"
+      "include": "#ngBinding"
     }
   ],
   "repository": {
@@ -31,25 +31,38 @@
       ]
     },
 
-    "propertyBinding": {
-      "begin": "(\\[.*\\])(=)(\"|')",
+    "ngBinding": {
+      "begin": "([\\[\\(]{1,2})(@?[-_a-zA-Z0-9.$]*)([\\]\\)]{1,2})(=)([\"'])",
       "beginCaptures": {
         "1": {
-          "name": "entity.other.attribute-name.html"
+          "name": "punctuation.definition.ng-binding.begin.html"
         },
         "2": {
-          "name": "punctuation.separator.key-value.html"
+          "name": "entity.other.attribute.html entity.other.ng-binding.html",
+          "patterns": [
+            {
+              "match": "\\.",
+              "name": "punctuation.accessor.html"
+            }
+          ]
         },
         "3": {
-          "name": "punctuation.definition.string.begin.html string.quoted.html"
+          "name": "punctuation.definition.ng-binding.end.html"
+        },
+        "4": {
+          "name": "punctuation.separator.key-value.html"
+        },
+        "5": {
+          "name": "punctuation.definition.string.begin.html"
         }
       },
-      "end": "\\3",
+      "end": "\\5",
       "endCaptures": {
         "0": {
-          "name": "punctuation.definition.string.end.html string.quoted.html"
+          "name": "punctuation.definition.string.end.html"
         }
       },
+      "name": "string.quoted.html",
       "contentName": "source.js",
       "patterns": [
         {

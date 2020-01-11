@@ -38,7 +38,7 @@
           "name": "punctuation.definition.ng-binding.begin.html"
         },
         "2": {
-          "name": "entity.other.attribute.html entity.other.ng-binding.html",
+          "name": "entity.other.attribute-name.html entity.other.ng-binding-name.html",
           "patterns": [
             {
               "match": "\\.",

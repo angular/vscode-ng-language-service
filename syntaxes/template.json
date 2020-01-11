@@ -32,7 +32,7 @@
     },
 
     "propertyBinding": {
-      "begin": "(\\[[ a-zA-Z0-9\\._\\-@]*\\])(=)(\"|')",
+      "begin": "(\\[[ a-zA-Z0-9\\._\\-@$]*\\])(=)(\"|')",
       "beginCaptures": {
         "1": {
           "name": "entity.other.attribute-name.html"

@@ -21,52 +21,80 @@
 #                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng ng-binding.html source.js
 #                                             ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.end.html
 #                                              ^^^^^^^^ template.ng
->
-><!-- Multi-line property binding test -->
-#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
-><div
+><div [ngClass]="[
 #^^^^^ template.ng
->    [ngClass]="[
-#^^^^ template.ng
-#    ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.begin.html
-#     ^^^^^^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
-#            ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.end.html
-#             ^ template.ng ng-binding.html punctuation.separator.key-value.html
-#              ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.begin.html
-#               ^^ template.ng ng-binding.html source.js
->        'class-one',
-#^^^^^^^^^^^^^^^^^^^^^ template.ng ng-binding.html source.js
->        'class-two',
-#^^^^^^^^^^^^^^^^^^^^^ template.ng ng-binding.html source.js
->        'class-three'
-#^^^^^^^^^^^^^^^^^^^^^^ template.ng ng-binding.html source.js
->    ]"
-#^^^^^ template.ng ng-binding.html source.js
-#     ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.end.html
->></div>
-#^^^^^^^^ template.ng
->
-><!-- HTML attribute binding test -->
+#     ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.begin.html
+#      ^^^^^^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
+#             ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.end.html
+#              ^ template.ng ng-binding.html punctuation.separator.key-value.html
+#               ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.begin.html
+#                ^^ template.ng ng-binding.html source.js
+>    'class-one',
+#^^^^^^^^^^^^^^^^^ template.ng ng-binding.html source.js
+>    'class-two',
+#^^^^^^^^^^^^^^^^^ template.ng ng-binding.html source.js
+>    'class-three'
+#^^^^^^^^^^^^^^^^^^ template.ng ng-binding.html source.js
+>]"></div>
+#^ template.ng ng-binding.html source.js
+# ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.end.html
+#  ^^^^^^^^ template.ng
+><div [@animation.trigger]="val"></div>
+#^^^^^ template.ng
+#     ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.begin.html
+#      ^^^^^^^^^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
+#                ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.accessor.html
+#                 ^^^^^^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
+#                        ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.end.html
+#                         ^ template.ng ng-binding.html punctuation.separator.key-value.html
+#                          ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.begin.html
+#                           ^^^ template.ng ng-binding.html source.js
+#                              ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.end.html
+#                               ^^^^^^^^ template.ng
+><img [attr.aria-label]="val" />
+#^^^^^ template.ng
+#     ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.begin.html
+#      ^^^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
+#          ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.accessor.html
+#           ^^^^^^^^^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
+#                     ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.end.html
+#                      ^ template.ng ng-binding.html punctuation.separator.key-value.html
+#                       ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.begin.html
+#                        ^^^ template.ng ng-binding.html source.js
+#                           ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.end.html
+#                            ^^^^ template.ng
+><div [my-property]="val"></div>
+#^^^^^ template.ng
+#     ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.begin.html
+#      ^^^^^^^^^^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
+#                 ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.end.html
+#                  ^ template.ng ng-binding.html punctuation.separator.key-value.html
+#                   ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.begin.html
+#                    ^^^ template.ng ng-binding.html source.js
+#                       ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.end.html
+#                        ^^^^^^^^ template.ng
+><div [my_property]="val"></div>
+#^^^^^ template.ng
+#     ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.begin.html
+#      ^^^^^^^^^^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
+#                 ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.end.html
+#                  ^ template.ng ng-binding.html punctuation.separator.key-value.html
+#                   ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.begin.html
+#                    ^^^ template.ng ng-binding.html source.js
+#                       ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.end.html
+#                        ^^^^^^^^ template.ng
+><div [myProperty$]="val"></div>
+#^^^^^ template.ng
+#     ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.begin.html
+#      ^^^^^^^^^^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
+#                 ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.end.html
+#                  ^ template.ng ng-binding.html punctuation.separator.key-value.html
+#                   ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.begin.html
+#                    ^^^ template.ng ng-binding.html source.js
+#                       ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.end.html
+#                        ^^^^^^^^ template.ng
+><div [%invalidProperty]="val"></div>
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
-><i
-#^^^ template.ng
->    class="icon-library icon-{{ iconClassname }}"
-#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
-#                             ^^ template.ng punctuation.definition.block.ts
-#                               ^^^^^^^^^^^^^^^ template.ng source.js
-#                                              ^^ template.ng punctuation.definition.block.ts
-#                                                ^^ template.ng
->    [attr.aria-label]="iconLabel"
-#^^^^ template.ng
-#    ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.begin.html
-#     ^^^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
-#         ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.accessor.html
-#          ^^^^^^^^^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
-#                    ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.end.html
-#                     ^ template.ng ng-binding.html punctuation.separator.key-value.html
-#                      ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.begin.html
-#                       ^^^^^^^^^ template.ng ng-binding.html source.js
-#                                ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.end.html
->></i>
-#^^^^^^ template.ng
+><div [invalidProperty)="val"></div>
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
 >

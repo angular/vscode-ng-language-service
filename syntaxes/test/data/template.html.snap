@@ -11,11 +11,11 @@
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
 ><div [ ngStyle ]="{'max-width.px': i * 2 + 5}"></div>
 #^^^^^ template.ng
-#     ^ template.ng ng-binding.html punctuation.definition.ng-binding-name.begin.html
-#      ^ template.ng ng-binding.html
+#     ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.begin.html
+#      ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
 #       ^^^^^^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
-#              ^ template.ng ng-binding.html
-#               ^ template.ng ng-binding.html punctuation.definition.ng-binding-name.end.html
+#              ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
+#               ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.end.html
 #                ^ template.ng ng-binding.html punctuation.separator.key-value.html
 #                 ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.begin.html
 #                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng ng-binding.html source.js
@@ -26,9 +26,9 @@
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
 ><button (click)="onClick($event)">Click me!</button>
 #^^^^^^^^ template.ng
-#        ^ template.ng ng-binding.html punctuation.definition.ng-binding-name.begin.html
+#        ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.begin.html
 #         ^^^^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
-#              ^ template.ng ng-binding.html punctuation.definition.ng-binding-name.end.html
+#              ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.end.html
 #               ^ template.ng ng-binding.html punctuation.separator.key-value.html
 #                ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.begin.html
 #                 ^^^^^^^^^^^^^^^ template.ng ng-binding.html source.js
@@ -39,9 +39,9 @@
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
 ><input [(ngModel)]="model" type="text" />
 #^^^^^^^ template.ng
-#       ^^ template.ng ng-binding.html punctuation.definition.ng-binding-name.begin.html
+#       ^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.begin.html
 #         ^^^^^^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
-#                ^^ template.ng ng-binding.html punctuation.definition.ng-binding-name.end.html
+#                ^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.end.html
 #                  ^ template.ng ng-binding.html punctuation.separator.key-value.html
 #                   ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.begin.html
 #                    ^^^^^ template.ng ng-binding.html source.js
@@ -54,9 +54,9 @@
 #^^^^^ template.ng
 >    [ngClass]="[
 #^^^^ template.ng
-#    ^ template.ng ng-binding.html punctuation.definition.ng-binding-name.begin.html
+#    ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.begin.html
 #     ^^^^^^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
-#            ^ template.ng ng-binding.html punctuation.definition.ng-binding-name.end.html
+#            ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.end.html
 #             ^ template.ng ng-binding.html punctuation.separator.key-value.html
 #              ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.begin.html
 #               ^^ template.ng ng-binding.html source.js
@@ -84,11 +84,11 @@
 #                                                ^^ template.ng
 >    [attr.aria-label]="iconLabel"
 #^^^^ template.ng
-#    ^ template.ng ng-binding.html punctuation.definition.ng-binding-name.begin.html
+#    ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.begin.html
 #     ^^^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
 #         ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.accessor.html
 #          ^^^^^^^^^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
-#                    ^ template.ng ng-binding.html punctuation.definition.ng-binding-name.end.html
+#                    ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.end.html
 #                     ^ template.ng ng-binding.html punctuation.separator.key-value.html
 #                      ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.begin.html
 #                       ^^^^^^^^^ template.ng ng-binding.html source.js

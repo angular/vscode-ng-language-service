@@ -6,7 +6,7 @@
       "include": "#interpolation"
     },
     {
-      "include": "#ngBinding"
+      "include": "#propertyBinding"
     }
   ],
   "repository": {
@@ -31,35 +31,25 @@
       ]
     },
 
-    "ngBinding": {
-      "begin": "(([\\[\\(]{1,2})(?:\\s*)(@?[-_a-zA-Z0-9.$]*)(?:\\s*)([\\]\\)]{1,2}))(=)([\"'])",
+    "propertyBinding": {
+      "begin": "(\\[\\s*@?[-_a-zA-Z0-9.$]*\\s*])(=)([\"'])",
       "beginCaptures": {
         "1": {
-          "name": "entity.other.attribute-name.html entity.other.ng-binding-name.html"
-        },
-        "2": {
-          "name": "punctuation.definition.ng-binding-name.begin.html"
-        },
-        "3": {
           "name": "entity.other.attribute-name.html entity.other.ng-binding-name.html",
           "patterns": [
             {
-              "match": "\\.",
-              "name": "punctuation.accessor.html"
+              "include": "#bindingKey"
             }
           ]
         },
-        "4": {
-          "name": "punctuation.definition.ng-binding-name.end.html"
-        },
-        "5": {
+        "2": {
           "name": "punctuation.separator.key-value.html"
         },
-        "6": {
+        "3": {
           "name": "string.quoted.html punctuation.definition.string.begin.html"
         }
       },
-      "end": "\\6",
+      "end": "\\3",
       "endCaptures": {
         "0": {
           "name": "string.quoted.html punctuation.definition.string.end.html"

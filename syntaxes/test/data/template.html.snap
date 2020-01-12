@@ -22,32 +22,6 @@
 #                                             ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.end.html
 #                                              ^^^^^^^^ template.ng
 >
-><!-- Event binding test -->
-#^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
-><button (click)="onClick($event)">Click me!</button>
-#^^^^^^^^ template.ng
-#        ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.begin.html
-#         ^^^^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
-#              ^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.end.html
-#               ^ template.ng ng-binding.html punctuation.separator.key-value.html
-#                ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.begin.html
-#                 ^^^^^^^^^^^^^^^ template.ng ng-binding.html source.js
-#                                ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.end.html
-#                                 ^^^^^^^^^^^^^^^^^^^^ template.ng
->
-><!-- Two-way binding test -->
-#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
-><input [(ngModel)]="model" type="text" />
-#^^^^^^^ template.ng
-#       ^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.begin.html
-#         ^^^^^^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html
-#                ^^ template.ng ng-binding.html entity.other.attribute-name.html entity.other.ng-binding-name.html punctuation.definition.ng-binding-name.end.html
-#                  ^ template.ng ng-binding.html punctuation.separator.key-value.html
-#                   ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.begin.html
-#                    ^^^^^ template.ng ng-binding.html source.js
-#                         ^ template.ng ng-binding.html string.quoted.html punctuation.definition.string.end.html
-#                          ^^^^^^^^^^^^^^^^ template.ng
->
 ><!-- Multi-line property binding test -->
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
 ><div

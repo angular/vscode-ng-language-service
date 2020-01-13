@@ -3,3 +3,15 @@
 
 <!-- Property binding test -->
 <div [ ngStyle ]="{'max-width.px': i * 2 + 5}"></div>
+<div [ngClass]="[
+    'class-one',
+    'class-two',
+    'class-three'
+]"></div>
+<div [@animation.trigger]="val"></div>
+<img [attr.aria-label]="val" />
+<div [my-property]="val"></div>
+<div [my_property]="val"></div>
+<div [myProperty$]="val"></div>
+<div [%invalidProperty]="val"></div>
+<div [invalidProperty)="val"></div>

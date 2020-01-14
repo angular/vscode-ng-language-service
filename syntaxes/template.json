@@ -65,7 +65,7 @@
           "include": "source.js"
         }
       ]
-		},
+    },
 
     "eventBinding": {
       "begin": "(\\(\\s*@?[-_a-zA-Z0-9.$]*\\s*\\))(=)([\"'])",

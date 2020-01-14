@@ -120,7 +120,7 @@
     "tslint-eslint-rules": "5.4.0",
     "vsce": "1.71.0",
     "vscode": "1.1.36",
-    "vscode-jsonrpc": "4.0.0",
+    "vscode-jsonrpc": "5.0.0",
     "vscode-tmgrammar-test": "0.0.8"
   },
   "repository": {

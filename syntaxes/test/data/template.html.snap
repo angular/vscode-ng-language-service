@@ -98,3 +98,113 @@
 ><div [invalidProperty)="val"></div>
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
 >
+><!-- Event binding test -->
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+><button (click)="onClick($event)"></button>
+#^^^^^^^^ template.ng
+#        ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html
+#         ^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#              ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.end.html
+#               ^ template.ng meta.ng-binding.event.html punctuation.separator.key-value.html
+#                ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.begin.html
+#                 ^^^^^^^^^^^^^^^ template.ng meta.ng-binding.event.html source.js
+#                                ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.end.html
+#                                 ^^^^^^^^^^^ template.ng
+><input (ngModelChange)="onModelChange($event)" />
+#^^^^^^^ template.ng
+#       ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html
+#        ^^^^^^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#                     ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.end.html
+#                      ^ template.ng meta.ng-binding.event.html punctuation.separator.key-value.html
+#                       ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.begin.html
+#                        ^^^^^^^^^^^^^^^^^^^^^ template.ng meta.ng-binding.event.html source.js
+#                                             ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.end.html
+#                                              ^^^^ template.ng
+><div (@animation.done)="onAnimationDone($event)"></div>
+#^^^^^ template.ng
+#     ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html
+#      ^^^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#                ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.accessor.html
+#                 ^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#                     ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.end.html
+#                      ^ template.ng meta.ng-binding.event.html punctuation.separator.key-value.html
+#                       ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.begin.html
+#                        ^^^^^^^^^^^^^^^^^^^^^^^ template.ng meta.ng-binding.event.html source.js
+#                                               ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.end.html
+#                                                ^^^^^^^^ template.ng
+><div (someEvent)="
+#^^^^^ template.ng
+#     ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html
+#      ^^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#               ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.end.html
+#                ^ template.ng meta.ng-binding.event.html punctuation.separator.key-value.html
+#                 ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.begin.html
+>    if (isCondition) {
+#^^^^^^^^^^^^^^^^^^^^^^^ template.ng meta.ng-binding.event.html source.js
+>        methodIfTrue($event);
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng meta.ng-binding.event.html source.js
+>    } else {
+#^^^^^^^^^^^^^ template.ng meta.ng-binding.event.html source.js
+>        methodIfFalse($event);
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng meta.ng-binding.event.html source.js
+>    }
+#^^^^^^ template.ng meta.ng-binding.event.html source.js
+>"></div>
+#^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.end.html
+# ^^^^^^^^ template.ng
+><div ( extraSpacing )="onExtraSpacing($event)"></div>
+#^^^^^ template.ng
+#     ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html
+#      ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#       ^^^^^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#                   ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#                    ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.end.html
+#                     ^ template.ng meta.ng-binding.event.html punctuation.separator.key-value.html
+#                      ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.begin.html
+#                       ^^^^^^^^^^^^^^^^^^^^^^ template.ng meta.ng-binding.event.html source.js
+#                                             ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.end.html
+#                                              ^^^^^^^^ template.ng
+><my-component (myEvent)="onMyEvent($event)"></my-component>
+#^^^^^^^^^^^^^^ template.ng
+#              ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html
+#               ^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#                      ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.end.html
+#                       ^ template.ng meta.ng-binding.event.html punctuation.separator.key-value.html
+#                        ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.begin.html
+#                         ^^^^^^^^^^^^^^^^^ template.ng meta.ng-binding.event.html source.js
+#                                          ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.end.html
+#                                           ^^^^^^^^^^^^^^^^^ template.ng
+><my-component (my-event)="onMyEvent($event)"></my-component>
+#^^^^^^^^^^^^^^ template.ng
+#              ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html
+#               ^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#                       ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.end.html
+#                        ^ template.ng meta.ng-binding.event.html punctuation.separator.key-value.html
+#                         ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.begin.html
+#                          ^^^^^^^^^^^^^^^^^ template.ng meta.ng-binding.event.html source.js
+#                                           ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.end.html
+#                                            ^^^^^^^^^^^^^^^^^ template.ng
+><my-component (my_event)="onMyEvent($event)"></my-component>
+#^^^^^^^^^^^^^^ template.ng
+#              ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html
+#               ^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#                       ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.end.html
+#                        ^ template.ng meta.ng-binding.event.html punctuation.separator.key-value.html
+#                         ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.begin.html
+#                          ^^^^^^^^^^^^^^^^^ template.ng meta.ng-binding.event.html source.js
+#                                           ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.end.html
+#                                            ^^^^^^^^^^^^^^^^^ template.ng
+><my-component (myEvent$)="onMyEvent($event)"></my-component>
+#^^^^^^^^^^^^^^ template.ng
+#              ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html
+#               ^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#                       ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.end.html
+#                        ^ template.ng meta.ng-binding.event.html punctuation.separator.key-value.html
+#                         ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.begin.html
+#                          ^^^^^^^^^^^^^^^^^ template.ng meta.ng-binding.event.html source.js
+#                                           ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.end.html
+#                                            ^^^^^^^^^^^^^^^^^ template.ng
+><my-component (%invalidEvent)="onMyEvent($event)"></my-component>
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+><my-component (invalidEvent]="onMyEvent($event)"></my-component>
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng

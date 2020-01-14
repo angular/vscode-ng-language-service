@@ -15,3 +15,22 @@
 <div [myProperty$]="val"></div>
 <div [%invalidProperty]="val"></div>
 <div [invalidProperty)="val"></div>
+
+<!-- Event binding test -->
+<button (click)="onClick($event)"></button>
+<input [ngModel]="model" (ngModelChange)="onModelChange($event)" />
+<div (@animation.done)="onAnimationDone($event)"></div>
+<div (someEvent)="
+    if (isCondition) {
+        methodIfTrue($event);
+    } else {
+        methodIfFalse($event);
+    }
+"></div>
+<div ( extraSpacing )="onExtraSpacing($event)"></div>
+<my-component (myEvent)="onMyEvent($event)"></my-component>
+<my-component (my-event)="onMyEvent($event)"></my-component>
+<my-component (my_event)="onMyEvent($event)"></my-component>
+<my-component (myEvent$)="onMyEvent($event)"></my-component>
+<my-component (%invalidEvent)="onMyEvent($event)"></my-component>
+<my-component (invalidEvent]="onMyEvent($event)"></my-component>

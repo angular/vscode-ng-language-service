@@ -18,7 +18,7 @@
 
 <!-- Event binding test -->
 <button (click)="onClick($event)"></button>
-<input [ngModel]="model" (ngModelChange)="onModelChange($event)" />
+<input (ngModelChange)="onModelChange($event)" />
 <div (@animation.done)="onAnimationDone($event)"></div>
 <div (someEvent)="
     if (isCondition) {

@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-const MIN_TS_VERSION = '3.6';
+const MIN_TS_VERSION = '3.7';
 const MIN_NG_VERSION = '9.0';
 
 /**

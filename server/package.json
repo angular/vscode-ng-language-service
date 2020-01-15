@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@angular/language-service": "9.0.0-rc.10",
-    "vscode-languageserver": "5.2.1",
+    "vscode-languageserver": "6.0.0",
     "vscode-uri": "2.1.1"
   }
 }

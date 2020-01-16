@@ -92,13 +92,13 @@ function getProbeLocations(configValue: string|null, bundled: string): string[] 
   if (configValue) {
     locations.push(configValue);
   }
-  // If not, look in workspaces currently open
+  // Prioritize the bundled version
+  locations.push(bundled);
+  // Look in workspaces currently open
   const workspaceFolders = vscode.workspace.workspaceFolders || [];
   for (const folder of workspaceFolders) {
     locations.push(folder.uri.fsPath);
   }
-  // If all else fails, load the bundled version
-  locations.push(bundled);
   return locations;
 }
 

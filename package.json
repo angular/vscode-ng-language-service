@@ -109,7 +109,7 @@
     "typescript": "~3.7.4"
   },
   "devDependencies": {
-    "@types/jasmine": "3.5.0",
+    "@types/jasmine": "3.5.1",
     "@types/node": "12.12.24",
     "clang-format": "1.3.0",
     "jasmine": "3.5.0",

@@ -134,10 +134,11 @@ export class Session {
         continue;
       }
       const project = this.projectService.getDefaultProjectForScriptInfo(scriptInfo);
-      if (!project || !project.languageServiceEnabled) {
+      const ngLS = project ?.getLanguageService();
+      if (!ngLS) {
         continue;
       }
-      const ngLS = project.getLanguageService();
+
       const diagnostics = ngLS.getSemanticDiagnostics(fileName);
       // Need to send diagnostics even if it's empty otherwise editor state will
       // not be updated.
@@ -267,12 +268,12 @@ export class Session {
 
     const {fileName} = scriptInfo;
     const project = this.projectService.getDefaultProjectForScriptInfo(scriptInfo);
-    if (!project || !project.languageServiceEnabled) {
+    const langSvc = project ?.getLanguageService();
+    if (!langSvc) {
       return;
     }
 
     const offset = lspPositionToTsPosition(scriptInfo, position);
-    const langSvc = project.getLanguageService();
     const definition = langSvc.getDefinitionAndBoundSpan(fileName, offset);
     if (!definition || !definition.definitions) {
       return;
@@ -314,11 +315,11 @@ export class Session {
       return;
     }
     const project = this.projectService.getDefaultProjectForScriptInfo(scriptInfo);
-    if (!project || !project.languageServiceEnabled) {
+    const langSvc = project ?.getLanguageService();
+    if (!langSvc) {
       return;
     }
     const offset = lspPositionToTsPosition(scriptInfo, position);
-    const langSvc = project.getLanguageService();
     const info = langSvc.getQuickInfoAtPosition(scriptInfo.fileName, offset);
     if (!info) {
       return;
@@ -359,11 +360,11 @@ export class Session {
     }
     const {fileName} = scriptInfo;
     const project = this.projectService.getDefaultProjectForScriptInfo(scriptInfo);
-    if (!project || !project.languageServiceEnabled) {
+    const langSvc = project ?.getLanguageService();
+    if (!langSvc) {
       return;
     }
     const offset = lspPositionToTsPosition(scriptInfo, position);
-    const langSvc = project.getLanguageService();
     const completions = langSvc.getCompletionsAtPosition(
         fileName, offset,
         {

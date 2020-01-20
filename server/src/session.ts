@@ -229,9 +229,12 @@ export class Session {
       return;
     }
     for (const change of contentChanges) {
-      if (change.range) {
+      if ('range' in change) {
         const [start, end] = lspRangeToTsPositions(scriptInfo, change.range);
         scriptInfo.editContent(start, end, change.text);
+      } else {
+        // New text is considered to be the full content of the document.
+        scriptInfo.editContent(0, change.text.length, change.text);
       }
     }
 

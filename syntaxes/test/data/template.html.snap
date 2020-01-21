@@ -208,3 +208,75 @@
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
 ><my-component (invalidEvent]="onMyEvent($event)"></my-component>
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+>
+><!-- Two-way binding test -->
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+><button [(click)]="clickProp"></button>
+#^^^^^^^^ template.ng
+#        ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.begin.html
+#          ^^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html
+#               ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.end.html
+#                 ^ template.ng meta.ng-binding.two-way.html punctuation.separator.key-value.html
+#                  ^ template.ng meta.ng-binding.two-way.html string.quoted.html punctuation.definition.string.begin.html
+#                   ^^^^^^^^^ template.ng meta.ng-binding.two-way.html source.js
+#                            ^ template.ng meta.ng-binding.two-way.html string.quoted.html punctuation.definition.string.end.html
+#                             ^^^^^^^^^^^ template.ng
+><div [( extraSpacing )]="extraSpacing"></div>
+#^^^^^ template.ng
+#     ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.begin.html
+#       ^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html
+#        ^^^^^^^^^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html
+#                    ^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html
+#                     ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.end.html
+#                       ^ template.ng meta.ng-binding.two-way.html punctuation.separator.key-value.html
+#                        ^ template.ng meta.ng-binding.two-way.html string.quoted.html punctuation.definition.string.begin.html
+#                         ^^^^^^^^^^^^ template.ng meta.ng-binding.two-way.html source.js
+#                                     ^ template.ng meta.ng-binding.two-way.html string.quoted.html punctuation.definition.string.end.html
+#                                      ^^^^^^^^ template.ng
+><div [(@animation.done)]="animation"></div>
+#^^^^^ template.ng
+#     ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.begin.html
+#       ^^^^^^^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html
+#                 ^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.accessor.html
+#                  ^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html
+#                      ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.end.html
+#                        ^ template.ng meta.ng-binding.two-way.html punctuation.separator.key-value.html
+#                         ^ template.ng meta.ng-binding.two-way.html string.quoted.html punctuation.definition.string.begin.html
+#                          ^^^^^^^^^ template.ng meta.ng-binding.two-way.html source.js
+#                                   ^ template.ng meta.ng-binding.two-way.html string.quoted.html punctuation.definition.string.end.html
+#                                    ^^^^^^^^ template.ng
+><my-component [(my-prop)]="myProp"></my-component>
+#^^^^^^^^^^^^^^ template.ng
+#              ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.begin.html
+#                ^^^^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html
+#                       ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.end.html
+#                         ^ template.ng meta.ng-binding.two-way.html punctuation.separator.key-value.html
+#                          ^ template.ng meta.ng-binding.two-way.html string.quoted.html punctuation.definition.string.begin.html
+#                           ^^^^^^ template.ng meta.ng-binding.two-way.html source.js
+#                                 ^ template.ng meta.ng-binding.two-way.html string.quoted.html punctuation.definition.string.end.html
+#                                  ^^^^^^^^^^^^^^^^^ template.ng
+><my-component [(my_prop)]="myProp"></my-component>
+#^^^^^^^^^^^^^^ template.ng
+#              ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.begin.html
+#                ^^^^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html
+#                       ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.end.html
+#                         ^ template.ng meta.ng-binding.two-way.html punctuation.separator.key-value.html
+#                          ^ template.ng meta.ng-binding.two-way.html string.quoted.html punctuation.definition.string.begin.html
+#                           ^^^^^^ template.ng meta.ng-binding.two-way.html source.js
+#                                 ^ template.ng meta.ng-binding.two-way.html string.quoted.html punctuation.definition.string.end.html
+#                                  ^^^^^^^^^^^^^^^^^ template.ng
+><my-component [($my_prop)]="myProp"></my-component>
+#^^^^^^^^^^^^^^ template.ng
+#              ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.begin.html
+#                ^^^^^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html
+#                        ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.end.html
+#                          ^ template.ng meta.ng-binding.two-way.html punctuation.separator.key-value.html
+#                           ^ template.ng meta.ng-binding.two-way.html string.quoted.html punctuation.definition.string.begin.html
+#                            ^^^^^^ template.ng meta.ng-binding.two-way.html source.js
+#                                  ^ template.ng meta.ng-binding.two-way.html string.quoted.html punctuation.definition.string.end.html
+#                                   ^^^^^^^^^^^^^^^^^ template.ng
+><my-component [(%invalid)]="invalid"></my-component>
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+><my-component ([invalid)]="invalid"></my-component>
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+>

@@ -35,6 +35,16 @@
 <my-component (%invalidEvent)="onMyEvent($event)"></my-component>
 <my-component (invalidEvent]="onMyEvent($event)"></my-component>
 
+<!-- Two-way binding test -->
+<button [(click)]="clickProp"></button>
+<div [( extraSpacing )]="extraSpacing"></div>
+<div [(@animation.done)]="animation"></div>
+<my-component [(my-prop)]="myProp"></my-component>
+<my-component [(my_prop)]="myProp"></my-component>
+<my-component [($my_prop)]="myProp"></my-component>
+<my-component [(%invalid)]="invalid"></my-component>
+<my-component ([invalid)]="invalid"></my-component>
+
 <!-- Event binding test -->
 <button *ngModel="title"></button>
 <div *ngFor="let book of books"></div>

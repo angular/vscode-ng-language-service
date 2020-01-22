@@ -1,3 +1,26 @@
+# v0.900.5
+
+This release upgrades `@angular/language-service` to v9.0.0-rc.9.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#900-rc9-2020-01-15).
+
+It also upgrades `typescript` to v3.7.4.
+
+New features:
+- Support hover/definitions for structural directive
+- More detailed grammar scopes for template property binding syntax
+- Textmate grammar for template event bindings
+- Reenable probing language service and tsserver from active workspace
+- Priortize workspace version when resolving ts and ng
+- Add grammar for two-way bindings
+- Trigger autocomplete on '$' character
+- Upgrade `vscode-jsonrpc` to major version v5
+
+Bug fixes:
+- Language service works with HTML without TS files open
+- Fix CRLF offset in inline template
+- Do not use an i18n parser for templates
+- Require min typescript v3.7
+
 # v0.900.4
 
 This release upgrades `@angular/language-service` to v9.0.0-rc.8.

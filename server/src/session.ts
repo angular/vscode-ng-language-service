@@ -153,10 +153,10 @@ export class Session {
       capabilities: {
         textDocumentSync: lsp.TextDocumentSyncKind.Incremental,
         completionProvider: {
-          /// The server does not provide support to resolve additional information
+          // The server does not provide support to resolve additional information
           // for a completion item.
           resolveProvider: false,
-          triggerCharacters: ['<', '.', '*', '[', '(']
+          triggerCharacters: ['<', '.', '*', '[', '(', '$']
         },
         definitionProvider: true,
         hoverProvider: true,

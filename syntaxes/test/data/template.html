@@ -44,3 +44,11 @@
 <my-component [($my_prop)]="myProp"></my-component>
 <my-component [(%invalid)]="invalid"></my-component>
 <my-component ([invalid)]="invalid"></my-component>
+
+<!-- Event binding test -->
+<button *ngModel="title"></button>
+<div *ngFor="let book of books"></div>
+<my-component *custom-if="true != false"></my-component>
+<my-component *custom_if="true != false"></my-component>
+<my-component *custom_$if="true != false"></my-component>
+<my-component *%invalid="expr"></my-component>

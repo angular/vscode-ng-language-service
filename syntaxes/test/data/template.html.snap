@@ -280,3 +280,48 @@
 ><my-component ([invalid)]="invalid"></my-component>
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
 >
+><!-- Event binding test -->
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+><button *ngModel="title"></button>
+#^^^^^^^^ template.ng
+#        ^^^^^^^^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html
+#                ^ template.ng meta.ng-binding.template.html punctuation.separator.key-value.html
+#                 ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.begin.html
+#                  ^^^^^ template.ng meta.ng-binding.template.html source.js
+#                       ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.end.html
+#                        ^^^^^^^^^^^ template.ng
+><div *ngFor="let book of books"></div>
+#^^^^^ template.ng
+#     ^^^^^^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html
+#           ^ template.ng meta.ng-binding.template.html punctuation.separator.key-value.html
+#            ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.begin.html
+#             ^^^^^^^^^^^^^^^^^ template.ng meta.ng-binding.template.html source.js
+#                              ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.end.html
+#                               ^^^^^^^^ template.ng
+><my-component *custom-if="true != false"></my-component>
+#^^^^^^^^^^^^^^ template.ng
+#              ^^^^^^^^^^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html
+#                        ^ template.ng meta.ng-binding.template.html punctuation.separator.key-value.html
+#                         ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.begin.html
+#                          ^^^^^^^^^^^^^ template.ng meta.ng-binding.template.html source.js
+#                                       ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.end.html
+#                                        ^^^^^^^^^^^^^^^^^ template.ng
+><my-component *custom_if="true != false"></my-component>
+#^^^^^^^^^^^^^^ template.ng
+#              ^^^^^^^^^^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html
+#                        ^ template.ng meta.ng-binding.template.html punctuation.separator.key-value.html
+#                         ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.begin.html
+#                          ^^^^^^^^^^^^^ template.ng meta.ng-binding.template.html source.js
+#                                       ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.end.html
+#                                        ^^^^^^^^^^^^^^^^^ template.ng
+><my-component *custom_$if="true != false"></my-component>
+#^^^^^^^^^^^^^^ template.ng
+#              ^^^^^^^^^^^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html
+#                         ^ template.ng meta.ng-binding.template.html punctuation.separator.key-value.html
+#                          ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.begin.html
+#                           ^^^^^^^^^^^^^ template.ng meta.ng-binding.template.html source.js
+#                                        ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.end.html
+#                                         ^^^^^^^^^^^^^^^^^ template.ng
+><my-component *%invalid="expr"></my-component>
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+>

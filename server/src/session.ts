@@ -234,7 +234,7 @@ export class Session {
         scriptInfo.editContent(start, end, change.text);
       } else {
         // New text is considered to be the full content of the document.
-        scriptInfo.editContent(0, change.text.length, change.text);
+        scriptInfo.editContent(0, scriptInfo.getSnapshot().getLength(), change.text);
       }
     }
 

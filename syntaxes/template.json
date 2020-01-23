@@ -105,7 +105,7 @@
         }
       ]
     },
-    
+
     "twoWayBinding": {
       "begin": "(\\[\\s*\\(\\s*@?[-_a-zA-Z0-9.$]*\\s*\\)\\s*\\])(=)([\"'])",
       "beginCaptures": {

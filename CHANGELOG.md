@@ -1,3 +1,17 @@
+# v0.900.6
+
+This release upgrades `@angular/language-service` to v9.0.0-rc.10.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#900-rc10-2020-01-22).
+
+It also upgrades `vscode-languageclient` and `vscode-languageserver` to major
+version 6.
+
+New features:
+- Completions support for template reference variables
+- Provide completion for $event variable
+- Support hover/definitions for structural directive
+- Add grammar for template bindings
+
 # v0.900.5
 
 This release upgrades `@angular/language-service` to v9.0.0-rc.9.

@@ -44,7 +44,7 @@ export function activate(context: vscode.ExtensionContext) {
   };
 
   // Create the language client and start the client.
-  const forceDebug = !!process.env['NG_DEBUG'];
+  const forceDebug = process.env['NG_DEBUG'] === 'true';
   const client =
       new lsp.LanguageClient('Angular Language Service', serverOptions, clientOptions, forceDebug);
 

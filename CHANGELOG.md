@@ -1,3 +1,16 @@
+# v0.900.7
+
+This release upgrades `@angular/language-service` to v9.0.0-rc.11.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#900-rc11-2020-01-24).
+
+New features:
+- Specific suggestions for template context diags (#34751) (cc7fca4)
+- Support multiple symbol definitions (#34782) (2f2396c)
+
+Bug fixes:
+- Diagnostic span should point to class name (#34932) (c9db7bd)
+
+
 # v0.900.6
 
 This release upgrades `@angular/language-service` to v9.0.0-rc.10.

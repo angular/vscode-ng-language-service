@@ -96,6 +96,7 @@
     "compile:test": "tsc -b server/src/tests",
     "compile:integration": "tsc -b integration",
     "compile:syntaxes-test": "tsc -b syntaxes/test",
+    "build:syntaxes": "ts-node syntaxes/src/build.ts",
     "format": "scripts/format.sh",
     "watch": "tsc -b -w",
     "postinstall": "vscode-install && cd client && yarn && cd ../server && yarn && cd ..",

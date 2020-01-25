@@ -39,7 +39,6 @@
         }
       ]
     },
-
     "propertyBinding": {
       "begin": "(\\[\\s*@?[-_a-zA-Z0-9.$]*\\s*])(=)([\"'])",
       "beginCaptures": {
@@ -72,7 +71,6 @@
         }
       ]
     },
-
     "eventBinding": {
       "begin": "(\\(\\s*@?[-_a-zA-Z0-9.$]*\\s*\\))(=)([\"'])",
       "beginCaptures": {
@@ -105,7 +103,6 @@
         }
       ]
     },
-
     "twoWayBinding": {
       "begin": "(\\[\\s*\\(\\s*@?[-_a-zA-Z0-9.$]*\\s*\\)\\s*\\])(=)([\"'])",
       "beginCaptures": {
@@ -138,7 +135,6 @@
         }
       ]
     },
-
     "templateBinding": {
       "begin": "(\\*[-_a-zA-Z0-9.$]*)(=)([\"'])",
       "beginCaptures": {
@@ -171,7 +167,6 @@
         }
       ]
     },
-
     "bindingKey": {
       "patterns": [
         {

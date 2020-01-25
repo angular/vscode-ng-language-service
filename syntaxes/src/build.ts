@@ -10,6 +10,8 @@ import * as fs from 'fs';
 
 import {GrammarDefinition, GrammarDefinitionValue, JsonObject, JsonObjectValue} from './types';
 
+import {template} from './template';
+
 const processValue = (value: GrammarDefinitionValue): JsonObjectValue => {
   if (typeof value === 'string') {
     return value;
@@ -39,3 +41,5 @@ const build = (grammar: GrammarDefinition, filename: string): void => {
     if (error) throw error;
   });
 };
+
+build(template, 'template');

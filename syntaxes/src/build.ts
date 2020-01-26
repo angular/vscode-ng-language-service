@@ -9,7 +9,7 @@
 import * as fs from 'fs';
 
 import {GrammarDefinition, JsonObject} from './types';
-import {template} from './template';
+import {template} from './template/grammar';
 
 // Recursively transforms a TypeScript grammar definition into an object which can be processed by
 // JSON.stringify to generate a valid TextMate JSON grammar definition

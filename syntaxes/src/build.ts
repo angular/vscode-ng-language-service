@@ -23,7 +23,7 @@ const processValue = (value: GrammarDefinitionValue): JsonObjectValue => {
   return processGrammar(value);
 };
 
-const processGrammar = (grammar: GrammarDefinition|GrammarDefinition[]): JsonObject => {
+const processGrammar = (grammar: GrammarDefinition): JsonObject => {
   const processedGrammar: JsonObject = {};
 
   for (const [key, value] of Object.entries(grammar)) {

@@ -12,5 +12,6 @@ dist/
 .vscode/settings.json
 .vimrc
 .nvimrc
+syntaxes/out
 syntaxes/test/*.js
 syntaxes/test/*.map

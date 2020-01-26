@@ -8,26 +8,26 @@
 
 import * as fs from 'fs';
 
-import {GrammarDefinition, GrammarDefinitionValue, JsonObject, JsonObjectValue} from './types';
+import {GrammarDefinition, JsonObject} from './types';
 
 import {template} from './template';
 
-const processValue = (value: GrammarDefinitionValue): JsonObjectValue => {
-  if (typeof value === 'string') {
-    return value;
-  } else if (value instanceof RegExp) {
-    return value.toString().replace(/^\/|\/$/g, '');
-  } else if (value instanceof Array) {
-    return value.map(processGrammar);
-  }
-  return processGrammar(value);
-};
+const transformValue = (value: string|RegExp|GrammarDefinition|GrammarDefinition[]): string|
+    JsonObject|JsonObject[] => {
+      if (typeof value === 'string') {
+        return value;
+      } else if (value instanceof RegExp) {
+        return value.toString().replace(/^\/|\/$/g, '');
+      } else if (value instanceof Array) {
+        return value.map(processGrammar);
+      }
+      return processGrammar(value);
+    };
 
 const processGrammar = (grammar: GrammarDefinition): JsonObject => {
   const processedGrammar: JsonObject = {};
-
   for (const [key, value] of Object.entries(grammar)) {
-    processedGrammar[key] = processValue(value);
+    processedGrammar[key] = transformValue(value);
   }
 
   return processedGrammar;

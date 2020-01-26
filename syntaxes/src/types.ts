@@ -6,14 +6,10 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-export type GrammarDefinitionValue = string|RegExp|GrammarDefinition|GrammarDefinition[];
-
 export interface GrammarDefinition {
-  [key: string]: GrammarDefinitionValue;
+  [key: string]: string|RegExp|GrammarDefinition|GrammarDefinition[];
 }
 
-export type JsonObjectValue = string|JsonObject|JsonObject[];
-
 export interface JsonObject {
-  [key: string]: JsonObjectValue;
+  [key: string]: string|JsonObject|JsonObject[];
 }

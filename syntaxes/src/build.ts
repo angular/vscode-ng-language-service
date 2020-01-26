@@ -9,30 +9,28 @@
 import * as fs from 'fs';
 
 import {GrammarDefinition, JsonObject} from './types';
-
 import {template} from './template';
 
-function transformValue(value: string|RegExp|GrammarDefinition|GrammarDefinition[]): string|
-    JsonObject|JsonObject[] {
-  if (typeof value === 'string') {
-    return value;
-  } else if (value instanceof RegExp) {
-    return value.toString().replace(/^\/|\/$/g, '');
-  } else if (value instanceof Array) {
-    return value.map(processGrammar);
-  }
-  return processGrammar(value);
-}
-
+// Recursively transforms a TypeScript grammar definition into an object which can be processed by
+// JSON.stringify to generate a valid TextMate JSON grammar definition
 function processGrammar(grammar: GrammarDefinition): JsonObject {
   const processedGrammar: JsonObject = {};
   for (const [key, value] of Object.entries(grammar)) {
-    processedGrammar[key] = transformValue(value);
+    if (typeof value === 'string') {
+      processedGrammar[key] = value;
+    } else if (value instanceof RegExp) {
+      // Escape backslashes/quote marks and trim the demarcating `/` characters from a regex literal
+      processedGrammar[key] = value.toString().replace(/^\/|\/$/g, '');
+    } else if (value instanceof Array) {
+      processedGrammar[key] = value.map(processGrammar);
+    } else {
+      processedGrammar[key] = processGrammar(value);
+    }
   }
-
   return processedGrammar;
 }
 
+// Build a TextMate grammar JSON file from a source TypeScript object
 function build(grammar: GrammarDefinition, filename: string): void {
   const processedGrammar: JsonObject = processGrammar(grammar);
   const grammarContent: string = JSON.stringify(processedGrammar, null, '  ') + '\n';

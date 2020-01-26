@@ -35,7 +35,7 @@ function build(grammar: GrammarDefinition, filename: string): void {
   const processedGrammar: JsonObject = processGrammar(grammar);
   const grammarContent: string = JSON.stringify(processedGrammar, null, '  ') + '\n';
 
-  fs.writeFile(`syntaxes/${filename}.json`, grammarContent, (error) => {
+  fs.writeFile(`syntaxes/out/${filename}.json`, grammarContent, (error) => {
     if (error) throw error;
   });
 }

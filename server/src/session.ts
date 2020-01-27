@@ -40,11 +40,13 @@ export class Session {
   private readonly projectService: ProjectService;
   private diagnosticsTimeout: NodeJS.Timeout|null = null;
   private isProjectLoading = false;
+  private readonly logger: Logger;
 
   constructor(options: SessionOptions) {
     // Create a connection for the server. The connection uses Node's IPC as a transport.
     this.connection = lsp.createConnection();
     this.addProtocolHandlers(this.connection);
+    this.logger = options.logger,
     this.projectService = new ProjectService({
       host: options.host,
       logger: options.logger,
@@ -385,7 +387,9 @@ export class Session {
    * @param message The message to show.
    */
   error(message: string): void {
-    this.connection.console.error(message);
+    if (this.logger.hasLevel(ts.server.LogLevel.terse)) {
+      this.connection.console.error(message);
+    }
   }
 
   /**
@@ -394,7 +398,9 @@ export class Session {
    * @param message The message to show.
    */
   warn(message: string): void {
-    this.connection.console.warn(message);
+    if (this.logger.hasLevel(ts.server.LogLevel.terse)) {
+      this.connection.console.warn(message);
+    }
   }
 
   /**
@@ -403,7 +409,9 @@ export class Session {
    * @param message The message to show.
    */
   info(message: string): void {
-    this.connection.console.info(message);
+    if (this.logger.hasLevel(ts.server.LogLevel.verbose)) {
+      this.connection.console.info(message);
+    }
   }
 
   /**
@@ -412,7 +420,9 @@ export class Session {
    * @param message The message to log.
    */
   log(message: string): void {
-    this.connection.console.log(message);
+    if (this.logger.loggingEnabled) {
+      this.connection.console.log(message);
+    }
   }
 
   /**

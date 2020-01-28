@@ -9,6 +9,7 @@
   "files": [],
   "references": [
     { "path": "./client" },
-    { "path": "./server" }
+    { "path": "./server" },
+    { "path": "./syntaxes" }
   ]
 }

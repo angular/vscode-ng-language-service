@@ -3,7 +3,7 @@
     "name": "inline template",
     "scopeName": "inline-template.ng",
     "grammarFiles": [
-      "syntaxes/inline-template.json",
+      "syntaxes/out/inline-template.json",
       "syntaxes/out/template.json"
     ],
     "testFile": "syntaxes/test/data/inline-template.ts"
@@ -11,7 +11,7 @@
   {
     "name": "inline styles",
     "scopeName": "inline-styles.ng",
-    "grammarFiles": ["syntaxes/inline-styles.json"],
+    "grammarFiles": ["syntaxes/out/inline-styles.json"],
     "testFile": "syntaxes/test/data/inline-styles.ts"
   },
   {

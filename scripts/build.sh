@@ -22,9 +22,6 @@ cp server/package.json server/yarn.lock server/README.md dist/server
 node syntaxes/out/build.js
 mkdir dist/syntaxes
 cp syntaxes/out/*.json dist/syntaxes
-# TODO: Remove the next two lines once all syntaxes have been refactored to TypeScript
-cp syntaxes/*.json dist/syntaxes
-rm dist/syntaxes/tsconfig.json
 
 pushd dist
 yarn install --production --ignore-scripts

@@ -10,6 +10,8 @@ import * as fs from 'fs';
 
 import {GrammarDefinition, JsonObject} from './types';
 import {template} from './template/grammar';
+import {InlineTemplate} from './inline-template';
+import {InlineStyles} from './inline-styles';
 
 // Recursively transforms a TypeScript grammar definition into an object which can be processed by
 // JSON.stringify to generate a valid TextMate JSON grammar definition
@@ -41,3 +43,5 @@ function build(grammar: GrammarDefinition, filename: string): void {
 }
 
 build(template, 'template');
+build(InlineTemplate, 'inline-template');
+build(InlineStyles, 'inline-styles');

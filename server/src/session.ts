@@ -135,7 +135,7 @@ export class Session {
       }
       const project = this.projectService.getDefaultProjectForScriptInfo(scriptInfo);
       const ngLS = project ?.getLanguageService();
-      if (!ngLS) {
+      if (!project?.languageServiceEnabled || !ngLS) {
         continue;
       }
 
@@ -269,7 +269,7 @@ export class Session {
     const {fileName} = scriptInfo;
     const project = this.projectService.getDefaultProjectForScriptInfo(scriptInfo);
     const langSvc = project ?.getLanguageService();
-    if (!langSvc) {
+    if (!project?.languageServiceEnabled || !langSvc) {
       return;
     }
 
@@ -316,7 +316,7 @@ export class Session {
     }
     const project = this.projectService.getDefaultProjectForScriptInfo(scriptInfo);
     const langSvc = project ?.getLanguageService();
-    if (!langSvc) {
+    if (!project?.languageServiceEnabled || !langSvc) {
       return;
     }
     const offset = lspPositionToTsPosition(scriptInfo, position);
@@ -361,7 +361,7 @@ export class Session {
     const {fileName} = scriptInfo;
     const project = this.projectService.getDefaultProjectForScriptInfo(scriptInfo);
     const langSvc = project ?.getLanguageService();
-    if (!langSvc) {
+    if (!project?.languageServiceEnabled || !langSvc) {
       return;
     }
     const offset = lspPositionToTsPosition(scriptInfo, position);

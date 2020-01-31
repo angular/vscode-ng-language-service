@@ -48,4 +48,4 @@ export const InlineStyles: GrammarDefinition = {
       patterns: [{include: 'source.css'}]
     }
   }
-}
+};

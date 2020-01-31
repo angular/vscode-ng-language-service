@@ -20,3 +20,7 @@ yarn run test:lsp
 
 # Syntaxes tests
 yarn run test:syntaxes
+if [[ -n "$(git status --porcelain)" ]]; then
+  echo 'Syntax files are out-of-sync with source. Please run "yarn run build:syntaxes".'
+  exit 1
+fi

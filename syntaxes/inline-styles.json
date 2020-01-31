@@ -1,0 +1,92 @@
+{
+  "scopeName": "inline-styles.ng",
+  "injectionSelector": "L:source.ts#meta.decorator.ts -comment",
+  "patterns": [
+    {
+      "include": "#inlineStyles"
+    }
+  ],
+  "repository": {
+    "inlineStyles": {
+      "begin": "(styles)\\s*(:)",
+      "beginCaptures": {
+        "1": {
+          "name": "meta.object-literal.key.ts"
+        },
+        "2": {
+          "name": "meta.object-literal.key.ts punctuation.separator.key-value.ts"
+        }
+      },
+      "end": "(?=,|})",
+      "patterns": [
+        {
+          "include": "#tsParenExpression"
+        },
+        {
+          "include": "#tsBracketExpression"
+        }
+      ]
+    },
+    "tsParenExpression": {
+      "begin": "\\G\\s*(\\()",
+      "beginCaptures": {
+        "1": {
+          "name": "meta.brace.round.ts"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "meta.brace.round.ts"
+        }
+      },
+      "patterns": [
+        {
+          "include": "$self"
+        },
+        {
+          "include": "#tsBracketExpression"
+        }
+      ]
+    },
+    "tsBracketExpression": {
+      "begin": "\\G\\s*(\\[)",
+      "beginCaptures": {
+        "1": {
+          "name": "meta.array.literal.ts meta.brace.square.ts"
+        }
+      },
+      "end": "\\]",
+      "endCaptures": {
+        "0": {
+          "name": "meta.array.literal.ts meta.brace.square.ts"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#style"
+        }
+      ]
+    },
+    "style": {
+      "begin": "\\s*([`|'|\"])",
+      "beginCaptures": {
+        "1": {
+          "name": "string"
+        }
+      },
+      "end": "\\1",
+      "endCaptures": {
+        "0": {
+          "name": "string"
+        }
+      },
+      "contentName": "source.css",
+      "patterns": [
+        {
+          "include": "source.css"
+        }
+      ]
+    }
+  }
+}

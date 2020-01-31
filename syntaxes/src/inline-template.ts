@@ -40,4 +40,4 @@ export const InlineTemplate: GrammarDefinition = {
       patterns: [{include: 'text.html.derivative'}, {include: 'template.ng'}]
     }
   }
-}
+};

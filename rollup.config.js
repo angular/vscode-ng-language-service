@@ -23,7 +23,7 @@ module.exports = [
     output: {
       file: 'dist/server/index.js',
       format: 'amd',
-      banner: fs.readFileSync('dist/server/banner.js', 'utf8'),
+      banner: fs.readFileSync('server/out/banner/banner.rollup.js', 'utf8'),
     },
     external: [
       'fs',

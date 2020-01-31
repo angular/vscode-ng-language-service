@@ -134,6 +134,7 @@ export const Template: GrammarDefinition = {
           captures: {
             1: {name: 'punctuation.definition.ng-binding-name.begin.html'},
             2: {
+              name: 'entity.other.ng-binding-name.$2.html',
               patterns: [
                 {
                   match: /\./,

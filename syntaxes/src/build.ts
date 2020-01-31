@@ -9,7 +9,7 @@
 import * as fs from 'fs';
 
 import {GrammarDefinition, JsonObject} from './types';
-import {template} from './template/grammar';
+import {Template} from './template';
 import {InlineTemplate} from './inline-template';
 import {InlineStyles} from './inline-styles';
 
@@ -42,6 +42,6 @@ function build(grammar: GrammarDefinition, filename: string): void {
   });
 }
 
-build(template, 'template');
+build(Template, 'template');
 build(InlineTemplate, 'inline-template');
 build(InlineStyles, 'inline-styles');

@@ -6,9 +6,9 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {GrammarDefinition} from '../types';
+import {GrammarDefinition} from './types';
 
-export const template: GrammarDefinition = {
+export const Template: GrammarDefinition = {
   scopeName: 'template.ng',
   injectionSelector: 'L:text.html -comment',
   patterns: [

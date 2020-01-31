@@ -1,3 +1,19 @@
+# v0.900.8
+
+This release upgrades `@angular/language-service` to v9.0.0-rc.12.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#900-rc12-2020-01-30).
+
+New features:
+- completions for output $event properties in (#34570) (2a53727)
+- provide completion for $event variable (#34570) (c246787)
+- provide hover for microsyntax in structural directive (#34847) (baf4a63)
+
+Bug fixes:
+- prune duplicate returned definitions (#34995) (71f5417)
+- remove repeated symbol definitions for structural directive (#34847) (35916d3)
+- warn, not error, on missing context members (#35036) (0e76821)
+- enable debug mode only when it is strictly turned on
+
 # v0.900.7
 
 This release upgrades `@angular/language-service` to v9.0.0-rc.11.
@@ -9,7 +25,6 @@ New features:
 
 Bug fixes:
 - Diagnostic span should point to class name (#34932) (c9db7bd)
-
 
 # v0.900.6
 

@@ -8,10 +8,10 @@
 
 import * as fs from 'fs';
 
-import {GrammarDefinition, JsonObject} from './types';
-import {template} from './template/grammar';
-import {InlineTemplate} from './inline-template';
 import {InlineStyles} from './inline-styles';
+import {InlineTemplate} from './inline-template';
+import {Template} from './template';
+import {GrammarDefinition, JsonObject} from './types';
 
 // Recursively transforms a TypeScript grammar definition into an object which can be processed by
 // JSON.stringify to generate a valid TextMate JSON grammar definition
@@ -42,6 +42,6 @@ function build(grammar: GrammarDefinition, filename: string): void {
   });
 }
 
-build(template, 'template');
+build(Template, 'template');
 build(InlineTemplate, 'inline-template');
 build(InlineStyles, 'inline-styles');

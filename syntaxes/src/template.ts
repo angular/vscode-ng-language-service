@@ -6,9 +6,9 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {GrammarDefinition} from '../types';
+import {GrammarDefinition} from './types';
 
-export const template: GrammarDefinition = {
+export const Template: GrammarDefinition = {
   scopeName: 'template.ng',
   injectionSelector: 'L:text.html -comment',
   patterns: [
@@ -130,10 +130,11 @@ export const template: GrammarDefinition = {
     bindingKey: {
       patterns: [
         {
-          match: /([\[\(]{1,2})(?:\s*)(@?[-_a-zA-Z0-9.$]*)(?:\s*)([\]\)]{1,2})/,
+          match: /([\[\(]{1,2}|\*)(?:\s*)(@?[-_a-zA-Z0-9.$]*)(?:\s*)([\]\)]{1,2})?/,
           captures: {
             1: {name: 'punctuation.definition.ng-binding-name.begin.html'},
             2: {
+              name: 'entity.other.ng-binding-name.$2.html',
               patterns: [
                 {
                   match: /\./,

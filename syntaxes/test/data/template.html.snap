@@ -13,7 +13,7 @@
 #^^^^^ template.ng
 #     ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html punctuation.definition.ng-binding-name.begin.html
 #      ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html
-#       ^^^^^^^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html
+#       ^^^^^^^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html entity.other.ng-binding-name.ngStyle.html
 #              ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html
 #               ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html punctuation.definition.ng-binding-name.end.html
 #                ^ template.ng meta.ng-binding.property.html punctuation.separator.key-value.html
@@ -24,7 +24,7 @@
 ><div [ngClass]="[
 #^^^^^ template.ng
 #     ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html punctuation.definition.ng-binding-name.begin.html
-#      ^^^^^^^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html
+#      ^^^^^^^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html entity.other.ng-binding-name.ngClass.html
 #             ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html punctuation.definition.ng-binding-name.end.html
 #              ^ template.ng meta.ng-binding.property.html punctuation.separator.key-value.html
 #               ^ template.ng meta.ng-binding.property.html string.quoted.html punctuation.definition.string.begin.html
@@ -42,9 +42,9 @@
 ><div [@animation.trigger]="val"></div>
 #^^^^^ template.ng
 #     ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html punctuation.definition.ng-binding-name.begin.html
-#      ^^^^^^^^^^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html
-#                ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html punctuation.accessor.html
-#                 ^^^^^^^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html
+#      ^^^^^^^^^^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html entity.other.ng-binding-name.@animation.trigger.html
+#                ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html entity.other.ng-binding-name.@animation.trigger.html punctuation.accessor.html
+#                 ^^^^^^^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html entity.other.ng-binding-name.@animation.trigger.html
 #                        ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html punctuation.definition.ng-binding-name.end.html
 #                         ^ template.ng meta.ng-binding.property.html punctuation.separator.key-value.html
 #                          ^ template.ng meta.ng-binding.property.html string.quoted.html punctuation.definition.string.begin.html
@@ -54,9 +54,9 @@
 ><img [attr.aria-label]="val" />
 #^^^^^ template.ng
 #     ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html punctuation.definition.ng-binding-name.begin.html
-#      ^^^^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html
-#          ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html punctuation.accessor.html
-#           ^^^^^^^^^^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html
+#      ^^^^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html entity.other.ng-binding-name.attr.aria-label.html
+#          ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html entity.other.ng-binding-name.attr.aria-label.html punctuation.accessor.html
+#           ^^^^^^^^^^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html entity.other.ng-binding-name.attr.aria-label.html
 #                     ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html punctuation.definition.ng-binding-name.end.html
 #                      ^ template.ng meta.ng-binding.property.html punctuation.separator.key-value.html
 #                       ^ template.ng meta.ng-binding.property.html string.quoted.html punctuation.definition.string.begin.html
@@ -66,7 +66,7 @@
 ><div [my-property]="val"></div>
 #^^^^^ template.ng
 #     ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html punctuation.definition.ng-binding-name.begin.html
-#      ^^^^^^^^^^^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html
+#      ^^^^^^^^^^^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html entity.other.ng-binding-name.my-property.html
 #                 ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html punctuation.definition.ng-binding-name.end.html
 #                  ^ template.ng meta.ng-binding.property.html punctuation.separator.key-value.html
 #                   ^ template.ng meta.ng-binding.property.html string.quoted.html punctuation.definition.string.begin.html
@@ -76,7 +76,7 @@
 ><div [my_property]="val"></div>
 #^^^^^ template.ng
 #     ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html punctuation.definition.ng-binding-name.begin.html
-#      ^^^^^^^^^^^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html
+#      ^^^^^^^^^^^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html entity.other.ng-binding-name.my_property.html
 #                 ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html punctuation.definition.ng-binding-name.end.html
 #                  ^ template.ng meta.ng-binding.property.html punctuation.separator.key-value.html
 #                   ^ template.ng meta.ng-binding.property.html string.quoted.html punctuation.definition.string.begin.html
@@ -86,7 +86,7 @@
 ><div [myProperty$]="val"></div>
 #^^^^^ template.ng
 #     ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html punctuation.definition.ng-binding-name.begin.html
-#      ^^^^^^^^^^^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html
+#      ^^^^^^^^^^^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html entity.other.ng-binding-name.myProperty$.html
 #                 ^ template.ng meta.ng-binding.property.html entity.other.attribute-name.html entity.other.ng-binding-name.property.html punctuation.definition.ng-binding-name.end.html
 #                  ^ template.ng meta.ng-binding.property.html punctuation.separator.key-value.html
 #                   ^ template.ng meta.ng-binding.property.html string.quoted.html punctuation.definition.string.begin.html
@@ -103,7 +103,7 @@
 ><button (click)="onClick($event)"></button>
 #^^^^^^^^ template.ng
 #        ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html
-#         ^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#         ^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html entity.other.ng-binding-name.click.html
 #              ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.end.html
 #               ^ template.ng meta.ng-binding.event.html punctuation.separator.key-value.html
 #                ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.begin.html
@@ -113,7 +113,7 @@
 ><input (ngModelChange)="onModelChange($event)" />
 #^^^^^^^ template.ng
 #       ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html
-#        ^^^^^^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#        ^^^^^^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html entity.other.ng-binding-name.ngModelChange.html
 #                     ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.end.html
 #                      ^ template.ng meta.ng-binding.event.html punctuation.separator.key-value.html
 #                       ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.begin.html
@@ -123,9 +123,9 @@
 ><div (@animation.done)="onAnimationDone($event)"></div>
 #^^^^^ template.ng
 #     ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html
-#      ^^^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
-#                ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.accessor.html
-#                 ^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#      ^^^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html entity.other.ng-binding-name.@animation.done.html
+#                ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html entity.other.ng-binding-name.@animation.done.html punctuation.accessor.html
+#                 ^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html entity.other.ng-binding-name.@animation.done.html
 #                     ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.end.html
 #                      ^ template.ng meta.ng-binding.event.html punctuation.separator.key-value.html
 #                       ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.begin.html
@@ -135,7 +135,7 @@
 ><div (someEvent)="
 #^^^^^ template.ng
 #     ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html
-#      ^^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#      ^^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html entity.other.ng-binding-name.someEvent.html
 #               ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.end.html
 #                ^ template.ng meta.ng-binding.event.html punctuation.separator.key-value.html
 #                 ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.begin.html
@@ -156,7 +156,7 @@
 #^^^^^ template.ng
 #     ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html
 #      ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
-#       ^^^^^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#       ^^^^^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html entity.other.ng-binding-name.extraSpacing.html
 #                   ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
 #                    ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.end.html
 #                     ^ template.ng meta.ng-binding.event.html punctuation.separator.key-value.html
@@ -167,7 +167,7 @@
 ><my-component (myEvent)="onMyEvent($event)"></my-component>
 #^^^^^^^^^^^^^^ template.ng
 #              ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html
-#               ^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#               ^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html entity.other.ng-binding-name.myEvent.html
 #                      ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.end.html
 #                       ^ template.ng meta.ng-binding.event.html punctuation.separator.key-value.html
 #                        ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.begin.html
@@ -177,7 +177,7 @@
 ><my-component (my-event)="onMyEvent($event)"></my-component>
 #^^^^^^^^^^^^^^ template.ng
 #              ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html
-#               ^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#               ^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html entity.other.ng-binding-name.my-event.html
 #                       ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.end.html
 #                        ^ template.ng meta.ng-binding.event.html punctuation.separator.key-value.html
 #                         ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.begin.html
@@ -187,7 +187,7 @@
 ><my-component (my_event)="onMyEvent($event)"></my-component>
 #^^^^^^^^^^^^^^ template.ng
 #              ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html
-#               ^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#               ^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html entity.other.ng-binding-name.my_event.html
 #                       ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.end.html
 #                        ^ template.ng meta.ng-binding.event.html punctuation.separator.key-value.html
 #                         ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.begin.html
@@ -197,7 +197,7 @@
 ><my-component (myEvent$)="onMyEvent($event)"></my-component>
 #^^^^^^^^^^^^^^ template.ng
 #              ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html
-#               ^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html
+#               ^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html entity.other.ng-binding-name.myEvent$.html
 #                       ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.end.html
 #                        ^ template.ng meta.ng-binding.event.html punctuation.separator.key-value.html
 #                         ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.begin.html
@@ -214,7 +214,7 @@
 ><button [(click)]="clickProp"></button>
 #^^^^^^^^ template.ng
 #        ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.begin.html
-#          ^^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html
+#          ^^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html entity.other.ng-binding-name.click.html
 #               ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.end.html
 #                 ^ template.ng meta.ng-binding.two-way.html punctuation.separator.key-value.html
 #                  ^ template.ng meta.ng-binding.two-way.html string.quoted.html punctuation.definition.string.begin.html
@@ -225,7 +225,7 @@
 #^^^^^ template.ng
 #     ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.begin.html
 #       ^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html
-#        ^^^^^^^^^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html
+#        ^^^^^^^^^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html entity.other.ng-binding-name.extraSpacing.html
 #                    ^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html
 #                     ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.end.html
 #                       ^ template.ng meta.ng-binding.two-way.html punctuation.separator.key-value.html
@@ -236,9 +236,9 @@
 ><div [(@animation.done)]="animation"></div>
 #^^^^^ template.ng
 #     ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.begin.html
-#       ^^^^^^^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html
-#                 ^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.accessor.html
-#                  ^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html
+#       ^^^^^^^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html entity.other.ng-binding-name.@animation.done.html
+#                 ^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html entity.other.ng-binding-name.@animation.done.html punctuation.accessor.html
+#                  ^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html entity.other.ng-binding-name.@animation.done.html
 #                      ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.end.html
 #                        ^ template.ng meta.ng-binding.two-way.html punctuation.separator.key-value.html
 #                         ^ template.ng meta.ng-binding.two-way.html string.quoted.html punctuation.definition.string.begin.html
@@ -248,7 +248,7 @@
 ><my-component [(my-prop)]="myProp"></my-component>
 #^^^^^^^^^^^^^^ template.ng
 #              ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.begin.html
-#                ^^^^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html
+#                ^^^^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html entity.other.ng-binding-name.my-prop.html
 #                       ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.end.html
 #                         ^ template.ng meta.ng-binding.two-way.html punctuation.separator.key-value.html
 #                          ^ template.ng meta.ng-binding.two-way.html string.quoted.html punctuation.definition.string.begin.html
@@ -258,7 +258,7 @@
 ><my-component [(my_prop)]="myProp"></my-component>
 #^^^^^^^^^^^^^^ template.ng
 #              ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.begin.html
-#                ^^^^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html
+#                ^^^^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html entity.other.ng-binding-name.my_prop.html
 #                       ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.end.html
 #                         ^ template.ng meta.ng-binding.two-way.html punctuation.separator.key-value.html
 #                          ^ template.ng meta.ng-binding.two-way.html string.quoted.html punctuation.definition.string.begin.html
@@ -268,7 +268,7 @@
 ><my-component [($my_prop)]="myProp"></my-component>
 #^^^^^^^^^^^^^^ template.ng
 #              ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.begin.html
-#                ^^^^^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html
+#                ^^^^^^^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html entity.other.ng-binding-name.$my_prop.html
 #                        ^^ template.ng meta.ng-binding.two-way.html entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html punctuation.definition.ng-binding-name.end.html
 #                          ^ template.ng meta.ng-binding.two-way.html punctuation.separator.key-value.html
 #                           ^ template.ng meta.ng-binding.two-way.html string.quoted.html punctuation.definition.string.begin.html
@@ -284,7 +284,8 @@
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
 ><button *ngModel="title"></button>
 #^^^^^^^^ template.ng
-#        ^^^^^^^^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html
+#        ^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html punctuation.definition.ng-binding-name.begin.html
+#         ^^^^^^^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html entity.other.ng-binding-name.ngModel.html
 #                ^ template.ng meta.ng-binding.template.html punctuation.separator.key-value.html
 #                 ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.begin.html
 #                  ^^^^^ template.ng meta.ng-binding.template.html source.js
@@ -292,7 +293,8 @@
 #                        ^^^^^^^^^^^ template.ng
 ><div *ngFor="let book of books"></div>
 #^^^^^ template.ng
-#     ^^^^^^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html
+#     ^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html punctuation.definition.ng-binding-name.begin.html
+#      ^^^^^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html entity.other.ng-binding-name.ngFor.html
 #           ^ template.ng meta.ng-binding.template.html punctuation.separator.key-value.html
 #            ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.begin.html
 #             ^^^^^^^^^^^^^^^^^ template.ng meta.ng-binding.template.html source.js
@@ -300,7 +302,8 @@
 #                               ^^^^^^^^ template.ng
 ><my-component *custom-if="true != false"></my-component>
 #^^^^^^^^^^^^^^ template.ng
-#              ^^^^^^^^^^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html
+#              ^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html punctuation.definition.ng-binding-name.begin.html
+#               ^^^^^^^^^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html entity.other.ng-binding-name.custom-if.html
 #                        ^ template.ng meta.ng-binding.template.html punctuation.separator.key-value.html
 #                         ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.begin.html
 #                          ^^^^^^^^^^^^^ template.ng meta.ng-binding.template.html source.js
@@ -308,7 +311,8 @@
 #                                        ^^^^^^^^^^^^^^^^^ template.ng
 ><my-component *custom_if="true != false"></my-component>
 #^^^^^^^^^^^^^^ template.ng
-#              ^^^^^^^^^^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html
+#              ^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html punctuation.definition.ng-binding-name.begin.html
+#               ^^^^^^^^^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html entity.other.ng-binding-name.custom_if.html
 #                        ^ template.ng meta.ng-binding.template.html punctuation.separator.key-value.html
 #                         ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.begin.html
 #                          ^^^^^^^^^^^^^ template.ng meta.ng-binding.template.html source.js
@@ -316,7 +320,8 @@
 #                                        ^^^^^^^^^^^^^^^^^ template.ng
 ><my-component *custom_$if="true != false"></my-component>
 #^^^^^^^^^^^^^^ template.ng
-#              ^^^^^^^^^^^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html
+#              ^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html punctuation.definition.ng-binding-name.begin.html
+#               ^^^^^^^^^^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html entity.other.ng-binding-name.custom_$if.html
 #                         ^ template.ng meta.ng-binding.template.html punctuation.separator.key-value.html
 #                          ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.begin.html
 #                           ^^^^^^^^^^^^^ template.ng meta.ng-binding.template.html source.js

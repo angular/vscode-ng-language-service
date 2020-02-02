@@ -133,9 +133,9 @@ export class Session {
       if (!scriptInfo) {
         continue;
       }
-      const project = this.projectService.getDefaultProjectForScriptInfo(scriptInfo);
-      const ngLS = project?.getLanguageService();
-      if (!project?.languageServiceEnabled || !ngLS) {
+
+      const ngLS = this.projectService.getDefaultLanguageService(scriptInfo);
+      if (!ngLS) {
         continue;
       }
 
@@ -267,9 +267,8 @@ export class Session {
     }
 
     const {fileName} = scriptInfo;
-    const project = this.projectService.getDefaultProjectForScriptInfo(scriptInfo);
-    const langSvc = project?.getLanguageService();
-    if (!project?.languageServiceEnabled || !langSvc) {
+    const langSvc = this.projectService.getDefaultLanguageService(scriptInfo);
+    if (!langSvc) {
       return;
     }
 
@@ -314,9 +313,8 @@ export class Session {
     if (!scriptInfo) {
       return;
     }
-    const project = this.projectService.getDefaultProjectForScriptInfo(scriptInfo);
-    const langSvc = project?.getLanguageService();
-    if (!project?.languageServiceEnabled || !langSvc) {
+    const langSvc = this.projectService.getDefaultLanguageService(scriptInfo);
+    if (!langSvc) {
       return;
     }
     const offset = lspPositionToTsPosition(scriptInfo, position);
@@ -359,9 +357,8 @@ export class Session {
       return;
     }
     const {fileName} = scriptInfo;
-    const project = this.projectService.getDefaultProjectForScriptInfo(scriptInfo);
-    const langSvc = project?.getLanguageService();
-    if (!project?.languageServiceEnabled || !langSvc) {
+    const langSvc = this.projectService.getDefaultLanguageService(scriptInfo);
+    if (!langSvc) {
       return;
     }
     const offset = lspPositionToTsPosition(scriptInfo, position);

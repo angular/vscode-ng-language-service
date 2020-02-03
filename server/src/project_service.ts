@@ -116,4 +116,14 @@ export class ProjectService {
 
     return project;
   }
+
+  /**
+   * Returns a language service for a default project created for the specified `scriptInfo`. If the
+   * project does not support a language service, nothing is returned.
+   */
+  getDefaultLanguageService(scriptInfo: ts.server.ScriptInfo): ts.LanguageService|undefined {
+    const project = this.getDefaultProjectForScriptInfo(scriptInfo);
+    if (!project?.languageServiceEnabled) return;
+    return project.getLanguageService();
+  }
 }

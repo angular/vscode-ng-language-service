@@ -72,7 +72,7 @@
         }
       },
       {
-        "path": "./syntaxes/template.json",
+        "path": "./syntaxes/out/template.json",
         "scopeName": "template.ng",
         "injectTo": [
           "text.html"
@@ -80,8 +80,12 @@
         "embeddedLanguages": {
           "text.html": "html",
           "source.css": "css",
-          "source.js": "javascript"
+          "expression.ng": "typescript"
         }
+      },
+      {
+        "path": "./syntaxes/out/expression.json",
+        "scopeName": "expression.ng"
       }
     ]
   },

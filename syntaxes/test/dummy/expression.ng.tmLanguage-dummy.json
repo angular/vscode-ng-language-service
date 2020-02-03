@@ -1,0 +1,4 @@
+{
+  "comment": "Dummy Angular expression TextMate grammar for use in testing",
+  "scopeName": "expression.ng"
+}

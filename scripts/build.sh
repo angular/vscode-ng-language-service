@@ -19,9 +19,9 @@ cp client/package.json client/yarn.lock dist/client
 # Copy files to server directory
 cp server/package.json server/yarn.lock server/README.md dist/server
 # Build and copy files to syntaxes directory
-node syntaxes/out/build.js
+yarn run build:syntaxes
 mkdir dist/syntaxes
-cp syntaxes/out/*.json dist/syntaxes
+cp syntaxes/inline-styles.json syntaxes/inline-template.json syntaxes/template.json dist/syntaxes
 
 pushd dist
 yarn install --production --ignore-scripts

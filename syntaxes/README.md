@@ -1,3 +1,11 @@
+# Read This!
+
+**The JSON files in this directory are not meant to be edited by hand.**
+
+If you need to make modification, the respective files should be changed within the repository's [`syntaxes/src`](https://github.com/angular/vscode-ng-language-service/tree/master/syntaxes/src) directory.
+
+Running `yarn build:syntaxes` will then appropriately update the files in this directory.
+
 # Syntaxes
 
 This directory specifies

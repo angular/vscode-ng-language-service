@@ -10,7 +10,6 @@ import 'jasmine';
 import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as util from 'util';
 import * as SNAPSHOT_TEST_CASES from './cases.json';
 
 interface TestCase {

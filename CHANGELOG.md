@@ -1,3 +1,12 @@
+# v0.900.9
+
+This release upgrades `@angular/language-service` to v9.0.0-rc.13.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#900-rc13-2020-02-01).
+
+Bug fixes:
+- more accurate and specific binding scopes (#598)
+- check that a language service exists for discovered projects (#562)
+
 # v0.900.8
 
 This release upgrades `@angular/language-service` to v9.0.0-rc.12.

@@ -1,5 +1,3 @@
-import { GrammarDefinition } from '../types';
-
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -7,6 +5,7 @@ import { GrammarDefinition } from '../types';
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
+import { GrammarDefinition } from '../types';
 
 export const expression: GrammarDefinition = {
   scopeName: 'expression.ng',
@@ -17,7 +16,7 @@ export const expression: GrammarDefinition = {
       name: 'meta.expression.ng',
       patterns: [
         {
-          include: '#tsString',
+          include: '#string',
         },
         {
           include: '#literal',
@@ -26,7 +25,7 @@ export const expression: GrammarDefinition = {
           include: '#ternaryExpression',
         },
         {
-          include: '#expressionOperators',
+          include: '#expressionOperator',
         },
         {
           include: '#functionCall',
@@ -83,7 +82,7 @@ export const expression: GrammarDefinition = {
       ],
     },
 
-    expressionOperators: {
+    expressionOperator: {
       patterns: [
         {
           match: /((?<!\|)(\|)(?!\|))\s?([a-zA-Z0-9\-\_\$]*)/,
@@ -625,7 +624,7 @@ export const expression: GrammarDefinition = {
       match: /(?<!\.|\$)\bthis\b(?!\$)/,
     },
 
-    tsString: {
+    string: {
       patterns: [
         {
           include: '#qstringSingle',
@@ -829,7 +828,7 @@ export const expression: GrammarDefinition = {
       name: 'meta.type.ts',
       patterns: [
         {
-          include: '#tsString',
+          include: '#string',
         },
         {
           include: '#numericLiteral',

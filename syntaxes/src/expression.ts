@@ -5,12 +5,12 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { GrammarDefinition } from '../types';
+import {GrammarDefinition} from './types';
 
-export const expression: GrammarDefinition = {
+export const Expression: GrammarDefinition = {
   scopeName: 'expression.ng',
   injectionSelector: 'L:text.html -comment',
-  patterns: [{ include: '#ngExpression' }],
+  patterns: [{include: '#ngExpression'}],
   repository: {
     ngExpression: {
       name: 'meta.expression.ng',
@@ -49,13 +49,13 @@ export const expression: GrammarDefinition = {
       name: 'meta.array.literal.ts',
       begin: /\[/,
       beginCaptures: {
-        '0': {
+        0: {
           name: 'meta.brace.square.ts',
         },
       },
       end: /\]/,
       endCaptures: {
-        '0': {
+        0: {
           name: 'meta.brace.square.ts',
         },
       },
@@ -87,10 +87,10 @@ export const expression: GrammarDefinition = {
         {
           match: /((?<!\|)(\|)(?!\|))\s?([a-zA-Z0-9\-\_\$]*)/,
           captures: {
-            '2': {
+            2: {
               name: 'keyword.operator.logical.ts',
             },
-            '3': {
+            3: {
               name: 'entity.name.function.pipe.ng',
             },
           },
@@ -136,16 +136,13 @@ export const expression: GrammarDefinition = {
           match: /(?<!\.|\$)\bnew\b(?!\$)/,
         },
         {
-          include: '#typeofOperator',
-        },
-        {
           name: 'keyword.operator.expression.void.ts',
           match: /(?<!\.|\$)\bvoid\b(?!\$)/,
         },
         {
           begin: /(?<!\.|\$)\bas\b(?!\$)/,
           beginCaptures: {
-            '0': {
+            0: {
               name: 'keyword.control.as.ts',
             },
           },
@@ -203,10 +200,13 @@ export const expression: GrammarDefinition = {
         {
           match: /(?<=[_$[:alnum:]])\s*(\/)(?![\/*])/,
           captures: {
-            '1': {
+            1: {
               name: 'keyword.operator.arithmetic.ts',
             },
           },
+        },
+        {
+          include: '#typeofOperator',
         },
       ],
     },
@@ -231,13 +231,13 @@ export const expression: GrammarDefinition = {
           name: 'meta.type.parameters.ts',
           begin: /\</,
           beginCaptures: {
-            '0': {
+            0: {
               name: 'punctuation.definition.typeparameters.begin.ts',
             },
           },
           end: /\>/,
           endCaptures: {
-            '0': {
+            0: {
               name: 'punctuation.definition.typeparameters.end.ts',
             },
           },
@@ -260,13 +260,13 @@ export const expression: GrammarDefinition = {
       name: 'meta.parameters.ts',
       begin: /\(/,
       beginCaptures: {
-        '0': {
+        0: {
           name: 'punctuation.definition.parameters.begin.ts',
         },
       },
       end: /\)/,
       endCaptures: {
-        '0': {
+        0: {
           name: 'punctuation.definition.parameters.end.ts',
         },
       },
@@ -294,26 +294,28 @@ export const expression: GrammarDefinition = {
           match: /([_$[:alpha:]][_$[:alnum:]]*)(?=\s*\.\s*prototype\b(?!\$))/,
         },
         {
-          match: '(?x)(\\?\\.|\\!\\.|\\.)\\s*(?:\n  ([[:upper:]][_$[:digit:][:upper:]]*) |\n  ([_$[:alpha:]][_$[:alnum:]]*)\n)(?=\\s*\\.\\s*[_$[:alpha:]][_$[:alnum:]]*)',
+          match:
+              '(?x)(\\?\\.|\\!\\.|\\.)\\s*(?:\n([[:upper:]][_$[:digit:][:upper:]]*)|\n([_$[:alpha:]][_$[:alnum:]]*)\n)(?=\\s*\\.\\s*[_$[:alpha:]][_$[:alnum:]]*)',
           captures: {
-            '1': {
+            1: {
               name: 'punctuation.accessor.ts',
             },
-            '2': {
+            2: {
               name: 'constant.other.object.property.ts',
             },
-            '3': {
+            3: {
               name: 'variable.other.object.property.ts',
             },
           },
         },
         {
-          match: '(?x)(?:(\\?\\.|\\!\\.|\\.)\\s*)?([_$[:alpha:]][_$[:alnum:]]*)(?=\\s*=\\s*( (async\\s+)|(function\\s*[(<])|(function\\s+)| ([_$[:alpha:]][_$[:alnum:]]*\\s*=>)| ((<([^<>]|\\<[^<>]+\\>)+>\\s*)?\\(([^()]|\\([^()]*\\))*\\)(\\s*:\\s*(.)*)?\\s*=>)))',
+          match:
+              '(?x)(?:(\\?\\.|\\!\\.|\\.)\\s*)?([_$[:alpha:]][_$[:alnum:]]*)(?=\\s*=\\s*((async\\s+)|(function\\s*[(<])|(function\\s+)|([_$[:alpha:]][_$[:alnum:]]*\\s*=>)|((<([^<>]|\\<[^<>]+\\>)+>\\s*)?\\(([^()]|\\([^()]*\\))*\\)(\\s*:\\s*(.)*)?\\s*=>)))',
           captures: {
-            '1': {
+            1: {
               name: 'punctuation.accessor.ts',
             },
-            '2': {
+            2: {
               name: 'entity.name.function.ts',
             },
           },
@@ -321,10 +323,10 @@ export const expression: GrammarDefinition = {
         {
           match: '(\\?\\.|\\!\\.|\\.)\\s*([[:upper:]][_$[:digit:][:upper:]]*)(?![_$[:alnum:]])',
           captures: {
-            '1': {
+            1: {
               name: 'punctuation.accessor.ts',
             },
-            '2': {
+            2: {
               name: 'constant.other.property.ts',
             },
           },
@@ -332,21 +334,22 @@ export const expression: GrammarDefinition = {
         {
           match: '(\\?\\.|\\!\\.|\\.)\\s*([_$[:alpha:]][_$[:alnum:]]*)',
           captures: {
-            '1': {
+            1: {
               name: 'punctuation.accessor.ts',
             },
-            '2': {
+            2: {
               name: 'variable.other.property.ts',
             },
           },
         },
         {
-          match: '(?x)(?:\n  ([[:upper:]][_$[:digit:][:upper:]]*) |\n  ([_$[:alpha:]][_$[:alnum:]]*)\n)(?=\\s*\\.\\s*[_$[:alpha:]][_$[:alnum:]]*)',
+          match:
+              '(?x)(?:\n([[:upper:]][_$[:digit:][:upper:]]*)|\n([_$[:alpha:]][_$[:alnum:]]*)\n)(?=\\s*\\.\\s*[_$[:alpha:]][_$[:alnum:]]*)',
           captures: {
-            '1': {
+            1: {
               name: 'constant.other.object.ts',
             },
-            '2': {
+            2: {
               name: 'variable.other.object.ts',
             },
           },
@@ -409,27 +412,28 @@ export const expression: GrammarDefinition = {
           match: /\\b(?<!\$)0(o|O)?[0-7]+\b(?!\$)/,
         },
         {
-          match: '(?x)\n(?<!\\$)(?:\n  (?:\\b[0-9]+(\\.)[0-9]+[eE][+-]?[0-9]+\\b)| # 1.1E+3\n  (?:\\b[0-9]+(\\.)[eE][+-]?[0-9]+\\b)|       # 1.E+3\n  (?:\\B(\\.)[0-9]+[eE][+-]?[0-9]+\\b)|       # .1E+3\n  (?:\\b[0-9]+[eE][+-]?[0-9]+\\b)|            # 1E+3\n  (?:\\b[0-9]+(\\.)[0-9]+\\b)|                # 1.1\n  (?:\\b[0-9]+(\\.)\\B)|                      # 1.\n  (?:\\B(\\.)[0-9]+\\b)|                      # .1\n  (?:\\b[0-9]+\\b(?!\\.))                     # 1\n)(?!\\$)',
+          match:
+              '(?x)\n(?<!\\$)(?:\n(?:\\b[0-9]+(\\.)[0-9]+[eE][+-]?[0-9]+\\b)|#1.1E+3\n(?:\\b[0-9]+(\\.)[eE][+-]?[0-9]+\\b)|#1.E+3\n(?:\\B(\\.)[0-9]+[eE][+-]?[0-9]+\\b)|#.1E+3\n(?:\\b[0-9]+[eE][+-]?[0-9]+\\b)|#1E+3\(?:\\b[0-9]+(\\.)[0-9]+\\b)|#1.1\n(?:\\b[0-9]+(\\.)\\B)|#1.\n(?:\\B(\\.)[0-9]+\\b)|#.1\n (?:\\b[0-9]+\\b(?!\\.))#1\n)(?!\\$)',
           captures: {
-            '0': {
+            0: {
               name: 'constant.numeric.decimal.ts',
             },
-            '1': {
+            1: {
               name: 'meta.delimiter.decimal.period.ts',
             },
-            '2': {
+            2: {
               name: 'meta.delimiter.decimal.period.ts',
             },
-            '3': {
+            3: {
               name: 'meta.delimiter.decimal.period.ts',
             },
-            '4': {
+            4: {
               name: 'meta.delimiter.decimal.period.ts',
             },
-            '5': {
+            5: {
               name: 'meta.delimiter.decimal.period.ts',
             },
-            '6': {
+            6: {
               name: 'meta.delimiter.decimal.period.ts',
             },
           },
@@ -453,41 +457,43 @@ export const expression: GrammarDefinition = {
     parameterName: {
       patterns: [
         {
-          match: '(?x)(?:\\s*\\b(readonly)\\s+)?(?:\\s*\\b(public|private|protected)\\s+)?(\\.\\.\\.)?\\s*(?<!=|:)([_$[:alpha:]][_$[:alnum:]]*)\\s*(\\??)(?=\\s* (=\\s*( (async\\s+) | (function\\s*[(<]) | (function\\s+) | ([_$[:alpha:]][_$[:alnum:]]*\\s*=>) | ((<([^<>]|\\<[^<>]+\\>)+>\\s*)?\\(([^()]|\\([^()]*\\))*\\)(\\s*:\\s*(.)*)?\\s*=>)) ) | (:\\s*( (<) | ([(]\\s*( ([)]) | (\\.\\.\\.) | ([_$[:alnum:]]+\\s*( ([:,?=])| ([)]\\s*=>) )) ))) ))',
+          match:
+              '(?x)(?:\\s*\\b(readonly)\\s+)?(?:\\s*\\b(public|private|protected)\\s+)?(\\.\\.\\.)?\\s*(?<!=|:)([_$[:alpha:]][_$[:alnum:]]*)\\s*(\\??)(?=\\s* (=\\s*( (async\\s+) | (function\\s*[(<]) | (function\\s+) | ([_$[:alpha:]][_$[:alnum:]]*\\s*=>) | ((<([^<>]|\\<[^<>]+\\>)+>\\s*)?\\(([^()]|\\([^()]*\\))*\\)(\\s*:\\s*(.)*)?\\s*=>)) ) | (:\\s*( (<) | ([(]\\s*( ([)]) | (\\.\\.\\.) | ([_$[:alnum:]]+\\s*( ([:,?=])| ([)]\\s*=>) )) ))) ))',
           captures: {
-            '1': {
+            1: {
               name: 'storage.modifier.ts',
             },
-            '2': {
+            2: {
               name: 'storage.modifier.ts',
             },
-            '3': {
+            3: {
               name: 'keyword.operator.rest.ts',
             },
-            '4': {
+            4: {
               name: 'entity.name.function.ts',
             },
-            '5': {
+            5: {
               name: 'keyword.operator.optional.ts',
             },
           },
         },
         {
-          match: /(?:\s*\b(readonly)\s+)?(?:\s*\b(public|private|protected)\s+)?(\.\.\.)?\s*(?<!=|:)([_$[:alpha:]][_$[:alnum:]]*)\s*(\??)/,
+          match:
+              /(?:\s*\b(readonly)\s+)?(?:\s*\b(public|private|protected)\s+)?(\.\.\.)?\s*(?<!=|:)([_$[:alpha:]][_$[:alnum:]]*)\s*(\??)/,
           captures: {
-            '1': {
+            1: {
               name: 'storage.modifier.ts',
             },
-            '2': {
+            2: {
               name: 'storage.modifier.ts',
             },
-            '3': {
+            3: {
               name: 'keyword.operator.rest.ts',
             },
-            '4': {
+            4: {
               name: 'variable.parameter.ts',
             },
-            '5': {
+            5: {
               name: 'keyword.operator.optional.ts',
             },
           },
@@ -498,13 +504,13 @@ export const expression: GrammarDefinition = {
     parenExpression: {
       begin: /\(/,
       beginCaptures: {
-        '0': {
+        0: {
           name: 'meta.brace.round.ts',
         },
       },
       end: /\)/,
       endCaptures: {
-        '0': {
+        0: {
           name: 'meta.brace.round.ts',
         },
       },
@@ -537,16 +543,16 @@ export const expression: GrammarDefinition = {
       name: 'string.quoted.double.ts',
       begin: /"/,
       beginCaptures: {
-        '0': {
+        0: {
           name: 'punctuation.definition.string.begin.ts',
         },
       },
       end: /(")|((?:[^\\\n])$)/,
       endCaptures: {
-        '1': {
+        1: {
           name: 'punctuation.definition.string.end.ts',
         },
-        '2': {
+        2: {
           name: 'invalid.illegal.newline.ts',
         },
       },
@@ -561,16 +567,16 @@ export const expression: GrammarDefinition = {
       name: 'string.quoted.single.ts',
       begin: /'/,
       beginCaptures: {
-        '0': {
+        0: {
           name: 'punctuation.definition.string.begin.ts',
         },
       },
       end: /(\')|((?:[^\\\n])$)/,
       endCaptures: {
-        '1': {
+        1: {
           name: 'punctuation.definition.string.end.ts',
         },
-        '2': {
+        2: {
           name: 'invalid.illegal.newline.ts',
         },
       },
@@ -602,13 +608,13 @@ export const expression: GrammarDefinition = {
     ternaryOperator: {
       begin: /(\?)(?!\.)/,
       beginCaptures: {
-        '0': {
+        0: {
           name: 'keyword.operator.ternary.ts',
         },
       },
       end: /(:)/,
       endCaptures: {
-        '0': {
+        0: {
           name: 'keyword.operator.ternary.ts',
         },
       },
@@ -639,7 +645,7 @@ export const expression: GrammarDefinition = {
       name: 'meta.type.annotation.ts',
       begin: /:/,
       beginCaptures: {
-        '0': {
+        0: {
           name: 'keyword.operator.type.annotation.ts',
         },
       },
@@ -662,7 +668,7 @@ export const expression: GrammarDefinition = {
           name: 'meta.type.constructor.ts',
           match: /(?<!\.|\$)\b(new)\b(?=\s*\<)/,
           captures: {
-            '1': {
+            1: {
               name: 'keyword.control.new.ts',
             },
           },
@@ -671,7 +677,7 @@ export const expression: GrammarDefinition = {
           name: 'meta.type.constructor.ts',
           begin: /(?<!\.|\$)\b(new)\b\s*(?=\()/,
           beginCaptures: {
-            '1': {
+            1: {
               name: 'keyword.control.new.ts',
             },
           },
@@ -684,6 +690,7 @@ export const expression: GrammarDefinition = {
         },
         {
           name: 'meta.type.function.ts',
+          include: '#typeofOperator',
           begin: /(?<=\>)\s*(?=\()/,
           end: /(?<=\))/,
           patterns: [
@@ -694,7 +701,7 @@ export const expression: GrammarDefinition = {
         },
         {
           name: 'meta.type.function.ts',
-          begin: '(?x)( (?= [(]\\s*( ([)]) |  (\\.\\.\\.) | ([_$[:alnum:]]+\\s*( ([:,?=])| ([)]\\s*=>) )) ) ) )',
+          begin: '(?x)((?=[(]\\s*(([)])|(\\.\\.\\.)|([_$[:alnum:]]+\\s*(([:,?=])|([)]\\s*=>))))))',
           end: /(?<=\))/,
           patterns: [
             {
@@ -710,10 +717,10 @@ export const expression: GrammarDefinition = {
         {
           match: /([_$[:alpha:]][_$[:alnum:]]*)\s*(\?\.|\!\.|\.)/,
           captures: {
-            '1': {
+            1: {
               name: 'entity.name.type.module.ts',
             },
-            '2': {
+            2: {
               name: 'punctuation.accessor.ts',
             },
           },
@@ -743,13 +750,13 @@ export const expression: GrammarDefinition = {
       name: 'meta.object.type.ts',
       begin: /\{/,
       beginCaptures: {
-        '0': {
+        0: {
           name: 'punctuation.definition.block.ts',
         },
       },
       end: /\}/,
       endCaptures: {
-        '0': {
+        0: {
           name: 'punctuation.definition.block.ts',
         },
       },
@@ -780,13 +787,13 @@ export const expression: GrammarDefinition = {
       name: 'meta.type.paren.cover.ts',
       begin: /\(/,
       beginCaptures: {
-        '0': {
+        0: {
           name: 'meta.brace.round.ts',
         },
       },
       end: /\)/,
       endCaptures: {
-        '0': {
+        0: {
           name: 'meta.brace.round.ts',
         },
       },
@@ -804,13 +811,13 @@ export const expression: GrammarDefinition = {
       name: 'meta.type.tuple.ts',
       begin: /\[/,
       beginCaptures: {
-        '0': {
+        0: {
           name: 'meta.brace.square.ts',
         },
       },
       end: /\]/,
       endCaptures: {
-        '0': {
+        0: {
           name: 'meta.brace.square.ts',
         },
       },
@@ -870,7 +877,7 @@ export const expression: GrammarDefinition = {
     variableInitializer: {
       begin: /(?<!=|!)(=)(?!=)/,
       beginCaptures: {
-        '1': {
+        1: {
           name: 'keyword.operator.assignment.ts',
         },
       },

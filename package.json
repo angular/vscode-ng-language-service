@@ -72,7 +72,7 @@
         }
       },
       {
-        "path": "./syntaxes/out/template.json",
+        "path": "./syntaxes/template.json",
         "scopeName": "template.ng",
         "injectTo": [
           "text.html"
@@ -84,7 +84,7 @@
         }
       },
       {
-        "path": "./syntaxes/out/expression.json",
+        "path": "./syntaxes/expression.json",
         "scopeName": "expression.ng"
       }
     ]

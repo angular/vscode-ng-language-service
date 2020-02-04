@@ -7,6 +7,7 @@
  */
 import * as fs from 'fs';
 
+import {Expression} from './expression';
 import {InlineStyles} from './inline-styles';
 import {InlineTemplate} from './inline-template';
 import {Template} from './template';
@@ -41,6 +42,7 @@ function build(grammar: GrammarDefinition, filename: string): void {
   });
 }
 
+build(Expression, 'expression');
 build(Template, 'template');
 build(InlineTemplate, 'inline-template');
 build(InlineStyles, 'inline-styles');

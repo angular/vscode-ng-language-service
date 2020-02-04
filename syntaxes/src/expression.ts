@@ -85,12 +85,12 @@ export const Expression: GrammarDefinition = {
     expressionOperator: {
       patterns: [
         {
-          match: /((?<!\|)\|(?!\|))\s?([a-zA-Z0-9\-\_\$]*)/,
+          match: /((?<!\|)(\|)(?!\|))\s?([a-zA-Z0-9\-\_]*)/,
           captures: {
-            1: {
+            2: {
               name: 'keyword.operator.logical.ts',
             },
-            2: {
+            3: {
               name: 'entity.name.function.pipe.ng',
             },
           },
@@ -143,7 +143,7 @@ export const Expression: GrammarDefinition = {
           begin: /(?<!\.|\$)\bas\b(?!\$)/,
           beginCaptures: {
             0: {
-              name: 'storage.type.as.ts',
+              name: 'keyword.control.as.ts',
             },
           },
           end: /(?=$|"|[;,:})\]])/,
@@ -295,7 +295,7 @@ export const Expression: GrammarDefinition = {
         },
         {
           match:
-              '(?x)([?!]?\\.)\\s*(?:\n([[:upper:]][_$[:digit:][:upper:]]*)|\n([_$[:alpha:]][_$[:alnum:]]*)\n)(?=\\s*\\.\\s*[_$[:alpha:]][_$[:alnum:]]*)',
+              '(?x)(\\?\\.|\\!\\.|\\.)\\s*(?:\n([[:upper:]][_$[:digit:][:upper:]]*)|\n([_$[:alpha:]][_$[:alnum:]]*)\n)(?=\\s*\\.\\s*[_$[:alpha:]][_$[:alnum:]]*)',
           captures: {
             1: {
               name: 'punctuation.accessor.ts',
@@ -310,7 +310,7 @@ export const Expression: GrammarDefinition = {
         },
         {
           match:
-              '(?x)(?:([?!]?\\.)\\s*)?([_$[:alpha:]][_$[:alnum:]]*)(?=\\s*=\\s*((async\\s+)|(function\\s*[(<])|(function\\s+)|([_$[:alpha:]][_$[:alnum:]]*\\s*=>)|((<([^<>]|\\<[^<>]+\\>)+>\\s*)?\\(([^()]|\\([^()]*\\))*\\)(\\s*:\\s*(.)*)?\\s*=>)))',
+              '(?x)(?:(\\?\\.|\\!\\.|\\.)\\s*)?([_$[:alpha:]][_$[:alnum:]]*)(?=\\s*=\\s*((async\\s+)|(function\\s*[(<])|(function\\s+)|([_$[:alpha:]][_$[:alnum:]]*\\s*=>)|((<([^<>]|\\<[^<>]+\\>)+>\\s*)?\\(([^()]|\\([^()]*\\))*\\)(\\s*:\\s*(.)*)?\\s*=>)))',
           captures: {
             1: {
               name: 'punctuation.accessor.ts',
@@ -321,7 +321,7 @@ export const Expression: GrammarDefinition = {
           },
         },
         {
-          match: '([?!]?\\.)\\s*([[:upper:]][_$[:digit:][:upper:]]*)(?![_$[:alnum:]])',
+          match: '(\\?\\.|\\!\\.|\\.)\\s*([[:upper:]][_$[:digit:][:upper:]]*)(?![_$[:alnum:]])',
           captures: {
             1: {
               name: 'punctuation.accessor.ts',
@@ -332,7 +332,7 @@ export const Expression: GrammarDefinition = {
           },
         },
         {
-          match: '([?!]?\\.)\\s*([_$[:alpha:]][_$[:alnum:]]*)',
+          match: '(\\?\\.|\\!\\.|\\.)\\s*([_$[:alpha:]][_$[:alnum:]]*)',
           captures: {
             1: {
               name: 'punctuation.accessor.ts',
@@ -715,7 +715,7 @@ export const Expression: GrammarDefinition = {
     typeName: {
       patterns: [
         {
-          match: /([_$[:alpha:]][_$[:alnum:]]*)\s*([?!]?\.)/,
+          match: /([_$[:alpha:]][_$[:alnum:]]*)\s*(\?\.|\!\.|\.)/,
           captures: {
             1: {
               name: 'entity.name.type.module.ts',

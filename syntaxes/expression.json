@@ -283,7 +283,7 @@
           "match": "([_$[:alpha:]][_$[:alnum:]]*)(?=\\s*\\.\\s*prototype\\b(?!\\$))"
         },
         {
-          "match": "(?x)(\\?\\.|\\!\\.|\\.)\\s*(?:\n([[:upper:]][_$[:digit:][:upper:]]*)|\n([_$[:alpha:]][_$[:alnum:]]*)\n)(?=\\s*\\.\\s*[_$[:alpha:]][_$[:alnum:]]*)",
+          "match": "(?x)([?!]?\\.)\\s*(?:\n([[:upper:]][_$[:digit:][:upper:]]*)|\n([_$[:alpha:]][_$[:alnum:]]*)\n)(?=\\s*\\.\\s*[_$[:alpha:]][_$[:alnum:]]*)",
           "captures": {
             "1": {
               "name": "punctuation.accessor.ts"
@@ -297,7 +297,7 @@
           }
         },
         {
-          "match": "(?x)(?:(\\?\\.|\\!\\.|\\.)\\s*)?([_$[:alpha:]][_$[:alnum:]]*)(?=\\s*=\\s*((async\\s+)|(function\\s*[(<])|(function\\s+)|([_$[:alpha:]][_$[:alnum:]]*\\s*=>)|((<([^<>]|\\<[^<>]+\\>)+>\\s*)?\\(([^()]|\\([^()]*\\))*\\)(\\s*:\\s*(.)*)?\\s*=>)))",
+          "match": "(?x)(?:([?!]?\\.)\\s*)?([_$[:alpha:]][_$[:alnum:]]*)(?=\\s*=\\s*((async\\s+)|(function\\s*[(<])|(function\\s+)|([_$[:alpha:]][_$[:alnum:]]*\\s*=>)|((<([^<>]|\\<[^<>]+\\>)+>\\s*)?\\(([^()]|\\([^()]*\\))*\\)(\\s*:\\s*(.)*)?\\s*=>)))",
           "captures": {
             "1": {
               "name": "punctuation.accessor.ts"
@@ -308,7 +308,7 @@
           }
         },
         {
-          "match": "(\\?\\.|\\!\\.|\\.)\\s*([[:upper:]][_$[:digit:][:upper:]]*)(?![_$[:alnum:]])",
+          "match": "([?!]?\\.)\\s*([[:upper:]][_$[:digit:][:upper:]]*)(?![_$[:alnum:]])",
           "captures": {
             "1": {
               "name": "punctuation.accessor.ts"
@@ -319,7 +319,7 @@
           }
         },
         {
-          "match": "(\\?\\.|\\!\\.|\\.)\\s*([_$[:alpha:]][_$[:alnum:]]*)",
+          "match": "([?!]?\\.)\\s*([_$[:alpha:]][_$[:alnum:]]*)",
           "captures": {
             "1": {
               "name": "punctuation.accessor.ts"
@@ -678,7 +678,7 @@
     "typeName": {
       "patterns": [
         {
-          "match": "([_$[:alpha:]][_$[:alnum:]]*)\\s*(\\?\\.|\\!\\.|\\.)",
+          "match": "([_$[:alpha:]][_$[:alnum:]]*)\\s*([?!]?\\.)",
           "captures": {
             "1": {
               "name": "entity.name.type.module.ts"

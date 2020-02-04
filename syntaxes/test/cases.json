@@ -12,6 +12,12 @@
     "testFile": "syntaxes/test/data/inline-styles.ts"
   },
   {
+    "name": "expression syntax",
+    "scopeName": "expression.ng",
+    "grammarFiles": ["syntaxes/out/expression.json"],
+    "testFile": "syntaxes/test/data/expression.html"
+  },
+  {
     "name": "template syntax",
     "scopeName": "template.ng",
     "grammarFiles": ["syntaxes/template.json", "syntaxes/expression.json"],

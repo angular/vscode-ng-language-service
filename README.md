@@ -18,7 +18,7 @@ Download the extension from [Visual Studio Marketplace](https://marketplace.visu
 
 ## Versioning
 
-The langauge service extension uses the `@angular/language-service` package for its backend. This
+The language service extension uses the `@angular/language-service` package for its backend. This
 package is loaded either from the version bundled with the extension, or from the current workspace
 project the extension is running on. Due to the behavior of TypeScript below version 3.8,
 incompatible versions of the language service may sometimes be loaded. If you are using a version of
@@ -28,7 +28,7 @@ TypeScript below 3.8, we suggest either
     version bundled with the extension)
 - Installing and keeping updates for the latest version of `@angular/language-service`
 
-For further information, please see #594.
+For further information, please see [#594](https://github.com/angular/vscode-ng-language-service/issues/594).
 
 ## Installing a particular release build
 

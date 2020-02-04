@@ -86,7 +86,7 @@ export const expression: GrammarDefinition = {
     expressionOperators: {
       patterns: [
         {
-          match: /((?<!\|)(\|)(?!\|))\s?([a-zA-Z0-9\-\_]*)/,
+          match: /((?<!\|)(\|)(?!\|))\s?([a-zA-Z0-9\-\_\$]*)/,
           captures: {
             '2': {
               name: 'keyword.operator.logical.ts',

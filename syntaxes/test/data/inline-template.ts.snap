@@ -108,9 +108,7 @@
 #          ^ inline-template.ng meta.object-literal.key.ts punctuation.separator.key-value.ts
 #           ^ inline-template.ng
 #            ^ inline-template.ng string
-#             ^^ inline-template.ng text.html punctuation.definition.block.ts
-#               ^^^^^^^^ inline-template.ng text.html expression.ng
-#                       ^^ inline-template.ng text.html punctuation.definition.block.ts
+#             ^^^^^^^^^^^^ inline-template.ng text.html
 #                         ^ inline-template.ng string
 #                          ^^ inline-template.ng
 >})

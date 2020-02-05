@@ -14,7 +14,7 @@
   {
     "name": "expression syntax",
     "scopeName": "expression.ng",
-    "grammarFiles": ["syntaxes/out/expression.json"],
+    "grammarFiles": ["syntaxes/expression.json"],
     "testFile": "syntaxes/test/data/expression.html"
   },
   {

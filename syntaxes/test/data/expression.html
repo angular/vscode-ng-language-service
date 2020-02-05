@@ -1,29 +1,32 @@
 <!-- Interpolation test -->
-<div>{{ true ? call(1 + 2 + 3) : 'test'  }}</div>
+<div>{{ true ? call(1 + 2 + 3) : ['test', 1, test()]  }}</div>
 <div>{{ testing.call(1 + 2 + 3, another?.one()).test }}</div>
+<div>{{ param.costCode?.name(test, {test: 'test'} 'test', 123, [1, 2, 3, 4]) }}</div>
 
-<td mat-cell
-    *ngFor="let param of params | async as p; last as last; first as first">
-    {{ param.costCode?.name(test, {test: 'test'} 'test', 123) }}
-</td>
+<!-- Expression test -->
+<div *ngFor="let param of params | async as p; let i = index; let first = first"></div> 
+<td  *ngFor="let param of params | async as p; last as last; first as first"></td>
+<td  [prop]="elements | pipe:'with-params' as el;"></td>
+<td  [prop]="elements | pipe:'with-params' as el"></td>
 
-<!-- Property binding test -->
+<!-- Property binding test with expression -->
 <div [ ngStyle ]="{
   'max-width.px': i * 2 + 5
 }"></div>
 <div [ngClass]="{
     'class-one': test.test(),
-    'class-two',
-    'class-three'
+    'class-two': !!test?.test()!.test,
+    'class-three': true,
+    'class-four': false,
 }"></div>
 
-<div [@animation.trigger]="val"></div>
-<img [attr.aria-label]="val" />
-<div [my-property]="val"></div>
-<div [my_property]="val"></div>
-<div [myProperty$]="val"></div>
-<div [%invalidProperty]="val"></div>
-<div [invalidProperty)="val"></div>
+<div [@animation.trigger]="!!test?.test()!.test"></div>
+<img [attr.aria-label]="!!test?.test()!.test" />
+<div [my-property]="!!test?.test()!.test"></div>
+<div [my_property]="!!test?.test()!.test"></div>
+<div [myProperty$]="!!test?.test()!.test"></div>
+<div [%invalidProperty]="!!test?.test()!.test"></div>
+<div [invalidProperty)="!!test?.test()!.test"></div>
 
 <!-- Event binding test -->
 <button (click)="onClick($event)"></button>
@@ -36,21 +39,21 @@
         methodIfFalse($event);
     }
 "></div>
-<div ( extraSpacing )="onExtraSpacing($event)"></div>
-<my-component (myEvent)="onMyEvent($event)"></my-component>
-<my-component (my-event)="onMyEvent($event)"></my-component>
-<my-component (my_event)="onMyEvent($event)"></my-component>
-<my-component (myEvent$)="onMyEvent($event)"></my-component>
+<div ( extraSpacing )="onExtraSpacing($event, ['1234']).test?.test()"></div>
+<my-component (myEvent)="onMyEvent($event)?.test!.test()"></my-component>
+<my-component (my-event)="!!onMyEvent($event).test"></my-component>
+<my-component (my_event)="test?.onMyEvent($event, 'a', 'test')"></my-component>
+<my-component (myEvent$)="onMyEvent($event, [test?.test()])"></my-component>
 <my-component (%invalidEvent)="onMyEvent($event)"></my-component>
 <my-component (invalidEvent]="onMyEvent($event)"></my-component>
 
 <!-- Two-way binding test -->
-<button [(click)]="clickProp"></button>
-<div [( extraSpacing )]="extraSpacing"></div>
-<div [(@animation.done)]="animation"></div>
-<my-component [(my-prop)]="myProp"></my-component>
-<my-component [(my_prop)]="myProp"></my-component>
-<my-component [($my_prop)]="myProp"></my-component>
+<button [(click)]="clickProp?.click()"></button>
+<div [( extraSpacing )]="extraSpacing!.click()"></div>
+<div [(@animation.done)]="animation.done()"></div>
+<my-component [(my-prop)]="myProp.prop?.prop!.prop.prop"></my-component>
+<my-component [(my_prop)]="!!myProp.prop?.prop!.prop.prop"></my-component>
+<my-component [($my_prop)]="!myProp.prop && prop || prop | test:'test'"></my-component>
 <my-component [(%invalid)]="invalid"></my-component>
 <my-component ([invalid)]="invalid"></my-component>
 
@@ -58,6 +61,6 @@
 <button *ngModel="title"></button>
 <div *ngFor="let book of books"></div>
 <my-component *custom-if="true != false"></my-component>
-<my-component *custom_if="true != false"></my-component>
+<my-component *custom_if="true !== false"></my-component>
 <my-component *custom_$if="true != false"></my-component>
 <my-component *%invalid="expr"></my-component>

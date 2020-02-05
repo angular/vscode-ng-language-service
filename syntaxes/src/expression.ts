@@ -85,12 +85,12 @@ export const Expression: GrammarDefinition = {
     expressionOperator: {
       patterns: [
         {
-          match: /((?<!\|)(\|)(?!\|))\s?([a-zA-Z0-9\-\_]*)/,
+          match: /((?<!\|)\|(?!\|))\s?([a-zA-Z0-9\-\_\$]*)/,
           captures: {
-            2: {
+            1: {
               name: 'keyword.operator.logical.ts',
             },
-            3: {
+            2: {
               name: 'entity.name.function.pipe.ng',
             },
           },

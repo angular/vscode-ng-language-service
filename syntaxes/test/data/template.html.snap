@@ -180,12 +180,7 @@
 #                                               ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.end.html
 #                                                ^^^^^^^^ template.ng
 ><div (someEvent)="
-#^^^^^ template.ng
-#     ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html
-#      ^^^^^^^^^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html entity.other.ng-binding-name.someEvent.html
-#               ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.end.html
-#                ^ template.ng meta.ng-binding.event.html punctuation.separator.key-value.html
-#                 ^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.begin.html
+#^^^^^^^^^^^^^^^^^^^ template.ng
 >    if (isCondition) {
 #^^^^ template.ng meta.ng-binding.event.html expression.ng
 #    ^^ template.ng meta.ng-binding.event.html expression.ng keyword.control.if.ts
@@ -215,8 +210,7 @@
 >    }
 #^^^^^^ template.ng meta.ng-binding.event.html expression.ng
 >"></div>
-#^ template.ng meta.ng-binding.event.html string.quoted.html punctuation.definition.string.end.html
-# ^^^^^^^^ template.ng
+#^^^^^^^^^ template.ng
 ><div ( extraSpacing )="onExtraSpacing($event)"></div>
 #^^^^^ template.ng
 #     ^ template.ng meta.ng-binding.event.html entity.other.attribute-name.html entity.other.ng-binding-name.event.html punctuation.definition.ng-binding-name.begin.html

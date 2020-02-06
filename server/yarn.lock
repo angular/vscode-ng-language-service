@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@angular/language-service@9.0.0-rc.14":
-  version "9.0.0-rc.14"
-  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-9.0.0-rc.14.tgz#3cdbf1ea36bddf59d2ee428a82e834d72b7d19fd"
-  integrity sha512-s8NDVCdnxslBiZliw8NTjQjGO/YLKndQaPxUNEmd85tMqCiaxX24iZiX7YRd5zy/1d/lmWS83k9UqXPDSqyAHg==
+"@angular/language-service@9.0.0":
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-9.0.0.tgz#24ba63ae5db566b70f7c40bb148dc37a77aaa373"
+  integrity sha512-tOMtXY8DFpTWMF77BOTXZmMMtqvdy6fbyOkJSccn6VatcPrNXOs5rKur+KNwdSlK+djjss6Y+LA8fQAvjNvUqw==
 
 vscode-jsonrpc@^5.0.1:
   version "5.0.1"

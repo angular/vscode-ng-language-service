@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {GrammarDefinition} from './types';
+import { GrammarDefinition } from './types';
 
 export const Expression: GrammarDefinition = {
   scopeName: 'expression.ng',
@@ -143,7 +143,7 @@ export const Expression: GrammarDefinition = {
           begin: /(?<!\.|\$)\bas\b(?!\$)/,
           beginCaptures: {
             0: {
-              name: 'keyword.control.as.ts',
+              name: 'storage.type.as.ts',
             },
           },
           end: /(?=$|"|[;,:})\]])/,

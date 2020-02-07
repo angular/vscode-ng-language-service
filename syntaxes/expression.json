@@ -135,7 +135,7 @@
           "begin": "(?<!\\.|\\$)\\bas\\b(?!\\$)",
           "beginCaptures": {
             "0": {
-              "name": "keyword.control.as.ts"
+              "name": "storage.type.as.ts"
             }
           },
           "end": "(?=$|\"|[;,:})\\]])",

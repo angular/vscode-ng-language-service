@@ -1,3 +1,11 @@
+# v0.900.12
+
+This release upgrades `@angular/language-service` to v9.0.1.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#901-2020-02-12).
+
+Bug fixes:
+- Suggest ? and ! operator on nullable receiver (#35200) (3cc24a9)
+
 # v0.900.11
 
 This release upgrades `@angular/language-service` to v9.0.0.

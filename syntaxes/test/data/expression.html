@@ -71,7 +71,7 @@
 {{ condition ? 'test' : "test" }}
 {{ condition ? [function(), variable] : {} }}
 
-<!-- Expression test -->
+<!-- Microsyntax test -->
 {{ (let param of params?.anotherParam!.param().param | async) as p; let i = index; let first = first }}
 {{ let param of params | async as p; let i = index; let first = first; }}
 {{ (let param of params | async) as p; index as i; first as first; }}

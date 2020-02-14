@@ -106,7 +106,7 @@ describe('Angular Language Service', () => {
         'capabilities': {
           'textDocumentSync': 2,
           'completionProvider':
-              {'resolveProvider': false, 'triggerCharacters': ['<', '.', '*', '[', '(', '$']},
+              {'resolveProvider': false, 'triggerCharacters': ['<', '.', '*', '[', '(', '$', '|']},
           'definitionProvider': true,
           'hoverProvider': true
         }
@@ -134,7 +134,7 @@ describe('Angular Language Service', () => {
         'capabilities': {
           'textDocumentSync': 2,
           'completionProvider':
-              {'resolveProvider': false, 'triggerCharacters': ['<', '.', '*', '[', '(', '$']},
+              {'resolveProvider': false, 'triggerCharacters': ['<', '.', '*', '[', '(', '$', '|']},
           'definitionProvider': true,
           'hoverProvider': true
         }

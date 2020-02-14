@@ -157,7 +157,7 @@ export class Session {
           // The server does not provide support to resolve additional information
           // for a completion item.
           resolveProvider: false,
-          triggerCharacters: ['<', '.', '*', '[', '(', '$']
+          triggerCharacters: ['<', '.', '*', '[', '(', '$', '|']
         },
         definitionProvider: true,
         hoverProvider: true,

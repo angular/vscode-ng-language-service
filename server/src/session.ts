@@ -166,19 +166,17 @@ export class Session {
   }
 
   private onDidOpenTextDocument(params: lsp.DidOpenTextDocumentParams) {
-    const {uri, languageId} = params.textDocument;
+    const {uri, languageId, text} = params.textDocument;
     const filePath = uriToFilePath(uri);
     if (!filePath) {
       return;
     }
     const scriptKind = languageId === LanguageId.TS ? ts.ScriptKind.TS : ts.ScriptKind.External;
-    // Since we are only keeping track of changes of files that are already on
-    // disk (see documentSelector.scheme in extension.ts), the content on disk
-    // is up-to-date when a file is first opened in the editor.
-    // In this case, we should not pass fileContent to projectService.
-    const fileContent = undefined;
     try {
-      const result = this.projectService.openClientFile(filePath, fileContent, scriptKind);
+      // The content could be newer than that on disk. This could be due to
+      // buffer in the user's editor which has not been saved to disk.
+      // See https://github.com/angular/vscode-ng-language-service/issues/632
+      const result = this.projectService.openClientFile(filePath, text, scriptKind);
 
       const {configFileName, configFileErrors} = result;
       if (configFileErrors && configFileErrors.length) {

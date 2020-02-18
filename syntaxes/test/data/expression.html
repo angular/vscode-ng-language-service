@@ -72,9 +72,40 @@
 {{ condition ? [function(), variable] : {} }}
 
 <!-- Microsyntax test -->
+{{ let param of params; }}
+{{ let param of params }}
+{{ let param of params; index as i; }}
+{{ let param of params; index as i }}
+{{ let param of params; let i = index; }}
+{{ let param of params; let i = index }}
+{{ let param of params; let i = index; let last = last }}
+{{ let param of params; let i = index; let last = last; }}
+{{ let param of params; let i = index; last as last }}
+{{ let param of params; let i = index; last as last; }}
+
+<!-- Pipe test -->
+{{ (let param of params) | async }}
+{{ (let param of params) | trackBy: trackByMethod }}
+{{ (let param of params) | customPipe:'param' | search: ['term1', 'term2'] }}
+{{ ((let param of params) | async) | translate }}
+
+<!-- Mixed test -->
+{{ (let param of params?.get('value')!.property | async).anotherProperty | translate: ['language1', 'language2']; index as i }}
 {{ (let param of params?.anotherParam!.param().param | async) as p; let i = index; let first = first }}
-{{ let param of params | async as p; let i = index; let first = first; }}
-{{ (let param of params | async) as p; index as i; first as first; }}
-{{ value | pipe:'with-param' }}
-{{ { test: 'value'} | json }}
-{{ value && value || value && !!value }}
+{{ (let param of params?.get('value')!.property | async).anotherProperty | translate: ['language1', 'language2']; let i = index; }}
+
+
+<!-- #575 -->
+<ng-container matColumnDef="cost-code">
+  <th mat-header-cell *matHeaderCellDef>
+    {{ 'GENERAL.COST_CODE' | translate }}
+  </th>
+  <td mat-cell *matCellDef="let param">{{ param.postCode?.name }}</td>
+</ng-container>
+
+<!-- #613 -->
+<div *ngIf="x$ | async as a">
+  <ul>
+
+  </ul>
+</div>

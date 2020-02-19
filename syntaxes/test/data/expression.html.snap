@@ -464,7 +464,7 @@
 =======
 >>>>>>> Improved tests cases
 >
-><!-- Function call and property read -->
+><!-- Property read and method call: implicit -->
 #^ expression.ng keyword.operator.relational.ts
 # ^ expression.ng keyword.operator.logical.ts
 #  ^^ expression.ng keyword.operator.decrement.ts
@@ -475,12 +475,14 @@
 #                  ^ expression.ng
 #                   ^^^ expression.ng variable.other.readwrite.ts
 #                      ^ expression.ng
-#                       ^^^^^^^^ expression.ng variable.other.readwrite.ts
-#                               ^ expression.ng
-#                                ^^^^ expression.ng variable.other.readwrite.ts
-#                                    ^ expression.ng
-#                                     ^^ expression.ng keyword.operator.decrement.ts
-#                                       ^ expression.ng keyword.operator.relational.ts
+#                       ^^^^^^ expression.ng variable.other.readwrite.ts
+#                             ^ expression.ng
+#                              ^^^^ expression.ng variable.other.readwrite.ts
+#                                  ^^ expression.ng
+#                                    ^^^^^^^^ expression.ng variable.other.readwrite.ts
+#                                            ^ expression.ng
+#                                             ^^ expression.ng keyword.operator.decrement.ts
+#                                               ^ expression.ng keyword.operator.relational.ts
 >{{ call() }}
 #^^^ expression.ng
 #   ^^^^ expression.ng entity.name.function.ts
@@ -544,25 +546,25 @@
 #           ^^^^^^^^^^^ expression.ng variable.other.property.ts
 #                      ^^^^^ expression.ng
 >
-><!-- Received property read and method call -->
+><!-- Property read and method call: received -->
 #^ expression.ng keyword.operator.relational.ts
 # ^ expression.ng keyword.operator.logical.ts
 #  ^^ expression.ng keyword.operator.decrement.ts
 #    ^ expression.ng
 #     ^^^^^^^^ expression.ng variable.other.readwrite.ts
 #             ^ expression.ng
-#              ^^^^^^^^ expression.ng variable.other.readwrite.ts
+#              ^^^^ expression.ng variable.other.readwrite.ts
+#                  ^ expression.ng
+#                   ^^^ expression.ng variable.other.readwrite.ts
 #                      ^ expression.ng
-#                       ^^^^ expression.ng variable.other.readwrite.ts
-#                           ^ expression.ng
-#                            ^^^ expression.ng variable.other.readwrite.ts
-#                               ^ expression.ng
-#                                ^^^^^^ expression.ng variable.other.readwrite.ts
-#                                      ^ expression.ng
-#                                       ^^^^ expression.ng variable.other.readwrite.ts
-#                                           ^ expression.ng
-#                                            ^^ expression.ng keyword.operator.decrement.ts
-#                                              ^ expression.ng keyword.operator.relational.ts
+#                       ^^^^^^ expression.ng variable.other.readwrite.ts
+#                             ^ expression.ng
+#                              ^^^^ expression.ng variable.other.readwrite.ts
+#                                  ^^ expression.ng
+#                                    ^^^^^^^^ expression.ng variable.other.readwrite.ts
+#                                            ^ expression.ng
+#                                             ^^ expression.ng keyword.operator.decrement.ts
+#                                               ^ expression.ng keyword.operator.relational.ts
 >{{ object.call() }}
 #^^^ expression.ng
 #   ^^^^^^ expression.ng variable.other.object.ts
@@ -646,6 +648,7 @@
 #                   ^^^^^^^^^^^ expression.ng variable.other.property.ts
 #                              ^^^^^ expression.ng
 >
+<<<<<<< HEAD
 <<<<<<< HEAD
 ><!-- Property binding test with expression -->
 >>>>>>> Improved tests cases
@@ -1571,10 +1574,14 @@
 #                                                                                                                               ^^^^^ expression.ng
 >
 ><!-- Regression -->
+=======
+><!-- Method call with parameters -->
+>>>>>>> fixup! Added template expression support
 #^ expression.ng keyword.operator.relational.ts
 # ^ expression.ng keyword.operator.logical.ts
 #  ^^ expression.ng keyword.operator.decrement.ts
 #    ^ expression.ng
+<<<<<<< HEAD
 #     ^^^^^^^^^^ expression.ng variable.other.readwrite.ts
 #               ^ expression.ng
 #                ^^ expression.ng keyword.operator.decrement.ts
@@ -1650,6 +1657,147 @@
 ><div [ ngStyle ]="{
 =======
 >>>>>>> Improved tests cases
+=======
+#     ^^^^^^ expression.ng variable.other.readwrite.ts
+#           ^ expression.ng
+#            ^^^^ expression.ng variable.other.readwrite.ts
+#                ^ expression.ng
+#                 ^^^^ expression.ng variable.other.readwrite.ts
+#                     ^ expression.ng
+#                      ^^^^^^^^^^ expression.ng variable.other.readwrite.ts
+#                                ^ expression.ng
+#                                 ^^ expression.ng keyword.operator.decrement.ts
+#                                   ^ expression.ng keyword.operator.relational.ts
+>{{ call(withParams) }}
+#^^^ expression.ng
+#   ^^^^ expression.ng entity.name.function.ts
+#       ^ expression.ng meta.brace.round.ts
+#        ^^^^^^^^^^ expression.ng variable.other.readwrite.ts
+#                  ^ expression.ng meta.brace.round.ts
+#                   ^^^^ expression.ng
+>{{ call('withParams') }}
+#^^^ expression.ng
+#   ^^^^ expression.ng entity.name.function.ts
+#       ^ expression.ng meta.brace.round.ts
+#        ^ expression.ng string.quoted.single.ts punctuation.definition.string.begin.ts
+#         ^^^^^^^^^^ expression.ng string.quoted.single.ts
+#                   ^ expression.ng string.quoted.single.ts punctuation.definition.string.end.ts
+#                    ^ expression.ng meta.brace.round.ts
+#                     ^^^^ expression.ng
+>{{ call("withParams") }}
+#^^^ expression.ng
+#   ^^^^ expression.ng entity.name.function.ts
+#       ^ expression.ng meta.brace.round.ts
+#        ^ expression.ng string.quoted.double.ts punctuation.definition.string.begin.ts
+#         ^^^^^^^^^^ expression.ng string.quoted.double.ts
+#                   ^ expression.ng string.quoted.double.ts punctuation.definition.string.end.ts
+#                    ^ expression.ng meta.brace.round.ts
+#                     ^^^^ expression.ng
+>{{ call("withParams") }}
+#^^^ expression.ng
+#   ^^^^ expression.ng entity.name.function.ts
+#       ^ expression.ng meta.brace.round.ts
+#        ^ expression.ng string.quoted.double.ts punctuation.definition.string.begin.ts
+#         ^^^^^^^^^^ expression.ng string.quoted.double.ts
+#                   ^ expression.ng string.quoted.double.ts punctuation.definition.string.end.ts
+#                    ^ expression.ng meta.brace.round.ts
+#                     ^^^^ expression.ng
+>{{ call(false) }}
+#^^^ expression.ng
+#   ^^^^ expression.ng entity.name.function.ts
+#       ^ expression.ng meta.brace.round.ts
+#        ^^^^^ expression.ng constant.language.boolean.false.ts
+#             ^ expression.ng meta.brace.round.ts
+#              ^^^^ expression.ng
+>{{ call(!!true) }}
+#^^^ expression.ng
+#   ^^^^ expression.ng entity.name.function.ts
+#       ^ expression.ng meta.brace.round.ts
+#        ^ expression.ng keyword.operator.logical.ts
+#         ^ expression.ng keyword.operator.logical.ts
+#          ^^^^ expression.ng constant.language.boolean.true.ts
+#              ^ expression.ng meta.brace.round.ts
+#               ^^^^ expression.ng
+>{{ call(["array", 123]) }}
+#^^^ expression.ng
+#   ^^^^ expression.ng entity.name.function.ts
+#       ^ expression.ng meta.brace.round.ts
+#        ^ expression.ng meta.array.literal.ts meta.brace.square.ts
+#         ^ expression.ng meta.array.literal.ts string.quoted.double.ts punctuation.definition.string.begin.ts
+#          ^^^^^ expression.ng meta.array.literal.ts string.quoted.double.ts
+#               ^ expression.ng meta.array.literal.ts string.quoted.double.ts punctuation.definition.string.end.ts
+#                ^ expression.ng meta.array.literal.ts punctuation.separator.comma.ts
+#                 ^ expression.ng meta.array.literal.ts
+#                  ^^^ expression.ng meta.array.literal.ts constant.numeric.decimal.ts
+#                     ^ expression.ng meta.array.literal.ts meta.brace.square.ts
+#                      ^ expression.ng meta.brace.round.ts
+#                       ^^^^ expression.ng
+>{{ call(1) }}
+#^^^ expression.ng
+#   ^^^^ expression.ng entity.name.function.ts
+#       ^ expression.ng meta.brace.round.ts
+#        ^ expression.ng constant.numeric.decimal.ts
+#         ^ expression.ng meta.brace.round.ts
+#          ^^^^ expression.ng
+>{{ call({ test: 'object' }) }}
+#^^^ expression.ng
+#   ^^^^ expression.ng entity.name.function.ts
+#       ^ expression.ng meta.brace.round.ts
+#        ^^ expression.ng
+#          ^^^^ expression.ng variable.other.readwrite.ts
+#              ^^ expression.ng
+#                ^ expression.ng string.quoted.single.ts punctuation.definition.string.begin.ts
+#                 ^^^^^^ expression.ng string.quoted.single.ts
+#                       ^ expression.ng string.quoted.single.ts punctuation.definition.string.end.ts
+#                        ^^ expression.ng
+#                          ^ expression.ng meta.brace.round.ts
+#                           ^^^^ expression.ng
+>{{ call({ test: 123 }) }}
+#^^^ expression.ng
+#   ^^^^ expression.ng entity.name.function.ts
+#       ^ expression.ng meta.brace.round.ts
+#        ^^ expression.ng
+#          ^^^^ expression.ng variable.other.readwrite.ts
+#              ^^ expression.ng
+#                ^^^ expression.ng constant.numeric.decimal.ts
+#                   ^^ expression.ng
+#                     ^ expression.ng meta.brace.round.ts
+#                      ^^^^ expression.ng
+>{{ call({ test: [123, 321, { value: ['string', false, true] }] }) }}
+#^^^ expression.ng
+#   ^^^^ expression.ng entity.name.function.ts
+#       ^ expression.ng meta.brace.round.ts
+#        ^^ expression.ng
+#          ^^^^ expression.ng variable.other.readwrite.ts
+#              ^^ expression.ng
+#                ^ expression.ng meta.array.literal.ts meta.brace.square.ts
+#                 ^^^ expression.ng meta.array.literal.ts constant.numeric.decimal.ts
+#                    ^ expression.ng meta.array.literal.ts punctuation.separator.comma.ts
+#                     ^ expression.ng meta.array.literal.ts
+#                      ^^^ expression.ng meta.array.literal.ts constant.numeric.decimal.ts
+#                         ^ expression.ng meta.array.literal.ts punctuation.separator.comma.ts
+#                          ^^^ expression.ng meta.array.literal.ts
+#                             ^^^^^ expression.ng meta.array.literal.ts variable.other.readwrite.ts
+#                                  ^^ expression.ng meta.array.literal.ts
+#                                    ^ expression.ng meta.array.literal.ts meta.array.literal.ts meta.brace.square.ts
+#                                     ^ expression.ng meta.array.literal.ts meta.array.literal.ts string.quoted.single.ts punctuation.definition.string.begin.ts
+#                                      ^^^^^^ expression.ng meta.array.literal.ts meta.array.literal.ts string.quoted.single.ts
+#                                            ^ expression.ng meta.array.literal.ts meta.array.literal.ts string.quoted.single.ts punctuation.definition.string.end.ts
+#                                             ^ expression.ng meta.array.literal.ts meta.array.literal.ts punctuation.separator.comma.ts
+#                                              ^ expression.ng meta.array.literal.ts meta.array.literal.ts
+#                                               ^^^^^ expression.ng meta.array.literal.ts meta.array.literal.ts constant.language.boolean.false.ts
+#                                                    ^ expression.ng meta.array.literal.ts meta.array.literal.ts punctuation.separator.comma.ts
+#                                                     ^ expression.ng meta.array.literal.ts meta.array.literal.ts
+#                                                      ^^^^ expression.ng meta.array.literal.ts meta.array.literal.ts constant.language.boolean.true.ts
+#                                                          ^ expression.ng meta.array.literal.ts meta.array.literal.ts meta.brace.square.ts
+#                                                           ^^ expression.ng meta.array.literal.ts
+#                                                             ^ expression.ng meta.array.literal.ts meta.brace.square.ts
+#                                                              ^^ expression.ng
+#                                                                ^ expression.ng meta.brace.round.ts
+#                                                                 ^^^^ expression.ng
+>
+><!-- Ternary expression -->
+>>>>>>> fixup! Added template expression support
 #^ expression.ng keyword.operator.relational.ts
 # ^ expression.ng keyword.operator.logical.ts
 #  ^^ expression.ng keyword.operator.decrement.ts
@@ -1820,6 +1968,7 @@
 #                                       ^^ expression.ng
 #                                         ^^^^^ expression.ng
 >
+<<<<<<< HEAD
 <<<<<<< HEAD
 ><!-- Two-way binding test -->
 #^ expression.ng meta.array.literal.ts keyword.operator.relational.ts
@@ -2137,218 +2286,249 @@
 =======
 ><!-- Microsyntax test -->
 >>>>>>> Improved tests cases
+=======
+><!-- Microsyntax -->
+>>>>>>> fixup! Added template expression support
 #^ expression.ng keyword.operator.relational.ts
 # ^ expression.ng keyword.operator.logical.ts
 #  ^^ expression.ng keyword.operator.decrement.ts
 #    ^ expression.ng
 #     ^^^^^^^^^^^ expression.ng variable.other.readwrite.ts
 #                ^ expression.ng
-#                 ^^^^ expression.ng variable.other.readwrite.ts
-#                     ^ expression.ng
-#                      ^^ expression.ng keyword.operator.decrement.ts
-#                        ^ expression.ng keyword.operator.relational.ts
->{{ let param of params; }}
-#^^^ expression.ng
-#   ^^^ expression.ng storage.type.ts
-#      ^ expression.ng
-#       ^^^^^ expression.ng variable.other.readwrite.ts
-#            ^ expression.ng
-#             ^^ expression.ng keyword.operator.expression.of.ts
-#               ^ expression.ng
-#                ^^^^^^ expression.ng variable.other.readwrite.ts
-#                      ^^^^^ expression.ng
->{{ let param of params }}
-#^^^ expression.ng
-#   ^^^ expression.ng storage.type.ts
-#      ^ expression.ng
-#       ^^^^^ expression.ng variable.other.readwrite.ts
-#            ^ expression.ng
-#             ^^ expression.ng keyword.operator.expression.of.ts
-#               ^ expression.ng
-#                ^^^^^^ expression.ng variable.other.readwrite.ts
-#                      ^^^^ expression.ng
->{{ let param of params; index as i; }}
-#^^^ expression.ng
-#   ^^^ expression.ng storage.type.ts
-#      ^ expression.ng
-#       ^^^^^ expression.ng variable.other.readwrite.ts
-#            ^ expression.ng
-#             ^^ expression.ng keyword.operator.expression.of.ts
-#               ^ expression.ng
-#                ^^^^^^ expression.ng variable.other.readwrite.ts
-#                      ^^ expression.ng
-#                        ^^^^^ expression.ng variable.other.readwrite.ts
-#                             ^ expression.ng
-#                              ^^ expression.ng storage.type.as.ts
-#                                ^ expression.ng
-#                                 ^ expression.ng entity.name.type.ts
-#                                  ^^^^^ expression.ng
->{{ let param of params; index as i }}
-#^^^ expression.ng
-#   ^^^ expression.ng storage.type.ts
-#      ^ expression.ng
-#       ^^^^^ expression.ng variable.other.readwrite.ts
-#            ^ expression.ng
-#             ^^ expression.ng keyword.operator.expression.of.ts
-#               ^ expression.ng
-#                ^^^^^^ expression.ng variable.other.readwrite.ts
-#                      ^^ expression.ng
-#                        ^^^^^ expression.ng variable.other.readwrite.ts
-#                             ^ expression.ng
-#                              ^^ expression.ng storage.type.as.ts
-#                                ^ expression.ng
-#                                 ^ expression.ng entity.name.type.ts
-#                                  ^ expression.ng
-#                                   ^^^ expression.ng
->{{ let param of params; let i = index; }}
-#^^^ expression.ng
-#   ^^^ expression.ng storage.type.ts
-#      ^ expression.ng
-#       ^^^^^ expression.ng variable.other.readwrite.ts
-#            ^ expression.ng
-#             ^^ expression.ng keyword.operator.expression.of.ts
-#               ^ expression.ng
-#                ^^^^^^ expression.ng variable.other.readwrite.ts
-#                      ^^ expression.ng
-#                        ^^^ expression.ng storage.type.ts
-#                           ^ expression.ng
-#                            ^ expression.ng variable.other.readwrite.ts
-#                             ^ expression.ng
-#                              ^ expression.ng keyword.operator.assignment.ts
-#                               ^ expression.ng
-#                                ^^^^^ expression.ng variable.other.readwrite.ts
-#                                     ^^^^^ expression.ng
->{{ let param of params; let i = index }}
-#^^^ expression.ng
-#   ^^^ expression.ng storage.type.ts
-#      ^ expression.ng
-#       ^^^^^ expression.ng variable.other.readwrite.ts
-#            ^ expression.ng
-#             ^^ expression.ng keyword.operator.expression.of.ts
-#               ^ expression.ng
-#                ^^^^^^ expression.ng variable.other.readwrite.ts
-#                      ^^ expression.ng
-#                        ^^^ expression.ng storage.type.ts
-#                           ^ expression.ng
-#                            ^ expression.ng variable.other.readwrite.ts
-#                             ^ expression.ng
-#                              ^ expression.ng keyword.operator.assignment.ts
-#                               ^ expression.ng
-#                                ^^^^^ expression.ng variable.other.readwrite.ts
-#                                     ^^^^ expression.ng
->{{ let param of params; let i = index; let last = last }}
-#^^^ expression.ng
-#   ^^^ expression.ng storage.type.ts
-#      ^ expression.ng
-#       ^^^^^ expression.ng variable.other.readwrite.ts
-#            ^ expression.ng
-#             ^^ expression.ng keyword.operator.expression.of.ts
-#               ^ expression.ng
-#                ^^^^^^ expression.ng variable.other.readwrite.ts
-#                      ^^ expression.ng
-#                        ^^^ expression.ng storage.type.ts
-#                           ^ expression.ng
-#                            ^ expression.ng variable.other.readwrite.ts
-#                             ^ expression.ng
-#                              ^ expression.ng keyword.operator.assignment.ts
-#                               ^ expression.ng
-#                                ^^^^^ expression.ng variable.other.readwrite.ts
-#                                     ^^ expression.ng
-#                                       ^^^ expression.ng storage.type.ts
-#                                          ^ expression.ng
-#                                           ^^^^ expression.ng variable.other.readwrite.ts
-#                                               ^ expression.ng
-#                                                ^ expression.ng keyword.operator.assignment.ts
-#                                                 ^ expression.ng
-#                                                  ^^^^ expression.ng variable.other.readwrite.ts
-#                                                      ^^^^ expression.ng
->{{ let param of params; let i = index; let last = last; }}
-#^^^ expression.ng
-#   ^^^ expression.ng storage.type.ts
-#      ^ expression.ng
-#       ^^^^^ expression.ng variable.other.readwrite.ts
-#            ^ expression.ng
-#             ^^ expression.ng keyword.operator.expression.of.ts
-#               ^ expression.ng
-#                ^^^^^^ expression.ng variable.other.readwrite.ts
-#                      ^^ expression.ng
-#                        ^^^ expression.ng storage.type.ts
-#                           ^ expression.ng
-#                            ^ expression.ng variable.other.readwrite.ts
-#                             ^ expression.ng
-#                              ^ expression.ng keyword.operator.assignment.ts
-#                               ^ expression.ng
-#                                ^^^^^ expression.ng variable.other.readwrite.ts
-#                                     ^^ expression.ng
-#                                       ^^^ expression.ng storage.type.ts
-#                                          ^ expression.ng
-#                                           ^^^^ expression.ng variable.other.readwrite.ts
-#                                               ^ expression.ng
-#                                                ^ expression.ng keyword.operator.assignment.ts
-#                                                 ^ expression.ng
-#                                                  ^^^^ expression.ng variable.other.readwrite.ts
-#                                                      ^^^^^ expression.ng
->{{ let param of params; let i = index; last as last }}
-#^^^ expression.ng
-#   ^^^ expression.ng storage.type.ts
-#      ^ expression.ng
-#       ^^^^^ expression.ng variable.other.readwrite.ts
-#            ^ expression.ng
-#             ^^ expression.ng keyword.operator.expression.of.ts
-#               ^ expression.ng
-#                ^^^^^^ expression.ng variable.other.readwrite.ts
-#                      ^^ expression.ng
-#                        ^^^ expression.ng storage.type.ts
-#                           ^ expression.ng
-#                            ^ expression.ng variable.other.readwrite.ts
-#                             ^ expression.ng
-#                              ^ expression.ng keyword.operator.assignment.ts
-#                               ^ expression.ng
-#                                ^^^^^ expression.ng variable.other.readwrite.ts
-#                                     ^^ expression.ng
-#                                       ^^^^ expression.ng variable.other.readwrite.ts
-#                                           ^ expression.ng
-#                                            ^^ expression.ng storage.type.as.ts
-#                                              ^ expression.ng
-#                                               ^^^^ expression.ng entity.name.type.ts
-#                                                   ^ expression.ng
-#                                                    ^^^ expression.ng
->{{ let param of params; let i = index; last as last; }}
-#^^^ expression.ng
-#   ^^^ expression.ng storage.type.ts
-#      ^ expression.ng
-#       ^^^^^ expression.ng variable.other.readwrite.ts
-#            ^ expression.ng
-#             ^^ expression.ng keyword.operator.expression.of.ts
-#               ^ expression.ng
-#                ^^^^^^ expression.ng variable.other.readwrite.ts
-#                      ^^ expression.ng
-#                        ^^^ expression.ng storage.type.ts
-#                           ^ expression.ng
-#                            ^ expression.ng variable.other.readwrite.ts
-#                             ^ expression.ng
-#                              ^ expression.ng keyword.operator.assignment.ts
-#                               ^ expression.ng
-#                                ^^^^^ expression.ng variable.other.readwrite.ts
-#                                     ^^ expression.ng
-#                                       ^^^^ expression.ng variable.other.readwrite.ts
-#                                           ^ expression.ng
-#                                            ^^ expression.ng storage.type.as.ts
-#                                              ^ expression.ng
-#                                               ^^^^ expression.ng entity.name.type.ts
-#                                                   ^^^^^ expression.ng
->
-><!-- Pipe test -->
+#                 ^^ expression.ng keyword.operator.decrement.ts
+#                   ^ expression.ng keyword.operator.relational.ts
+><!-- Let Expression -->
 #^ expression.ng keyword.operator.relational.ts
 # ^ expression.ng keyword.operator.logical.ts
 #  ^^ expression.ng keyword.operator.decrement.ts
 #    ^ expression.ng
-#     ^^^^ expression.ng variable.other.readwrite.ts
-#         ^ expression.ng
-#          ^^^^ expression.ng variable.other.readwrite.ts
-#              ^ expression.ng
-#               ^^ expression.ng keyword.operator.decrement.ts
-#                 ^ expression.ng keyword.operator.relational.ts
+#     ^^^ expression.ng variable.other.readwrite.ts
+#        ^ expression.ng
+#         ^^^^^^^^^^ expression.ng variable.other.readwrite.ts
+#                   ^ expression.ng
+#                    ^^ expression.ng keyword.operator.decrement.ts
+#                      ^ expression.ng keyword.operator.relational.ts
+><div *ngFor="let i = index;"></div>
+#^ expression.ng keyword.operator.relational.ts
+# ^^^ expression.ng variable.other.readwrite.ts
+#    ^ expression.ng
+#     ^ expression.ng keyword.operator.arithmetic.ts
+#      ^^^^^ expression.ng variable.other.readwrite.ts
+#           ^ expression.ng keyword.operator.assignment.ts
+#            ^ expression.ng string.quoted.double.ts punctuation.definition.string.begin.ts
+#             ^^^^^^^^^^^^^^ expression.ng string.quoted.double.ts
+#                           ^ expression.ng string.quoted.double.ts punctuation.definition.string.end.ts
+#                            ^ expression.ng keyword.operator.relational.ts
+#                             ^ expression.ng keyword.operator.relational.ts
+#                              ^ expression.ng keyword.operator.arithmetic.ts
+#                               ^^^ expression.ng variable.other.readwrite.ts
+#                                  ^ expression.ng keyword.operator.relational.ts
+><div *ngFor="let i = index"></div>
+#^ expression.ng keyword.operator.relational.ts
+# ^^^ expression.ng variable.other.readwrite.ts
+#    ^ expression.ng
+#     ^ expression.ng keyword.operator.arithmetic.ts
+#      ^^^^^ expression.ng variable.other.readwrite.ts
+#           ^ expression.ng keyword.operator.assignment.ts
+#            ^ expression.ng string.quoted.double.ts punctuation.definition.string.begin.ts
+#             ^^^^^^^^^^^^^ expression.ng string.quoted.double.ts
+#                          ^ expression.ng string.quoted.double.ts punctuation.definition.string.end.ts
+#                           ^ expression.ng keyword.operator.relational.ts
+#                            ^ expression.ng keyword.operator.relational.ts
+#                             ^ expression.ng keyword.operator.arithmetic.ts
+#                              ^^^ expression.ng variable.other.readwrite.ts
+#                                 ^ expression.ng keyword.operator.relational.ts
+><!-- Key Expression -->
+#^ expression.ng keyword.operator.relational.ts
+# ^ expression.ng keyword.operator.logical.ts
+#  ^^ expression.ng keyword.operator.decrement.ts
+#    ^ expression.ng
+#     ^^^ expression.ng variable.other.readwrite.ts
+#        ^ expression.ng
+#         ^^^^^^^^^^ expression.ng variable.other.readwrite.ts
+#                   ^ expression.ng
+#                    ^^ expression.ng keyword.operator.decrement.ts
+#                      ^ expression.ng keyword.operator.relational.ts
+><div *ngFor="let i = index; trackBy: hash;"></div>
+#^ expression.ng keyword.operator.relational.ts
+# ^^^ expression.ng variable.other.readwrite.ts
+#    ^ expression.ng
+#     ^ expression.ng keyword.operator.arithmetic.ts
+#      ^^^^^ expression.ng variable.other.readwrite.ts
+#           ^ expression.ng keyword.operator.assignment.ts
+#            ^ expression.ng string.quoted.double.ts punctuation.definition.string.begin.ts
+#             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expression.ng string.quoted.double.ts
+#                                          ^ expression.ng string.quoted.double.ts punctuation.definition.string.end.ts
+#                                           ^ expression.ng keyword.operator.relational.ts
+#                                            ^ expression.ng keyword.operator.relational.ts
+#                                             ^ expression.ng keyword.operator.arithmetic.ts
+#                                              ^^^ expression.ng variable.other.readwrite.ts
+#                                                 ^ expression.ng keyword.operator.relational.ts
+><div *ngFor="let i = index; trackBy: hash"></div>
+#^ expression.ng keyword.operator.relational.ts
+# ^^^ expression.ng variable.other.readwrite.ts
+#    ^ expression.ng
+#     ^ expression.ng keyword.operator.arithmetic.ts
+#      ^^^^^ expression.ng variable.other.readwrite.ts
+#           ^ expression.ng keyword.operator.assignment.ts
+#            ^ expression.ng string.quoted.double.ts punctuation.definition.string.begin.ts
+#             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expression.ng string.quoted.double.ts
+#                                         ^ expression.ng string.quoted.double.ts punctuation.definition.string.end.ts
+#                                          ^ expression.ng keyword.operator.relational.ts
+#                                           ^ expression.ng keyword.operator.relational.ts
+#                                            ^ expression.ng keyword.operator.arithmetic.ts
+#                                             ^^^ expression.ng variable.other.readwrite.ts
+#                                                ^ expression.ng keyword.operator.relational.ts
+><div *ngFor="let param of params;"></div>
+#^ expression.ng keyword.operator.relational.ts
+# ^^^ expression.ng variable.other.readwrite.ts
+#    ^ expression.ng
+#     ^ expression.ng keyword.operator.arithmetic.ts
+#      ^^^^^ expression.ng variable.other.readwrite.ts
+#           ^ expression.ng keyword.operator.assignment.ts
+#            ^ expression.ng string.quoted.double.ts punctuation.definition.string.begin.ts
+#             ^^^^^^^^^^^^^^^^^^^^ expression.ng string.quoted.double.ts
+#                                 ^ expression.ng string.quoted.double.ts punctuation.definition.string.end.ts
+#                                  ^ expression.ng keyword.operator.relational.ts
+#                                   ^ expression.ng keyword.operator.relational.ts
+#                                    ^ expression.ng keyword.operator.arithmetic.ts
+#                                     ^^^ expression.ng variable.other.readwrite.ts
+#                                        ^ expression.ng keyword.operator.relational.ts
+><div *ngFor="let param of params"></div>
+#^ expression.ng keyword.operator.relational.ts
+# ^^^ expression.ng variable.other.readwrite.ts
+#    ^ expression.ng
+#     ^ expression.ng keyword.operator.arithmetic.ts
+#      ^^^^^ expression.ng variable.other.readwrite.ts
+#           ^ expression.ng keyword.operator.assignment.ts
+#            ^ expression.ng string.quoted.double.ts punctuation.definition.string.begin.ts
+#             ^^^^^^^^^^^^^^^^^^^ expression.ng string.quoted.double.ts
+#                                ^ expression.ng string.quoted.double.ts punctuation.definition.string.end.ts
+#                                 ^ expression.ng keyword.operator.relational.ts
+#                                  ^ expression.ng keyword.operator.relational.ts
+#                                   ^ expression.ng keyword.operator.arithmetic.ts
+#                                    ^^^ expression.ng variable.other.readwrite.ts
+#                                       ^ expression.ng keyword.operator.relational.ts
+><!-- As Expression -->
+#^ expression.ng keyword.operator.relational.ts
+# ^ expression.ng keyword.operator.logical.ts
+#  ^^ expression.ng keyword.operator.decrement.ts
+#    ^ expression.ng
+#     ^^ expression.ng variable.other.readwrite.ts
+#       ^ expression.ng
+#        ^^^^^^^^^^ expression.ng variable.other.readwrite.ts
+#                  ^ expression.ng
+#                   ^^ expression.ng keyword.operator.decrement.ts
+#                     ^ expression.ng keyword.operator.relational.ts
+><div *ngFor="let param of params; index as i;"></div>
+#^ expression.ng keyword.operator.relational.ts
+# ^^^ expression.ng variable.other.readwrite.ts
+#    ^ expression.ng
+#     ^ expression.ng keyword.operator.arithmetic.ts
+#      ^^^^^ expression.ng variable.other.readwrite.ts
+#           ^ expression.ng keyword.operator.assignment.ts
+#            ^ expression.ng string.quoted.double.ts punctuation.definition.string.begin.ts
+#             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expression.ng string.quoted.double.ts
+#                                             ^ expression.ng string.quoted.double.ts punctuation.definition.string.end.ts
+#                                              ^ expression.ng keyword.operator.relational.ts
+#                                               ^ expression.ng keyword.operator.relational.ts
+#                                                ^ expression.ng keyword.operator.arithmetic.ts
+#                                                 ^^^ expression.ng variable.other.readwrite.ts
+#                                                    ^ expression.ng keyword.operator.relational.ts
+><div *ngFor="let param of params; index as i"></div>
+#^ expression.ng keyword.operator.relational.ts
+# ^^^ expression.ng variable.other.readwrite.ts
+#    ^ expression.ng
+#     ^ expression.ng keyword.operator.arithmetic.ts
+#      ^^^^^ expression.ng variable.other.readwrite.ts
+#           ^ expression.ng keyword.operator.assignment.ts
+#            ^ expression.ng string.quoted.double.ts punctuation.definition.string.begin.ts
+#             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expression.ng string.quoted.double.ts
+#                                            ^ expression.ng string.quoted.double.ts punctuation.definition.string.end.ts
+#                                             ^ expression.ng keyword.operator.relational.ts
+#                                              ^ expression.ng keyword.operator.relational.ts
+#                                               ^ expression.ng keyword.operator.arithmetic.ts
+#                                                ^^^ expression.ng variable.other.readwrite.ts
+#                                                   ^ expression.ng keyword.operator.relational.ts
+><!-- Mixed -->
+#^ expression.ng keyword.operator.relational.ts
+# ^ expression.ng keyword.operator.logical.ts
+#  ^^ expression.ng keyword.operator.decrement.ts
+#    ^ expression.ng
+#     ^^^^^ expression.ng variable.other.readwrite.ts
+#          ^ expression.ng
+#           ^^ expression.ng keyword.operator.decrement.ts
+#             ^ expression.ng keyword.operator.relational.ts
+><div *ngFor="let param of params; let i = index; let last = last"></div>
+#^ expression.ng keyword.operator.relational.ts
+# ^^^ expression.ng variable.other.readwrite.ts
+#    ^ expression.ng
+#     ^ expression.ng keyword.operator.arithmetic.ts
+#      ^^^^^ expression.ng variable.other.readwrite.ts
+#           ^ expression.ng keyword.operator.assignment.ts
+#            ^ expression.ng string.quoted.double.ts punctuation.definition.string.begin.ts
+#             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expression.ng string.quoted.double.ts
+#                                                                ^ expression.ng string.quoted.double.ts punctuation.definition.string.end.ts
+#                                                                 ^ expression.ng keyword.operator.relational.ts
+#                                                                  ^ expression.ng keyword.operator.relational.ts
+#                                                                   ^ expression.ng keyword.operator.arithmetic.ts
+#                                                                    ^^^ expression.ng variable.other.readwrite.ts
+#                                                                       ^ expression.ng keyword.operator.relational.ts
+><div *ngFor="let param of params; let i = index; let last = last;"></div>
+#^ expression.ng keyword.operator.relational.ts
+# ^^^ expression.ng variable.other.readwrite.ts
+#    ^ expression.ng
+#     ^ expression.ng keyword.operator.arithmetic.ts
+#      ^^^^^ expression.ng variable.other.readwrite.ts
+#           ^ expression.ng keyword.operator.assignment.ts
+#            ^ expression.ng string.quoted.double.ts punctuation.definition.string.begin.ts
+#             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expression.ng string.quoted.double.ts
+#                                                                 ^ expression.ng string.quoted.double.ts punctuation.definition.string.end.ts
+#                                                                  ^ expression.ng keyword.operator.relational.ts
+#                                                                   ^ expression.ng keyword.operator.relational.ts
+#                                                                    ^ expression.ng keyword.operator.arithmetic.ts
+#                                                                     ^^^ expression.ng variable.other.readwrite.ts
+#                                                                        ^ expression.ng keyword.operator.relational.ts
+><div *ngFor="let param of params; let i = index; last as last"></div>
+#^ expression.ng keyword.operator.relational.ts
+# ^^^ expression.ng variable.other.readwrite.ts
+#    ^ expression.ng
+#     ^ expression.ng keyword.operator.arithmetic.ts
+#      ^^^^^ expression.ng variable.other.readwrite.ts
+#           ^ expression.ng keyword.operator.assignment.ts
+#            ^ expression.ng string.quoted.double.ts punctuation.definition.string.begin.ts
+#             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expression.ng string.quoted.double.ts
+#                                                             ^ expression.ng string.quoted.double.ts punctuation.definition.string.end.ts
+#                                                              ^ expression.ng keyword.operator.relational.ts
+#                                                               ^ expression.ng keyword.operator.relational.ts
+#                                                                ^ expression.ng keyword.operator.arithmetic.ts
+#                                                                 ^^^ expression.ng variable.other.readwrite.ts
+#                                                                    ^ expression.ng keyword.operator.relational.ts
+><div *ngFor="let param of params; let i = index; last as last;"></div>
+#^ expression.ng keyword.operator.relational.ts
+# ^^^ expression.ng variable.other.readwrite.ts
+#    ^ expression.ng
+#     ^ expression.ng keyword.operator.arithmetic.ts
+#      ^^^^^ expression.ng variable.other.readwrite.ts
+#           ^ expression.ng keyword.operator.assignment.ts
+#            ^ expression.ng string.quoted.double.ts punctuation.definition.string.begin.ts
+#             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expression.ng string.quoted.double.ts
+#                                                              ^ expression.ng string.quoted.double.ts punctuation.definition.string.end.ts
+#                                                               ^ expression.ng keyword.operator.relational.ts
+#                                                                ^ expression.ng keyword.operator.relational.ts
+#                                                                 ^ expression.ng keyword.operator.arithmetic.ts
+#                                                                  ^^^ expression.ng variable.other.readwrite.ts
+#                                                                     ^ expression.ng keyword.operator.relational.ts
+>
+><!-- Pipes -->
+#^ expression.ng keyword.operator.relational.ts
+# ^ expression.ng keyword.operator.logical.ts
+#  ^^ expression.ng keyword.operator.decrement.ts
+#    ^ expression.ng
+#     ^^^^^ expression.ng variable.other.readwrite.ts
+#          ^ expression.ng
+#           ^^ expression.ng keyword.operator.decrement.ts
+#             ^ expression.ng keyword.operator.relational.ts
 >{{ (let param of params) | async }}
 #^^^ expression.ng
 #   ^ expression.ng meta.brace.round.ts
@@ -2383,7 +2563,7 @@
 #                                  ^^ expression.ng
 #                                    ^^^^^^^^^^^^^ expression.ng variable.other.readwrite.ts
 #                                                 ^^^^ expression.ng
->{{ (let param of params) | customPipe:'param' | search: ['term1', 'term2'] }}
+>{{ (let param of params) | customPipe: 'param' | search: ['term1', 'term2'] }}
 #^^^ expression.ng
 #   ^ expression.ng meta.brace.round.ts
 #    ^^^ expression.ng storage.type.ts
@@ -2398,26 +2578,26 @@
 #                         ^ expression.ng keyword.operator.logical.ts
 #                          ^ expression.ng
 #                           ^^^^^^^^^^ expression.ng entity.name.function.pipe.ng
-#                                     ^ expression.ng
-#                                      ^ expression.ng string.quoted.single.ts punctuation.definition.string.begin.ts
-#                                       ^^^^^ expression.ng string.quoted.single.ts
-#                                            ^ expression.ng string.quoted.single.ts punctuation.definition.string.end.ts
-#                                             ^ expression.ng
-#                                              ^ expression.ng keyword.operator.logical.ts
-#                                               ^ expression.ng
-#                                                ^^^^^^ expression.ng entity.name.function.pipe.ng
-#                                                      ^^ expression.ng
-#                                                        ^ expression.ng meta.array.literal.ts meta.brace.square.ts
-#                                                         ^ expression.ng meta.array.literal.ts string.quoted.single.ts punctuation.definition.string.begin.ts
-#                                                          ^^^^^ expression.ng meta.array.literal.ts string.quoted.single.ts
-#                                                               ^ expression.ng meta.array.literal.ts string.quoted.single.ts punctuation.definition.string.end.ts
-#                                                                ^ expression.ng meta.array.literal.ts punctuation.separator.comma.ts
-#                                                                 ^ expression.ng meta.array.literal.ts
-#                                                                  ^ expression.ng meta.array.literal.ts string.quoted.single.ts punctuation.definition.string.begin.ts
-#                                                                   ^^^^^ expression.ng meta.array.literal.ts string.quoted.single.ts
-#                                                                        ^ expression.ng meta.array.literal.ts string.quoted.single.ts punctuation.definition.string.end.ts
-#                                                                         ^ expression.ng meta.array.literal.ts meta.brace.square.ts
-#                                                                          ^^^^ expression.ng
+#                                     ^^ expression.ng
+#                                       ^ expression.ng string.quoted.single.ts punctuation.definition.string.begin.ts
+#                                        ^^^^^ expression.ng string.quoted.single.ts
+#                                             ^ expression.ng string.quoted.single.ts punctuation.definition.string.end.ts
+#                                              ^ expression.ng
+#                                               ^ expression.ng keyword.operator.logical.ts
+#                                                ^ expression.ng
+#                                                 ^^^^^^ expression.ng entity.name.function.pipe.ng
+#                                                       ^^ expression.ng
+#                                                         ^ expression.ng meta.array.literal.ts meta.brace.square.ts
+#                                                          ^ expression.ng meta.array.literal.ts string.quoted.single.ts punctuation.definition.string.begin.ts
+#                                                           ^^^^^ expression.ng meta.array.literal.ts string.quoted.single.ts
+#                                                                ^ expression.ng meta.array.literal.ts string.quoted.single.ts punctuation.definition.string.end.ts
+#                                                                 ^ expression.ng meta.array.literal.ts punctuation.separator.comma.ts
+#                                                                  ^ expression.ng meta.array.literal.ts
+#                                                                   ^ expression.ng meta.array.literal.ts string.quoted.single.ts punctuation.definition.string.begin.ts
+#                                                                    ^^^^^ expression.ng meta.array.literal.ts string.quoted.single.ts
+#                                                                         ^ expression.ng meta.array.literal.ts string.quoted.single.ts punctuation.definition.string.end.ts
+#                                                                          ^ expression.ng meta.array.literal.ts meta.brace.square.ts
+#                                                                           ^^^^ expression.ng
 >{{ ((let param of params) | async) | translate }}
 #^^^ expression.ng
 #   ^ expression.ng meta.brace.round.ts
@@ -2441,17 +2621,15 @@
 #                                     ^^^^^^^^^ expression.ng entity.name.function.pipe.ng
 #                                              ^^^^ expression.ng
 >
-><!-- Mixed test -->
+><!-- Mixed -->
 #^ expression.ng keyword.operator.relational.ts
 # ^ expression.ng keyword.operator.logical.ts
 #  ^^ expression.ng keyword.operator.decrement.ts
 #    ^ expression.ng
 #     ^^^^^ expression.ng variable.other.readwrite.ts
 #          ^ expression.ng
-#           ^^^^ expression.ng variable.other.readwrite.ts
-#               ^ expression.ng
-#                ^^ expression.ng keyword.operator.decrement.ts
-#                  ^ expression.ng keyword.operator.relational.ts
+#           ^^ expression.ng keyword.operator.decrement.ts
+#             ^ expression.ng keyword.operator.relational.ts
 >{{ (let param of params?.get('value')!.property | async).anotherProperty | translate: ['language1', 'language2']; index as i }}
 #^^^ expression.ng
 #   ^ expression.ng meta.brace.round.ts
@@ -2601,7 +2779,15 @@
 #                                                                                                                          ^^^^^ expression.ng variable.other.readwrite.ts
 #                                                                                                                               ^^^^^ expression.ng
 >
->
+><!-- Regression -->
+#^ expression.ng keyword.operator.relational.ts
+# ^ expression.ng keyword.operator.logical.ts
+#  ^^ expression.ng keyword.operator.decrement.ts
+#    ^ expression.ng
+#     ^^^^^^^^^^ expression.ng variable.other.readwrite.ts
+#               ^ expression.ng
+#                ^^ expression.ng keyword.operator.decrement.ts
+#                  ^ expression.ng keyword.operator.relational.ts
 ><!-- #575 -->
 #^ expression.ng keyword.operator.relational.ts
 # ^ expression.ng keyword.operator.logical.ts
@@ -2611,32 +2797,18 @@
 #         ^ expression.ng
 #          ^^ expression.ng keyword.operator.decrement.ts
 #            ^ expression.ng keyword.operator.relational.ts
-><ng-container matColumnDef="cost-code">
+><div *ngFor="let n of nums; index as i"></div>
 #^ expression.ng keyword.operator.relational.ts
-# ^^ expression.ng variable.other.readwrite.ts
-#   ^ expression.ng keyword.operator.arithmetic.ts
-#    ^^^^^^^^^ expression.ng variable.other.readwrite.ts
-#             ^ expression.ng
-#              ^^^^^^^^^^^^ expression.ng variable.other.readwrite.ts
-#                          ^ expression.ng keyword.operator.assignment.ts
-#                           ^ expression.ng string.quoted.double.ts punctuation.definition.string.begin.ts
-#                            ^^^^^^^^^ expression.ng string.quoted.double.ts
-#                                     ^ expression.ng string.quoted.double.ts punctuation.definition.string.end.ts
-#                                      ^ expression.ng keyword.operator.relational.ts
->  <th mat-header-cell *matHeaderCellDef>
-#^^ expression.ng
-#  ^ expression.ng keyword.operator.relational.ts
-#   ^^ expression.ng variable.other.readwrite.ts
-#     ^ expression.ng
-#      ^^^ expression.ng variable.other.readwrite.ts
-#         ^ expression.ng keyword.operator.arithmetic.ts
-#          ^^^^^^ expression.ng variable.other.readwrite.ts
-#                ^ expression.ng keyword.operator.arithmetic.ts
-#                 ^^^^ expression.ng variable.other.readwrite.ts
-#                     ^ expression.ng
-#                      ^ expression.ng keyword.operator.arithmetic.ts
-#                       ^^^^^^^^^^^^^^^^ expression.ng variable.other.readwrite.ts
+# ^^^ expression.ng variable.other.readwrite.ts
+#    ^ expression.ng
+#     ^ expression.ng keyword.operator.arithmetic.ts
+#      ^^^^^ expression.ng variable.other.readwrite.ts
+#           ^ expression.ng keyword.operator.assignment.ts
+#            ^ expression.ng string.quoted.double.ts punctuation.definition.string.begin.ts
+#             ^^^^^^^^^^^^^^^^^^^^^^^^^ expression.ng string.quoted.double.ts
+#                                      ^ expression.ng string.quoted.double.ts punctuation.definition.string.end.ts
 #                                       ^ expression.ng keyword.operator.relational.ts
+<<<<<<< HEAD
 >    {{ 'GENERAL.COST_CODE' | translate }}
 #^^^^^^^ expression.ng
 #       ^ expression.ng string.quoted.single.ts punctuation.definition.string.begin.ts
@@ -2691,13 +2863,23 @@
 #                                                                   ^^ expression.ng variable.other.readwrite.ts
 #                                                                     ^ expression.ng keyword.operator.relational.ts
 ></ng-container>
+=======
+#                                        ^ expression.ng keyword.operator.relational.ts
+#                                         ^ expression.ng keyword.operator.arithmetic.ts
+#                                          ^^^ expression.ng variable.other.readwrite.ts
+#                                             ^ expression.ng keyword.operator.relational.ts
+><div *matHeaderCellDef></div>
+>>>>>>> fixup! Added template expression support
 #^ expression.ng keyword.operator.relational.ts
-# ^ expression.ng keyword.operator.arithmetic.ts
-#  ^^ expression.ng variable.other.readwrite.ts
-#    ^ expression.ng keyword.operator.arithmetic.ts
-#     ^^^^^^^^^ expression.ng variable.other.readwrite.ts
-#              ^ expression.ng keyword.operator.relational.ts
->
+# ^^^ expression.ng variable.other.readwrite.ts
+#    ^ expression.ng
+#     ^ expression.ng keyword.operator.arithmetic.ts
+#      ^^^^^^^^^^^^^^^^ expression.ng variable.other.readwrite.ts
+#                      ^ expression.ng keyword.operator.relational.ts
+#                       ^ expression.ng keyword.operator.relational.ts
+#                        ^ expression.ng keyword.operator.arithmetic.ts
+#                         ^^^ expression.ng variable.other.readwrite.ts
+#                            ^ expression.ng keyword.operator.relational.ts
 ><!-- #613 -->
 #^ expression.ng keyword.operator.relational.ts
 # ^ expression.ng keyword.operator.logical.ts
@@ -2707,7 +2889,7 @@
 #         ^ expression.ng
 #          ^^ expression.ng keyword.operator.decrement.ts
 #            ^ expression.ng keyword.operator.relational.ts
-><div *ngIf="x$ | async as a">
+><div *ngIf="x$ | async as a"></div>
 #^ expression.ng keyword.operator.relational.ts
 # ^^^ expression.ng variable.other.readwrite.ts
 #    ^ expression.ng
@@ -2718,6 +2900,7 @@
 #            ^^^^^^^^^^^^^^^ expression.ng string.quoted.double.ts
 #                           ^ expression.ng string.quoted.double.ts punctuation.definition.string.end.ts
 #                            ^ expression.ng keyword.operator.relational.ts
+<<<<<<< HEAD
 >  <ul>
 #^^ expression.ng
 #  ^ expression.ng keyword.operator.relational.ts
@@ -2736,3 +2919,10 @@
 #  ^^^ expression.ng variable.other.readwrite.ts
 #     ^ expression.ng keyword.operator.relational.ts
 >>>>>>> Improved tests cases
+=======
+#                             ^ expression.ng keyword.operator.relational.ts
+#                              ^ expression.ng keyword.operator.arithmetic.ts
+#                               ^^^ expression.ng variable.other.readwrite.ts
+#                                  ^ expression.ng keyword.operator.relational.ts
+>
+>>>>>>> fixup! Added template expression support

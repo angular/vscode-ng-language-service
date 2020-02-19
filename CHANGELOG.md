@@ -1,3 +1,14 @@
+# v0.900.13
+
+This release upgrades `@angular/language-service` to v9.0.2.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#902-2020-02-19).
+
+New features:
+- Trigger autocomplete on pipe
+
+Bug fixes:
+- Editor buffer out of sync with file on disk
+
 # v0.900.12
 
 This release upgrades `@angular/language-service` to v9.0.1.

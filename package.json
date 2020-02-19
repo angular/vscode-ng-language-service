@@ -79,8 +79,7 @@
         ],
         "embeddedLanguages": {
           "text.html": "html",
-          "source.css": "css",
-          "expression.ng": "typescript"
+          "source.css": "css"
         }
       },
       {

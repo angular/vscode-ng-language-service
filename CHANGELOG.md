@@ -1,3 +1,8 @@
+# v0.900.14
+
+This release introduces TextMate grammar for Angular template expressions.
+Special thanks to @ghaschel, @ayazhafiz, and @dannymcgee.
+
 # v0.900.13
 
 This release upgrades `@angular/language-service` to v9.0.2.

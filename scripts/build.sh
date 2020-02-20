@@ -2,6 +2,9 @@
 
 set -ex -o pipefail
 
+# Enable extended pattern matching features
+shopt -s extglob
+
 # Clean up from last build
 rm -rf client/out
 rm -rf server/out
@@ -21,7 +24,8 @@ cp server/package.json server/yarn.lock server/README.md dist/server
 # Build and copy files to syntaxes directory
 yarn run build:syntaxes
 mkdir dist/syntaxes
-cp syntaxes/inline-styles.json syntaxes/inline-template.json syntaxes/template.json dist/syntaxes
+# Copy all json files in syntaxes/ except tsconfig.json
+cp syntaxes/!(tsconfig).json dist/syntaxes
 
 pushd dist
 yarn install --production --ignore-scripts

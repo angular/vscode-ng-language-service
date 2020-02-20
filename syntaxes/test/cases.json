@@ -14,7 +14,13 @@
   {
     "name": "template syntax",
     "scopeName": "template.ng",
-    "grammarFiles": ["syntaxes/template.json"],
+    "grammarFiles": ["syntaxes/template.json", "syntaxes/expression.json"],
     "testFile": "syntaxes/test/data/template.html"
+  },
+  {
+    "name": "expression syntax",
+    "scopeName": "template.ng",
+    "grammarFiles": ["syntaxes/template.json", "syntaxes/expression.json"],
+    "testFile": "syntaxes/test/data/expression.html"
   }
 ]

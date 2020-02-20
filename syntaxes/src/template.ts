@@ -29,9 +29,9 @@ export const Template: GrammarDefinition = {
       endCaptures: {
         0: {name: 'punctuation.definition.block.ts'},
       },
-      contentName: 'source.js',
+      contentName: 'expression.ng',
       patterns: [
-        {include: 'source.js'},
+        {include: 'expression.ng'},
       ],
     },
 
@@ -52,9 +52,9 @@ export const Template: GrammarDefinition = {
         0: {name: 'string.quoted.html punctuation.definition.string.end.html'},
       },
       name: 'meta.ng-binding.property.html',
-      contentName: 'source.js',
+      contentName: 'expression.ng',
       patterns: [
-        {include: 'source.js'},
+        {include: 'expression.ng'},
       ],
     },
 
@@ -75,9 +75,9 @@ export const Template: GrammarDefinition = {
         0: {name: 'string.quoted.html punctuation.definition.string.end.html'},
       },
       name: 'meta.ng-binding.event.html',
-      contentName: 'source.js',
+      contentName: 'expression.ng',
       patterns: [
-        {include: 'source.js'},
+        {include: 'expression.ng'},
       ],
     },
 
@@ -98,9 +98,9 @@ export const Template: GrammarDefinition = {
         0: {name: 'string.quoted.html punctuation.definition.string.end.html'},
       },
       name: 'meta.ng-binding.two-way.html',
-      contentName: 'source.js',
+      contentName: 'expression.ng',
       patterns: [
-        {include: 'source.js'},
+        {include: 'expression.ng'},
       ],
     },
 
@@ -121,9 +121,9 @@ export const Template: GrammarDefinition = {
         0: {name: 'string.quoted.html punctuation.definition.string.end.html'},
       },
       name: 'meta.ng-binding.template.html',
-      contentName: 'source.js',
+      contentName: 'expression.ng',
       patterns: [
-        {include: 'source.js'},
+        {include: 'expression.ng'},
       ],
     },
 

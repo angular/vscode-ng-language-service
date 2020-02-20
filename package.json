@@ -79,9 +79,12 @@
         ],
         "embeddedLanguages": {
           "text.html": "html",
-          "source.css": "css",
-          "source.js": "javascript"
+          "source.css": "css"
         }
+      },
+      {
+        "path": "./syntaxes/expression.json",
+        "scopeName": "expression.ng"
       }
     ]
   },

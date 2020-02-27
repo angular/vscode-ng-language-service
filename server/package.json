@@ -8,7 +8,7 @@
     "node": ">=10.9.0 <13.0.0"
   },
   "dependencies": {
-    "@angular/language-service": "9.0.2",
+    "@angular/language-service": "9.0.3",
     "vscode-languageserver": "6.1.1",
     "vscode-uri": "2.1.1"
   }

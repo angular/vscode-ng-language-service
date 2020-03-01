@@ -437,10 +437,10 @@ export class Session {
     }
     if (!isAngularProject(project, NG_CORE)) {
       project.disableLanguageService();
-      const totalFiles = project.getFileNames().length;
       const msg =
-          `Disabling language service for ${projectName} because it is not an Angular project. ` +
-          `There are ${totalFiles} files in the project but '${NG_CORE}' is not detected.`;
+          `Disabling language service for ${projectName} because it is not an Angular project ` +
+          `('${NG_CORE}' could not be found). ` +
+          `If you believe you are seeing this message in error, please run a fresh package install.`;
       this.connection.console.info(msg);
       project.log(msg);
       if (project.getExcludedFiles().some(f => f.endsWith(NG_CORE))) {

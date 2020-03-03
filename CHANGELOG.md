@@ -1,3 +1,13 @@
+# v0.900.15
+
+This release upgrades `@angular/language-service` to v9.0.4.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#904-2020-02-27).
+
+Bug fixes:
+- get the right 'ElementAst' in the nested HTML tag (#35317) (7403ba1)
+- infer context type of structural directives (#35537) (#35561) (a491f7e)
+- provide hover for interpolation in attribute value (#35494) (0700279)
+
 # v0.900.14
 
 This release introduces TextMate grammar for Angular template expressions.

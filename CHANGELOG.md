@@ -1,3 +1,14 @@
+# v0.900.16
+
+This release upgrades `@angular/language-service` to v9.0.5.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#905-2020-03-04).
+
+New features:
+- modularize error messages (#35678) (bcff873)
+
+Bug fixes:
+- apply Angular template grammar syntax only to HTML derivative files
+
 # v0.900.15
 
 This release upgrades `@angular/language-service` to v9.0.4.

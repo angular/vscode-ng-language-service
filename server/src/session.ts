@@ -440,7 +440,7 @@ export class Session {
       const msg =
           `Disabling language service for ${projectName} because it is not an Angular project ` +
           `('${NG_CORE}' could not be found). ` +
-          `If you believe you are seeing this message in error, please run a fresh package install.`;
+          `If you believe you are seeing this message in error, please reinstall the packages in your package.json.`;
       this.connection.console.info(msg);
       project.log(msg);
       if (project.getExcludedFiles().some(f => f.endsWith(NG_CORE))) {

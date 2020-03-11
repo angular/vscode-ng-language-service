@@ -1,3 +1,12 @@
+# v0.900.17
+
+This release upgrades `@angular/language-service` to v9.0.6.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#906-2020-03-10).
+
+Bug fixes:
+- resolve the variable from the template context first (#35982) (f882ff0)
+- improve missing core.d.ts error message
+
 # v0.900.16
 
 This release upgrades `@angular/language-service` to v9.0.5.

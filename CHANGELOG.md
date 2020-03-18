@@ -1,3 +1,11 @@
+# v0.900.18
+
+This release upgrades `@angular/language-service` to v9.0.7.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#907-2020-03-18).
+
+Bug fixes:
+- infer $implicit value for ngIf template contexts (#35941) (f5e4410)
+
 # v0.900.17
 
 This release upgrades `@angular/language-service` to v9.0.6.

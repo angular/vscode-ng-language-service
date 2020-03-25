@@ -52,6 +52,11 @@ export class Session {
       useSingleInferredProject: true,
       useInferredProjectPerProjectRoot: true,
       typingsInstaller: ts.server.nullTypingsInstaller,
+      // Not supressing diagnostic events can cause a type error to be thrown when the
+      // language server session gets an event for a file that is outside the project
+      // managed by the project service, and for which a program does not exist in the
+      // corresponding project's language service.
+      // See https://github.com/angular/vscode-ng-language-service/issues/693
       suppressDiagnosticEvents: true,
       eventHandler: (e) => this.handleProjectServiceEvent(e),
       globalPlugins: ['@angular/language-service'],

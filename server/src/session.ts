@@ -441,6 +441,7 @@ export class Session {
           `Please check log file for details.`;
       this.connection.console.info(msg);  // log to remote console to inform users
       project.log(msg);  // log to file, so that it's easier to correlate with ts entries
+
       return;
     }
     if (!isAngularProject(project, NG_CORE)) {
@@ -457,7 +458,12 @@ export class Session {
         this.connection.console.info(msg);
         project.log(msg);
       }
+
+      return;
     }
+
+    // The language service should be enabled at this point.
+    this.connection.console.info(`Enabling language service for ${projectName}.`);
   }
 }
 

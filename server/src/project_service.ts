@@ -53,7 +53,7 @@ export class ProjectService {
   }
 
   /**
-  * Open file whose contents is managed by the client
+   * Open file whose contents is managed by the client
    * @param filename is absolute pathname
    * @param fileContent is a known version of the file content that is more up to date than the one
    *     on disk

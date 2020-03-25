@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@angular/core@9.0.7":
-  version "9.0.7"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-9.0.7.tgz#f75f4ed8ea721f44c9df77502fd114a88db988e3"
-  integrity sha512-E9XZH5Dl+9MWG3MDC6wrKllhA8Rljpz66HOIeqKv2fHPed8kzuJZU3WJWLtbhDAXFwtGTyTZ4c82ZLSmqwTorg==
+"@angular/core@9.1.0":
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-9.1.0.tgz#9dfc386bd1461e0fd4786031fd245da04371421c"
+  integrity sha512-RVlyegdIAij0P1wLY5ObIdsBAzvmHkHfElnmfiNKhaDftP6U/3zRtaKDu0bq0jvn1WCQ8zXxFQ8AWyKZwyFS+w==
 
 rxjs@6.5.4:
   version "6.5.4"

@@ -1,3 +1,24 @@
+# v0.901.0
+
+This release upgrades `@angular/language-service` to v9.1.0.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#910-2020-03-25).
+
+New features:
+- improve non-callable error message (#35271) (acc483e)
+- modularize error messages (#35678) (47a1811), closes #32663
+
+Bug fixes:
+- Catch failure to open script when language service is disabled (#699)
+- Suggest ? and ! operator on nullable receiver (#35200) (3cc24a9)
+- fix calculation of pipe spans (#35986) (406419b)
+- get the right 'ElementAst' in the nested HTML tag (#35317) (8e354da)
+- infer $implicit value for ngIf template contexts (#35941) (18b1bd4)
+- infer context type of structural directives (#35537) (#35561) (54fd33f)
+- provide completions for the structural directive that only injects the 'ViewContainerRef' (#35466) (66c06eb)
+- provide hover for interpolation in attribute value (#35494) (049f118), closes PR#34847
+- resolve the real path for symlink (#35895) (4e1d780)
+- resolve the variable from the template context first (#35982) (3d46a45)
+
 # v0.900.18
 
 This release upgrades `@angular/language-service` to v9.0.7.

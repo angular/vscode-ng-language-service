@@ -45,3 +45,5 @@ code --install-extension /path/to/ngls.vsix
 ## Angular Language Service for Other Editors
 
 - [coc-angular](https://github.com/iamcco/coc-angular) for (Neo)vim
+- [Wild Web Developer](https://github.com/eclipse/wildwebdeveloper) for Eclipse
+- [lsp-mode](https://github.com/emacs-lsp/lsp-mode) for Emacs

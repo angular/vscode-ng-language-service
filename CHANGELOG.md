@@ -1,3 +1,13 @@
+# v0.901.1
+
+This release upgrades `@angular/language-service` to v9.1.1.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#911-2020-04-07).
+
+Bug fixes:
+- infer type of elements of array-like objects (#36312) (ff523c9), closes #36191
+- use the HtmlAst to get the span of HTML tag (#36371) (ffa4e11)
+- log message when language service is enabled for a project
+
 # v0.901.0
 
 This release upgrades `@angular/language-service` to v9.1.0.

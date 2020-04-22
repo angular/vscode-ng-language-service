@@ -1,7 +1,7 @@
 {
   "name": "@angular/language-server",
   "description": "LSP server for Angular Language Service",
-  "version": "0.901.2",
+  "version": "0.901.3",
   "author": "Angular",
   "license": "MIT",
   "engines": {

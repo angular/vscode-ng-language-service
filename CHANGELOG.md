@@ -1,3 +1,11 @@
+# v0.901.3
+
+This release upgrades `@angular/language-service` to v9.1.3.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#913-2020-04-22).
+
+Bug fixes:
+- properly evaluate types in comparable expressions (#36529) (5bab498)
+
 # v0.901.2
 
 This release upgrades `@angular/language-service` to v9.1.2.

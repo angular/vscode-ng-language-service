@@ -125,7 +125,7 @@
     "vsce": "1.75.0",
     "vscode": "1.1.36",
     "vscode-jsonrpc": "5.0.1",
-    "vscode-tmgrammar-test": "0.0.8"
+    "vscode-tmgrammar-test": "0.0.9"
   },
   "repository": {
     "type": "git",

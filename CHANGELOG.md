@@ -1,3 +1,11 @@
+# v0.901.4
+
+This release upgrades `@angular/language-service` to v9.1.4.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#914-2020-04-29).
+
+Bug fixes:
+- do not invalidate `@angular/core` module (#36783) (d3a77ea)
+
 # v0.901.3
 
 This release upgrades `@angular/language-service` to v9.1.3.

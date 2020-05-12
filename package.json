@@ -110,7 +110,7 @@
     "test:syntaxes": "yarn compile:syntaxes-test && yarn build:syntaxes && jasmine syntaxes/test/driver.js"
   },
   "dependencies": {
-    "typescript": "~3.8.0"
+    "typescript": "~3.9.0"
   },
   "devDependencies": {
     "@types/jasmine": "3.5.10",

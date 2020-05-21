@@ -1,3 +1,8 @@
+# v0.901.9
+
+This release upgrades `@angular/language-service` to v9.1.9.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#919-2020-05-20).
+
 # v0.901.8
 
 This release upgrades `@angular/language-service` to v9.1.8.

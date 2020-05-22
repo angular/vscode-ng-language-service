@@ -742,10 +742,10 @@ rollup-pluginutils@^2.8.1:
   dependencies:
     estree-walker "^0.6.1"
 
-rollup@2.10.6:
-  version "2.10.6"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.10.6.tgz#c146dfefa326a0b591f17e5402d755ba16173188"
-  integrity sha512-NCSpyzDLpa05fX3aBJ6b2RkrvN1pU3INrgG1nYN5/EsTBmrJ6qYj7+/mZvuHFJWWi8mOK/zLaKxHOPvpGhYRrA==
+rollup@2.10.7:
+  version "2.10.7"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.10.7.tgz#7d1a9fa8de146615a098836480df6f8b31c2f058"
+  integrity sha512-rofUSH2i4GymWhQq6bfRaSiVbz4LEB4h/7+AhuXCaeOSwQqClD0hINjs59j8SyfQwcqe83NcVJAY2kjp0h33bQ==
   optionalDependencies:
     fsevents "~2.1.2"
 

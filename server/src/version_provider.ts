@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-const MIN_TS_VERSION = '3.7';
-const MIN_NG_VERSION = '9.0';
+const MIN_TS_VERSION = '3.9';
+const MIN_NG_VERSION = '10.0';
 
 /**
  * Represents a valid node module that has been successfully resolved.

@@ -1,16 +1,15 @@
 version: 2.1
 orbs:
-  node: circleci/node@2.1.1
+  node: circleci/node@3.0.0
 jobs:
   build-and-test:
     executor:
       name: node/default
-      tag: '12.16'
+      tag: '12.18'
     steps:
       - checkout
       - node/install-packages:
           pkg-manager: yarn
-          cache-key: yarn.lock
       - run: scripts/lint.sh
       - run: scripts/format.sh
       - run: scripts/build.sh

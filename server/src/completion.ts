@@ -77,9 +77,81 @@ export function tsCompletionEntryToLspCompletionItem(
   // Text that actually gets inserted to the document. It could be different
   // from 'entry.name'. For example, a method name could be 'greet', but the
   // insertText is 'greet()'.
-  const insertText = entry.insertText || entry.name;
-  item.textEdit = entry.replacementSpan ?
-      lsp.TextEdit.replace(tsTextSpanToLspRange(scriptInfo, entry.replacementSpan), insertText) :
+  let insertText = entry.insertText || entry.name;
+  let replaceSpan = entry.replacementSpan;
+  if (kind === CompletionKind.attribute) {
+    // <div [(ng|)]=></div>
+    //      ^-------------- start
+    //             ^------- end
+    let start = scriptInfo.lineOffsetToPosition(position.line + 1, position.character) - 1;
+    let end = scriptInfo.lineOffsetToPosition(position.line + 1, position.character) + 4;
+    if (replaceSpan) {
+      start = replaceSpan.start - 2;
+      end = replaceSpan.start + replaceSpan.length + 3;
+    }
+    const attributeText = scriptInfo.getSnapshot().getText(start, end);
+    switch (attributeText[1]) {
+      case '*':
+      case '-':
+        // *ngI| => *ngIf="|"
+        // on-cli| => on-click="|"
+        if (attributeText[attributeText.length - 3] !== '=') {
+          item.insertTextFormat = lsp.InsertTextFormat.Snippet;
+          insertText = `${insertText}="\${0}"`;
+          replaceSpan = {start: start + 2, length: end - start - 5};
+        }
+        break;
+      case '[':
+        // [ngMo|] => [ngModel]="|"
+        if (attributeText[attributeText.length - 2] !== '=') {
+          item.insertTextFormat = lsp.InsertTextFormat.Snippet;
+          insertText = `${insertText}]="\${0}"`;
+          replaceSpan = {start: start + 2, length: end - start - 4};
+        }
+        break;
+      case '(':
+        if (attributeText[0] === '[') {
+          // [(ngMod|)] => [(ngModel)]="|"
+          if (attributeText[attributeText.length - 1] !== '=') {
+            item.insertTextFormat = lsp.InsertTextFormat.Snippet;
+            insertText = `${insertText})]="\${0}"`;
+            replaceSpan = {start: start + 2, length: end - start - 3};
+          }
+        } else {
+          // (clic|) => (click)="|"
+          if (attributeText[attributeText.length - 2] !== '=') {
+            item.insertTextFormat = lsp.InsertTextFormat.Snippet;
+            insertText = `${insertText})="\${0}"`;
+            replaceSpan = {start: start + 2, length: end - start - 4};
+          }
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  if (kind === CompletionKind.method) {
+    let start = scriptInfo.lineOffsetToPosition(position.line + 1, position.character) + 1;
+    let end = scriptInfo.lineOffsetToPosition(position.line + 1, position.character) + 2;
+    if (replaceSpan) {
+      start = replaceSpan.start;
+      end = replaceSpan.start + replaceSpan.length + 1;
+    }
+    const methodText = scriptInfo.getSnapshot().getText(start, end);
+    if (methodText.endsWith('(')) {
+      // meth|() => method(|)
+      replaceSpan = {start: start, length: end - start};
+      insertText = insertText.slice(0, insertText.length - 1) + '\${0}';
+    } else {
+      // meth| => method(|)
+      insertText = insertText.slice(0, insertText.length - 1) + '\${0})';
+    }
+    item.insertTextFormat = lsp.InsertTextFormat.Snippet;
+  }
+
+  item.textEdit = replaceSpan ?
+      lsp.TextEdit.replace(tsTextSpanToLspRange(scriptInfo, replaceSpan), insertText) :
       lsp.TextEdit.insert(position, insertText);
   return item;
 }

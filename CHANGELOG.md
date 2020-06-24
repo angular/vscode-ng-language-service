@@ -1,3 +1,25 @@
+# v0.1000.0
+
+This release upgrades `@angular/language-service` to v10.0.0.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1000-2020-06-24).
+
+Known issues:
+- This release does not yet support ["solution-style"](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-9.html#support-for-solution-style-tsconfigjson-files) tsconfig.
+It is expected to be fixed in `v0.1000.1` release. Please follow [#824](https://github.com/angular/vscode-ng-language-service/issues/824) for updates.
+
+Bug fixes:
+- Improve signature selection by finding exact match (#37494) (e97a2d4)
+- Recover from error in analyzing NgModules (#37108) (2c1f35e)
+- Do not invalidate `@angular/core` module (#36783) (dd049ca)
+- infer type of elements of array-like objects (#36312) (fe2b692), closes #36191
+- properly evaluate types in comparable expressions (#36529) (8be0972)
+- use empty statement as parent of type node (#36989) (a32cbed)
+- use the HtmlAst to get the span of HTML tag (#36371) (81195a2)
+- wrong completions in conditional operator (#37505) (32020f9)
+
+Deprecations:
+- Remove HTML entities autocompletion (#37515) (67bd88b)
+
 # v0.1000.0-rc.1
 
 This release upgrades `@angular/language-service` to v10.0.0-rc.2.

@@ -1,7 +1,7 @@
 {
   "name": "@angular/language-server",
   "description": "LSP server for Angular Language Service",
-  "version": "0.1000.0-rc.1",
+  "version": "0.1000.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/angular/vscode-ng-language-service.git"

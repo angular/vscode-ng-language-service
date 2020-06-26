@@ -1,6 +1,16 @@
+# v0.1000.1
+
+This release upgrades `@angular/language-service` to v10.0.1.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1001-2020-06-26).
+
+This release fixes support for ["solution-style"](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-9.html#support-for-solution-style-tsconfigjson-files) tsconfig.
+
+Bug fixes:
+- reinstate getExternalFiles() (#37750) (ad6680f)
+
 # v0.1000.0
 
-This release upgrades `@angular/language-service` to v10.0.0.
+This release upgrades `@angular/language-service` to v10.0.0 and `typescript` to v3.9.5.
 For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1000-2020-06-24).
 
 Known issues:

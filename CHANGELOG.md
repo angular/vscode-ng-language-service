@@ -1,3 +1,11 @@
+# v0.1000.2
+
+This release upgrades `@angular/language-service` to v10.0.2.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1002-2020-06-30).
+
+Bug fixes:
+- incorrect autocomplete results on unknown symbol (#37518) (7c0b25f)
+
 # v0.1000.1
 
 This release upgrades `@angular/language-service` to v10.0.1.

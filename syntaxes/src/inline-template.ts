@@ -10,7 +10,7 @@ import {GrammarDefinition} from './types';
 
 export const InlineTemplate: GrammarDefinition = {
   scopeName: 'inline-template.ng',
-  injectionSelector: 'L:meta.decorator.ts -comment',
+  injectionSelector: 'L:meta.decorator.ts -comment -text.html',
   patterns: [{include: '#inlineTemplate'}],
   repository: {
     inlineTemplate: {

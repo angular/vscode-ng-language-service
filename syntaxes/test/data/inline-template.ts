@@ -30,3 +30,10 @@ export class TMComponent{}
   template: '{{property}}',
 })
 export class TMComponent{}
+
+@Component({
+  template: `
+    <ng-container *ngFor="let el of [1,2,3,4]; template: myTpl"></ng-template>
+  `,
+})
+export class TMComponent{}

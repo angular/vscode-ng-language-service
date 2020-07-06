@@ -1,6 +1,6 @@
 {
   "scopeName": "inline-template.ng",
-  "injectionSelector": "L:meta.decorator.ts -comment",
+  "injectionSelector": "L:meta.decorator.ts -comment -text.html",
   "patterns": [
     {
       "include": "#inlineTemplate"

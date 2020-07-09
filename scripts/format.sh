@@ -12,6 +12,7 @@ find . -name "*.ts" \
 find syntaxes/ -name "*.json" \
   -exec yarn prettier --write {} +
 
-if [[ ! -z "${CI_MODE}" ]]; then
-  git diff --diff-filter=ACMRT --exit-code || (echo "Files not formatted; please run 'yarn format'." && exit 1)
+if [[ -n "$(git status --porcelain)" ]]; then
+  echo "Files not formatted; please run 'yarn format'."
+  exit 1
 fi

@@ -1,3 +1,11 @@
+# v0.1000.3
+
+This release upgrades `@angular/language-service` to v10.0.3.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1003-2020-07-08).
+
+Bug fixes:
+- Do not match inline template grammars inside a template itself (#839)
+
 # v0.1000.2
 
 This release upgrades `@angular/language-service` to v10.0.2.

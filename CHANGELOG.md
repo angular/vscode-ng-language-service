@@ -1,3 +1,11 @@
+# v0.1000.4
+
+This release upgrades `@angular/language-service` to v10.0.4.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1004-2020-07-15).
+
+Bug fixes:
+- Remove completion for string (#37983) (387e838)
+
 # v0.1000.3
 
 This release upgrades `@angular/language-service` to v10.0.3.

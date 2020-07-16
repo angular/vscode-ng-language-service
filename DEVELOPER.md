@@ -31,3 +31,48 @@ for VS Code.
 ```vim
 let g:clang_format#command = '<PATH_TO_REPOSITORY>/node_modules/.bin/clang-format'
 ```
+
+## Test Local Changes in VSCode
+
+Any changes made to the code in this repository or the upstream
+`@angular/language-service` package can be immediately tested out in a
+development version of VSCode. The instructions below explain how to bring up
+a local instance and then install a local version of `@angular/language-service`.
+
+### Check TypeScript version
+
+First, make sure that the TypeScript version in `@angular/angular` is the same
+as that used in this repository. If not, update the following files:
+
+1. `typescript` dependency in [`package.json`](package.json)
+2. `MIN_TS_VERSION` in [`version_provider.ts`](server/src/version_provider.ts)
+
+### Launch VSCode in Extension Development Host
+
+The scripts in `.vscode` directory are setup to automatically compile the code,
+then launch a new instance of VSCode with the Angular extension installed.
+To do so, either
+
+1. Press F5, or
+2. Go to Run on the sidebar, select `Launch Client` from the task list
+
+After the client is launched, you can optionally choose to attach a debugger to
+the local instance. To do so,
+
+1. Go to Run on the sidebar, select `Attach to Server` from the task list
+
+As a shortcut, there's also a task setup to automatically launch the client and
+attach the debugger in a single step. To do so,
+
+1. Go to Run on the sidebar, select `Client + Server` from the task list
+
+### Install Local `@angular/language-service`
+
+If changes are made to the upstream language service package, they can also be
+tested locally. This involves building the NPM package, then updating the server
+dependency. To do so, run the following script from the `@angular/angular`
+repository.
+
+```bash
+./packages/language-service/build.sh /path/to/vscode-ng-language-service
+```

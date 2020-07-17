@@ -12,7 +12,6 @@ import * as lsp from 'vscode-languageserver';
 import {tsCompletionEntryToLspCompletionItem} from './completion';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
 import {Logger} from './logger';
-import {ProjectService} from './project_service';
 import {projectLoadingNotification} from './protocol';
 import {ServerHost} from './server_host';
 import {filePathToUri, lspPositionToTsPosition, lspRangeToTsPositions, tsTextSpanToLspRange, uriToFilePath} from './utils';
@@ -37,7 +36,7 @@ const EMPTY_RANGE = lsp.Range.create(0, 0, 0, 0);
  */
 export class Session {
   private readonly connection: lsp.IConnection;
-  private readonly projectService: ProjectService;
+  private readonly projectService: ts.server.ProjectService;
   private diagnosticsTimeout: NodeJS.Timeout|null = null;
   private isProjectLoading = false;
 
@@ -45,7 +44,11 @@ export class Session {
     // Create a connection for the server. The connection uses Node's IPC as a transport.
     this.connection = lsp.createConnection();
     this.addProtocolHandlers(this.connection);
-    this.projectService = new ProjectService({
+    this.projectService = this.createProjectService(options);
+  }
+
+  private createProjectService(options: SessionOptions): ts.server.ProjectService {
+    const projSvc = new ts.server.ProjectService({
       host: options.host,
       logger: options.logger,
       cancellationToken: ts.server.nullCancellationToken,
@@ -63,6 +66,26 @@ export class Session {
       pluginProbeLocations: [options.ngProbeLocation],
       allowLocalPluginLoads: false,  // do not load plugins from tsconfig.json
     });
+
+    projSvc.setHostConfiguration({
+      formatOptions: projSvc.getHostFormatCodeOptions(),
+      extraFileExtensions: [
+        {
+          extension: '.html',
+          isMixedContent: false,
+          scriptKind: ts.ScriptKind.External,
+        },
+      ],
+    });
+
+    projSvc.configurePlugin({
+      pluginName: '@angular/language-service',
+      configuration: {
+        angularOnly: true,
+      },
+    });
+
+    return projSvc;
   }
 
   private addProtocolHandlers(conn: lsp.IConnection) {
@@ -142,7 +165,7 @@ export class Session {
         continue;
       }
 
-      const ngLS = this.projectService.getDefaultLanguageService(scriptInfo);
+      const ngLS = this.getDefaultLanguageService(scriptInfo);
       if (!ngLS) {
         continue;
       }
@@ -155,6 +178,53 @@ export class Session {
         diagnostics: diagnostics.map(d => tsDiagnosticToLspDiagnostic(d, scriptInfo)),
       });
     }
+  }
+
+  /**
+   * Return the default project for the specified `scriptInfo` if it is already
+   * a configured project. If not, attempt to find a relevant config file and
+   * make that project its default. This method is to ensure HTML files always
+   * belong to a configured project instead of the default behavior of being in
+   * an inferred project.
+   * @param scriptInfo
+   */
+  getDefaultProjectForScriptInfo(scriptInfo: ts.server.ScriptInfo): ts.server.Project|undefined {
+    let project = this.projectService.getDefaultProjectForFile(
+        scriptInfo.fileName,
+        // ensureProject tries to find a default project for the scriptInfo if
+        // it does not already have one. It is not needed here because we are
+        // going to assign it a project below if it does not have one.
+        false  // ensureProject
+    );
+
+    // TODO: verify that HTML files are attached to Inferred project by default.
+    // If they are already part of a ConfiguredProject then the following is
+    // not needed.
+    if (!project || project.projectKind !== ts.server.ProjectKind.Configured) {
+      const {configFileName} = this.projectService.openClientFile(scriptInfo.fileName);
+      if (!configFileName) {
+        // Failed to find a config file. There is nothing we could do.
+        return;
+      }
+      project = this.projectService.findProject(configFileName);
+      if (!project) {
+        return;
+      }
+      scriptInfo.detachAllProjects();
+      scriptInfo.attachToProject(project);
+    }
+
+    return project;
+  }
+
+  /**
+   * Returns a language service for a default project created for the specified `scriptInfo`. If the
+   * project does not support a language service, nothing is returned.
+   */
+  getDefaultLanguageService(scriptInfo: ts.server.ScriptInfo): ts.LanguageService|undefined {
+    const project = this.getDefaultProjectForScriptInfo(scriptInfo);
+    if (!project?.languageServiceEnabled) return;
+    return project.getLanguageService();
   }
 
   private onInitialize(params: lsp.InitializeParams): lsp.InitializeResult {
@@ -245,7 +315,7 @@ export class Session {
       }
     }
 
-    const project = this.projectService.getDefaultProjectForScriptInfo(scriptInfo);
+    const project = this.getDefaultProjectForScriptInfo(scriptInfo);
     if (!project || !project.languageServiceEnabled) {
       return;
     }
@@ -276,7 +346,7 @@ export class Session {
     }
 
     const {fileName} = scriptInfo;
-    const langSvc = this.projectService.getDefaultLanguageService(scriptInfo);
+    const langSvc = this.getDefaultLanguageService(scriptInfo);
     if (!langSvc) {
       return;
     }
@@ -322,7 +392,7 @@ export class Session {
     if (!scriptInfo) {
       return;
     }
-    const langSvc = this.projectService.getDefaultLanguageService(scriptInfo);
+    const langSvc = this.getDefaultLanguageService(scriptInfo);
     if (!langSvc) {
       return;
     }
@@ -366,7 +436,7 @@ export class Session {
       return;
     }
     const {fileName} = scriptInfo;
-    const langSvc = this.projectService.getDefaultLanguageService(scriptInfo);
+    const langSvc = this.getDefaultLanguageService(scriptInfo);
     if (!langSvc) {
       return;
     }

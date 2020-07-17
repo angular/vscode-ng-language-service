@@ -12,7 +12,7 @@ find . -name "*.ts" \
 find syntaxes/ -name "*.json" \
   -exec yarn prettier --write {} +
 
-if [[ -n "$(git status --porcelain)" ]]; then
+if [[ -n "${CIRCLECI}" && -n "$(git status --porcelain)" ]]; then
   echo "Files not formatted; please run 'yarn format'."
   exit 1
 fi

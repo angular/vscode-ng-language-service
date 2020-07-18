@@ -19,6 +19,7 @@ import {filePathToUri, lspPositionToTsPosition, lspRangeToTsPositions, tsTextSpa
 export interface SessionOptions {
   host: ServerHost;
   logger: Logger;
+  ngPlugin: string;
   ngProbeLocation: string;
 }
 
@@ -62,7 +63,7 @@ export class Session {
       // See https://github.com/angular/vscode-ng-language-service/issues/693
       suppressDiagnosticEvents: true,
       eventHandler: (e) => this.handleProjectServiceEvent(e),
-      globalPlugins: ['@angular/language-service'],
+      globalPlugins: [options.ngPlugin],
       pluginProbeLocations: [options.ngProbeLocation],
       allowLocalPluginLoads: false,  // do not load plugins from tsconfig.json
     });
@@ -79,7 +80,7 @@ export class Session {
     });
 
     projSvc.configurePlugin({
-      pluginName: '@angular/language-service',
+      pluginName: options.ngPlugin,
       configuration: {
         angularOnly: true,
       },

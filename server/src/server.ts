@@ -27,7 +27,7 @@ const logger = createLogger({
 });
 
 const ts = resolveTsServer(options.tsProbeLocations);
-const ng = resolveNgLangSvc(options.ngProbeLocations);
+const ng = resolveNgLangSvc(options.ngProbeLocations, options.ivy);
 
 // ServerHost provides native OS functionality
 const host = new ServerHost();
@@ -36,13 +36,14 @@ const host = new ServerHost();
 const session = new Session({
   host,
   logger,
+  ngPlugin: ng.name,
   ngProbeLocation: ng.resolvedPath,
 });
 
 // Log initialization info
 session.info(`Angular language server process ID: ${process.pid}`);
-session.info(`Using typescript v${ts.version} from ${ts.resolvedPath}`);
-session.info(`Using @angular/language-service v${ng.version} from ${ng.resolvedPath}`);
+session.info(`Using ${ts.name} v${ts.version} from ${ts.resolvedPath}`);
+session.info(`Using ${ng.name} v${ng.version} from ${ng.resolvedPath}`);
 session.info(`Log file: ${logger.getLogFileName()}`);
 if (process.env.NG_DEBUG === 'true') {
   session.info('Angular Language Service is running under DEBUG mode');

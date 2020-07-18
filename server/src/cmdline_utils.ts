@@ -28,6 +28,11 @@ function hasArgument(argv: string[], argName: string): boolean {
 
 interface CommandLineOptions {
   help: boolean;
+  /**
+   * If true, use the Ivy version of Angular LS. For now this is only used for
+   * development.
+   */
+  ivy: boolean;
   logFile?: string;
   logVerbosity?: string;
   ngProbeLocations: string[];
@@ -37,6 +42,7 @@ interface CommandLineOptions {
 export function parseCommandLine(argv: string[]): CommandLineOptions {
   return {
     help: hasArgument(argv, '--help'),
+    ivy: hasArgument(argv, '--experimental-ivy'),
     logFile: findArgument(argv, '--logFile'),
     logVerbosity: findArgument(argv, '--logVerbosity'),
     ngProbeLocations: parseStringArray(argv, '--ngProbeLocations'),
@@ -45,6 +51,7 @@ export function parseCommandLine(argv: string[]): CommandLineOptions {
 }
 
 export function generateHelpMessage(argv: string[]) {
+  // Do not expose --experimental-ivy flag since it's only used for development.
   return `Angular Language Service that implements the Language Server Protocol (LSP).
 
   Usage: ${argv[0]} ${argv[1]} [options]

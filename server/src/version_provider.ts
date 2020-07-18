@@ -13,6 +13,7 @@ const MIN_NG_VERSION = '10.0';
  * Represents a valid node module that has been successfully resolved.
  */
 interface NodeModule {
+  name: string;
   resolvedPath: string;
   version: Version;
 }
@@ -29,6 +30,7 @@ function resolve(packageName: string, location: string, rootPackage?: string): N
       paths: [location],
     });
     return {
+      name: packageName,
       resolvedPath,
       version: new Version(packageJson.version),
     };
@@ -42,12 +44,13 @@ function resolve(packageName: string, location: string, rootPackage?: string): N
  * @param packageName name of package to be resolved
  * @param minVersionStr minimum version
  * @param probeLocations locations to initiate node module resolution
- * @param rootPackage location of package.json, if different from `packageName`
+ * @param rootPackage location of package.json. For example, the root package of
+ * `typescript/lib/tsserverlibrary` is `typescript`.
  */
 function resolveWithMinVersion(
     packageName: string, minVersionStr: string, probeLocations: string[],
-    rootPackage?: string): NodeModule {
-  if (rootPackage && !packageName.startsWith(rootPackage)) {
+    rootPackage: string): NodeModule {
+  if (!packageName.startsWith(rootPackage)) {
     throw new Error(`${packageName} must be in the root package`);
   }
   const minVersion = new Version(minVersionStr);
@@ -73,11 +76,15 @@ export function resolveTsServer(probeLocations: string[]): NodeModule {
 
 /**
  * Resolve `@angular/language-service` from the given locations.
- * @param probeLocations
+ * @param probeLocations locations from which resolution is attempted
+ * @param ivy true if Ivy language service is requested
  */
-export function resolveNgLangSvc(probeLocations: string[]): NodeModule {
+export function resolveNgLangSvc(probeLocations: string[], ivy: boolean): NodeModule {
   const nglangsvc = '@angular/language-service';
-  return resolveWithMinVersion(nglangsvc, MIN_NG_VERSION, probeLocations);
+  // TODO: In the next update of @angular/language-service, rename this to
+  // bundles/ivy because the file has been renamed
+  const packageName = ivy ? `${nglangsvc}/bundles/ivy.umd` : nglangsvc;
+  return resolveWithMinVersion(packageName, MIN_NG_VERSION, probeLocations, nglangsvc);
 }
 
 /**

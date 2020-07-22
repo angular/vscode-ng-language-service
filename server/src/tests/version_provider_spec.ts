@@ -20,17 +20,13 @@ describe('Node Module Resolver', () => {
   it('should be able to resolve Angular language service', () => {
     const result = resolveNgLangSvc(probeLocations, false /* ivy */);
     expect(result).toBeDefined();
-    // TODO: This will fail in the next update of @angular/language-service
-    // because language-service.umd.js is renamed to language-service.js
-    expect(result.resolvedPath).toMatch(/language-service.umd.js$/);
+    expect(result.resolvedPath).toMatch(/language-service.js$/);
   });
 
   it('should be able to resolve Ivy version of Angular language service', () => {
     const result = resolveNgLangSvc(probeLocations, true /* ivy */);
     expect(result).toBeDefined();
-    // TODO: This will fail in the next update of @angular/language-service
-    // because ivy.umd.js is renamed to ivy.js
-    expect(result.resolvedPath).toMatch(/ivy.umd.js$/);
+    expect(result.resolvedPath).toMatch(/ivy.js$/);
   });
 });
 

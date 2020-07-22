@@ -81,9 +81,7 @@ export function resolveTsServer(probeLocations: string[]): NodeModule {
  */
 export function resolveNgLangSvc(probeLocations: string[], ivy: boolean): NodeModule {
   const nglangsvc = '@angular/language-service';
-  // TODO: In the next update of @angular/language-service, rename this to
-  // bundles/ivy because the file has been renamed
-  const packageName = ivy ? `${nglangsvc}/bundles/ivy.umd` : nglangsvc;
+  const packageName = ivy ? `${nglangsvc}/bundles/ivy` : nglangsvc;
   return resolveWithMinVersion(packageName, MIN_NG_VERSION, probeLocations, nglangsvc);
 }
 

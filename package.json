@@ -116,7 +116,7 @@
     "@types/jasmine": "3.5.11",
     "@types/node": "12.12.51",
     "clang-format": "1.4.0",
-    "jasmine": "3.5.0",
+    "jasmine": "3.6.1",
     "prettier": "2.0.5",
     "rollup": "2.22.2",
     "rollup-plugin-commonjs": "10.1.0",

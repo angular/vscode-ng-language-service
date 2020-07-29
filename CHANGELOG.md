@@ -1,7 +1,17 @@
+# v0.1000.5
+
+This release upgrades `@angular/language-service` to v10.0.5.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1005-2020-07-22).
+
+The `.umd` suffix has been removed from the bundle filename.
+
 # v0.1000.4
 
 This release upgrades `@angular/language-service` to v10.0.4.
 For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1004-2020-07-15).
+
+Features:
+- Upgrade bundle format to ES2015.
 
 Bug fixes:
 - Remove completion for string (#37983) (387e838)

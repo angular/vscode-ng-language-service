@@ -3,7 +3,7 @@
   "private": true,
   "dependencies": {
     "@angular/core": "10.0.7",
-    "rxjs": "6.6.0",
+    "rxjs": "6.6.2",
     "zone.js": "0.10.3"
   }
 }

@@ -1,3 +1,19 @@
+# v0.1000.7
+
+This release upgrades `@angular/language-service` to v10.0.7.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1007-2020-07-30).
+
+This release fixes a bug caused by the upgrade of bundle format from ES5 to
+ES2015.
+
+Bug fixes:
+- Metadata should not include methods on Object.prototype (#38292) (879ff08)
+
+# v0.1000.6
+
+This release upgrades `@angular/language-service` to v10.0.6.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1006-2020-07-28).
+
 # v0.1000.5
 
 This release upgrades `@angular/language-service` to v10.0.5.

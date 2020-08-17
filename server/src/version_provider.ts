@@ -6,6 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import * as fs from 'fs';
+
 const MIN_TS_VERSION = '3.9';
 const MIN_NG_VERSION = '10.0';
 
@@ -25,7 +27,9 @@ function resolve(packageName: string, location: string, rootPackage?: string): N
     const packageJsonPath = require.resolve(`${rootPackage}/package.json`, {
       paths: [location],
     });
-    const packageJson = require(packageJsonPath);
+    // Do not use require() to read JSON files since it's a potential security
+    // vulnerability.
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
     const resolvedPath = require.resolve(packageName, {
       paths: [location],
     });

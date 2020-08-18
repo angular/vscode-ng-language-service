@@ -33,7 +33,8 @@
             "null"
           ],
           "default": null,
-          "description": "Specifies the folder path to @angular/language-service."
+          "description": "Specifies the folder path to @angular/language-service.",
+          "scope": "machine"
         },
         "angular.log": {
           "type": "string",

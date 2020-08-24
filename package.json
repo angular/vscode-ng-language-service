@@ -118,7 +118,7 @@
     "@types/node": "12.12.54",
     "clang-format": "1.4.0",
     "jasmine": "3.6.1",
-    "prettier": "2.0.5",
+    "prettier": "2.1.0",
     "rollup": "2.26.4",
     "rollup-plugin-commonjs": "10.1.0",
     "tslint": "6.1.3",

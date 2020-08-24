@@ -1589,10 +1589,10 @@ util-deprecate@^1.0.1:
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
 
-vsce@1.78.0:
-  version "1.78.0"
-  resolved "https://registry.yarnpkg.com/vsce/-/vsce-1.78.0.tgz#a0edad3c508df13e715a5b58d204baf4c1b0384c"
-  integrity sha512-4CIUTwhcU+RlQDW+GNKO6AhQ7aZJCzDA9A9r7j262LTd+NoCowE/bRV2pCII9peXMowIumTtk+Sz/pQ5Ng0VJQ==
+vsce@1.79.1:
+  version "1.79.1"
+  resolved "https://registry.yarnpkg.com/vsce/-/vsce-1.79.1.tgz#9a6ddcf8a3b5065eae33378a579546b35ad2c828"
+  integrity sha512-UaSjG2BvEsEu9e7/ni8MZpMTdPnppm6GrVjQ8wYhHreGy3zYER3WJj8cpO2blnegTN2gcY0tGlmHctJt8IGLfw==
   dependencies:
     azure-devops-node-api "^7.2.0"
     chalk "^2.4.2"

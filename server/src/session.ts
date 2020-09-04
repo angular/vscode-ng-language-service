@@ -240,6 +240,9 @@ export class Session {
         },
         definitionProvider: true,
         hoverProvider: true,
+        workspace: {
+          workspaceFolders: {supported: true},
+        },
       },
     };
   }

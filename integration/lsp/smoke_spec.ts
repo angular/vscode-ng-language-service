@@ -108,7 +108,8 @@ describe('Angular Language Service', () => {
           'completionProvider':
               {'resolveProvider': false, 'triggerCharacters': ['<', '.', '*', '[', '(', '$', '|']},
           'definitionProvider': true,
-          'hoverProvider': true
+          'hoverProvider': true,
+          'workspace': {'workspaceFolders': {'supported': true}}
         }
       }
     });
@@ -136,7 +137,8 @@ describe('Angular Language Service', () => {
           'completionProvider':
               {'resolveProvider': false, 'triggerCharacters': ['<', '.', '*', '[', '(', '$', '|']},
           'definitionProvider': true,
-          'hoverProvider': true
+          'hoverProvider': true,
+          'workspace': {'workspaceFolders': {'supported': true}}
         }
       }
     });

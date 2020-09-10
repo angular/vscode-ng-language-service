@@ -1,3 +1,8 @@
+# v0.1001.0
+
+This release upgrades `@angular/language-service` to v10.1.1 and
+`typescript` to v4.0.2.
+
 # v0.1000.8
 
 This release upgrades `@angular/language-service` to v10.0.14.

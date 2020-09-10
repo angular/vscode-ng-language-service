@@ -123,6 +123,11 @@ function constructArgs(ctx: vscode.ExtensionContext, debug: boolean): string[] {
   const ngProbeLocations = getProbeLocations(ngdk, ctx.asAbsolutePath('server'));
   args.push('--ngProbeLocations', ngProbeLocations.join(','));
 
+  const experimentalIvy: boolean = config.get('angular.experimental-ivy', false);
+  if (experimentalIvy) {
+    args.push('--experimental-ivy');
+  }
+
   const tsdk: string|null = config.get('typescript.tsdk', null);
   const tsProbeLocations = getProbeLocations(tsdk, ctx.extensionPath);
   args.push('--tsProbeLocations', tsProbeLocations.join(','));

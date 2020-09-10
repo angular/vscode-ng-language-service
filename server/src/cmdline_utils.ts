@@ -51,13 +51,13 @@ export function parseCommandLine(argv: string[]): CommandLineOptions {
 }
 
 export function generateHelpMessage(argv: string[]) {
-  // Do not expose --experimental-ivy flag since it's only used for development.
   return `Angular Language Service that implements the Language Server Protocol (LSP).
 
   Usage: ${argv[0]} ${argv[1]} [options]
 
   Options:
     --help: Prints help message.
+    --experimental-ivy: Enables the Ivy language service. Defaults to false.
     --logFile: Location to log messages. Logging is disabled if not provided.
     --logVerbosity: terse|normal|verbose|requestTime. See ts.server.LogLevel.
     --ngProbeLocations: Path of @angular/language-service. Required.

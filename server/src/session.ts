@@ -340,29 +340,26 @@ export class Session {
     }
   }
 
-  private onDefinition(params: lsp.TextDocumentPositionParams) {
-    const {position, textDocument} = params;
-    const filePath = uriToFilePath(textDocument.uri);
-    const scriptInfo = this.projectService.getScriptInfo(filePath);
-    if (!scriptInfo) {
-      this.connection.console.log(`Script info not found for ${filePath}`);
+  private onDefinition(params: lsp.TextDocumentPositionParams): lsp.LocationLink[]|undefined {
+    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    if (lsInfo === undefined) {
       return;
     }
-
-    const {fileName} = scriptInfo;
-    const langSvc = this.getDefaultLanguageService(scriptInfo);
-    if (!langSvc) {
-      return;
-    }
-
-    const offset = lspPositionToTsPosition(scriptInfo, position);
-    const definition = langSvc.getDefinitionAndBoundSpan(fileName, offset);
+    const {languageService, scriptInfo} = lsInfo;
+    const offset = lspPositionToTsPosition(scriptInfo, params.position);
+    const definition = languageService.getDefinitionAndBoundSpan(scriptInfo.fileName, offset);
     if (!definition || !definition.definitions) {
       return;
     }
     const originSelectionRange = tsTextSpanToLspRange(scriptInfo, definition.textSpan);
+    return this.tsDefinitionsToLspLocationLinks(definition.definitions, originSelectionRange);
+  }
+
+  private tsDefinitionsToLspLocationLinks(
+      definitions: readonly ts.DefinitionInfo[],
+      originSelectionRange?: lsp.Range): lsp.LocationLink[] {
     const results: lsp.LocationLink[] = [];
-    for (const d of definition.definitions) {
+    for (const d of definitions) {
       const scriptInfo = this.projectService.getScriptInfo(d.fileName);
 
       // Some definitions, like definitions of CSS files, may not be recorded files with a
@@ -386,22 +383,31 @@ export class Session {
     return results;
   }
 
-  private onHover(params: lsp.TextDocumentPositionParams) {
-    const {position, textDocument} = params;
+  private getLSAndScriptInfo(textDocument: lsp.TextDocumentIdentifier):
+      {languageService: ts.LanguageService, scriptInfo: ts.server.ScriptInfo}|undefined {
     const filePath = uriToFilePath(textDocument.uri);
-    if (!filePath) {
-      return;
-    }
     const scriptInfo = this.projectService.getScriptInfo(filePath);
     if (!scriptInfo) {
+      this.connection.console.log(`Script info not found for ${filePath}`);
       return;
     }
-    const langSvc = this.getDefaultLanguageService(scriptInfo);
-    if (!langSvc) {
+
+    const languageService = this.getDefaultLanguageService(scriptInfo);
+    if (!languageService) {
       return;
     }
-    const offset = lspPositionToTsPosition(scriptInfo, position);
-    const info = langSvc.getQuickInfoAtPosition(scriptInfo.fileName, offset);
+
+    return {languageService, scriptInfo};
+  }
+
+  private onHover(params: lsp.TextDocumentPositionParams) {
+    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    if (lsInfo === undefined) {
+      return;
+    }
+    const {languageService, scriptInfo} = lsInfo;
+    const offset = lspPositionToTsPosition(scriptInfo, params.position);
+    const info = languageService.getQuickInfoAtPosition(scriptInfo.fileName, offset);
     if (!info) {
       return;
     }
@@ -430,23 +436,14 @@ export class Session {
   }
 
   private onCompletion(params: lsp.CompletionParams) {
-    const {position, textDocument} = params;
-    const filePath = uriToFilePath(textDocument.uri);
-    if (!filePath) {
+    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    if (lsInfo === undefined) {
       return;
     }
-    const scriptInfo = this.projectService.getScriptInfo(filePath);
-    if (!scriptInfo) {
-      return;
-    }
-    const {fileName} = scriptInfo;
-    const langSvc = this.getDefaultLanguageService(scriptInfo);
-    if (!langSvc) {
-      return;
-    }
-    const offset = lspPositionToTsPosition(scriptInfo, position);
-    const completions = langSvc.getCompletionsAtPosition(
-        fileName, offset,
+    const {languageService, scriptInfo} = lsInfo;
+    const offset = lspPositionToTsPosition(scriptInfo, params.position);
+    const completions = languageService.getCompletionsAtPosition(
+        scriptInfo.fileName, offset,
         {
             // options
         });
@@ -454,7 +451,7 @@ export class Session {
       return;
     }
     return completions.entries.map(
-        (e) => tsCompletionEntryToLspCompletionItem(e, position, scriptInfo));
+        (e) => tsCompletionEntryToLspCompletionItem(e, params.position, scriptInfo));
   }
 
   /**

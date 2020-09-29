@@ -96,6 +96,7 @@ export class Session {
     conn.onDidChangeTextDocument(p => this.onDidChangeTextDocument(p));
     conn.onDidSaveTextDocument(p => this.onDidSaveTextDocument(p));
     conn.onDefinition(p => this.onDefinition(p));
+    conn.onTypeDefinition(p => this.onTypeDefinition(p));
     conn.onHover(p => this.onHover(p));
     conn.onCompletion(p => this.onCompletion(p));
   }
@@ -240,6 +241,7 @@ export class Session {
           triggerCharacters: ['<', '.', '*', '[', '(', '$', '|']
         },
         definitionProvider: true,
+        typeDefinitionProvider: true,
         hoverProvider: true,
         workspace: {
           workspaceFolders: {supported: true},
@@ -360,6 +362,20 @@ export class Session {
     }
     const originSelectionRange = tsTextSpanToLspRange(scriptInfo, definition.textSpan);
     return this.tsDefinitionsToLspLocationLinks(definition.definitions, originSelectionRange);
+  }
+
+  private onTypeDefinition(params: lsp.TextDocumentPositionParams): lsp.LocationLink[]|undefined {
+    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    if (lsInfo === undefined) {
+      return;
+    }
+    const {languageService, scriptInfo} = lsInfo;
+    const offset = lspPositionToTsPosition(scriptInfo, params.position);
+    const definitions = languageService.getTypeDefinitionAtPosition(scriptInfo.fileName, offset);
+    if (!definitions) {
+      return;
+    }
+    return this.tsDefinitionsToLspLocationLinks(definitions);
   }
 
   private tsDefinitionsToLspLocationLinks(

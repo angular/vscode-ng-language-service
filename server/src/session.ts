@@ -205,6 +205,7 @@ export class Session {
       const {configFileName} = this.projectService.openClientFile(scriptInfo.fileName);
       if (!configFileName) {
         // Failed to find a config file. There is nothing we could do.
+        this.connection.console.error(`No config file for ${scriptInfo.fileName}`);
         return;
       }
       project = this.projectService.findProject(configFileName);
@@ -266,7 +267,13 @@ export class Session {
         this.connection.console.error(configFileErrors.map(e => e.messageText).join('\n'));
       }
       if (!configFileName) {
-        this.connection.console.error(`No config file for ${filePath}`);
+        // It is not really an error if there is no config file, because the
+        // first call to openClientFile() will create a project for the file if
+        // it does not exist, but the method will not return the config filename.
+        // In subsequent operations, we'll call this.getDefaultProjectForScriptInfo(),
+        // and there we make a second call to openClientFile(). By then, since
+        // the project has already been created, we will receive the config
+        // filename, and we can attach the file to the project it belongs to.
         return;
       }
       const project = this.projectService.findProject(configFileName);

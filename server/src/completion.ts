@@ -28,6 +28,42 @@ enum CompletionKind {
 }
 
 /**
+ * Information about the origin of an `lsp.CompletionItem`, which is stored in the
+ * `lsp.CompletionItem.data` property.
+ *
+ * On future requests for details about a completion item, this information allows the language
+ * service to determine the context for the original completion request, in order to return more
+ * detailed results.
+ */
+export interface NgCompletionOriginData {
+  /**
+   * Used to validate the type of `lsp.CompletionItem.data` is correct, since that field is type
+   * `any`.
+   */
+  kind: 'ngCompletionOriginData';
+
+  filePath: string;
+  position: lsp.Position;
+}
+
+/**
+ * Extract `NgCompletionOriginData` from an `lsp.CompletionItem` if present.
+ */
+export function readNgCompletionData(item: lsp.CompletionItem): NgCompletionOriginData|null {
+  if (item.data === undefined) {
+    return null;
+  }
+
+  // Validate that `item.data.kind` is actually the right tag, and narrow its type in the process.
+  const data: NgCompletionOriginData|{kind?: never} = item.data;
+  if (data.kind !== 'ngCompletionOriginData') {
+    return null;
+  }
+
+  return data;
+}
+
+/**
  * Convert Angular's CompletionKind to LSP CompletionItemKind.
  * @param kind Angular's CompletionKind
  */
@@ -81,5 +117,10 @@ export function tsCompletionEntryToLspCompletionItem(
   item.textEdit = entry.replacementSpan ?
       lsp.TextEdit.replace(tsTextSpanToLspRange(scriptInfo, entry.replacementSpan), insertText) :
       lsp.TextEdit.insert(position, insertText);
+  item.data = {
+    kind: 'ngCompletionOriginData',
+    filePath: scriptInfo.fileName,
+    position,
+  } as NgCompletionOriginData;
   return item;
 }

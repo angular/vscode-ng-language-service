@@ -13,7 +13,7 @@ import {ServerOptions} from '../common/initialize';
 import {ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart} from '../common/notifications';
 import {NgccProgressToken, NgccProgressType} from '../common/progress';
 
-import {tsCompletionEntryToLspCompletionItem} from './completion';
+import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './completion';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
 import {resolveAndRunNgcc} from './ngcc';
 import {ServerHost} from './server_host';
@@ -113,6 +113,7 @@ export class Session {
     conn.onReferences(p => this.onReferences(p));
     conn.onHover(p => this.onHover(p));
     conn.onCompletion(p => this.onCompletion(p));
+    conn.onCompletionResolve(p => this.onCompletionResolve(p));
   }
 
   private async runNgcc(configFilePath: string) {
@@ -313,9 +314,8 @@ export class Session {
       capabilities: {
         textDocumentSync: lsp.TextDocumentSyncKind.Incremental,
         completionProvider: {
-          // The server does not provide support to resolve additional information
-          // for a completion item.
-          resolveProvider: false,
+          // Only the Ivy LS provides support for additional completion resolution.
+          resolveProvider: this.ivy,
           triggerCharacters: ['<', '.', '*', '[', '(', '$', '|']
         },
         definitionProvider: true,
@@ -579,6 +579,42 @@ export class Session {
     }
     return completions.entries.map(
         (e) => tsCompletionEntryToLspCompletionItem(e, params.position, scriptInfo));
+  }
+
+  private onCompletionResolve(item: lsp.CompletionItem): lsp.CompletionItem {
+    const data = readNgCompletionData(item);
+    if (data === null) {
+      // This item wasn't tagged with Angular LS completion data - it probably didn't originate from
+      // this language service.
+      return item;
+    }
+
+    const {filePath, position} = data;
+    const lsInfo = this.getLSAndScriptInfo(filePath);
+    if (lsInfo === undefined) {
+      return item;
+    }
+    const {languageService, scriptInfo} = lsInfo;
+
+    const offset = lspPositionToTsPosition(scriptInfo, position);
+    const details = languageService.getCompletionEntryDetails(
+        filePath, offset, item.insertText ?? item.label, undefined, undefined, undefined);
+    if (details === undefined) {
+      return item;
+    }
+
+    const {kind, kindModifiers, displayParts, documentation} = details;
+    let desc = kindModifiers ? kindModifiers + ' ' : '';
+    if (displayParts) {
+      // displayParts does not contain info about kindModifiers
+      // but displayParts does contain info about kind
+      desc += displayParts.map(dp => dp.text).join('');
+    } else {
+      desc += kind;
+    }
+    item.detail = desc;
+    item.documentation = documentation?.map(d => d.text).join('');
+    return item;
   }
 
   /**

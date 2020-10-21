@@ -2,11 +2,11 @@
   "name": "angular-ls-integration-test-project",
   "private": true,
   "dependencies": {
-    "@angular/common": "10.1.5",
-    "@angular/compiler": "10.1.5",
-    "@angular/compiler-cli": "10.1.5",
-    "@angular/core": "10.1.5",
+    "@angular/common": "10.2.0",
+    "@angular/compiler": "10.2.0",
+    "@angular/compiler-cli": "10.2.0",
+    "@angular/core": "10.2.0",
     "rxjs": "6.6.3",
-    "zone.js": "0.11.1"
+    "zone.js": "0.11.2"
   }
 }

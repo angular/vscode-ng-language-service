@@ -122,7 +122,7 @@
     "@types/jasmine": "3.5.14",
     "@types/node": "12.12.70",
     "clang-format": "1.4.0",
-    "jasmine": "3.6.1",
+    "jasmine": "3.6.2",
     "prettier": "2.1.2",
     "rollup": "2.30.0",
     "rollup-plugin-commonjs": "10.1.0",

@@ -5,6 +5,9 @@
     "outDir": "out",
     "rootDir": "src"
   },
+  "references": [
+    {"path": "../common"}
+  ],
   "include": ["src/*.ts"],
   "exclude": [
     "src/banner.ts",

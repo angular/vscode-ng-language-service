@@ -4,6 +4,7 @@
 node_modules
 client/node_modules/
 client/out/
+common/out
 server/node_modules/
 server/out
 integration/out

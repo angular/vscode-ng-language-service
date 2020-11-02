@@ -6,6 +6,7 @@ set -ex -o pipefail
 shopt -s extglob
 
 # Clean up from last build
+rm -rf common/out
 rm -rf client/out
 rm -rf server/out
 rm -rf syntaxes/out

@@ -3,6 +3,9 @@
   "compilerOptions": {
     "outDir": "out"
   },
+  "references": [
+    {"path": "../common"}
+  ],
   "include": ["src"],
   "exclude": ["node_modules"]
 }

@@ -1,3 +1,20 @@
+## Navigating Projects in IDE
+
+This repository contains multiple TypeScript projects, each with its own `tsconfig.json`.
+TypeScript's [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) are used to handle the builds.
+As a result, some projects depend on the `.d.ts` output of their dependencies, like `client`
+and `server` depend on `common`. In order to navigate the projects in your IDE,
+you need to first build them by running
+```shell
+yarn compile
+```
+
+If you'd like to force a clean build, you can delete the existing build artifacts
+by running
+```shell
+./scripts/build.sh
+```
+
 ## Formatting source code
 
 This repository uses the [NPM distribution](https://www.npmjs.com/package/clang-format) of

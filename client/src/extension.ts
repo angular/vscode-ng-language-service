@@ -11,8 +11,9 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import * as lsp from 'vscode-languageclient';
 
+import {projectLoadingNotification} from '../../common/out/notifications';
+
 import {registerCommands} from './commands';
-import {projectLoadingNotification} from './protocol';
 
 export function activate(context: vscode.ExtensionContext) {
   // If the extension is launched in debug mode then the debug server options are used

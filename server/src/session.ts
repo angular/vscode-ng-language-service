@@ -9,10 +9,11 @@
 import * as ts from 'typescript/lib/tsserverlibrary';
 import * as lsp from 'vscode-languageserver';
 
+import {projectLoadingNotification} from '../../common/out/notifications';
+
 import {tsCompletionEntryToLspCompletionItem} from './completion';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
 import {Logger} from './logger';
-import {projectLoadingNotification} from './protocol';
 import {ServerHost} from './server_host';
 import {filePathToUri, lspPositionToTsPosition, lspRangeToTsPositions, tsTextSpanToLspRange, uriToFilePath} from './utils';
 

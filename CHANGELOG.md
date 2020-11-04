@@ -1,3 +1,7 @@
+# v0.1001.1
+
+This release upgrades `@angular/language-service` to v10.2.1.
+
 # v0.1001.0
 
 This release upgrades `@angular/language-service` to v10.1.1 and

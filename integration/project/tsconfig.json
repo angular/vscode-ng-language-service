@@ -6,5 +6,9 @@
     "typeRoots": [
       "node_modules/@types"
     ]
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true,
+    "strictInjectionParameters": true
   }
 }

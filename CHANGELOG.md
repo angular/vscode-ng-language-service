@@ -1,3 +1,8 @@
+# v0.1100.0-rc.0
+
+This release upgrades `@angular/language-service` to v11.0.0-rc.1.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1100-rc1-2020-10-28).
+
 # v0.1000.8
 
 This release upgrades `@angular/language-service` to v10.0.14.

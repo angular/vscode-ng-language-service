@@ -111,7 +111,7 @@
     "postinstall": "vscode-install && cd client && yarn && cd ../server && yarn && cd ..",
     "package": "rm -rf dist && node scripts/package.js",
     "test": "yarn compile:test && jasmine server/out/tests/*_spec.js",
-    "test:lsp": "yarn compile:integration && jasmine integration/out/lsp/*_spec.js",
+    "test:lsp": "yarn compile:integration && jasmine --config=integration/lsp/jasmine.json",
     "test:e2e": "yarn compile:integration && ./scripts/e2e.sh",
     "test:syntaxes": "yarn compile:syntaxes-test && yarn build:syntaxes && jasmine syntaxes/test/driver.js"
   },
@@ -131,6 +131,7 @@
     "vsce": "1.81.1",
     "vscode": "1.1.37",
     "vscode-jsonrpc": "5.0.1",
+    "vscode-languageserver-protocol": "^3.15.3",
     "vscode-tmgrammar-test": "0.0.10"
   },
   "repository": {

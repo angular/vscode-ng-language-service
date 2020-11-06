@@ -756,8 +756,7 @@
 #                                 ^ template.ng expression.ng string.quoted.single.ts punctuation.definition.string.begin.ts
 #                                  ^ template.ng expression.ng string.quoted.single.ts
 #                                   ^ template.ng expression.ng string.quoted.single.ts punctuation.definition.string.end.ts
-#                                    ^ template.ng expression.ng
-#                                     ^^ template.ng expression.ng
+#                                    ^^^ template.ng expression.ng
 #                                       ^^ template.ng punctuation.definition.block.ts
 >{{ condition ? 'test' : "test" }}
 #^^ template.ng punctuation.definition.block.ts
@@ -794,9 +793,38 @@
 #                                    ^ template.ng expression.ng meta.array.literal.ts meta.brace.square.ts
 #                                     ^ template.ng expression.ng
 #                                      ^ template.ng expression.ng keyword.operator.ternary.ts
-#                                       ^^ template.ng expression.ng
-#                                         ^^ template.ng expression.ng
+#                                       ^^^^ template.ng expression.ng
 #                                           ^^ template.ng punctuation.definition.block.ts
+>{{ condition ? condition2 ? condition3 ? 1 : 2 : 3 : 4 }}
+#^^ template.ng punctuation.definition.block.ts
+#  ^ template.ng expression.ng
+#   ^^^^^^^^^ template.ng expression.ng variable.other.readwrite.ts
+#            ^ template.ng expression.ng
+#             ^ template.ng expression.ng keyword.operator.ternary.ts
+#              ^ template.ng expression.ng
+#               ^^^^^^^^^^ template.ng expression.ng variable.other.readwrite.ts
+#                         ^ template.ng expression.ng
+#                          ^ template.ng expression.ng keyword.operator.ternary.ts
+#                           ^ template.ng expression.ng
+#                            ^^^^^^^^^^ template.ng expression.ng variable.other.readwrite.ts
+#                                      ^ template.ng expression.ng
+#                                       ^ template.ng expression.ng keyword.operator.ternary.ts
+#                                        ^ template.ng expression.ng
+#                                         ^ template.ng expression.ng constant.numeric.decimal.ts
+#                                          ^ template.ng expression.ng
+#                                           ^ template.ng expression.ng keyword.operator.ternary.ts
+#                                            ^ template.ng expression.ng
+#                                             ^ template.ng expression.ng constant.numeric.decimal.ts
+#                                              ^ template.ng expression.ng
+#                                               ^ template.ng expression.ng keyword.operator.ternary.ts
+#                                                ^ template.ng expression.ng
+#                                                 ^ template.ng expression.ng constant.numeric.decimal.ts
+#                                                  ^ template.ng expression.ng
+#                                                   ^ template.ng expression.ng keyword.operator.ternary.ts
+#                                                    ^ template.ng expression.ng
+#                                                     ^ template.ng expression.ng constant.numeric.decimal.ts
+#                                                      ^ template.ng expression.ng
+#                                                       ^^ template.ng punctuation.definition.block.ts
 >
 ><!-- Microsyntax -->
 #^^^^^^^^^^^^^^^^^^^^^ template.ng

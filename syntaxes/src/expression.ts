@@ -593,8 +593,12 @@ export const Expression: GrammarDefinition = {
       match: /\\(x\h{2}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.|$)/,
     },
 
+    // Derived from
+    // https://github.com/sheetalkamat/TypeScript-TmLanguage-VsCode/blob/04219109f3e2090f787c0fa8743e73a4bd1ad876/syntaxes/TypeScript.tmLanguage.json#L2830-L2848
     ternaryExpression: {
-      begin: /(?!\?\.\s*[^[:digit:]])(\?)(?!\?)/,
+      // 1. negative lookahead (?!\?\.\s*[^[:digit:]]) ensures safe navigation does not match
+      // 2. match the ternary question mark with (\?)
+      begin: /(?!\?\.\s*[^[:digit:]])(\?)/,
       beginCaptures: {
         1: {
           name: 'keyword.operator.ternary.ts',

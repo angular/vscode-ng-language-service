@@ -71,6 +71,8 @@
 {{ condition ? 'test' : "test" }}
 {{ condition ? [function(), variable] : {} }}
 {{ condition ? condition2 ? condition3 ? 1 : 2 : 3 : 4 }}
+<!-- Don't match safe navigations -->
+{{ condition?.a : 1 }}
 
 <!-- Microsyntax -->
 <!-- Let Expression -->

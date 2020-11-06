@@ -825,6 +825,18 @@
 #                                                     ^ template.ng expression.ng constant.numeric.decimal.ts
 #                                                      ^ template.ng expression.ng
 #                                                       ^^ template.ng punctuation.definition.block.ts
+><!-- Don't match safe navigations -->
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+>{{ condition?.a : 1 }}
+#^^ template.ng punctuation.definition.block.ts
+#  ^ template.ng expression.ng
+#   ^^^^^^^^^ template.ng expression.ng variable.other.readwrite.ts
+#            ^^ template.ng expression.ng punctuation.accessor.ts
+#              ^ template.ng expression.ng variable.other.property.ts
+#               ^^^ template.ng expression.ng
+#                  ^ template.ng expression.ng constant.numeric.decimal.ts
+#                   ^ template.ng expression.ng
+#                    ^^ template.ng punctuation.definition.block.ts
 >
 ><!-- Microsyntax -->
 #^^^^^^^^^^^^^^^^^^^^^ template.ng

@@ -81,7 +81,8 @@
         "path": "./syntaxes/template.json",
         "scopeName": "template.ng",
         "injectTo": [
-          "text.html.derivative"
+          "text.html.derivative",
+          "source.ts"
         ],
         "embeddedLanguages": {
           "text.html": "html",

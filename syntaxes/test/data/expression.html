@@ -70,6 +70,7 @@
 {{ condition ? ['123'] : { test: 'a' } }}
 {{ condition ? 'test' : "test" }}
 {{ condition ? [function(), variable] : {} }}
+{{ condition ? condition2 ? condition3 ? 1 : 2 : 3 : 4 }}
 
 <!-- Microsyntax -->
 <!-- Let Expression -->

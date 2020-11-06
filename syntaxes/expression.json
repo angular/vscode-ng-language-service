@@ -563,27 +563,15 @@
       "match": "\\\\(x\\h{2}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.|$)"
     },
     "ternaryExpression": {
-      "begin": "(?=\\?)(?!\\?\\.)",
-      "end": "(?=$|\"|[;,})\\]])",
-      "patterns": [
-        {
-          "include": "#ternaryOperator"
-        },
-        {
-          "include": "#ngExpression"
-        }
-      ]
-    },
-    "ternaryOperator": {
-      "begin": "(\\?)(?!\\.)",
+      "begin": "(?!\\?\\.\\s*[^[:digit:]])(\\?)(?!\\?)",
       "beginCaptures": {
-        "0": {
+        "1": {
           "name": "keyword.operator.ternary.ts"
         }
       },
-      "end": "(:)",
+      "end": "\\s*(:)",
       "endCaptures": {
-        "0": {
+        "1": {
           "name": "keyword.operator.ternary.ts"
         }
       },

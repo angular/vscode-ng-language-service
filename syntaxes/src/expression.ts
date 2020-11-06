@@ -594,28 +594,15 @@ export const Expression: GrammarDefinition = {
     },
 
     ternaryExpression: {
-      begin: /(?=\?)(?!\?\.)/,
-      end: /(?=$|"|[;,})\]])/,
-      patterns: [
-        {
-          include: '#ternaryOperator',
-        },
-        {
-          include: '#ngExpression',
-        },
-      ],
-    },
-
-    ternaryOperator: {
-      begin: /(\?)(?!\.)/,
+      begin: /(?!\?\.\s*[^[:digit:]])(\?)(?!\?)/,
       beginCaptures: {
-        0: {
+        1: {
           name: 'keyword.operator.ternary.ts',
         },
       },
-      end: /(:)/,
+      end: /\s*(:)/,
       endCaptures: {
-        0: {
+        1: {
           name: 'keyword.operator.ternary.ts',
         },
       },

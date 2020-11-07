@@ -39,10 +39,12 @@ const EMPTY_RANGE = lsp.Range.create(0, 0, 0, 0);
 export class Session {
   private readonly connection: lsp.IConnection;
   private readonly projectService: ts.server.ProjectService;
+  private readonly logger: Logger;
   private diagnosticsTimeout: NodeJS.Timeout|null = null;
   private isProjectLoading = false;
 
   constructor(options: SessionOptions) {
+    this.logger = options.logger;
     // Create a connection for the server. The connection uses Node's IPC as a transport.
     this.connection = lsp.createConnection();
     this.addProtocolHandlers(this.connection);
@@ -113,6 +115,7 @@ export class Session {
       case ts.server.ProjectLoadingStartEvent:
         this.isProjectLoading = true;
         this.connection.sendNotification(projectLoadingNotification.start);
+        this.logger.info(`Loading new project: ${event.data.reason}`);
         break;
       case ts.server.ProjectLoadingFinishEvent: {
         const {project} = event.data;
@@ -479,39 +482,34 @@ export class Session {
   }
 
   /**
-   * Show an error message.
+   * Show an error message in the remote console and log to file.
    *
    * @param message The message to show.
    */
   error(message: string): void {
     this.connection.console.error(message);
+    this.logger.msg(message, ts.server.Msg.Err);
   }
 
   /**
-   * Show a warning message.
+   * Show a warning message in the remote console and log to file.
    *
    * @param message The message to show.
    */
   warn(message: string): void {
     this.connection.console.warn(message);
+    // ts.server.Msg does not have warning level, so log as info.
+    this.logger.msg(`[WARN] ${message}`, ts.server.Msg.Info);
   }
 
   /**
-   * Show an information message.
+   * Show an information message in the remote console and log to file.
    *
    * @param message The message to show.
    */
   info(message: string): void {
     this.connection.console.info(message);
-  }
-
-  /**
-   * Log a message.
-   *
-   * @param message The message to log.
-   */
-  log(message: string): void {
-    this.connection.console.log(message);
+    this.logger.msg(message, ts.server.Msg.Info);
   }
 
   /**

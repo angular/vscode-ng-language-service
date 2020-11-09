@@ -86,6 +86,25 @@ describe('Angular language server', () => {
       },
     });
   });
+
+  it('should show existing diagnostics on external template', async () => {
+    client.sendNotification(lsp.DidOpenTextDocumentNotification.type, {
+      textDocument: {
+        uri: `file://${FOO_TEMPLATE}`,
+        languageId: 'typescript',
+        version: 1,
+        text: `{{ doesnotexist }}`,
+      },
+    });
+    const diagnostics: lsp.Diagnostic[] = await new Promise(resolve => {
+      client.onNotification(
+          lsp.PublishDiagnosticsNotification.type, (params: lsp.PublishDiagnosticsParams) => {
+            resolve(params.diagnostics);
+          });
+    });
+    expect(diagnostics.length).toBe(1);
+    expect(diagnostics[0].message).toContain(`Identifier 'doesnotexist' is not defined.`);
+  });
 });
 
 describe('initialization', () => {

@@ -210,7 +210,7 @@ export class Session {
       const {configFileName} = this.projectService.openClientFile(scriptInfo.fileName);
       if (!configFileName) {
         // Failed to find a config file. There is nothing we could do.
-        this.connection.console.error(`No config file for ${scriptInfo.fileName}`);
+        this.error(`No config file for ${scriptInfo.fileName}`);
         return;
       }
       project = this.projectService.findProject(configFileName);
@@ -270,7 +270,7 @@ export class Session {
       const {configFileName, configFileErrors} = result;
       if (configFileErrors && configFileErrors.length) {
         // configFileErrors is an empty array even if there's no error, so check length.
-        this.connection.console.error(configFileErrors.map(e => e.messageText).join('\n'));
+        this.error(configFileErrors.map(e => e.messageText).join('\n'));
       }
       if (!configFileName) {
         // It is not really an error if there is no config file, because the
@@ -284,7 +284,7 @@ export class Session {
       }
       const project = this.projectService.findProject(configFileName);
       if (!project) {
-        this.connection.console.error(`Failed to find project for ${filePath}`);
+        this.error(`Failed to find project for ${filePath}`);
         return;
       }
       if (project.languageServiceEnabled) {
@@ -319,7 +319,7 @@ export class Session {
     }
     const scriptInfo = this.projectService.getScriptInfo(filePath);
     if (!scriptInfo) {
-      this.connection.console.log(`Failed to get script info for ${filePath}`);
+      this.error(`Failed to get script info for ${filePath}`);
       return;
     }
     for (const change of contentChanges) {
@@ -415,7 +415,7 @@ export class Session {
     const filePath = uriToFilePath(textDocument.uri);
     const scriptInfo = this.projectService.getScriptInfo(filePath);
     if (!scriptInfo) {
-      this.connection.console.log(`Script info not found for ${filePath}`);
+      this.error(`Script info not found for ${filePath}`);
       return;
     }
 
@@ -528,35 +528,31 @@ export class Session {
     const NG_CORE = '@angular/core/core.d.ts';
     const {projectName} = project;
     if (!project.languageServiceEnabled) {
-      const msg = `Language service is already disabled for ${projectName}. ` +
+      this.info(
+          `Language service is already disabled for ${projectName}. ` +
           `This could be due to non-TS files that exceeded the size limit (${
-                      ts.server.maxProgramSizeForNonTsFiles} bytes).` +
-          `Please check log file for details.`;
-      this.connection.console.info(msg);  // log to remote console to inform users
-      project.log(msg);  // log to file, so that it's easier to correlate with ts entries
+              ts.server.maxProgramSizeForNonTsFiles} bytes).` +
+          `Please check log file for details.`);
 
       return;
     }
     if (!isAngularProject(project, NG_CORE)) {
       project.disableLanguageService();
-      const msg =
+      this.info(
           `Disabling language service for ${projectName} because it is not an Angular project ` +
           `('${NG_CORE}' could not be found). ` +
-          `If you believe you are seeing this message in error, please reinstall the packages in your package.json.`;
-      this.connection.console.info(msg);
-      project.log(msg);
+          `If you believe you are seeing this message in error, please reinstall the packages in your package.json.`);
+
       if (project.getExcludedFiles().some(f => f.endsWith(NG_CORE))) {
-        const msg =
-            `Please check your tsconfig.json to make sure 'node_modules' directory is not excluded.`;
-        this.connection.console.info(msg);
-        project.log(msg);
+        this.info(
+            `Please check your tsconfig.json to make sure 'node_modules' directory is not excluded.`);
       }
 
       return;
     }
 
     // The language service should be enabled at this point.
-    this.connection.console.info(`Enabling language service for ${projectName}.`);
+    this.info(`Enabling language service for ${projectName}.`);
   }
 }
 

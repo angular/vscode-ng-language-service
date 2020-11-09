@@ -272,17 +272,9 @@ export class Session {
         // configFileErrors is an empty array even if there's no error, so check length.
         this.connection.console.error(configFileErrors.map(e => e.messageText).join('\n'));
       }
-      if (!configFileName) {
-        // It is not really an error if there is no config file, because the
-        // first call to openClientFile() will create a project for the file if
-        // it does not exist, but the method will not return the config filename.
-        // In subsequent operations, we'll call this.getDefaultProjectForScriptInfo(),
-        // and there we make a second call to openClientFile(). By then, since
-        // the project has already been created, we will receive the config
-        // filename, and we can attach the file to the project it belongs to.
-        return;
-      }
-      const project = this.projectService.findProject(configFileName);
+      const project = configFileName ?
+          this.projectService.findProject(configFileName) :
+          this.projectService.getScriptInfo(filePath)?.containingProjects.find(isConfiguredProject);
       if (!project) {
         this.connection.console.error(`Failed to find project for ${filePath}`);
         return;
@@ -576,4 +568,8 @@ function isAngularProject(project: ts.server.Project, ngCore: string): boolean {
     }
   }
   return false;
+}
+
+function isConfiguredProject(project: ts.server.Project): project is ts.server.ConfiguredProject {
+  return project.projectKind === ts.server.ProjectKind.Configured;
 }

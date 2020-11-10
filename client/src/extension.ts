@@ -11,9 +11,11 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import * as lsp from 'vscode-languageclient';
 
-import {projectLoadingNotification} from '../../common/out/notifications';
+import * as notification from '../../common/out/notifications';
 
+import {resolveAndRunNgcc} from './command-ngcc';
 import {registerCommands} from './commands';
+import {withProgress} from './progress-reporter';
 
 export function activate(context: vscode.ExtensionContext) {
   // If the extension is launched in debug mode then the debug server options are used
@@ -53,29 +55,50 @@ export function activate(context: vscode.ExtensionContext) {
   // client can be deactivated on extension deactivation
   context.subscriptions.push(...registerCommands(client), client.start());
 
-  client.onDidChangeState((e) => {
-    let task: {resolve: () => void}|undefined;
-    if (e.newState == lsp.State.Running) {
-      client.onNotification(projectLoadingNotification.start, () => {
-        if (task) {
-          task.resolve();
-          task = undefined;
-        }
-        vscode.window.withProgress(
-            {
-              location: vscode.ProgressLocation.Window,
-              title: 'Initializing Angular language features',
-            },
-            () => new Promise((resolve) => {
-              task = {resolve};
-            }));
-      });
+  client.onDidChangeState((e: lsp.StateChangeEvent) => {
+    if (e.newState === lsp.State.Running) {
+      registerNotificationHandlers(client);
+    }
+  });
+}
 
-      client.onNotification(projectLoadingNotification.finish, () => {
-        if (task) {
-          task.resolve();
-          task = undefined;
-        }
+function registerNotificationHandlers(client: lsp.LanguageClient) {
+  client.onNotification(notification.ProjectLoadingStart, () => {
+    vscode.window.withProgress(
+        {
+          location: vscode.ProgressLocation.Window,
+          title: 'Initializing Angular language features',
+        },
+        () => new Promise((resolve) => {
+          client.onNotification(notification.ProjectLoadingFinish, resolve);
+        }),
+    );
+  });
+
+  client.onNotification(notification.RunNgcc, async (params: notification.RunNgccParams) => {
+    const {configFilePath} = params;
+    try {
+      await withProgress(
+          {
+            location: vscode.ProgressLocation.Window,
+            title: `Running ngcc for project ${configFilePath}`,
+            cancellable: false,
+          },
+          (progress: vscode.Progress<string>) => {
+            return resolveAndRunNgcc(configFilePath, progress);
+          },
+      );
+      client.sendNotification(notification.NgccComplete, {
+        configFilePath,
+        success: true,
+      });
+    } catch (e) {
+      vscode.window.showWarningMessage(
+          `Failed to run ngcc. Ivy language service might not function correctly. Please see the log file for more information.`);
+      client.sendNotification(notification.NgccComplete, {
+        configFilePath,
+        success: false,
+        error: e.message,
       });
     }
   });

@@ -9,7 +9,7 @@
 import * as ts from 'typescript/lib/tsserverlibrary';
 import * as lsp from 'vscode-languageserver';
 
-import {projectLoadingNotification} from '../../common/out/notifications';
+import * as notification from '../../common/out/notifications';
 
 import {tsCompletionEntryToLspCompletionItem} from './completion';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
@@ -114,7 +114,7 @@ export class Session {
     switch (event.eventName) {
       case ts.server.ProjectLoadingStartEvent:
         this.isProjectLoading = true;
-        this.connection.sendNotification(projectLoadingNotification.start);
+        this.connection.sendNotification(notification.ProjectLoadingStart);
         this.logger.info(`Loading new project: ${event.data.reason}`);
         break;
       case ts.server.ProjectLoadingFinishEvent: {
@@ -125,7 +125,7 @@ export class Session {
         } finally {
           if (this.isProjectLoading) {
             this.isProjectLoading = false;
-            this.connection.sendNotification(projectLoadingNotification.finish);
+            this.connection.sendNotification(notification.ProjectLoadingFinish);
           }
         }
         break;
@@ -269,7 +269,7 @@ export class Session {
     } catch (error) {
       if (this.isProjectLoading) {
         this.isProjectLoading = false;
-        this.connection.sendNotification(projectLoadingNotification.finish);
+        this.connection.sendNotification(notification.ProjectLoadingFinish);
       }
       if (error.stack) {
         this.error(error.stack);

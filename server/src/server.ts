@@ -38,6 +38,7 @@ const session = new Session({
   logger,
   ngPlugin: ng.name,
   ngProbeLocation: ng.resolvedPath,
+  ivy: options.ivy,
 });
 
 // Log initialization info

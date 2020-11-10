@@ -38,6 +38,8 @@ export function createConnection(serverOptions: ServerOptions): MessageConnectio
     env: {
       TSC_NONPOLLING_WATCHER: 'true',
     },
+    // uncomment to debug server process
+    // execArgv: ['--inspect-brk=9229']
   });
 
   return createMessageConnection(

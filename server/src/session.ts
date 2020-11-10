@@ -22,6 +22,7 @@ export interface SessionOptions {
   logger: Logger;
   ngPlugin: string;
   ngProbeLocation: string;
+  ivy: boolean;
 }
 
 enum LanguageId {
@@ -40,11 +41,13 @@ export class Session {
   private readonly connection: lsp.IConnection;
   private readonly projectService: ts.server.ProjectService;
   private readonly logger: Logger;
+  private readonly ivy: boolean;
   private diagnosticsTimeout: NodeJS.Timeout|null = null;
   private isProjectLoading = false;
 
   constructor(options: SessionOptions) {
     this.logger = options.logger;
+    this.ivy = options.ivy;
     // Create a connection for the server. The connection uses Node's IPC as a transport.
     this.connection = lsp.createConnection();
     this.addProtocolHandlers(this.connection);
@@ -102,6 +105,27 @@ export class Session {
     conn.onTypeDefinition(p => this.onTypeDefinition(p));
     conn.onHover(p => this.onHover(p));
     conn.onCompletion(p => this.onCompletion(p));
+    conn.onNotification(notification.NgccComplete, p => this.handleNgccNotification(p));
+  }
+
+  private handleNgccNotification(params: notification.NgccCompleteParams) {
+    const {configFilePath} = params;
+    if (!params.success) {
+      this.error(
+          `Failed to run ngcc for ${configFilePath}:\n` +
+          `${params.error}\n` +
+          `Language service will remain disabled.`);
+      return;
+    }
+    const project = this.projectService.findProject(configFilePath);
+    if (!project) {
+      this.error(
+          `Failed to find project for ${configFilePath} returned by ngcc.\n` +
+          `Language service will remain disabled.`);
+      return;
+    }
+    project.enableLanguageService();
+    this.info(`Enabling Ivy language service for ${project.projectName}.`);
   }
 
   /**
@@ -118,16 +142,11 @@ export class Session {
         this.logger.info(`Loading new project: ${event.data.reason}`);
         break;
       case ts.server.ProjectLoadingFinishEvent: {
-        const {project} = event.data;
-        try {
-          // Disable language service if project is not Angular
-          this.checkIsAngularProject(project);
-        } finally {
-          if (this.isProjectLoading) {
-            this.isProjectLoading = false;
-            this.connection.sendNotification(notification.ProjectLoadingFinish);
-          }
+        if (this.isProjectLoading) {
+          this.isProjectLoading = false;
+          this.connection.sendNotification(notification.ProjectLoadingFinish);
         }
+        this.checkProject(event.data.project);
         break;
       }
       case ts.server.ProjectsUpdatedInBackgroundEvent:
@@ -135,6 +154,11 @@ export class Session {
         // requested via project.refreshDiagnostics()
         this.triggerDiagnostics(event.data.openFiles);
         break;
+      case ts.server.ProjectLanguageServiceStateEvent:
+        this.connection.sendNotification(notification.ProjectLanguageService, {
+          projectName: event.data.project.getProjectName(),
+          languageServiceEnabled: event.data.languageServiceEnabled,
+        });
     }
   }
 
@@ -501,12 +525,10 @@ export class Session {
   }
 
   /**
-   * Determine if the specified `project` is Angular, and disable the language
-   * service if not.
-   * @param project
+   * Disable the language service if the specified `project` is not Angular or
+   * Ivy mode is enabled.
    */
-  private checkIsAngularProject(project: ts.server.Project) {
-    const NG_CORE = '@angular/core/core.d.ts';
+  private checkProject(project: ts.server.Project) {
     const {projectName} = project;
     if (!project.languageServiceEnabled) {
       this.info(
@@ -517,42 +539,51 @@ export class Session {
 
       return;
     }
-    if (!isAngularProject(project, NG_CORE)) {
-      project.disableLanguageService();
-      this.info(
-          `Disabling language service for ${projectName} because it is not an Angular project ` +
-          `('${NG_CORE}' could not be found). ` +
-          `If you believe you are seeing this message in error, please reinstall the packages in your package.json.`);
 
-      if (project.getExcludedFiles().some(f => f.endsWith(NG_CORE))) {
-        this.info(
-            `Please check your tsconfig.json to make sure 'node_modules' directory is not excluded.`);
-      }
-
+    if (!this.checkIsAngularProject(project)) {
       return;
     }
 
-    // The language service should be enabled at this point.
-    this.info(`Enabling language service for ${projectName}.`);
-  }
-}
-
-/**
- * Return true if the specified `project` contains the Angular core declaration.
- * @param project
- * @param ngCore path that uniquely identifies `@angular/core`.
- */
-function isAngularProject(project: ts.server.Project, ngCore: string): boolean {
-  project.markAsDirty();  // Must mark project as dirty to rebuild the program.
-  if (project.isNonTsProject()) {
-    return false;
-  }
-  for (const fileName of project.getFileNames()) {
-    if (fileName.endsWith(ngCore)) {
-      return true;
+    if (this.ivy && project instanceof ts.server.ConfiguredProject) {
+      // Keep language service disabled until ngcc is completed.
+      project.disableLanguageService();
+      this.connection.sendNotification(notification.RunNgcc, {
+        configFilePath: project.getConfigFilePath(),
+      });
+    } else {
+      // Immediately enable Legacy/ViewEngine language service
+      this.info(`Enabling VE language service for ${projectName}.`);
     }
   }
-  return false;
+
+  /**
+   * Determine if the specified `project` is Angular, and disable the language
+   * service if not.
+   */
+  private checkIsAngularProject(project: ts.server.Project): boolean {
+    const {projectName} = project;
+    const NG_CORE = '@angular/core/core.d.ts';
+
+    const isAngularProject = project.hasRoots() && !project.isNonTsProject() &&
+        project.getFileNames().some(f => f.endsWith(NG_CORE));
+
+    if (isAngularProject) {
+      return true;
+    }
+
+    project.disableLanguageService();
+    this.info(
+        `Disabling language service for ${projectName} because it is not an Angular project ` +
+        `('${NG_CORE}' could not be found). ` +
+        `If you believe you are seeing this message in error, please reinstall the packages in your package.json.`);
+
+    if (project.getExcludedFiles().some(f => f.endsWith(NG_CORE))) {
+      this.info(
+          `Please check your tsconfig.json to make sure 'node_modules' directory is not excluded.`);
+    }
+
+    return false;
+  }
 }
 
 function isConfiguredProject(project: ts.server.Project): project is ts.server.ConfiguredProject {

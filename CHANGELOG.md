@@ -1,3 +1,12 @@
+# v0.1100.0
+
+This release upgrades `@angular/language-service` to v11.0.0.
+
+For a complete change log see [here](https://github.com/angular/angular/blob/11.0.x/CHANGELOG.md#1100-2020-11-11).
+
+Bug fixes:
+- LS not showing existing diagnotics on file open (#966)
+
 # v0.1100.0-rc.1
 
 This release upgrades `@angular/language-service` to v11.0.0-rc.3.

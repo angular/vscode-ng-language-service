@@ -166,22 +166,16 @@ export class Session {
    */
   private sendPendingDiagnostics(openFiles: string[]) {
     for (const fileName of openFiles) {
-      const scriptInfo = this.projectService.getScriptInfo(fileName);
-      if (!scriptInfo) {
+      const result = this.getLSAndScriptInfo(fileName);
+      if (!result) {
         continue;
       }
-
-      const ngLS = this.getDefaultLanguageService(scriptInfo);
-      if (!ngLS) {
-        continue;
-      }
-
-      const diagnostics = ngLS.getSemanticDiagnostics(fileName);
+      const diagnostics = result.languageService.getSemanticDiagnostics(fileName);
       // Need to send diagnostics even if it's empty otherwise editor state will
       // not be updated.
       this.connection.sendDiagnostics({
         uri: filePathToUri(fileName),
-        diagnostics: diagnostics.map(d => tsDiagnosticToLspDiagnostic(d, scriptInfo)),
+        diagnostics: diagnostics.map(d => tsDiagnosticToLspDiagnostic(d, result.scriptInfo)),
       });
     }
   }
@@ -222,16 +216,6 @@ export class Session {
     }
 
     return project;
-  }
-
-  /**
-   * Returns a language service for a default project created for the specified `scriptInfo`. If the
-   * project does not support a language service, nothing is returned.
-   */
-  getDefaultLanguageService(scriptInfo: ts.server.ScriptInfo): ts.LanguageService|undefined {
-    const project = this.getDefaultProjectForScriptInfo(scriptInfo);
-    if (!project?.languageServiceEnabled) return;
-    return project.getLanguageService();
   }
 
   private onInitialize(params: lsp.InitializeParams): lsp.InitializeResult {
@@ -402,21 +386,26 @@ export class Session {
     return results;
   }
 
-  private getLSAndScriptInfo(textDocument: lsp.TextDocumentIdentifier):
+  private getLSAndScriptInfo(textDocumentOrFileName: lsp.TextDocumentIdentifier|string):
       {languageService: ts.LanguageService, scriptInfo: ts.server.ScriptInfo}|undefined {
-    const filePath = uriToFilePath(textDocument.uri);
+    const filePath = lsp.TextDocumentIdentifier.is(textDocumentOrFileName) ?
+        uriToFilePath(textDocumentOrFileName.uri) :
+        textDocumentOrFileName;
     const scriptInfo = this.projectService.getScriptInfo(filePath);
     if (!scriptInfo) {
       this.error(`Script info not found for ${filePath}`);
       return;
     }
 
-    const languageService = this.getDefaultLanguageService(scriptInfo);
-    if (!languageService) {
+    const project = this.getDefaultProjectForScriptInfo(scriptInfo);
+    if (!project?.languageServiceEnabled) {
       return;
     }
 
-    return {languageService, scriptInfo};
+    return {
+      languageService: project.getLanguageService(),
+      scriptInfo,
+    };
   }
 
   private onHover(params: lsp.TextDocumentPositionParams) {

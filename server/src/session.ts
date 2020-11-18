@@ -125,6 +125,11 @@ export class Session {
       return;
     }
     project.enableLanguageService();
+    // When the language service got disabled, the program was discarded via
+    // languageService.cleanupSemanticCache(). However, the program is not
+    // recreated when the language service is re-enabled. We manually mark the
+    // project as dirty to force update the graph.
+    project.markAsDirty();
     this.info(`Enabling Ivy language service for ${project.projectName}.`);
   }
 

@@ -7,7 +7,7 @@
  */
 
 import {MessageConnection} from 'vscode-jsonrpc';
-
+import * as lsp from 'vscode-languageserver-protocol';
 import {APP_COMPONENT, createConnection, initializeServer, openTextDocument} from './test_utils';
 
 describe('Angular Ivy language server', () => {
@@ -43,13 +43,25 @@ describe('Angular Ivy language server', () => {
   it('should re-enable language service once ngcc has completed', async () => {
     await initializeServer(client);
     openTextDocument(client, APP_COMPONENT);
-    const configFilePath = await onRunNgccNotification(client);
-    client.sendNotification('angular/ngccComplete', {
-      success: true,
-      configFilePath,
-    });
-    const languageServiceEnabled = await onLanguageServiceStateNotification(client);
+    const languageServiceEnabled = await waitForNgcc(client);
     expect(languageServiceEnabled).toBeTrue();
+  });
+
+  it('should handle hover on inline template', async () => {
+    await initializeServer(client);
+    openTextDocument(client, APP_COMPONENT);
+    const languageServiceEnabled = await waitForNgcc(client);
+    expect(languageServiceEnabled).toBeTrue();
+    const response = await client.sendRequest(lsp.HoverRequest.type, {
+      textDocument: {
+        uri: `file://${APP_COMPONENT}`,
+      },
+      position: {line: 4, character: 25},
+    });
+    expect(response?.contents).toContain({
+      language: 'typescript',
+      value: '(property) AppComponent.name: string',
+    });
   });
 });
 
@@ -73,4 +85,14 @@ function onLanguageServiceStateNotification(client: MessageConnection): Promise<
           resolve(params.languageServiceEnabled);
         });
   });
+}
+
+async function waitForNgcc(client: MessageConnection): Promise<boolean> {
+  const configFilePath = await onRunNgccNotification(client);
+  // We run ngcc before the test, so no need to do anything here.
+  client.sendNotification('angular/ngccComplete', {
+    success: true,
+    configFilePath,
+  });
+  return onLanguageServiceStateNotification(client);
 }

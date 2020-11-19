@@ -25,6 +25,7 @@ export interface SessionOptions {
   ngPlugin: string;
   ngProbeLocation: string;
   ivy: boolean;
+  logToConsole: boolean;
 }
 
 enum LanguageId {
@@ -45,12 +46,14 @@ export class Session {
   private readonly logger: ts.server.Logger;
   private readonly ivy: boolean;
   private readonly configuredProjToExternalProj = new Map<string, string>();
+  private readonly logToConsole: boolean;
   private diagnosticsTimeout: NodeJS.Timeout|null = null;
   private isProjectLoading = false;
 
   constructor(options: SessionOptions) {
     this.logger = options.logger;
     this.ivy = options.ivy;
+    this.logToConsole = options.logToConsole;
     // Create a connection for the server. The connection uses Node's IPC as a transport.
     this.connection = lsp.createConnection();
     this.addProtocolHandlers(this.connection);
@@ -677,7 +680,9 @@ export class Session {
    * @param message The message to show.
    */
   error(message: string): void {
-    this.connection.console.error(message);
+    if (this.logToConsole) {
+      this.connection.console.error(message);
+    }
     this.logger.msg(message, ts.server.Msg.Err);
   }
 
@@ -687,7 +692,9 @@ export class Session {
    * @param message The message to show.
    */
   warn(message: string): void {
-    this.connection.console.warn(message);
+    if (this.logToConsole) {
+      this.connection.console.warn(message);
+    }
     // ts.server.Msg does not have warning level, so log as info.
     this.logger.msg(`[WARN] ${message}`, ts.server.Msg.Info);
   }
@@ -698,7 +705,9 @@ export class Session {
    * @param message The message to show.
    */
   info(message: string): void {
-    this.connection.console.info(message);
+    if (this.logToConsole) {
+      this.connection.console.info(message);
+    }
     this.logger.msg(message, ts.server.Msg.Info);
   }
 

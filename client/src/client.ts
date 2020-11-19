@@ -178,7 +178,7 @@ function getProbeLocations(configValue: string|null, bundled: string): string[] 
  */
 function constructArgs(ctx: vscode.ExtensionContext, debug: boolean): string[] {
   const config = vscode.workspace.getConfiguration();
-  const args: string[] = [];
+  const args: string[] = ['--logToConsole'];
 
   const ngLog: string = config.get('angular.log', 'off');
   if (ngLog !== 'off') {

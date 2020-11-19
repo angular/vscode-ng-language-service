@@ -35,6 +35,7 @@ interface CommandLineOptions {
   ivy: boolean;
   logFile?: string;
   logVerbosity?: string;
+  logToConsole: boolean;
   ngProbeLocations: string[];
   tsProbeLocations: string[];
 }
@@ -45,6 +46,7 @@ export function parseCommandLine(argv: string[]): CommandLineOptions {
     ivy: hasArgument(argv, '--experimental-ivy'),
     logFile: findArgument(argv, '--logFile'),
     logVerbosity: findArgument(argv, '--logVerbosity'),
+    logToConsole: hasArgument(argv, '--logToConsole'),
     ngProbeLocations: parseStringArray(argv, '--ngProbeLocations'),
     tsProbeLocations: parseStringArray(argv, '--tsProbeLocations'),
   };
@@ -58,8 +60,9 @@ export function generateHelpMessage(argv: string[]) {
   Options:
     --help: Prints help message.
     --experimental-ivy: Enables the Ivy language service. Defaults to false.
-    --logFile: Location to log messages. Logging is disabled if not provided.
+    --logFile: Location to log messages. Logging to file is disabled if not provided.
     --logVerbosity: terse|normal|verbose|requestTime. See ts.server.LogLevel.
+    --logToConsole: Enables logging to console via 'window/logMessage'. Defaults to false.
     --ngProbeLocations: Path of @angular/language-service. Required.
     --tsProbeLocations: Path of typescript. Required.
 

@@ -121,7 +121,7 @@
   },
   "devDependencies": {
     "@types/jasmine": "3.6.2",
-    "@types/node": "12.19.5",
+    "@types/node": "12.19.6",
     "clang-format": "1.4.0",
     "jasmine": "3.6.3",
     "prettier": "2.2.0",

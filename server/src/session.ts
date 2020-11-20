@@ -15,7 +15,7 @@ import * as notification from '../common/notifications';
 import {tsCompletionEntryToLspCompletionItem} from './completion';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
 import {ServerHost} from './server_host';
-import {filePathToUri, lspPositionToTsPosition, lspRangeToTsPositions, tsTextSpanToLspRange, uriToFilePath} from './utils';
+import {filePathToUri, isConfiguredProject, lspPositionToTsPosition, lspRangeToTsPositions, tsTextSpanToLspRange, uriToFilePath} from './utils';
 
 export interface SessionOptions {
   host: ServerHost;
@@ -131,6 +131,25 @@ export class Session {
     // project as dirty to force update the graph.
     project.markAsDirty();
     this.info(`Enabling Ivy language service for ${project.projectName}.`);
+
+    // Send diagnostics since we skipped this step when opening the file
+    // (because language service was disabled while waiting for ngcc).
+    // First, make sure the Angular project is complete.
+    this.runGlobalAnalysisForNewlyLoadedProject(project);
+    project.refreshDiagnostics();  // Show initial diagnostics
+  }
+
+  /**
+   * Invoke the compiler for the first time so that external templates get
+   * matched to the project they belong to.
+   */
+  private runGlobalAnalysisForNewlyLoadedProject(project: ts.server.Project) {
+    if (!project.hasRoots()) {
+      return;
+    }
+    const fileName = project.getRootScriptInfos()[0].fileName;
+    // Getting semantic diagnostics will trigger a global analysis.
+    project.getLanguageService().getSemanticDiagnostics(fileName);
   }
 
   /**
@@ -293,7 +312,6 @@ export class Session {
           this.projectService.findProject(configFileName) :
           this.projectService.getScriptInfo(filePath)?.containingProjects.find(isConfiguredProject);
       if (!project) {
-        this.error(`Failed to find project for ${filePath}`);
         return;
       }
       if (project.languageServiceEnabled) {
@@ -553,7 +571,7 @@ export class Session {
       return;
     }
 
-    if (this.ivy && project instanceof ts.server.ConfiguredProject) {
+    if (this.ivy && isConfiguredProject(project)) {
       // Keep language service disabled until ngcc is completed.
       project.disableLanguageService();
       this.connection.sendNotification(notification.RunNgcc, {
@@ -593,8 +611,4 @@ export class Session {
 
     return false;
   }
-}
-
-function isConfiguredProject(project: ts.server.Project): project is ts.server.ConfiguredProject {
-  return project.projectKind === ts.server.ProjectKind.Configured;
 }

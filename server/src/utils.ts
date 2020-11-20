@@ -74,3 +74,8 @@ export function lspRangeToTsPositions(
   const end = lspPositionToTsPosition(scriptInfo, range.end);
   return [start, end];
 }
+
+export function isConfiguredProject(project: ts.server.Project):
+    project is ts.server.ConfiguredProject {
+  return project.projectKind === ts.server.ProjectKind.Configured;
+}

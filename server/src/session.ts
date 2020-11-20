@@ -13,13 +13,12 @@ import * as notification from '../../common/out/notifications';
 
 import {tsCompletionEntryToLspCompletionItem} from './completion';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
-import {Logger} from './logger';
 import {ServerHost} from './server_host';
 import {filePathToUri, lspPositionToTsPosition, lspRangeToTsPositions, tsTextSpanToLspRange, uriToFilePath} from './utils';
 
 export interface SessionOptions {
   host: ServerHost;
-  logger: Logger;
+  logger: ts.server.Logger;
   ngPlugin: string;
   ngProbeLocation: string;
   ivy: boolean;
@@ -40,7 +39,7 @@ const EMPTY_RANGE = lsp.Range.create(0, 0, 0, 0);
 export class Session {
   private readonly connection: lsp.IConnection;
   private readonly projectService: ts.server.ProjectService;
-  private readonly logger: Logger;
+  private readonly logger: ts.server.Logger;
   private readonly ivy: boolean;
   private diagnosticsTimeout: NodeJS.Timeout|null = null;
   private isProjectLoading = false;

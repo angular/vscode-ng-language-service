@@ -38,7 +38,7 @@ export interface LoggerOptions {
  * Create a logger instance to write to file.
  * @param options Logging options.
  */
-export function createLogger(options: LoggerOptions): Logger {
+export function createLogger(options: LoggerOptions): ts.server.Logger {
   let logLevel: ts.server.LogLevel;
   switch (options.logVerbosity) {
     case 'requestTime':
@@ -55,9 +55,7 @@ export function createLogger(options: LoggerOptions): Logger {
       logLevel = ts.server.LogLevel.terse;
       break;
   }
-  // If logFile is not provided then just trace to console.
-  const traceToConsole = !options.logFile;
-  return new Logger(traceToConsole, logLevel, options.logFile);
+  return new Logger(logLevel, options.logFile);
 }
 
 // TODO: Code below is from TypeScript's repository. Maybe create our own
@@ -72,17 +70,17 @@ function nowString() {
   return `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}.${d.getMilliseconds()}`;
 }
 
-export class Logger implements ts.server.Logger {
-  private fd = -1;
+class Logger implements ts.server.Logger {
+  private readonly fd: number;
   private seq = 0;
   private inGroup = false;
   private firstInGroup = true;
 
   constructor(
-      private readonly traceToConsole: boolean,
       private readonly level: ts.server.LogLevel,
       private readonly logFilename?: string,
   ) {
+    this.fd = -1;
     if (logFilename) {
       try {
         const dir = path.dirname(logFilename);
@@ -101,7 +99,7 @@ export class Logger implements ts.server.Logger {
   }
 
   close() {
-    if (this.fd >= 0) {
+    if (this.loggingEnabled()) {
       fs.close(this.fd, noop);
     }
   }
@@ -118,10 +116,6 @@ export class Logger implements ts.server.Logger {
     this.msg(s, ts.server.Msg.Info);
   }
 
-  err(s: string) {
-    this.msg(s, ts.server.Msg.Err);
-  }
-
   startGroup() {
     this.inGroup = true;
     this.firstInGroup = true;
@@ -132,7 +126,7 @@ export class Logger implements ts.server.Logger {
   }
 
   loggingEnabled() {
-    return !!this.logFilename || this.traceToConsole;
+    return this.fd >= 0;
   }
 
   hasLevel(level: ts.server.LogLevel) {
@@ -140,31 +134,21 @@ export class Logger implements ts.server.Logger {
   }
 
   msg(s: string, type: ts.server.Msg = ts.server.Msg.Err) {
-    if (!this.canWrite) return;
+    if (!this.loggingEnabled()) {
+      return;
+    }
 
     s = `[${nowString()}] ${s}\n`;
     if (!this.inGroup || this.firstInGroup) {
       const prefix = Logger.padStringRight(type + ' ' + this.seq.toString(), '          ');
       s = prefix + s;
     }
-    this.write(s);
+
+    const buf = Buffer.from(s);
+    fs.writeSync(this.fd, buf, 0, buf.length);
+
     if (!this.inGroup) {
       this.seq++;
-    }
-  }
-
-  private get canWrite() {
-    return this.fd >= 0 || this.traceToConsole;
-  }
-
-  private write(s: string) {
-    if (this.fd >= 0) {
-      const buf = Buffer.from(s);
-      // tslint:disable-next-line no-null-keyword
-      fs.writeSync(this.fd, buf, 0, buf.length, /*position*/ null!);  // TODO: GH#18217
-    }
-    if (this.traceToConsole) {
-      console.warn(s);
     }
   }
 }

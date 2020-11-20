@@ -22,6 +22,11 @@
         "command": "angular.restartNgServer",
         "title": "Restart Angular Language server",
         "category": "Angular"
+      },
+      {
+        "command": "angular.openLogFile",
+        "title": "Open Angular Server log",
+        "category": "Angular"
       }
     ],
     "configuration": {

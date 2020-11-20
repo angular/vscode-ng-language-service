@@ -69,7 +69,7 @@ function registerNotificationHandlers(client: lsp.LanguageClient) {
           location: vscode.ProgressLocation.Window,
           title: 'Initializing Angular language features',
         },
-        () => new Promise((resolve) => {
+        () => new Promise<void>((resolve) => {
           client.onNotification(notification.ProjectLoadingFinish, resolve);
         }),
     );

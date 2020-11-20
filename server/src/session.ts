@@ -9,6 +9,7 @@
 import * as ts from 'typescript/lib/tsserverlibrary';
 import * as lsp from 'vscode-languageserver';
 
+import {ServerOptions} from '../../common/out/initialize';
 import * as notification from '../../common/out/notifications';
 
 import {tsCompletionEntryToLspCompletionItem} from './completion';
@@ -247,6 +248,9 @@ export class Session {
   }
 
   private onInitialize(params: lsp.InitializeParams): lsp.InitializeResult {
+    const serverOptions: ServerOptions = {
+      logFile: this.logger.getLogFileName(),
+    };
     return {
       capabilities: {
         textDocumentSync: lsp.TextDocumentSyncKind.Incremental,
@@ -263,6 +267,7 @@ export class Session {
           workspaceFolders: {supported: true},
         },
       },
+      serverOptions,
     };
   }
 

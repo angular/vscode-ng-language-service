@@ -53,7 +53,8 @@ export function activate(context: vscode.ExtensionContext) {
 
   // Push the disposable to the context's subscriptions so that the
   // client can be deactivated on extension deactivation
-  context.subscriptions.push(...registerCommands(client), client.start());
+  registerCommands(client, context);
+  context.subscriptions.push(client.start());
 
   client.onDidChangeState((e: lsp.StateChangeEvent) => {
     if (e.newState === lsp.State.Running) {

@@ -114,7 +114,7 @@ describe('initialization', () => {
     });
     client.listen();
     const response = await initializeServer(client);
-    expect(response).toEqual({
+    expect(response).toEqual(jasmine.objectContaining({
       capabilities: {
         textDocumentSync: 2,
         completionProvider: {
@@ -130,7 +130,7 @@ describe('initialization', () => {
           },
         },
       },
-    });
+    }));
     client.dispose();
   });
 });

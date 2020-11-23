@@ -2,8 +2,9 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "outDir": "out",
-    "rootDir": "src"
+    "outDir": "../dist/server",
+    "rootDir": "src",
+    "rootDirs": [".", "../dist"]
   },
   "references": [
     {"path": "../common"}

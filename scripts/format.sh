@@ -6,7 +6,7 @@ find . -name "*.ts" \
   -not -path "*/.vscode*" \
   -not -path "*/project/*" \
   -not -path "*/node_modules/*" \
-  -not -path "*/out/*" \
+  -not -path "*/dist/*" \
   -exec yarn clang-format -i {} +
 
 find syntaxes/ -name "*.json" \

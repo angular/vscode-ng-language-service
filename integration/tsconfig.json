@@ -2,7 +2,8 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "target": "ES2017",
-    "outDir": "out"
+    "outDir": "../dist/integration",
+    "rootDirs": ["..", "dist"]
   },
   "references": [
     { "path": "../server/tsconfig.json" }

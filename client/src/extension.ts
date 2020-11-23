@@ -11,7 +11,7 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import * as lsp from 'vscode-languageclient';
 
-import * as notification from '../../common/out/notifications';
+import * as notification from '../common/notifications';
 
 import {resolveAndRunNgcc} from './command-ngcc';
 import {registerCommands} from './commands';
@@ -173,7 +173,7 @@ function getServerOptions(ctx: vscode.ExtensionContext, debug: boolean): lsp.Nod
 
   // Node module for the language server
   const prodBundle = ctx.asAbsolutePath('server');
-  const devBundle = ctx.asAbsolutePath(path.join('server', 'out', 'server.js'));
+  const devBundle = ctx.asAbsolutePath(path.join('dist', 'server', 'server.js'));
 
   // Argv options for Node.js
   const prodExecArgv: string[] = [];

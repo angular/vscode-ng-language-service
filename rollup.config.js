@@ -3,9 +3,9 @@ import commonjs from 'rollup-plugin-commonjs';
 
 module.exports = [
   {
-    input: 'client/out/extension.js',
+    input: 'dist/client/extension.js',
     output: {
-      file: 'dist/client/index.js',
+      file: 'dist/npm/index.js',
       format: 'cjs',
       exports: 'named',
     },
@@ -19,11 +19,11 @@ module.exports = [
     ],
   },
   {
-    input: 'server/out/server.js',
+    input: 'dist/server/server.js',
     output: {
-      file: 'dist/server/index.js',
+      file: 'dist/npm/server/index.js',
       format: 'amd',
-      banner: fs.readFileSync('server/out/banner/banner.rollup.js', 'utf8'),
+      banner: fs.readFileSync('dist/banner/banner.rollup.js', 'utf8'),
     },
     external: [
       'fs',

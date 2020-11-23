@@ -8,6 +8,9 @@
 
 import {MessageConnection} from 'vscode-jsonrpc';
 import * as lsp from 'vscode-languageserver-protocol';
+
+import {NgccComplete, ProjectLanguageService, ProjectLanguageServiceParams, RunNgcc, RunNgccParams} from '../../common/notifications';
+
 import {APP_COMPONENT, createConnection, initializeServer, openTextDocument} from './test_utils';
 
 describe('Angular Ivy language server', () => {
@@ -67,12 +70,7 @@ describe('Angular Ivy language server', () => {
 
 function onRunNgccNotification(client: MessageConnection): Promise<string> {
   return new Promise(resolve => {
-    // TODO(kyliau): Figure out how to import the notification type from
-    // common/out/notifications.d.ts. Currently we cannot do this because the
-    // TS files and JS outputs are in different trees. As a result, node module
-    // resolution works for the former but not the latter since their relative
-    // import paths are different.
-    client.onNotification('angular/runNgcc', (params: {configFilePath: string}) => {
+    client.onNotification(RunNgcc, (params: RunNgccParams) => {
       resolve(params.configFilePath);
     });
   });
@@ -80,17 +78,16 @@ function onRunNgccNotification(client: MessageConnection): Promise<string> {
 
 function onLanguageServiceStateNotification(client: MessageConnection): Promise<boolean> {
   return new Promise(resolve => {
-    client.onNotification(
-        'angular/projectLanguageService', (params: {languageServiceEnabled: boolean}) => {
-          resolve(params.languageServiceEnabled);
-        });
+    client.onNotification(ProjectLanguageService, (params: ProjectLanguageServiceParams) => {
+      resolve(params.languageServiceEnabled);
+    });
   });
 }
 
 async function waitForNgcc(client: MessageConnection): Promise<boolean> {
   const configFilePath = await onRunNgccNotification(client);
   // We run ngcc before the test, so no need to do anything here.
-  client.sendNotification('angular/ngccComplete', {
+  client.sendNotification(NgccComplete, {
     success: true,
     configFilePath,
   });

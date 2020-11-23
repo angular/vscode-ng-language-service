@@ -1,3 +1,17 @@
+# Monorepo setup
+
+This repository is a monorepo. All build outputs are created in the `dist` directory.
+
+The `dependencies` in root [`package.json`](package.json) must include all production dependencies
+of the client **and** and the server.
+
+The dependencies of the `server` need to be duplicated in the root [`package.json`](package.json).
+Therefore, if a new prod dependency is added to the server, it needs to be
+added to both [`package.json`](package.json) and [`server/package.json`](server/package.json).
+
+Note that we do not install the dependencies in [`server`](server),
+hence there should not be a `yarn.lock` file.
+
 ## Navigating Projects in IDE
 
 This repository contains multiple TypeScript projects, each with its own `tsconfig.json`.

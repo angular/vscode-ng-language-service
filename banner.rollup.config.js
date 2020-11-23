@@ -1,8 +1,8 @@
 module.exports = [
   {
-    input: 'server/out/banner/banner.js',
+    input: 'dist/banner/banner.js',
     output: {
-      file: 'server/out/banner/banner.rollup.js',
+      file: 'dist/banner/banner.rollup.js',
       format: 'cjs',
     },
     external: [

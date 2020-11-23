@@ -6,10 +6,6 @@ set -ex -o pipefail
 shopt -s extglob
 
 # Clean up from last build
-rm -rf common/out
-rm -rf client/out
-rm -rf server/out
-rm -rf syntaxes/out
 rm -rf dist
 rm -rf **/*.tsbuildinfo
 
@@ -17,29 +13,19 @@ rm -rf **/*.tsbuildinfo
 yarn run compile
 
 # Copy files to package root
-cp package.json yarn.lock angular.png CHANGELOG.md README.md dist
-# Copy files to client directory
-cp client/package.json client/yarn.lock dist/client
+cp package.json yarn.lock angular.png CHANGELOG.md README.md dist/npm
 # Copy files to server directory
-cp server/package.json server/yarn.lock server/README.md dist/server
+cp server/package.json server/README.md dist/npm/server
 # Build and copy files to syntaxes directory
 yarn run build:syntaxes
-mkdir dist/syntaxes
+mkdir dist/npm/syntaxes
 # Copy all json files in syntaxes/ except tsconfig.json
-cp syntaxes/!(tsconfig).json dist/syntaxes
+cp syntaxes/!(tsconfig).json dist/npm/syntaxes
 
-pushd dist
+pushd dist/npm
 yarn install --production --ignore-scripts
 
-pushd client
-yarn install --production --ignore-scripts
-popd
-
-pushd server
-yarn install --production --ignore-scripts
-popd
-
-sed -i -e 's#./client/out/extension#./client#' package.json
-../node_modules/.bin/vsce package --yarn --out ngls.vsix
+sed -i -e 's#./dist/client/extension#./index#' package.json
+../../node_modules/.bin/vsce package --yarn --out ngls.vsix
 
 popd

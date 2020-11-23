@@ -8,7 +8,7 @@
 
 import * as vscode from 'vscode';
 import * as lsp from 'vscode-languageclient';
-import {ServerOptions} from '../../common/out/initialize';
+import {ServerOptions} from '../common/initialize';
 
 /**
  * Represent a vscode command with an ID and an impl function `execute`.

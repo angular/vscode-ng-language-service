@@ -9,8 +9,8 @@
 import * as ts from 'typescript/lib/tsserverlibrary';
 import * as lsp from 'vscode-languageserver';
 
-import {ServerOptions} from '../../common/out/initialize';
-import * as notification from '../../common/out/notifications';
+import {ServerOptions} from '../common/initialize';
+import * as notification from '../common/notifications';
 
 import {tsCompletionEntryToLspCompletionItem} from './completion';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';

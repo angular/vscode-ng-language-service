@@ -12,9 +12,9 @@ import {resolve} from 'path';
 import {createMessageConnection, IPCMessageReader, IPCMessageWriter, MessageConnection} from 'vscode-jsonrpc';
 import * as lsp from 'vscode-languageserver-protocol';
 
-const SERVER_PATH = resolve(__dirname, '../../../dist/server/index.js');
+const SERVER_PATH = resolve(__dirname, '../../../dist/npm/server/index.js');
 const PACKAGE_ROOT = resolve(__dirname, '../../..');
-const PROJECT_PATH = resolve(__dirname, '../../project');
+const PROJECT_PATH = `${PACKAGE_ROOT}/integration/project`;
 export const APP_COMPONENT = `${PROJECT_PATH}/app/app.component.ts`;
 export const FOO_TEMPLATE = `${PROJECT_PATH}/app/foo.component.html`;
 

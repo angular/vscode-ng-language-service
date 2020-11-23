@@ -19,7 +19,7 @@ interface TestCase {
   testFile: string;
 }
 
-const dummyGrammarDir = path.join(__dirname, 'dummy');
+const dummyGrammarDir = 'syntaxes/test/dummy';
 const DUMMY_GRAMMARS =
     fs.readdirSync(dummyGrammarDir).map((file: string) => path.join(dummyGrammarDir, file));
 

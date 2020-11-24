@@ -258,7 +258,7 @@ export class Session {
           triggerCharacters: ['<', '.', '*', '[', '(', '$', '|']
         },
         definitionProvider: true,
-        typeDefinitionProvider: true,
+        typeDefinitionProvider: this.ivy,
         hoverProvider: true,
         workspace: {
           workspaceFolders: {supported: true},

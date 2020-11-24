@@ -122,7 +122,7 @@ describe('initialization', () => {
           triggerCharacters: ['<', '.', '*', '[', '(', '$', '|'],
         },
         definitionProvider: true,
-        typeDefinitionProvider: true,
+        typeDefinitionProvider: false,
         hoverProvider: true,
         workspace: {
           workspaceFolders: {

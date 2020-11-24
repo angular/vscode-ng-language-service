@@ -103,6 +103,7 @@ export class Session {
     conn.onDidSaveTextDocument(p => this.onDidSaveTextDocument(p));
     conn.onDefinition(p => this.onDefinition(p));
     conn.onTypeDefinition(p => this.onTypeDefinition(p));
+    conn.onReferences(p => this.onReferences(p));
     conn.onHover(p => this.onHover(p));
     conn.onCompletion(p => this.onCompletion(p));
     conn.onNotification(notification.NgccComplete, p => this.handleNgccNotification(p));
@@ -262,6 +263,7 @@ export class Session {
         },
         definitionProvider: true,
         typeDefinitionProvider: this.ivy,
+        referencesProvider: this.ivy,
         hoverProvider: true,
         workspace: {
           workspaceFolders: {supported: true},
@@ -389,6 +391,25 @@ export class Session {
       return;
     }
     return this.tsDefinitionsToLspLocationLinks(definitions);
+  }
+
+  private onReferences(params: lsp.TextDocumentPositionParams): lsp.Location[]|undefined {
+    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    if (lsInfo === undefined) {
+      return;
+    }
+    const {languageService, scriptInfo} = lsInfo;
+    const offset = lspPositionToTsPosition(scriptInfo, params.position);
+    const references = languageService.getReferencesAtPosition(scriptInfo.fileName, offset);
+    if (references === undefined) {
+      return;
+    }
+    return references.map(ref => {
+      const scriptInfo = this.projectService.getScriptInfo(ref.fileName);
+      const range = scriptInfo ? tsTextSpanToLspRange(scriptInfo, ref.textSpan) : EMPTY_RANGE;
+      const uri = filePathToUri(ref.fileName);
+      return {uri, range};
+    });
   }
 
   private tsDefinitionsToLspLocationLinks(

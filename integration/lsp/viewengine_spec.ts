@@ -124,6 +124,7 @@ describe('initialization', () => {
         definitionProvider: true,
         typeDefinitionProvider: false,
         hoverProvider: true,
+        referencesProvider: false,
         workspace: {
           workspaceFolders: {
             supported: true,

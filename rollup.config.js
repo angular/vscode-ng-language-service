@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import commonjs from 'rollup-plugin-commonjs';
+import commonjs from '@rollup/plugin-commonjs';
 
 module.exports = [
   {
@@ -10,8 +10,11 @@ module.exports = [
       exports: 'named',
     },
     external: [
+      'child_process',
+      'fs',
       'path',
       'vscode',
+      'vscode-jsonrpc',
       'vscode-languageclient',
     ],
     plugins: [
@@ -29,14 +32,17 @@ module.exports = [
       'fs',
       'path',
       'typescript/lib/tsserverlibrary',
+      'vscode-jsonrpc',
       'vscode-languageserver',
       'vscode-uri',
     ],
     plugins: [
       commonjs({
+        dynamicRequireTargets: [
+          'node_modules/@angular/language-service/bundles/*.js',
+        ],
         ignore: [
-          // leave require statements unconverted.
-          'conditional-runtime-dependency',
+          'path',
         ],
       }),
     ],

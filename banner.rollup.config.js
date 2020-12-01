@@ -6,6 +6,7 @@ module.exports = [
       format: 'cjs',
     },
     external: [
+      'fs',
       'path',
     ],
   },

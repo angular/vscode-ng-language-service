@@ -13,8 +13,15 @@ import * as lsp from 'vscode-languageclient/node';
 
 import {ProjectLoadingFinish, ProjectLoadingStart, SuggestIvyLanguageService, SuggestIvyLanguageServiceParams, SuggestStrictMode, SuggestStrictModeParams} from '../common/notifications';
 import {NgccProgress, NgccProgressToken, NgccProgressType} from '../common/progress';
+import {GetTcbRequest} from '../common/requests';
 
 import {ProgressReporter} from './progress-reporter';
+
+interface GetTcbResponse {
+  uri: vscode.Uri;
+  content: string;
+  selections: vscode.Range[];
+}
 
 export class AngularLanguageClient implements vscode.Disposable {
   private client: lsp.LanguageClient|null = null;
@@ -91,6 +98,33 @@ export class AngularLanguageClient implements vscode.Disposable {
     this.outputChannel.clear();
     this.dispose();
     this.client = null;
+  }
+
+  /**
+   * Requests a template typecheck block at the current cursor location in the
+   * specified editor.
+   */
+  async getTcbUnderCursor(textEditor: vscode.TextEditor): Promise<GetTcbResponse|undefined> {
+    if (this.client === null) {
+      return undefined;
+    }
+    const c2pConverter = this.client.code2ProtocolConverter;
+    // Craft a request by converting vscode params to LSP. The corresponding
+    // response is in LSP.
+    const response = await this.client.sendRequest(GetTcbRequest, {
+      textDocument: c2pConverter.asTextDocumentIdentifier(textEditor.document),
+      position: c2pConverter.asPosition(textEditor.selection.active),
+    });
+    if (response === null) {
+      return undefined;
+    }
+    const p2cConverter = this.client.protocol2CodeConverter;
+    // Convert the response from LSP back to vscode.
+    return {
+      uri: p2cConverter.asUri(response.uri),
+      content: response.content,
+      selections: p2cConverter.asRanges(response.selections),
+    };
   }
 
   get initializeResult(): lsp.InitializeResult|undefined {

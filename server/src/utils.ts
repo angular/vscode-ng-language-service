@@ -33,7 +33,7 @@ export function uriToFilePath(uri: string): string {
  * Converts the specified `filePath` to a proper URI.
  * @param filePath
  */
-export function filePathToUri(filePath: string): string {
+export function filePathToUri(filePath: string): lsp.DocumentUri {
   return URI.file(filePath).toString();
 }
 

@@ -27,8 +27,22 @@
         "command": "angular.openLogFile",
         "title": "Open Angular Server log",
         "category": "Angular"
+      },
+      {
+        "command": "angular.getTemplateTcb",
+        "title": "View Template Typecheck Block",
+        "category": "Angular"
       }
     ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "resourceLangId == html || resourceLangId == typescript",
+          "command": "angular.getTemplateTcb",
+          "group": "angular"
+        }
+      ]
+    },
     "configuration": {
       "title": "Angular Language Service",
       "properties": {

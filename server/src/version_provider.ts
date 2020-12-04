@@ -9,7 +9,7 @@
 import * as fs from 'fs';
 
 const MIN_TS_VERSION = '4.1';
-const MIN_NG_VERSION = '11.1';
+const MIN_NG_VERSION = '11.2';
 
 /**
  * Represents a valid node module that has been successfully resolved.

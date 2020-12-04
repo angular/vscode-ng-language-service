@@ -6,12 +6,14 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import {NgLanguageService} from '@angular/language-service';
 import * as ts from 'typescript/lib/tsserverlibrary';
 import * as lsp from 'vscode-languageserver/node';
 
 import {ServerOptions} from '../common/initialize';
 import {ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestIvyLanguageService, SuggestStrictMode} from '../common/notifications';
 import {NgccProgressToken, NgccProgressType} from '../common/progress';
+import {GetTcbParams, GetTcbRequest, GetTcbResponse} from '../common/requests';
 
 import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './completion';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
@@ -132,6 +134,30 @@ export class Session {
     conn.onHover(p => this.onHover(p));
     conn.onCompletion(p => this.onCompletion(p));
     conn.onCompletionResolve(p => this.onCompletionResolve(p));
+    conn.onRequest(GetTcbRequest, p => this.onGetTcb(p));
+  }
+
+  private onGetTcb(params: GetTcbParams): GetTcbResponse|undefined {
+    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    if (lsInfo === undefined) {
+      return undefined;
+    }
+    const {languageService, scriptInfo} = lsInfo;
+    const offset = lspPositionToTsPosition(scriptInfo, params.position);
+    const response = languageService.getTcb(scriptInfo.fileName, offset);
+    if (response === undefined) {
+      return undefined;
+    }
+    const {fileName: tcfName} = response;
+    const tcfScriptInfo = this.projectService.getScriptInfo(tcfName);
+    if (!tcfScriptInfo) {
+      return undefined;
+    }
+    return {
+      uri: filePathToUri(tcfName),
+      content: response.content,
+      selections: response.selections.map((span => tsTextSpanToLspRange(tcfScriptInfo, span))),
+    };
   }
 
   private async runNgcc(configFilePath: string) {
@@ -663,7 +689,7 @@ export class Session {
   }
 
   private getLSAndScriptInfo(textDocumentOrFileName: lsp.TextDocumentIdentifier|string):
-      {languageService: ts.LanguageService, scriptInfo: ts.server.ScriptInfo}|undefined {
+      {languageService: NgLanguageService, scriptInfo: ts.server.ScriptInfo}|undefined {
     const filePath = lsp.TextDocumentIdentifier.is(textDocumentOrFileName) ?
         uriToFilePath(textDocumentOrFileName.uri) :
         textDocumentOrFileName;
@@ -683,7 +709,7 @@ export class Session {
       return undefined;
     }
     return {
-      languageService: project.getLanguageService(),
+      languageService: project.getLanguageService() as NgLanguageService,
       scriptInfo,
     };
   }

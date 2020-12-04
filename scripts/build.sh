@@ -13,7 +13,7 @@ rm -rf **/*.tsbuildinfo
 yarn run compile
 
 # Copy files to package root
-cp package.json yarn.lock angular.png CHANGELOG.md README.md dist/npm
+cp package.json angular.png CHANGELOG.md README.md dist/npm
 # Copy files to server directory
 cp server/package.json server/README.md dist/npm/server
 # Build and copy files to syntaxes directory
@@ -23,9 +23,11 @@ mkdir dist/npm/syntaxes
 cp syntaxes/!(tsconfig).json dist/npm/syntaxes
 
 pushd dist/npm
-yarn install --production --ignore-scripts
+# TODO(kyliau): vsce does not bundle nested node_modules due to bug
+# https://github.com/microsoft/vscode-vsce/issues/432 so install using NPM for now.
+npm install --production --ignore-scripts
 
 sed -i -e 's#./dist/client/extension#./index#' package.json
-../../node_modules/.bin/vsce package --yarn --out ngls.vsix
+../../node_modules/.bin/vsce package
 
 popd

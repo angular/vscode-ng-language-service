@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@angular/language-service@11.1.0-next.1":
-  version "11.1.0-next.1"
-  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-11.1.0-next.1.tgz#78d003e1145e1e021a6dff11e529258aa31f698a"
-  integrity sha512-cmJ3MU1JAEUqgEPK6HRYcTzmvePWkWMKSBBGcZeipyPL+9COTTtipl+o52/sPH1qljK+4E8w0pahNv4m0ydoZA==
+"@angular/language-service@11.1.0-next.2":
+  version "11.1.0-next.2"
+  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-11.1.0-next.2.tgz#d7ec0c0c8f1c0cb5731de14d3d55449cb9baae4e"
+  integrity sha512-ZADDzJS0Gl+mwDGfQdypavW36QwU7Fp1H9rvFPBLOwbwl3320v16HEg1rsL1Ga2qPzgWu6ZwBoyBy0knhFq6fQ==
 
 "@babel/code-frame@^7.0.0":
   version "7.5.5"

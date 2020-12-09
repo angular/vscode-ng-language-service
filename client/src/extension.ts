@@ -145,7 +145,7 @@ function constructArgs(ctx: vscode.ExtensionContext, debug: boolean): string[] {
   }
 
   const ngdk: string|null = config.get('angular.ngdk', null);
-  const ngProbeLocations = getProbeLocations(ngdk, ctx.asAbsolutePath('server'));
+  const ngProbeLocations = getProbeLocations(ngdk, ctx.extensionPath);
   args.push('--ngProbeLocations', ngProbeLocations.join(','));
 
   const experimentalIvy: boolean = config.get('angular.experimental-ivy', false);

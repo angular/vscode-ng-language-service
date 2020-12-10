@@ -18,19 +18,3 @@ export interface ProjectLanguageServiceParams {
 
 export const ProjectLanguageService =
     new NotificationType<ProjectLanguageServiceParams>('angular/projectLanguageService');
-
-export interface RunNgccParams {
-  configFilePath: string;
-}
-
-export const RunNgcc = new NotificationType<RunNgccParams>('angular/runNgcc');
-
-export type NgccCompleteParams = {
-  configFilePath: string; success: true;
-}|{
-  configFilePath: string;
-  success: false;
-  error: string;
-};
-
-export const NgccComplete = new NotificationType<NgccCompleteParams>('angular/ngccComplete');

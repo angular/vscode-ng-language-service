@@ -6,9 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {spawn} from 'child_process';
+import {fork} from 'child_process';
 import * as path from 'path';
-import * as vscode from 'vscode';
 
 function resolveNgccFrom(directory: string): string|null {
   try {
@@ -20,18 +19,21 @@ function resolveNgccFrom(directory: string): string|null {
   }
 }
 
+interface Progress {
+  report(msg: string): void;
+}
+
 /**
  * Resolve ngcc from the directory that contains the specified `tsconfig` and
  * run ngcc.
  */
-export async function resolveAndRunNgcc(
-    tsconfig: string, progress: vscode.Progress<string>): Promise<void> {
+export async function resolveAndRunNgcc(tsconfig: string, progress: Progress): Promise<void> {
   const directory = path.dirname(tsconfig);
   const ngcc = resolveNgccFrom(directory);
   if (!ngcc) {
     throw new Error(`Failed to resolve ngcc from ${directory}`);
   }
-  const childProcess = spawn(
+  const childProcess = fork(
       ngcc,
       [
         '--tsconfig',
@@ -41,7 +43,12 @@ export async function resolveAndRunNgcc(
         cwd: directory,
       });
 
-  childProcess.stdout.on('data', (data: Buffer) => {
+  let stderr = '';
+  childProcess.stderr?.on('data', (data: Buffer) => {
+    stderr += data.toString();
+  });
+
+  childProcess.stdout?.on('data', (data: Buffer) => {
     for (let entry of data.toString().split('\n')) {
       entry = entry.trim();
       if (entry) {
@@ -58,7 +65,8 @@ export async function resolveAndRunNgcc(
       if (code === 0) {
         resolve();
       } else {
-        throw new Error(`ngcc for ${tsconfig} returned exit code ${code}`);
+        reject(
+            new Error(`ngcc for ${tsconfig} returned exit code ${code}, stderr: ${stderr.trim()}`));
       }
     });
   });

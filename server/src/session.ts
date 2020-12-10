@@ -83,6 +83,11 @@ export class Session {
           scriptKind: ts.ScriptKind.External,
         },
       ],
+      preferences: {
+        // We don't want the AutoImportProvider projects to be created. See
+        // https://devblogs.microsoft.com/typescript/announcing-typescript-4-0/#smarter-auto-imports
+        includePackageJsonAutoImports: 'off',
+      },
     });
 
     projSvc.configurePlugin({

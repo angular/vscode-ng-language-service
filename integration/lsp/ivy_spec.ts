@@ -9,7 +9,8 @@
 import {MessageConnection} from 'vscode-jsonrpc';
 import * as lsp from 'vscode-languageserver-protocol';
 
-import {NgccComplete, ProjectLanguageService, ProjectLanguageServiceParams, RunNgcc, RunNgccParams} from '../../common/notifications';
+import {ProjectLanguageService, ProjectLanguageServiceParams} from '../../common/notifications';
+import {NgccProgress, NgccProgressToken, NgccProgressType} from '../../common/progress';
 
 import {APP_COMPONENT, createConnection, FOO_TEMPLATE, initializeServer, openTextDocument} from './test_utils';
 
@@ -30,9 +31,9 @@ describe('Angular Ivy language server', () => {
     client.dispose();
   });
 
-  it('should send ngcc notification after a project has finished loading', async () => {
+  it('should send ngcc progress after a project has finished loading', async () => {
     openTextDocument(client, APP_COMPONENT);
-    const configFilePath = await onRunNgccNotification(client);
+    const configFilePath = await onNgccProgress(client);
     expect(configFilePath.endsWith('integration/project/tsconfig.json')).toBeTrue();
   });
 
@@ -82,10 +83,12 @@ describe('Angular Ivy language server', () => {
   });
 });
 
-function onRunNgccNotification(client: MessageConnection): Promise<string> {
+function onNgccProgress(client: MessageConnection): Promise<string> {
   return new Promise(resolve => {
-    client.onNotification(RunNgcc, (params: RunNgccParams) => {
-      resolve(params.configFilePath);
+    client.onProgress(NgccProgressType, NgccProgressToken, (params: NgccProgress) => {
+      if (params.done) {
+        resolve(params.configFilePath);
+      }
     });
   });
 }
@@ -111,11 +114,6 @@ function getDiagnosticsForFile(
 }
 
 async function waitForNgcc(client: MessageConnection): Promise<boolean> {
-  const configFilePath = await onRunNgccNotification(client);
-  // We run ngcc before the test, so no need to do anything here.
-  client.sendNotification(NgccComplete, {
-    success: true,
-    configFilePath,
-  });
+  await onNgccProgress(client);
   return onLanguageServiceStateNotification(client);
 }

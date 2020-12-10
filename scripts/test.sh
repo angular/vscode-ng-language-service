@@ -6,7 +6,6 @@ set -ex -o pipefail
 (
   cd integration/project
   yarn
-  yarn ngcc
 )
 
 # Server unit tests

@@ -10,10 +10,12 @@ import * as ts from 'typescript/lib/tsserverlibrary';
 import * as lsp from 'vscode-languageserver';
 
 import {ServerOptions} from '../common/initialize';
-import * as notification from '../common/notifications';
+import {ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart} from '../common/notifications';
+import {NgccProgressToken, NgccProgressType} from '../common/progress';
 
 import {tsCompletionEntryToLspCompletionItem} from './completion';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
+import {resolveAndRunNgcc} from './ngcc';
 import {ServerHost} from './server_host';
 import {filePathToUri, isConfiguredProject, lspPositionToTsPosition, lspRangeToTsPositions, tsTextSpanToLspRange, uriToFilePath} from './utils';
 
@@ -111,18 +113,49 @@ export class Session {
     conn.onReferences(p => this.onReferences(p));
     conn.onHover(p => this.onHover(p));
     conn.onCompletion(p => this.onCompletion(p));
-    conn.onNotification(notification.NgccComplete, p => this.handleNgccNotification(p));
   }
 
-  private handleNgccNotification(params: notification.NgccCompleteParams) {
-    const {configFilePath} = params;
-    if (!params.success) {
+  private async runNgcc(configFilePath: string) {
+    this.connection.sendProgress(NgccProgressType, NgccProgressToken, {
+      done: false,
+      configFilePath,
+      message: `Running ngcc for project ${configFilePath}`,
+    });
+
+    let success = false;
+
+    try {
+      await resolveAndRunNgcc(configFilePath, {
+        report: (msg: string) => {
+          this.connection.sendProgress(NgccProgressType, NgccProgressToken, {
+            done: false,
+            configFilePath,
+            message: msg,
+          });
+        },
+      });
+      success = true;
+    } catch (e) {
       this.error(
           `Failed to run ngcc for ${configFilePath}:\n` +
-          `${params.error}\n` +
-          `Language service will remain disabled.`);
+          `    ${e.message}\n` +
+          `    Language service will remain disabled.`);
+    } finally {
+      this.connection.sendProgress(NgccProgressType, NgccProgressToken, {
+        done: true,
+        configFilePath,
+        success,
+      });
+    }
+
+    if (!success) {
       return;
     }
+
+    this.reenableLanguageServiceForProject(configFilePath);
+  }
+
+  private reenableLanguageServiceForProject(configFilePath: string) {
     const project = this.projectService.findProject(configFilePath);
     if (!project) {
       this.error(
@@ -168,13 +201,13 @@ export class Session {
     switch (event.eventName) {
       case ts.server.ProjectLoadingStartEvent:
         this.isProjectLoading = true;
-        this.connection.sendNotification(notification.ProjectLoadingStart);
+        this.connection.sendNotification(ProjectLoadingStart);
         this.logger.info(`Loading new project: ${event.data.reason}`);
         break;
       case ts.server.ProjectLoadingFinishEvent: {
         if (this.isProjectLoading) {
           this.isProjectLoading = false;
-          this.connection.sendNotification(notification.ProjectLoadingFinish);
+          this.connection.sendNotification(ProjectLoadingFinish);
         }
         this.checkProject(event.data.project);
         break;
@@ -185,7 +218,7 @@ export class Session {
         this.triggerDiagnostics(event.data.openFiles);
         break;
       case ts.server.ProjectLanguageServiceStateEvent:
-        this.connection.sendNotification(notification.ProjectLanguageService, {
+        this.connection.sendNotification(ProjectLanguageService, {
           projectName: event.data.project.getProjectName(),
           languageServiceEnabled: event.data.languageServiceEnabled,
         });
@@ -327,7 +360,7 @@ export class Session {
     } catch (error) {
       if (this.isProjectLoading) {
         this.isProjectLoading = false;
-        this.connection.sendNotification(notification.ProjectLoadingFinish);
+        this.connection.sendNotification(ProjectLoadingFinish);
       }
       if (error.stack) {
         this.error(error.stack);
@@ -600,8 +633,9 @@ export class Session {
     if (this.ivy && isConfiguredProject(project)) {
       // Keep language service disabled until ngcc is completed.
       project.disableLanguageService();
-      this.connection.sendNotification(notification.RunNgcc, {
-        configFilePath: project.getConfigFilePath(),
+      // Do not wait on this promise otherwise we'll be blocking other requests
+      this.runNgcc(project.getConfigFilePath()).catch((error: Error) => {
+        this.error(error.toString());
       });
     } else {
       // Immediately enable Legacy/ViewEngine language service

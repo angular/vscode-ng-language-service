@@ -7,8 +7,8 @@
  */
 
 import * as vscode from 'vscode';
-import * as lsp from 'vscode-languageclient';
 import {ServerOptions} from '../common/initialize';
+import {AngularLanguageClient} from './client';
 
 /**
  * Represent a vscode command with an ID and an impl function `execute`.
@@ -23,12 +23,12 @@ interface Command {
  * @param client language client
  * @param context extension context for adding disposables
  */
-function restartNgServer(client: lsp.LanguageClient, context: vscode.ExtensionContext): Command {
+function restartNgServer(client: AngularLanguageClient): Command {
   return {
     id: 'angular.restartNgServer',
     async execute() {
       await client.stop();
-      context.subscriptions.push(client.start());
+      await client.start();
     },
   };
 }
@@ -36,17 +36,26 @@ function restartNgServer(client: lsp.LanguageClient, context: vscode.ExtensionCo
 /**
  * Open the current server log file in a new editor.
  */
-function openLogFile(client: lsp.LanguageClient): Command {
+function openLogFile(client: AngularLanguageClient): Command {
   return {
     id: 'angular.openLogFile',
     async execute() {
       const serverOptions: ServerOptions|undefined = client.initializeResult?.serverOptions;
       if (!serverOptions?.logFile) {
-        // TODO: We could show a MessageItem to help users automatically update
-        // the configuration option then restart the server, but we currently do
-        // not reload the server options when restarting the server.
-        vscode.window.showErrorMessage(
-            `Angular Server logging is off. Please set 'angular.log' and reload the window.`);
+        // Show a MessageItem to help users automatically update the
+        // configuration option then restart the server.
+        const selection = await vscode.window.showErrorMessage(
+            `Angular server logging is off. Please set 'angular.log' and restart the server.`,
+            'Enable logging and restart server',
+        );
+        if (selection) {
+          const isGlobalConfig = false;
+          await vscode.workspace.getConfiguration().update(
+              'angular.log', 'verbose', isGlobalConfig);
+          // Restart the server
+          await client.stop();
+          await client.start();
+        }
         return;
       }
       const document = await vscode.workspace.openTextDocument(serverOptions.logFile);
@@ -61,9 +70,9 @@ function openLogFile(client: lsp.LanguageClient): Command {
  * @param context extension context for adding disposables
  */
 export function registerCommands(
-    client: lsp.LanguageClient, context: vscode.ExtensionContext): void {
+    client: AngularLanguageClient, context: vscode.ExtensionContext): void {
   const commands: Command[] = [
-    restartNgServer(client, context),
+    restartNgServer(client),
     openLogFile(client),
   ];
 

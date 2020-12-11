@@ -1,3 +1,13 @@
+# v0.1101.0-next.0
+
+This release upgrades `@angular/language-service` to v11.1.0-next.2.
+
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1110-next2-2020-12-09).
+
+Bug fixes:
+- `require.resolve` not working in vscode, resulting in ngcc failure.
+- Restart language server on configuration change.
+
 # v0.1100.0
 
 This release upgrades `@angular/language-service` to v11.0.0.

@@ -511,7 +511,16 @@ export class Session {
     if (!project?.languageServiceEnabled) {
       return;
     }
-
+    // TODO(kyliau): For some reasons, the project could end up in an inconsistent
+    // state where the language service is undefined. It could be that the project
+    // is closed (?!). While we investigate this issue, put in a temporary fix
+    // to force the project to reload.
+    // Also note that the return type of getLanguageService() is deceiving,
+    // because it could return undefined
+    // https://github.com/microsoft/TypeScript/blob/1c1cd9b08d8bf1c77abb57d195cc6d79b1093390/src/server/project.ts#L797
+    if (project.getLanguageService() === undefined) {
+      project.markAsDirty();
+    }
     return {
       languageService: project.getLanguageService(),
       scriptInfo,

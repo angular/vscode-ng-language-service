@@ -9,7 +9,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import * as lsp from 'vscode-languageclient';
+import * as lsp from 'vscode-languageclient/node';
 
 import {ProjectLoadingFinish, ProjectLoadingStart} from '../common/notifications';
 import {NgccProgress, NgccProgressToken, NgccProgressType} from '../common/progress';

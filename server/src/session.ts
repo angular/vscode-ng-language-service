@@ -7,7 +7,7 @@
  */
 
 import * as ts from 'typescript/lib/tsserverlibrary';
-import * as lsp from 'vscode-languageserver';
+import * as lsp from 'vscode-languageserver/node';
 
 import {ServerOptions} from '../common/initialize';
 import {ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart} from '../common/notifications';
@@ -40,7 +40,7 @@ const EMPTY_RANGE = lsp.Range.create(0, 0, 0, 0);
  * handlers installed for Angular language service.
  */
 export class Session {
-  private readonly connection: lsp.IConnection;
+  private readonly connection: lsp.Connection;
   private readonly projectService: ts.server.ProjectService;
   private readonly logger: ts.server.Logger;
   private readonly ivy: boolean;
@@ -102,7 +102,7 @@ export class Session {
     return projSvc;
   }
 
-  private addProtocolHandlers(conn: lsp.IConnection) {
+  private addProtocolHandlers(conn: lsp.Connection) {
     conn.onInitialize(p => this.onInitialize(p));
     conn.onDidOpenTextDocument(p => this.onDidOpenTextDocument(p));
     conn.onDidCloseTextDocument(p => this.onDidCloseTextDocument(p));

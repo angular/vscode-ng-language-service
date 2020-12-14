@@ -9,7 +9,7 @@
 import {fork} from 'child_process';
 import * as fs from 'fs';
 import {resolve} from 'path';
-import {createMessageConnection, IPCMessageReader, IPCMessageWriter, MessageConnection} from 'vscode-jsonrpc';
+import {createMessageConnection, IPCMessageReader, IPCMessageWriter, MessageConnection} from 'vscode-jsonrpc/node';
 import * as lsp from 'vscode-languageserver-protocol';
 
 const SERVER_PATH = resolve(__dirname, '../../../dist/npm/server/index.js');

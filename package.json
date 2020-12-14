@@ -55,7 +55,7 @@
         "angular.experimental-ivy": {
           "type": "boolean",
           "default": false,
-          "description": "This is an experimental feature that enables the Ivy language service. Please make sure ngcc is run before enabling this flag."
+          "description": "This is an experimental feature that enables the Ivy language service."
         }
       }
     },

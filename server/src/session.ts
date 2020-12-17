@@ -80,9 +80,12 @@ export class Session {
       formatOptions: projSvc.getHostFormatCodeOptions(),
       extraFileExtensions: [
         {
+          // TODO: in View Engine getExternalFiles() returns a list of external
+          // templates (HTML files). This configuration is no longer needed in
+          // Ivy because Ivy returns the typecheck files.
           extension: '.html',
           isMixedContent: false,
-          scriptKind: ts.ScriptKind.External,
+          scriptKind: ts.ScriptKind.Unknown,
         },
       ],
       preferences: {
@@ -336,7 +339,10 @@ export class Session {
     if (!filePath) {
       return;
     }
-    const scriptKind = languageId === LanguageId.TS ? ts.ScriptKind.TS : ts.ScriptKind.External;
+    // External templates (HTML files) should be tagged as ScriptKind.Unknown
+    // so that they don't get parsed as TS files. See
+    // https://github.com/microsoft/TypeScript/blob/b217f22e798c781f55d17da72ed099a9dee5c650/src/compiler/program.ts#L1897-L1899
+    const scriptKind = languageId === LanguageId.TS ? ts.ScriptKind.TS : ts.ScriptKind.Unknown;
     try {
       // The content could be newer than that on disk. This could be due to
       // buffer in the user's editor which has not been saved to disk.

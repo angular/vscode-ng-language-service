@@ -152,9 +152,11 @@ export class Session {
       });
     }
 
-    if (!success) {
-      return;
-    }
+    // Re-enable language service even if ngcc fails, because users could fix
+    // the problem by running ngcc themselves. If we keep language service
+    // disabled, there's no way users could use the extension even after
+    // resolving ngcc issues. On the client side, we will warn users about
+    // potentially degraded experience.
 
     this.reenableLanguageServiceForProject(configFilePath);
   }

@@ -129,10 +129,10 @@ function registerProgressHandlers(client: lsp.LanguageClient, context: vscode.Ex
           progressReporters.delete(configFilePath);
           if (!params.success) {
             const selection = await vscode.window.showErrorMessage(
-                `Failed to run ngcc. Ivy language service is disabled. ` +
+                `Angular extension might not work correctly because ngcc operation failed. ` +
+                    `Try to invoke ngcc manually by running 'npm/yarn run ngcc'. ` +
                     `Please see the extension output for more information.`,
-                {modal: true},
-                'See error message',
+                'Show output',
             );
             if (selection) {
               client.outputChannel.show();

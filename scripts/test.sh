@@ -8,6 +8,10 @@ set -ex -o pipefail
   yarn
   yarn ngcc
 )
+(
+  cd integration/workspace
+  yarn
+)
 
 # Server unit tests
 yarn run test

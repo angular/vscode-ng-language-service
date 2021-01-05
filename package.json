@@ -127,7 +127,7 @@
     "vscode-jsonrpc": "6.0.0",
     "vscode-languageclient": "7.0.0",
     "vscode-languageserver": "7.0.0",
-    "vscode-uri": "3.0.1"
+    "vscode-uri": "3.0.2"
   },
   "devDependencies": {
     "@types/jasmine": "3.6.2",

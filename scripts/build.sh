@@ -15,7 +15,7 @@ yarn run compile
 # Copy files to package root
 cp package.json angular.png CHANGELOG.md README.md dist/npm
 # Copy files to server directory
-cp server/package.json server/README.md dist/npm/server
+cp -r server/package.json server/README.md server/bin dist/npm/server
 # Build and copy files to syntaxes directory
 yarn run build:syntaxes
 mkdir dist/npm/syntaxes

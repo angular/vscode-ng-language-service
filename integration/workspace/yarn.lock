@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@angular/common@11.0.6":
-  version "11.0.6"
-  resolved "https://registry.yarnpkg.com/@angular/common/-/common-11.0.6.tgz#683a5320a0039683b52d578fa58fea1b0c1805ec"
-  integrity sha512-zFuqCEn9UGQbMKPbBhCyo8McJs21EIlYsqXgQo62SQkIGVBlzfWnkkJuAXv8DNWN70yb1QHarZWW+6Y1CKFDGw==
+"@angular/common@11.0.7":
+  version "11.0.7"
+  resolved "https://registry.yarnpkg.com/@angular/common/-/common-11.0.7.tgz#bc76452161bc0728563bbf05fe10cac492dcfdad"
+  integrity sha512-9VuT9qrSP7Q91Wp276DDieCIZiTBrpLNoJzK/RygQShTymCVPg4Dsl3tQUKaHBPx9MexeqRG/HjN02DVpeqtsA==
   dependencies:
     tslib "^2.0.0"
 
-"@angular/compiler-cli@11.0.6":
-  version "11.0.6"
-  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-11.0.6.tgz#bdcf9529414e4c24cbd34b72d555cfa7b9fbe77b"
-  integrity sha512-2rozDjBsHA1DGdwgdqo/cFFg+Rvuy99HaUjE060uqxlZ9QZLwxOJR1RxrScsebuEwPfqrOHzc9tK6lGOzBC0Sw==
+"@angular/compiler-cli@11.0.7":
+  version "11.0.7"
+  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-11.0.7.tgz#661c788a9493f61fcba5cb2165399ffe5a843e9d"
+  integrity sha512-04agqIPmw1exMeZjJmRzeYFgTEXYJ7gKD8TZipsGlu99uU/NQJIsetpzR7/bhPAKDH6YO0p/uavxV0nRpSTIQw==
   dependencies:
     "@babel/core" "^7.8.6"
     "@babel/types" "^7.8.6"
@@ -30,10 +30,10 @@
     tslib "^2.0.0"
     yargs "^16.1.1"
 
-"@angular/core@11.0.6":
-  version "11.0.6"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-11.0.6.tgz#1b6521c3b784a185272f2bf9b90b64aa48da6600"
-  integrity sha512-npPTnFDldcxuDKFg5fJaFOsWvP4DjCRU2pOk83ck8XTzLwvkD3jfn4zPTpvYSFFyxvXHb2IPTMjx8Jy0AZoVvA==
+"@angular/core@11.0.7":
+  version "11.0.7"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-11.0.7.tgz#4d81b1a49d3d4aaeb0ef9908695a3cc06707cfd9"
+  integrity sha512-Kj5uRZoK5+xfMTjkP3tw8oIF5hKTnoF9Bwh5m9GUKqg1wHVKOJcT5JBIEMc8qPyiFgALREA01reIzQdGMjX36A==
   dependencies:
     tslib "^2.0.0"
 

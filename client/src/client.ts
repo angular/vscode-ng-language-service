@@ -64,6 +64,9 @@ export class AngularLanguageClient implements vscode.Disposable {
     // Create the language client and start the client.
     const forceDebug = process.env['NG_DEBUG'] === 'true';
     this.client = new lsp.LanguageClient(
+        // This is the ID for Angular-specific configurations, like angular.log,
+        // angular.ngdk, etc. See contributes.configuration in package.json.
+        'angular',
         this.name,
         serverOptions,
         this.clientOptions,

@@ -8,7 +8,7 @@
 
 import {MessageConnection} from 'vscode-jsonrpc';
 import * as lsp from 'vscode-languageserver-protocol';
-
+import {URI} from 'vscode-uri';
 import {ProjectLanguageService, ProjectLanguageServiceParams} from '../../common/notifications';
 import {NgccProgress, NgccProgressToken, NgccProgressType} from '../../common/progress';
 
@@ -69,7 +69,7 @@ describe('Angular Ivy language server', () => {
     client.sendNotification(lsp.DidOpenTextDocumentNotification.type, {
       textDocument: {
         uri: `file://${FOO_TEMPLATE}`,
-        languageId: 'typescript',
+        languageId: 'html',
         version: 1,
         text: `{{ doesnotexist }}`,
       },
@@ -80,6 +80,42 @@ describe('Angular Ivy language server', () => {
     expect(diagnostics.length).toBe(1);
     expect(diagnostics[0].message)
         .toBe(`Property 'doesnotexist' does not exist on type 'FooComponent'.`);
+  });
+
+  it('does not break after opening `.d.ts` file from external template', async () => {
+    client.sendNotification(lsp.DidOpenTextDocumentNotification.type, {
+      textDocument: {
+        uri: `file://${FOO_TEMPLATE}`,
+        languageId: 'html',
+        version: 1,
+        text: `<div *ngIf="false"></div>`,
+      },
+    });
+    const languageServiceEnabled = await waitForNgcc(client);
+    expect(languageServiceEnabled).toBeTrue();
+    const response = await client.sendRequest(lsp.DefinitionRequest.type, {
+      textDocument: {
+        uri: `file://${FOO_TEMPLATE}`,
+      },
+      position: {line: 0, character: 7},
+    }) as lsp.LocationLink[];
+    // 2 results - the NgIf class and the ngIf input
+    expect(Array.isArray(response)).toBe(true);
+    const {targetUri} = response[0];
+    expect(targetUri.endsWith('angular/common/common.d.ts')).toBeTrue();
+    // Open the `.d.ts` file
+    openTextDocument(client, URI.parse(targetUri).fsPath);
+    // try a hover operation again on *ngIf
+    const hoverResponse = await client.sendRequest(lsp.HoverRequest.type, {
+      textDocument: {
+        uri: `file://${FOO_TEMPLATE}`,
+      },
+      position: {line: 0, character: 7},
+    });
+    expect(hoverResponse?.contents).toContain({
+      language: 'typescript',
+      value: 'declare (property) NgIf<boolean>.ngIf: boolean',
+    });
   });
 });
 

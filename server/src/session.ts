@@ -44,6 +44,7 @@ export class Session {
   private readonly projectService: ts.server.ProjectService;
   private readonly logger: ts.server.Logger;
   private readonly ivy: boolean;
+  private readonly configuredProjToExternalProj = new Map<string, string>();
   private diagnosticsTimeout: NodeJS.Timeout|null = null;
   private isProjectLoading = false;
 
@@ -307,6 +308,7 @@ export class Session {
       scriptInfo.detachAllProjects();
       scriptInfo.attachToProject(project);
     }
+    this.createExternalProject(project);
 
     return project;
   }
@@ -377,6 +379,23 @@ export class Session {
     }
   }
 
+  /**
+   * Creates an external project with the same config path as `project` so that TypeScript keeps the
+   * project open when navigating away from `html` files.
+   */
+  private createExternalProject(project: ts.server.Project) {
+    if (isConfiguredProject(project) &&
+        !this.configuredProjToExternalProj.has(project.projectName)) {
+      const extProjectName = `${project.projectName}-external`;
+      project.projectService.openExternalProject({
+        projectFileName: extProjectName,
+        rootFiles: [{fileName: project.getConfigFilePath()}],
+        options: {}
+      });
+      this.configuredProjToExternalProj.set(project.projectName, extProjectName);
+    }
+  }
+
   private onDidCloseTextDocument(params: lsp.DidCloseTextDocumentParams) {
     const {textDocument} = params;
     const filePath = uriToFilePath(textDocument.uri);
@@ -384,6 +403,38 @@ export class Session {
       return;
     }
     this.projectService.closeClientFile(filePath);
+    this.maybeCloseExternalProject(filePath);
+  }
+
+  /**
+   * We open external projects for files so that we can prevent TypeScript from closing a project
+   * when there is open external HTML template that still references the project. This function
+   * checks if there are no longer any open files in the project for the given `filePath`. If there
+   * aren't, we also close the external project that was created.
+   */
+  private maybeCloseExternalProject(filePath: string) {
+    const scriptInfo = this.projectService.getScriptInfo(filePath);
+    if (!scriptInfo) {
+      return;
+    }
+    for (const [configuredProjName, externalProjName] of this.configuredProjToExternalProj) {
+      const configuredProj = this.projectService.findProject(configuredProjName);
+      if (!configuredProj || configuredProj.isClosed()) {
+        this.projectService.closeExternalProject(externalProjName);
+        this.configuredProjToExternalProj.delete(configuredProjName);
+        continue;
+      }
+      // See if any openFiles belong to the configured project.
+      // if not, close external project this.projectService.openFiles
+      const openFiles = toArray(this.projectService.openFiles.keys());
+      if (!openFiles.some(file => {
+            const scriptInfo = this.projectService.getScriptInfo(file);
+            return scriptInfo?.isAttached(configuredProj);
+          })) {
+        this.projectService.closeExternalProject(externalProjName);
+        this.configuredProjToExternalProj.delete(configuredProjName);
+      }
+    }
   }
 
   private onDidChangeTextDocument(params: lsp.DidChangeTextDocumentParams) {
@@ -519,15 +570,10 @@ export class Session {
     if (!project?.languageServiceEnabled) {
       return;
     }
-    // TODO(kyliau): For some reasons, the project could end up in an inconsistent
-    // state where the language service is undefined. It could be that the project
-    // is closed (?!). While we investigate this issue, put in a temporary fix
-    // to force the project to reload.
-    // Also note that the return type of getLanguageService() is deceiving,
-    // because it could return undefined
-    // https://github.com/microsoft/TypeScript/blob/1c1cd9b08d8bf1c77abb57d195cc6d79b1093390/src/server/project.ts#L797
-    if (project.getLanguageService() === undefined) {
-      project.markAsDirty();
+    if (project.isClosed()) {
+      scriptInfo.detachFromProject(project);
+      this.logger.info(`Failed to get language service for closed project ${project.projectName}.`);
+      return undefined;
     }
     return {
       languageService: project.getLanguageService(),
@@ -592,8 +638,8 @@ export class Session {
   private onCompletionResolve(item: lsp.CompletionItem): lsp.CompletionItem {
     const data = readNgCompletionData(item);
     if (data === null) {
-      // This item wasn't tagged with Angular LS completion data - it probably didn't originate from
-      // this language service.
+      // This item wasn't tagged with Angular LS completion data - it probably didn't originate
+      // from this language service.
       return item;
     }
 
@@ -724,4 +770,12 @@ export class Session {
 
     return false;
   }
+}
+
+function toArray<T>(it: ts.Iterator<T>): T[] {
+  const results: T[] = [];
+  for (let itResult = it.next(); !itResult.done; itResult = it.next()) {
+    results.push(itResult.value);
+  }
+  return results;
 }

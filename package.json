@@ -56,6 +56,17 @@
           "type": "boolean",
           "default": false,
           "description": "This is an experimental feature that enables the Ivy language service."
+        },
+        "angular.trace.server": {
+          "type": "string",
+          "scope": "window",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the Angular language server."
         }
       }
     },

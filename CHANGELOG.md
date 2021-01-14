@@ -1,3 +1,15 @@
+# v0.1101.0-rc.0
+
+This release upgrades `@angular/language-service` to v11.1.0-rc.0.
+
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1110-rc0-2021-01-13).
+
+Bug fixes:
+- prevent project from closing when only a template file is open
+
+Features:
+- enable tracing of LSP messages and payload
+
 # v0.1101.0-next.2
 
 This release upgrades `@angular/language-service` to v11.1.0-next.4.

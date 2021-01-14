@@ -1,3 +1,9 @@
+# 0.1101.0-rc.1
+
+Bug fixes:
+- update min TS and NG versions
+- ngserver script could not find index.js
+
 # v0.1101.0-rc.0
 
 This release upgrades `@angular/language-service` to v11.1.0-rc.0.

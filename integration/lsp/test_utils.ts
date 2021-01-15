@@ -17,6 +17,7 @@ const PACKAGE_ROOT = resolve(__dirname, '../../..');
 const PROJECT_PATH = `${PACKAGE_ROOT}/integration/project`;
 export const APP_COMPONENT = `${PROJECT_PATH}/app/app.component.ts`;
 export const FOO_TEMPLATE = `${PROJECT_PATH}/app/foo.component.html`;
+export const FOO_COMPONENT = `${PROJECT_PATH}/app/foo.component.ts`;
 
 export interface ServerOptions {
   ivy: boolean;
@@ -71,10 +72,16 @@ export function initializeServer(client: MessageConnection): Promise<lsp.Initial
 }
 
 export function openTextDocument(client: MessageConnection, filePath: string) {
+  let languageId = 'unknown';
+  if (filePath.endsWith('ts')) {
+    languageId = 'typescript';
+  } else if (filePath.endsWith('html')) {
+    languageId = 'html';
+  }
   client.sendNotification(lsp.DidOpenTextDocumentNotification.type, {
     textDocument: {
       uri: `file://${filePath}`,
-      languageId: 'typescript',
+      languageId,
       version: 1,
       text: fs.readFileSync(filePath, 'utf-8'),
     },

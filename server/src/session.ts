@@ -118,6 +118,8 @@ export class Session {
     conn.onDefinition(p => this.onDefinition(p));
     conn.onTypeDefinition(p => this.onTypeDefinition(p));
     conn.onReferences(p => this.onReferences(p));
+    conn.onRenameRequest(p => this.onRenameRequest(p));
+    conn.onPrepareRename(p => this.onPrepareRename(p));
     conn.onHover(p => this.onHover(p));
     conn.onCompletion(p => this.onCompletion(p));
     conn.onCompletionResolve(p => this.onCompletionResolve(p));
@@ -331,6 +333,11 @@ export class Session {
         definitionProvider: true,
         typeDefinitionProvider: this.ivy,
         referencesProvider: this.ivy,
+        renameProvider: this.ivy ? {
+          // Renames should be checked and tested before being executed.
+          prepareProvider: true,
+        } :
+                                   false,
         hoverProvider: true,
         workspace: {
           workspaceFolders: {supported: true},
@@ -505,6 +512,68 @@ export class Session {
       return;
     }
     return this.tsDefinitionsToLspLocationLinks(definitions);
+  }
+
+  private onRenameRequest(params: lsp.RenameParams): lsp.WorkspaceEdit|undefined {
+    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    if (lsInfo === undefined) {
+      return;
+    }
+    const {languageService, scriptInfo} = lsInfo;
+    if (scriptInfo.scriptKind === ts.ScriptKind.TS) {
+      // Because we cannot ensure our extension is prioritized for renames in TS files (see
+      // https://github.com/microsoft/vscode/issues/115354) we disable renaming completely so we can
+      // provide consistent expectations.
+      return;
+    }
+    const offset = lspPositionToTsPosition(scriptInfo, params.position);
+    const renameLocations = languageService.findRenameLocations(
+        scriptInfo.fileName, offset, /*findInStrings*/ false, /*findInComments*/ false);
+    if (renameLocations === undefined) {
+      return;
+    }
+
+    const changes = renameLocations.reduce((changes, location) => {
+      if (changes[location.fileName] === undefined) {
+        changes[location.fileName] = [];
+      }
+      const fileEdits = changes[location.fileName];
+
+      const lsInfo = this.getLSAndScriptInfo(location.fileName);
+      if (lsInfo === undefined) {
+        return changes;
+      }
+      const range = tsTextSpanToLspRange(lsInfo.scriptInfo, location.textSpan);
+      fileEdits.push({range, newText: params.newName});
+      return changes;
+    }, {} as {[uri: string]: lsp.TextEdit[]});
+
+    return {changes};
+  }
+
+  private onPrepareRename(params: lsp.PrepareRenameParams):
+      {range: lsp.Range, placeholder: string}|undefined {
+    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    if (lsInfo === undefined) {
+      return;
+    }
+    const {languageService, scriptInfo} = lsInfo;
+    if (scriptInfo.scriptKind === ts.ScriptKind.TS) {
+      // Because we cannot ensure our extension is prioritized for renames in TS files (see
+      // https://github.com/microsoft/vscode/issues/115354) we disable renaming completely so we can
+      // provide consistent expectations.
+      return;
+    }
+    const offset = lspPositionToTsPosition(scriptInfo, params.position);
+    const renameInfo = languageService.getRenameInfo(scriptInfo.fileName, offset);
+    if (!renameInfo.canRename) {
+      return undefined;
+    }
+    const range = tsTextSpanToLspRange(scriptInfo, renameInfo.triggerSpan);
+    return {
+      range,
+      placeholder: renameInfo.displayName,
+    };
   }
 
   private onReferences(params: lsp.TextDocumentPositionParams): lsp.Location[]|undefined {

@@ -12,7 +12,7 @@ import {URI} from 'vscode-uri';
 import {ProjectLanguageService, ProjectLanguageServiceParams} from '../../common/notifications';
 import {NgccProgress, NgccProgressToken, NgccProgressType} from '../../common/progress';
 
-import {APP_COMPONENT, createConnection, FOO_TEMPLATE, initializeServer, openTextDocument} from './test_utils';
+import {APP_COMPONENT, createConnection, FOO_COMPONENT, FOO_TEMPLATE, initializeServer, openTextDocument} from './test_utils';
 
 describe('Angular Ivy language server', () => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000; /* 10 seconds */
@@ -115,6 +115,148 @@ describe('Angular Ivy language server', () => {
     expect(hoverResponse?.contents).toContain({
       language: 'typescript',
       value: 'declare (property) NgIf<boolean>.ngIf: boolean',
+    });
+  });
+
+  describe('renaming', () => {
+    describe('from template files', () => {
+      beforeEach(async () => {
+        openTextDocument(client, FOO_TEMPLATE);
+        const languageServiceEnabled = await waitForNgcc(client);
+        expect(languageServiceEnabled).toBeTrue();
+      });
+
+      it('should handle prepare rename request for property read', async () => {
+        const response = await client.sendRequest(lsp.PrepareRenameRequest.type, {
+          textDocument: {
+            uri: `file://${FOO_TEMPLATE}`,
+          },
+          position: {line: 0, character: 3},
+        }) as {range: lsp.Range, placeholder: string};
+        expect(response.range).toEqual({
+          start: {line: 0, character: 2},
+          end: {line: 0, character: 7},
+        });
+        expect(response.placeholder).toEqual('title');
+      });
+
+      const expectedRenameInComponent = {
+        range: {
+          start: {line: 6, character: 2},
+          end: {line: 6, character: 7},
+        },
+        newText: 'subtitle',
+      };
+      const expectedRenameInTemplate = {
+        range: {
+          start: {line: 0, character: 2},
+          end: {line: 0, character: 7},
+        },
+        newText: 'subtitle',
+      };
+
+      it('should handle rename request for property read', async () => {
+        const response = await client.sendRequest(lsp.RenameRequest.type, {
+          textDocument: {
+            uri: `file://${FOO_TEMPLATE}`,
+          },
+          position: {line: 0, character: 3},
+          newName: 'subtitle'
+        });
+        expect(response).not.toBeNull();
+        expect(response?.changes?.[FOO_TEMPLATE].length).toBe(1);
+        expect(response?.changes?.[FOO_TEMPLATE]).toContain(expectedRenameInTemplate);
+        expect(response?.changes?.[FOO_COMPONENT].length).toBe(1);
+        expect(response?.changes?.[FOO_COMPONENT]).toContain(expectedRenameInComponent);
+      });
+    });
+
+    describe('from typescript files', () => {
+      beforeEach(async () => {
+        openTextDocument(client, APP_COMPONENT);
+        const languageServiceEnabled = await waitForNgcc(client);
+        expect(languageServiceEnabled).toBeTrue();
+      });
+
+      it('should not be enabled, see https://github.com/microsoft/vscode/issues/115354',
+         async () => {
+           const prepareRenameResponse = await client.sendRequest(lsp.PrepareRenameRequest.type, {
+             textDocument: {
+               uri: `file://${APP_COMPONENT}`,
+             },
+             position: {line: 4, character: 25},
+           }) as {range: lsp.Range, placeholder: string};
+           expect(prepareRenameResponse).toBeNull();
+           const renameResponse = await client.sendRequest(lsp.RenameRequest.type, {
+             textDocument: {
+               uri: `file://${APP_COMPONENT}`,
+             },
+             position: {line: 4, character: 25},
+             newName: 'surname'
+           });
+           expect(renameResponse).toBeNull();
+         });
+
+      xdescribe('Blocked by https://github.com/microsoft/vscode/issues/115354', () => {
+        it('should handle prepare rename request for property read', async () => {
+          const response = await client.sendRequest(lsp.PrepareRenameRequest.type, {
+            textDocument: {
+              uri: `file://${APP_COMPONENT}`,
+            },
+            position: {line: 4, character: 25},
+          }) as {range: lsp.Range, placeholder: string};
+          expect(response.range).toEqual({
+            start: {line: 4, character: 25},
+            end: {line: 4, character: 29},
+          });
+          expect(response.placeholder).toEqual('name');
+        });
+
+        describe('property rename', () => {
+          const expectedRenameInComponent = {
+            range: {
+              start: {line: 7, character: 2},
+              end: {line: 7, character: 6},
+            },
+            newText: 'surname',
+          };
+          const expectedRenameInTemplate = {
+            range: {
+              start: {line: 4, character: 25},
+              end: {line: 4, character: 29},
+            },
+            newText: 'surname',
+          };
+
+          it('should handle rename request for property read in a template', async () => {
+            const response = await client.sendRequest(lsp.RenameRequest.type, {
+              textDocument: {
+                uri: `file://${APP_COMPONENT}`,
+              },
+              position: {line: 4, character: 25},
+              newName: 'surname'
+            });
+            expect(response).not.toBeNull();
+            expect(response?.changes?.[APP_COMPONENT].length).toBe(2);
+            expect(response?.changes?.[APP_COMPONENT]).toContain(expectedRenameInComponent);
+            expect(response?.changes?.[APP_COMPONENT]).toContain(expectedRenameInTemplate);
+          });
+
+          it('should handle rename request for property in the component', async () => {
+            const response = await client.sendRequest(lsp.RenameRequest.type, {
+              textDocument: {
+                uri: `file://${APP_COMPONENT}`,
+              },
+              position: {line: 7, character: 4},
+              newName: 'surname'
+            });
+            expect(response).not.toBeNull();
+            expect(response?.changes?.[APP_COMPONENT].length).toBe(2);
+            expect(response?.changes?.[APP_COMPONENT]).toContain(expectedRenameInComponent);
+            expect(response?.changes?.[APP_COMPONENT]).toContain(expectedRenameInTemplate);
+          });
+        });
+      });
     });
   });
 });

@@ -1,3 +1,8 @@
+# 0.1100.4
+
+This release reverts `@angular/language-service` to v11.0.3 while we investigate
+https://github.com/angular/vscode-ng-language-service/issues/1063.
+
 # 0.1100.3
 
 This release upgrades `@angular/language-service` to v11.0.9.

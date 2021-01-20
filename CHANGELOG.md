@@ -1,3 +1,11 @@
+# v11.1.0
+
+Ivy-native language service is officially available for preview!
+To try it, go to Preferences > Settings > Angular > check experimental-ivy.
+
+This release upgrades `@angular/language-service` to v11.1.0.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1110-2021-01-20).
+
 # 0.1101.0-rc.1
 
 Bug fixes:

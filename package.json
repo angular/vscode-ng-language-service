@@ -141,7 +141,7 @@
     "vscode-uri": "3.0.2"
   },
   "devDependencies": {
-    "@types/jasmine": "3.6.2",
+    "@types/jasmine": "3.6.3",
     "@types/node": "12.19.14",
     "clang-format": "1.5.0",
     "jasmine": "3.6.4",

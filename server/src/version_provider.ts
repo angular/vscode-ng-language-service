@@ -8,7 +8,7 @@
 
 import * as fs from 'fs';
 
-const MIN_TS_VERSION = '4.0';
+const MIN_TS_VERSION = '4.1';
 const MIN_NG_VERSION = '11.1';
 
 /**

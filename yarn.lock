@@ -38,10 +38,10 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.45.tgz#e9387572998e5ecdac221950dab3e8c3b16af884"
   integrity sha512-jnqIUKDUqJbDIUxm0Uj7bnlMnRm1T/eZ9N+AVMqhPgzrba2GhGG5o/jCTwmdPK709nEZsGoMzXEDUjcXHa3W0g==
 
-"@types/jasmine@3.6.2":
-  version "3.6.2"
-  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.6.2.tgz#02f64450016f7de70f145d698be311136d7c6374"
-  integrity sha512-AzfesNFLvOs6Q1mHzIsVJXSeUnqVh4ZHG8ngygKJfbkcSLwzrBVm/LKa+mR8KrOfnWtUL47112gde1MC0IXqpQ==
+"@types/jasmine@3.6.3":
+  version "3.6.3"
+  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.6.3.tgz#824df555b8a5114f91619e78d8f59624d6f23050"
+  integrity sha512-5QKAG8WfC9XrOgYLXPrxv1G2IIUE6zDyzTWamhNWJO0LqPRUbZ0q0zGHDhDJ7MpFloUuyME/jpBIdPjq3/P3jA==
 
 "@types/node@*":
   version "14.14.13"

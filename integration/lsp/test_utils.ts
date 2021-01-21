@@ -42,10 +42,14 @@ export function createConnection(serverOptions: ServerOptions): MessageConnectio
     // execArgv: ['--inspect-brk=9229']
   });
 
-  return createMessageConnection(
+  const connection = createMessageConnection(
       new IPCMessageReader(server),
       new IPCMessageWriter(server),
   );
+  connection.onDispose(() => {
+    server.kill();
+  });
+  return connection;
 }
 
 export function initializeServer(client: MessageConnection): Promise<lsp.InitializeResult> {

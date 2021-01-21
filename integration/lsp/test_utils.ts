@@ -18,6 +18,7 @@ const PROJECT_PATH = `${PACKAGE_ROOT}/integration/project`;
 export const APP_COMPONENT = `${PROJECT_PATH}/app/app.component.ts`;
 export const FOO_TEMPLATE = `${PROJECT_PATH}/app/foo.component.html`;
 export const FOO_COMPONENT = `${PROJECT_PATH}/app/foo.component.ts`;
+export const TSCONFIG = `${PROJECT_PATH}/tsconfig.json`;
 
 export interface ServerOptions {
   ivy: boolean;
@@ -40,7 +41,7 @@ export function createConnection(serverOptions: ServerOptions): MessageConnectio
       TSC_NONPOLLING_WATCHER: 'true',
     },
     // uncomment to debug server process
-    // execArgv: ['--inspect-brk=9229']
+    // execArgv: ['--inspect-brk=9330']
   });
 
   const connection = createMessageConnection(
@@ -86,4 +87,23 @@ export function openTextDocument(client: MessageConnection, filePath: string) {
       text: fs.readFileSync(filePath, 'utf-8'),
     },
   });
+}
+
+export function createTracer(): lsp.Tracer {
+  return {
+    log(messageOrDataObject: string|any, data?: string) {
+      if (typeof messageOrDataObject === 'string') {
+        const message = messageOrDataObject;
+        console.log(`[Trace - ${(new Date().toLocaleTimeString())}] ${message}`);
+        if (data) {
+          console.log(data);
+        }
+      } else {
+        const dataObject = messageOrDataObject;
+        console.log(
+            `[Trace - ${(new Date().toLocaleTimeString())}] ` +
+            JSON.stringify(dataObject, null, 2));
+      }
+    },
+  };
 }

@@ -10,7 +10,7 @@ import * as ts from 'typescript/lib/tsserverlibrary';
 import * as lsp from 'vscode-languageserver/node';
 
 import {ServerOptions} from '../common/initialize';
-import {ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart} from '../common/notifications';
+import {ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode} from '../common/notifications';
 import {NgccProgressToken, NgccProgressType} from '../common/progress';
 
 import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './completion';
@@ -182,7 +182,7 @@ export class Session {
     // project as dirty to force update the graph.
     project.markAsDirty();
     this.info(`Enabling Ivy language service for ${project.projectName}.`);
-
+    this.handleCompilerOptionsDiagnostics(project);
     // Send diagnostics since we skipped this step when opening the file
     // (because language service was disabled while waiting for ngcc).
     // First, make sure the Angular project is complete.
@@ -201,6 +201,23 @@ export class Session {
     const fileName = project.getRootScriptInfos()[0].fileName;
     // Getting semantic diagnostics will trigger a global analysis.
     project.getLanguageService().getSemanticDiagnostics(fileName);
+  }
+
+  private handleCompilerOptionsDiagnostics(project: ts.server.Project) {
+    if (!isConfiguredProject(project)) {
+      return;
+    }
+
+    const diags = project.getLanguageService().getCompilerOptionsDiagnostics();
+    const suggestStrictModeDiag = diags.find(d => d.code === -9910001);
+
+    if (suggestStrictModeDiag) {
+      const configFilePath: string = project.getConfigFilePath();
+      this.connection.sendNotification(SuggestStrictMode, {
+        configFilePath,
+        message: suggestStrictModeDiag.messageText,
+      });
+    }
   }
 
   /**

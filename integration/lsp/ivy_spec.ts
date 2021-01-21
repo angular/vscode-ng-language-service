@@ -6,13 +6,15 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import * as fs from 'fs';
 import {MessageConnection} from 'vscode-jsonrpc';
 import * as lsp from 'vscode-languageserver-protocol';
 import {URI} from 'vscode-uri';
-import {ProjectLanguageService, ProjectLanguageServiceParams} from '../../common/notifications';
+
+import {ProjectLanguageService, ProjectLanguageServiceParams, SuggestStrictMode, SuggestStrictModeParams} from '../../common/notifications';
 import {NgccProgress, NgccProgressToken, NgccProgressType} from '../../common/progress';
 
-import {APP_COMPONENT, createConnection, FOO_COMPONENT, FOO_TEMPLATE, initializeServer, openTextDocument} from './test_utils';
+import {APP_COMPONENT, createConnection, createTracer, FOO_COMPONENT, FOO_TEMPLATE, initializeServer, openTextDocument, TSCONFIG} from './test_utils';
 
 describe('Angular Ivy language server', () => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000; /* 10 seconds */
@@ -23,6 +25,10 @@ describe('Angular Ivy language server', () => {
     client = createConnection({
       ivy: true,
     });
+    // If debugging, set to
+    // - lsp.Trace.Messages to inspect request/response/notification, or
+    // - lsp.Trace.Verbose to inspect payload
+    client.trace(lsp.Trace.Off, createTracer());
     client.listen();
     await initializeServer(client);
   });
@@ -259,6 +265,27 @@ describe('Angular Ivy language server', () => {
       });
     });
   });
+
+  describe('compiler options', () => {
+    const originalConfig = fs.readFileSync(TSCONFIG, 'utf-8');
+
+    afterEach(() => {
+      // TODO(kyliau): Use an in-memory FS harness for the server
+      fs.writeFileSync(TSCONFIG, originalConfig);
+    });
+
+    it('should suggest strict mode', async () => {
+      const config = JSON.parse(originalConfig);
+      config.angularCompilerOptions.strictTemplates = false;
+      fs.writeFileSync(TSCONFIG, JSON.stringify(config, null, 2));
+
+      openTextDocument(client, APP_COMPONENT);
+      const languageServiceEnabled = await waitForNgcc(client);
+      expect(languageServiceEnabled).toBeTrue();
+      const configFilePath = await onSuggestStrictMode(client);
+      expect(configFilePath.endsWith('integration/project/tsconfig.json')).toBeTrue();
+    });
+  });
 });
 
 function onNgccProgress(client: MessageConnection): Promise<string> {
@@ -267,6 +294,14 @@ function onNgccProgress(client: MessageConnection): Promise<string> {
       if (params.done) {
         resolve(params.configFilePath);
       }
+    });
+  });
+}
+
+function onSuggestStrictMode(client: MessageConnection): Promise<string> {
+  return new Promise(resolve => {
+    client.onNotification(SuggestStrictMode, (params: SuggestStrictModeParams) => {
+      resolve(params.configFilePath);
     });
   });
 }

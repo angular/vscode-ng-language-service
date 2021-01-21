@@ -11,7 +11,7 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import * as lsp from 'vscode-languageclient/node';
 
-import {ProjectLoadingFinish, ProjectLoadingStart} from '../common/notifications';
+import {ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode, SuggestStrictModeParams} from '../common/notifications';
 import {NgccProgress, NgccProgressToken, NgccProgressType} from '../common/progress';
 
 import {ProgressReporter} from './progress-reporter';
@@ -76,7 +76,7 @@ export class AngularLanguageClient implements vscode.Disposable {
     await this.client.onReady();
     // Must wait for the client to be ready before registering notification
     // handlers.
-    registerNotificationHandlers(this.client);
+    registerNotificationHandlers(this.client, this.context);
     registerProgressHandlers(this.client, this.context);
   }
 
@@ -104,8 +104,9 @@ export class AngularLanguageClient implements vscode.Disposable {
   }
 }
 
-function registerNotificationHandlers(client: lsp.LanguageClient) {
-  client.onNotification(ProjectLoadingStart, () => {
+function registerNotificationHandlers(
+    client: lsp.LanguageClient, context: vscode.ExtensionContext) {
+  const disposable1 = client.onNotification(ProjectLoadingStart, () => {
     vscode.window.withProgress(
         {
           location: vscode.ProgressLocation.Window,
@@ -116,6 +117,26 @@ function registerNotificationHandlers(client: lsp.LanguageClient) {
         }),
     );
   });
+
+  const disposable2 =
+      client.onNotification(SuggestStrictMode, async (params: SuggestStrictModeParams) => {
+        const openTsConfig = 'Open tsconfig.json';
+        // Markdown is not generally supported in `showInformationMessage()`,
+        // but links are supported. See
+        // https://github.com/microsoft/vscode/issues/20595#issuecomment-281099832
+        const selection = await vscode.window.showInformationMessage(
+            'Some language features are not available. To access all features, enable ' +
+                '[strictTemplates](https://angular.io/guide/angular-compiler-options#stricttemplates) in ' +
+                '[angularCompilerOptions](https://angular.io/guide/angular-compiler-options).',
+            openTsConfig,
+        );
+        if (selection === openTsConfig) {
+          const document = await vscode.workspace.openTextDocument(params.configFilePath);
+          vscode.window.showTextDocument(document);
+        }
+      });
+
+  context.subscriptions.push(disposable1, disposable2);
 }
 
 function registerProgressHandlers(client: lsp.LanguageClient, context: vscode.ExtensionContext) {

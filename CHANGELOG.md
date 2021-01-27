@@ -1,3 +1,8 @@
+# v11.1.1
+
+This release upgrades `@angular/language-service` to v11.1.1.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1111-2021-01-27).
+
 # v11.1.0
 
 Ivy-native language service is officially available for preview!

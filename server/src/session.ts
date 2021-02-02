@@ -380,6 +380,7 @@ export class Session {
       }
       throw error;
     }
+    this.closeOrphanedExternalProjects();
   }
 
   /**
@@ -406,20 +407,15 @@ export class Session {
       return;
     }
     this.projectService.closeClientFile(filePath);
-    this.maybeCloseExternalProject(filePath);
   }
 
   /**
    * We open external projects for files so that we can prevent TypeScript from closing a project
    * when there is open external HTML template that still references the project. This function
-   * checks if there are no longer any open files in the project for the given `filePath`. If there
+   * checks if there are no longer any open files in any external project. If there
    * aren't, we also close the external project that was created.
    */
-  private maybeCloseExternalProject(filePath: string) {
-    const scriptInfo = this.projectService.getScriptInfo(filePath);
-    if (!scriptInfo) {
-      return;
-    }
+  private closeOrphanedExternalProjects() {
     for (const [configuredProjName, externalProjName] of this.configuredProjToExternalProj) {
       const configuredProj = this.projectService.findProject(configuredProjName);
       if (!configuredProj || configuredProj.isClosed()) {

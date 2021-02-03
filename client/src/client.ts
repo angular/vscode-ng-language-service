@@ -11,7 +11,7 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import * as lsp from 'vscode-languageclient/node';
 
-import {ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode, SuggestStrictModeParams} from '../common/notifications';
+import {ProjectLoadingFinish, ProjectLoadingStart, SuggestIvyLanguageService, SuggestIvyLanguageServiceParams, SuggestStrictMode, SuggestStrictModeParams} from '../common/notifications';
 import {NgccProgress, NgccProgressToken, NgccProgressType} from '../common/progress';
 
 import {ProgressReporter} from './progress-reporter';
@@ -136,7 +136,29 @@ function registerNotificationHandlers(
         }
       });
 
-  context.subscriptions.push(disposable1, disposable2);
+  const disposable3 = client.onNotification(
+      SuggestIvyLanguageService, async (params: SuggestIvyLanguageServiceParams) => {
+        const config = vscode.workspace.getConfiguration();
+        if (config.get('angular.enable-experimental-ivy-prompt') === false) {
+          return;
+        }
+
+        const enableIvy = 'Enable';
+        const doNotPromptAgain = 'Do not show this again';
+        const selection = await vscode.window.showInformationMessage(
+            params.message,
+            enableIvy,
+            doNotPromptAgain,
+        );
+        if (selection === enableIvy) {
+          config.update('angular.experimental-ivy', true, vscode.ConfigurationTarget.Global);
+        } else if (selection === doNotPromptAgain) {
+          config.update(
+              'angular.enable-experimental-ivy-prompt', false, vscode.ConfigurationTarget.Global);
+        }
+      });
+
+  context.subscriptions.push(disposable1, disposable2, disposable3);
 }
 
 function registerProgressHandlers(client: lsp.LanguageClient, context: vscode.ExtensionContext) {

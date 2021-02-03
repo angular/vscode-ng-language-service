@@ -37,7 +37,7 @@ const session = new Session({
   host,
   logger,
   ngPlugin: ng.name,
-  ngProbeLocation: ng.resolvedPath,
+  resolvedNgLsPath: ng.resolvedPath,
   ivy: options.ivy,
   logToConsole: options.logToConsole,
 });

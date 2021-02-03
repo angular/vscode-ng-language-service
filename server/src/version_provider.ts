@@ -20,7 +20,7 @@ interface NodeModule {
   version: Version;
 }
 
-function resolve(packageName: string, location: string, rootPackage?: string): NodeModule|
+export function resolve(packageName: string, location: string, rootPackage?: string): NodeModule|
     undefined {
   rootPackage = rootPackage || packageName;
   try {

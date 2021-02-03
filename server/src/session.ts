@@ -10,7 +10,7 @@ import * as ts from 'typescript/lib/tsserverlibrary';
 import * as lsp from 'vscode-languageserver/node';
 
 import {ServerOptions} from '../common/initialize';
-import {ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode} from '../common/notifications';
+import {ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestIvyLanguageService, SuggestStrictMode} from '../common/notifications';
 import {NgccProgressToken, NgccProgressType} from '../common/progress';
 
 import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './completion';
@@ -18,12 +18,13 @@ import {tsDiagnosticToLspDiagnostic} from './diagnostic';
 import {resolveAndRunNgcc} from './ngcc';
 import {ServerHost} from './server_host';
 import {filePathToUri, isConfiguredProject, lspPositionToTsPosition, lspRangeToTsPositions, tsTextSpanToLspRange, uriToFilePath} from './utils';
+import {resolve, Version} from './version_provider';
 
 export interface SessionOptions {
   host: ServerHost;
   logger: ts.server.Logger;
   ngPlugin: string;
-  ngProbeLocation: string;
+  resolvedNgLsPath: string;
   ivy: boolean;
   logToConsole: boolean;
 }
@@ -44,6 +45,7 @@ export class Session {
   private readonly connection: lsp.Connection;
   private readonly projectService: ts.server.ProjectService;
   private readonly logger: ts.server.Logger;
+  private readonly angularCoreVersionMap = new WeakMap<ts.server.Project, Version>();
   private readonly ivy: boolean;
   private readonly configuredProjToExternalProj = new Map<string, string>();
   private readonly logToConsole: boolean;
@@ -83,7 +85,7 @@ export class Session {
       suppressDiagnosticEvents: true,
       eventHandler: (e) => this.handleProjectServiceEvent(e),
       globalPlugins: [options.ngPlugin],
-      pluginProbeLocations: [options.ngProbeLocation],
+      pluginProbeLocations: [options.resolvedNgLsPath],
       allowLocalPluginLoads: false,  // do not load plugins from tsconfig.json
     });
 
@@ -836,7 +838,8 @@ export class Session {
       return;
     }
 
-    if (!this.checkIsAngularProject(project)) {
+    const coreDts = this.checkIsAngularProject(project);
+    if (coreDts === undefined) {
       return;
     }
 
@@ -850,22 +853,40 @@ export class Session {
     } else {
       // Immediately enable Legacy/ViewEngine language service
       this.info(`Enabling VE language service for ${projectName}.`);
+      this.promptToEnableIvyIfAvailable(project, coreDts);
+    }
+  }
+
+  private promptToEnableIvyIfAvailable(
+      project: ts.server.Project, coreDts: ts.server.NormalizedPath) {
+    let angularCoreVersion = this.angularCoreVersionMap.get(project);
+    if (angularCoreVersion === undefined) {
+      angularCoreVersion = resolve('@angular/core', coreDts)?.version;
+    }
+
+    if (angularCoreVersion !== undefined && !this.ivy && angularCoreVersion.major >= 9) {
+      this.connection.sendNotification(SuggestIvyLanguageService, {
+        message:
+            'Would you like to enable the new Ivy-native language service to get the latest features and bug fixes?',
+      });
     }
   }
 
   /**
    * Determine if the specified `project` is Angular, and disable the language
    * service if not.
+   *
+   * @returns The `ts.server.NormalizedPath` to the `@angular/core/core.d.ts` file.
    */
-  private checkIsAngularProject(project: ts.server.Project): boolean {
+  private checkIsAngularProject(project: ts.server.Project): ts.server.NormalizedPath|undefined {
     const {projectName} = project;
     const NG_CORE = '@angular/core/core.d.ts';
-
-    const isAngularProject = project.hasRoots() && !project.isNonTsProject() &&
-        project.getFileNames().some(f => f.endsWith(NG_CORE));
+    const ngCoreDts = project.getFileNames().find(f => f.endsWith(NG_CORE));
+    const isAngularProject =
+        project.hasRoots() && !project.isNonTsProject() && ngCoreDts !== undefined;
 
     if (isAngularProject) {
-      return true;
+      return ngCoreDts;
     }
 
     project.disableLanguageService();
@@ -879,7 +900,7 @@ export class Session {
           `Please check your tsconfig.json to make sure 'node_modules' directory is not excluded.`);
     }
 
-    return false;
+    return undefined;
   }
 }
 

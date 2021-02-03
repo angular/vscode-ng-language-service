@@ -164,6 +164,8 @@ export class Session {
     conn.onCompletionResolve(p => this.onCompletionResolve(p));
     conn.onRequest(GetComponentsWithTemplateFile, p => this.onGetComponentsWithTemplateFile(p));
     conn.onRequest(GetTcbRequest, p => this.onGetTcb(p));
+    conn.onCodeLens(p => this.onCodeLens(p));
+    conn.onCodeLensResolve(p => this.onCodeLensResolve(p));
   }
 
   private onGetTcb(params: GetTcbParams): GetTcbResponse|undefined {
@@ -206,6 +208,34 @@ export class Session {
       results.push(lsp.Location.create(filePathToUri(documentSpan.fileName), range));
     }
     return results;
+  }
+
+  private onCodeLens(params: lsp.CodeLensParams): lsp.CodeLens[]|undefined {
+    if (!params.textDocument.uri.endsWith('.html')) {
+      return undefined;
+    }
+    const position = lsp.Position.create(0, 0);
+    const topOfDocument = lsp.Range.create(position, position);
+
+
+    const codeLens: lsp.CodeLens = {
+      range: topOfDocument,
+      data: params.textDocument,
+    };
+
+    return [codeLens];
+  }
+
+  private onCodeLensResolve(params: lsp.CodeLens): lsp.CodeLens {
+    const components = this.onGetComponentsWithTemplateFile({textDocument: params.data});
+    if (components !== undefined && components.length > 0) {
+      params.command = {
+        command: 'angular.goToComponentWithTemplateFile',
+        title: components.length > 1 ? `Used as templateUrl in ${components.length} components` :
+                                       'Go to component',
+      };
+    }
+    return params;
   }
 
   private enableLanguageServiceForProject(project: ts.server.Project, angularCore: string) {
@@ -416,6 +446,7 @@ export class Session {
     };
     return {
       capabilities: {
+        codeLensProvider: this.ivy ? {resolveProvider: true} : undefined,
         textDocumentSync: lsp.TextDocumentSyncKind.Incremental,
         completionProvider: {
           // Only the Ivy LS provides support for additional completion resolution.

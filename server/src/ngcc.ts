@@ -47,6 +47,7 @@ export async function resolveAndRunNgcc(tsconfig: string, progress: Progress): P
       ],
       {
         cwd: resolve(cwd),
+        silent: true,  // pipe stderr and stdout so that we can report progress
       });
 
   let stderr = '';

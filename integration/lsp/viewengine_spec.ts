@@ -8,6 +8,7 @@
 
 import {MessageConnection} from 'vscode-jsonrpc';
 import * as lsp from 'vscode-languageserver-protocol';
+import {SuggestIvyLanguageService, SuggestIvyLanguageServiceParams} from '../../common/notifications';
 import {APP_COMPONENT, createConnection, FOO_TEMPLATE, initializeServer, openTextDocument} from './test_utils';
 
 describe('Angular language server', () => {
@@ -107,6 +108,12 @@ describe('Angular language server', () => {
     expect(diagnostics.length).toBe(1);
     expect(diagnostics[0].message).toContain(`Identifier 'doesnotexist' is not defined.`);
   });
+
+  it('should prompt to enable Ivy Language Service', async () => {
+    openTextDocument(client, APP_COMPONENT);
+    const message = await onSuggestIvyLanguageService(client);
+    expect(message).toContain('Would you like to enable the new Ivy-native language service');
+  });
 });
 
 describe('initialization', () => {
@@ -138,3 +145,11 @@ describe('initialization', () => {
     client.dispose();
   });
 });
+
+function onSuggestIvyLanguageService(client: MessageConnection): Promise<string> {
+  return new Promise(resolve => {
+    client.onNotification(SuggestIvyLanguageService, (params: SuggestIvyLanguageServiceParams) => {
+      resolve(params.message);
+    });
+  });
+}

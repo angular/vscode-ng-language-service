@@ -30,7 +30,7 @@ export function createConnection(serverOptions: ServerOptions): MessageConnectio
     '--tsProbeLocations',
     PACKAGE_ROOT,
     '--ngProbeLocations',
-    SERVER_PATH,
+    [SERVER_PATH, PROJECT_PATH].join(','),
   ];
   if (serverOptions.ivy) {
     argv.push('--experimental-ivy');

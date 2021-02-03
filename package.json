@@ -57,6 +57,11 @@
           "default": false,
           "description": "This is an experimental feature that enables the Ivy language service."
         },
+        "angular.enable-experimental-ivy-prompt": {
+          "type": "boolean",
+          "default": true,
+          "description": "Prompt to enable the Ivy language service for the workspace when View Engine is in use."
+        },
         "angular.trace.server": {
           "type": "string",
           "scope": "window",

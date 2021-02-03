@@ -363,6 +363,24 @@ describe('Angular Ivy language server', () => {
     });
     expect(response).toBeDefined();
   });
+
+  it('should provide a "go to component" codelens', async () => {
+    openTextDocument(client, FOO_TEMPLATE);
+    await waitForNgcc(client);
+    const codeLensResponse = await client.sendRequest(lsp.CodeLensRequest.type, {
+      textDocument: {
+        uri: `file://${FOO_TEMPLATE}`,
+      }
+    });
+    expect(codeLensResponse).toBeDefined();
+    const [codeLens] = codeLensResponse!;
+    expect(codeLens.data.uri).toEqual(`file://${FOO_TEMPLATE}`);
+
+    const codeLensResolveResponse =
+        await client.sendRequest(lsp.CodeLensResolveRequest.type, codeLensResponse![0]);
+    expect(codeLensResolveResponse).toBeDefined();
+    expect(codeLensResolveResponse?.command?.title).toEqual('Go to component');
+  });
 });
 
 function onNgccProgress(client: MessageConnection): Promise<string> {

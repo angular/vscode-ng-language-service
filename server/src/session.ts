@@ -49,6 +49,13 @@ export class Session {
   private readonly logToConsole: boolean;
   private diagnosticsTimeout: NodeJS.Timeout|null = null;
   private isProjectLoading = false;
+  /**
+   * Tracks which `ts.server.Project`s have the renaming capability disabled.
+   *
+   * If we detect the compiler options diagnostic that suggests enabling strict mode, we want to
+   * disable renaming because we know that there are many cases where it will not work correctly.
+   */
+  private renameDisabledProjects: WeakSet<ts.server.Project> = new WeakSet();
 
   constructor(options: SessionOptions) {
     this.logger = options.logger;
@@ -217,6 +224,9 @@ export class Session {
         configFilePath,
         message: suggestStrictModeDiag.messageText,
       });
+      this.renameDisabledProjects.add(project);
+    } else {
+      this.renameDisabledProjects.delete(project);
     }
   }
 
@@ -543,6 +553,11 @@ export class Session {
       // provide consistent expectations.
       return;
     }
+    const project = this.getDefaultProjectForScriptInfo(scriptInfo);
+    if (project === undefined || this.renameDisabledProjects.has(project)) {
+      return;
+    }
+
     const offset = lspPositionToTsPosition(scriptInfo, params.position);
     const renameLocations = languageService.findRenameLocations(
         scriptInfo.fileName, offset, /*findInStrings*/ false, /*findInComments*/ false);
@@ -581,6 +596,11 @@ export class Session {
       // provide consistent expectations.
       return;
     }
+    const project = this.getDefaultProjectForScriptInfo(scriptInfo);
+    if (project === undefined || this.renameDisabledProjects.has(project)) {
+      return;
+    }
+
     const offset = lspPositionToTsPosition(scriptInfo, params.position);
     const renameInfo = languageService.getRenameInfo(scriptInfo.fileName, offset);
     if (!renameInfo.canRename) {

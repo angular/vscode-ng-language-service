@@ -274,16 +274,42 @@ describe('Angular Ivy language server', () => {
       fs.writeFileSync(TSCONFIG, originalConfig);
     });
 
-    it('should suggest strict mode', async () => {
-      const config = JSON.parse(originalConfig);
-      config.angularCompilerOptions.strictTemplates = false;
-      fs.writeFileSync(TSCONFIG, JSON.stringify(config, null, 2));
+    describe('strictTemplates: false', () => {
+      beforeEach(async () => {
+        const config = JSON.parse(originalConfig);
+        config.angularCompilerOptions.strictTemplates = false;
+        fs.writeFileSync(TSCONFIG, JSON.stringify(config, null, 2));
 
-      openTextDocument(client, APP_COMPONENT);
-      const languageServiceEnabled = await waitForNgcc(client);
-      expect(languageServiceEnabled).toBeTrue();
-      const configFilePath = await onSuggestStrictMode(client);
-      expect(configFilePath.endsWith('integration/project/tsconfig.json')).toBeTrue();
+        openTextDocument(client, APP_COMPONENT);
+        const languageServiceEnabled = await waitForNgcc(client);
+        expect(languageServiceEnabled).toBeTrue();
+      });
+
+      it('should suggest strict mode', async () => {
+        const configFilePath = await onSuggestStrictMode(client);
+        expect(configFilePath.endsWith('integration/project/tsconfig.json')).toBeTrue();
+      });
+
+      it('should disable renaming when strict mode is disabled', async () => {
+        await onSuggestStrictMode(client);
+
+        const prepareRenameResponse = await client.sendRequest(lsp.PrepareRenameRequest.type, {
+          textDocument: {
+            uri: `file://${APP_COMPONENT}`,
+          },
+          position: {line: 4, character: 25},
+        }) as {range: lsp.Range, placeholder: string};
+        expect(prepareRenameResponse).toBeNull();
+
+        const renameResponse = await client.sendRequest(lsp.RenameRequest.type, {
+          textDocument: {
+            uri: `file://${APP_COMPONENT}`,
+          },
+          position: {line: 4, character: 25},
+          newName: 'surname'
+        });
+        expect(renameResponse).toBeNull();
+      });
     });
   });
 });

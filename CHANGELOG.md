@@ -1,3 +1,8 @@
+# v11.1.2
+
+This release upgrades `@angular/language-service` to v11.1.2.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1112-2021-02-03).
+
 # v11.1.1
 
 This release upgrades `@angular/language-service` to v11.1.1.

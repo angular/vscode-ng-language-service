@@ -1,3 +1,32 @@
+# v11.2.0
+
+This release upgrades `@angular/language-service` to v11.2.0.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1120-2021-02-10).
+
+Bug fixes:
+- disable rename feature when strictTemplates is disabled
+- implement realpath to resolve symlinks
+- recognize incomplete pipe bindings with whitespace
+
+Features:
+- Prompt to use the Ivy Language Service if VE is detected
+- Add Command to view template typecheck block
+- Add diagnostics to suggest turning on strict mode
+
+# v11.1.3
+
+This release upgrades `@angular/language-service` to v11.1.2.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1112-2021-02-03).
+
+# v11.1.2
+
+No major updates in this release.
+
+# v11.1.1
+
+This release upgrades `@angular/language-service` to v11.1.1.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1111-2021-01-27).
+
 # v11.1.0
 
 Ivy-native language service is officially available for preview!

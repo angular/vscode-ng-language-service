@@ -10,7 +10,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 const MIN_TS_VERSION = '4.1';
-const MIN_NG_VERSION = '11.2';
+const MIN_NG_VERSION = '12.0';
 export const NGLANGSVC = '@angular/language-service';
 const TSSERVERLIB = 'typescript/lib/tsserverlibrary';
 

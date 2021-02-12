@@ -13,7 +13,7 @@ import {URI} from 'vscode-uri';
 
 import {ProjectLanguageService, ProjectLanguageServiceParams, SuggestStrictMode, SuggestStrictModeParams} from '../../common/notifications';
 import {NgccProgress, NgccProgressToken, NgccProgressType} from '../../common/progress';
-import {GetTcbRequest} from '../../common/requests';
+import {GetComponentsWithTemplateFile, GetTcbRequest} from '../../common/requests';
 
 import {APP_COMPONENT, createConnection, createTracer, FOO_COMPONENT, FOO_TEMPLATE, initializeServer, openTextDocument, TSCONFIG} from './test_utils';
 
@@ -314,18 +314,27 @@ describe('Angular Ivy language server', () => {
     });
   });
 
-  describe('getTcb', () => {
-    it('should handle getTcb request', async () => {
-      openTextDocument(client, FOO_TEMPLATE);
-      await waitForNgcc(client);
-      const response = await client.sendRequest(GetTcbRequest, {
-        textDocument: {
-          uri: `file://${FOO_TEMPLATE}`,
-        },
-        position: {line: 0, character: 3},
-      });
-      expect(response).toBeDefined();
+  it('should handle getTcb request', async () => {
+    openTextDocument(client, FOO_TEMPLATE);
+    await waitForNgcc(client);
+    const response = await client.sendRequest(GetTcbRequest, {
+      textDocument: {
+        uri: `file://${FOO_TEMPLATE}`,
+      },
+      position: {line: 0, character: 3},
     });
+    expect(response).toBeDefined();
+  });
+
+  it('should handle goToComponent request', async () => {
+    openTextDocument(client, FOO_TEMPLATE);
+    await waitForNgcc(client);
+    const response = await client.sendRequest(GetComponentsWithTemplateFile, {
+      textDocument: {
+        uri: `file://${FOO_TEMPLATE}`,
+      }
+    });
+    expect(response).toBeDefined();
   });
 });
 

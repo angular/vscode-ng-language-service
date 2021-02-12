@@ -13,7 +13,7 @@ import * as lsp from 'vscode-languageclient/node';
 
 import {ProjectLoadingFinish, ProjectLoadingStart, SuggestIvyLanguageService, SuggestIvyLanguageServiceParams, SuggestStrictMode, SuggestStrictModeParams} from '../common/notifications';
 import {NgccProgress, NgccProgressToken, NgccProgressType} from '../common/progress';
-import {GetTcbRequest} from '../common/requests';
+import {GetComponentsWithTemplateFile, GetTcbRequest} from '../common/requests';
 
 import {ProgressReporter} from './progress-reporter';
 
@@ -22,6 +22,8 @@ interface GetTcbResponse {
   content: string;
   selections: vscode.Range[];
 }
+
+type GetComponentsForOpenExternalTemplateResponse = Array<{uri: vscode.Uri; range: vscode.Range;}>;
 
 export class AngularLanguageClient implements vscode.Disposable {
   private client: lsp.LanguageClient|null = null;
@@ -129,6 +131,29 @@ export class AngularLanguageClient implements vscode.Disposable {
 
   get initializeResult(): lsp.InitializeResult|undefined {
     return this.client?.initializeResult;
+  }
+
+  async getComponentsForOpenExternalTemplate(textEditor: vscode.TextEditor):
+      Promise<GetComponentsForOpenExternalTemplateResponse|undefined> {
+    if (this.client === null) {
+      return undefined;
+    }
+
+    const response = await this.client.sendRequest(GetComponentsWithTemplateFile, {
+      textDocument:
+          this.client.code2ProtocolConverter.asTextDocumentIdentifier(textEditor.document),
+    });
+    if (response === undefined) {
+      return undefined;
+    }
+
+    const p2cConverter = this.client.protocol2CodeConverter;
+    return response.map(v => {
+      return {
+        range: p2cConverter.asRange(v.range),
+        uri: p2cConverter.asUri(v.uri),
+      };
+    });
   }
 
   dispose() {

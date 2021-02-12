@@ -32,6 +32,11 @@
         "command": "angular.getTemplateTcb",
         "title": "View Template Typecheck Block",
         "category": "Angular"
+      },
+      {
+        "command": "angular.goToComponentWithTemplateFile",
+        "title": "Go to component",
+        "category": "Angular"
       }
     ],
     "menus": {
@@ -39,6 +44,11 @@
         {
           "when": "resourceLangId == html || resourceLangId == typescript",
           "command": "angular.getTemplateTcb",
+          "group": "angular"
+        },
+        {
+          "when": "resourceLangId == html",
+          "command": "angular.goToComponentWithTemplateFile",
           "group": "angular"
         }
       ]

@@ -6,14 +6,14 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {NgLanguageService} from '@angular/language-service';
+import {GetComponentLocationsForTemplateResponse, NgLanguageService} from '@angular/language-service';
 import * as ts from 'typescript/lib/tsserverlibrary';
 import * as lsp from 'vscode-languageserver/node';
 
 import {ServerOptions} from '../common/initialize';
 import {ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestIvyLanguageService, SuggestStrictMode} from '../common/notifications';
 import {NgccProgressToken, NgccProgressType} from '../common/progress';
-import {GetTcbParams, GetTcbRequest, GetTcbResponse} from '../common/requests';
+import {GetComponentsWithTemplateFile, GetComponentsWithTemplateFileResponse, GetTcbParams, GetTcbRequest, GetTcbResponse} from '../common/requests';
 
 import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './completion';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
@@ -134,6 +134,7 @@ export class Session {
     conn.onHover(p => this.onHover(p));
     conn.onCompletion(p => this.onCompletion(p));
     conn.onCompletionResolve(p => this.onCompletionResolve(p));
+    conn.onRequest(GetComponentsWithTemplateFile, p => this.onGetComponentsWithTemplateFile(p));
     conn.onRequest(GetTcbRequest, p => this.onGetTcb(p));
   }
 
@@ -158,6 +159,24 @@ export class Session {
       content: response.content,
       selections: response.selections.map((span => tsTextSpanToLspRange(tcfScriptInfo, span))),
     };
+  }
+
+  private onGetComponentsWithTemplateFile(params: any): GetComponentsWithTemplateFileResponse
+      |undefined {
+    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    if (lsInfo === undefined) {
+      return undefined;
+    }
+    const {languageService, scriptInfo} = lsInfo;
+    const documentSpans = languageService.getComponentLocationsForTemplate(scriptInfo.fileName);
+    const results: GetComponentsWithTemplateFileResponse = [];
+    for (const documentSpan of documentSpans) {
+      const scriptInfo = this.projectService.getScriptInfo(documentSpan.fileName);
+      const range =
+          scriptInfo ? tsTextSpanToLspRange(scriptInfo, documentSpan.textSpan) : EMPTY_RANGE;
+      results.push({uri: filePathToUri(documentSpan.fileName), range});
+    }
+    return results;
   }
 
   private async runNgcc(configFilePath: string) {

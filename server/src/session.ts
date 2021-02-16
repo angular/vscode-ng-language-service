@@ -708,8 +708,12 @@ export class Session {
       this.logger.info(`Failed to get language service for closed project ${project.projectName}.`);
       return undefined;
     }
+    const languageService = project.getLanguageService();
+    if (!isNgLs(languageService)) {
+      return undefined;
+    }
     return {
-      languageService: project.getLanguageService() as NgLanguageService,
+      languageService,
       scriptInfo,
     };
   }
@@ -936,4 +940,8 @@ function toArray<T>(it: ts.Iterator<T>): T[] {
     results.push(itResult.value);
   }
   return results;
+}
+
+function isNgLs(ls: ts.LanguageService|NgLanguageService): ls is NgLanguageService {
+  return 'getTcb' in ls;
 }

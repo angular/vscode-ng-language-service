@@ -10,6 +10,7 @@ import * as fs from 'fs';
 
 const MIN_TS_VERSION = '4.1';
 const MIN_NG_VERSION = '11.2';
+export const NGLANGSVC = '@angular/language-service';
 
 /**
  * Represents a valid node module that has been successfully resolved.
@@ -84,9 +85,8 @@ export function resolveTsServer(probeLocations: string[]): NodeModule {
  * @param ivy true if Ivy language service is requested
  */
 export function resolveNgLangSvc(probeLocations: string[], ivy: boolean): NodeModule {
-  const nglangsvc = '@angular/language-service';
-  const packageName = ivy ? `${nglangsvc}/bundles/ivy` : nglangsvc;
-  return resolveWithMinVersion(packageName, MIN_NG_VERSION, probeLocations, nglangsvc);
+  const packageName = ivy ? `${NGLANGSVC}/bundles/ivy` : NGLANGSVC;
+  return resolveWithMinVersion(packageName, MIN_NG_VERSION, probeLocations, NGLANGSVC);
 }
 
 /**

@@ -7,6 +7,7 @@
  */
 
 import * as ts from 'typescript/lib/tsserverlibrary';
+import {NGLANGSVC} from './version_provider';
 
 /**
  * `ServerHost` is a wrapper around `ts.sys` for the Node system. In Node, all
@@ -19,7 +20,7 @@ export class ServerHost implements ts.server.ServerHost {
   readonly newLine: string;
   readonly useCaseSensitiveFileNames: boolean;
 
-  constructor() {
+  constructor(private ivy: boolean) {
     this.args = ts.sys.args;
     this.newLine = ts.sys.newLine;
     this.useCaseSensitiveFileNames = ts.sys.useCaseSensitiveFileNames;
@@ -163,9 +164,13 @@ export class ServerHost implements ts.server.ServerHost {
 
   require(initialPath: string, moduleName: string) {
     try {
-      const modulePath = require.resolve(moduleName, {
+      let modulePath = require.resolve(moduleName, {
         paths: [initialPath],
       });
+      // TypeScript allows only package names as plugin names.
+      if (this.ivy && moduleName === NGLANGSVC) {
+        modulePath = this.resolvePath(modulePath + '/../ivy.js');
+      }
       return {
         module: require(modulePath),
         error: undefined,

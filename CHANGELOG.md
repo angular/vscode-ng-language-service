@@ -1,3 +1,9 @@
+# v11.2.1
+
+This release fixes a bug in the initialization of tsserver plugin that prevented
+the Ivy-native language service from being loaded correctly.
+See https://github.com/angular/vscode-ng-language-service/issues/1109
+
 # v11.2.0
 
 This release upgrades `@angular/language-service` to v11.2.0.

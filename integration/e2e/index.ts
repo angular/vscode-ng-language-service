@@ -1,4 +1,4 @@
-import * as testRunner from 'vscode/lib/testrunner';
+import * as testRunner from 'vscode-test';
 
 // This is the entry point of the test.
 // The test runner provided by vscode uses Mocha.

@@ -1,3 +1,8 @@
+# v11.2.2
+
+This release upgrades `@angular/language-service` to v11.2.1.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1200-next1-2021-02-17).
+
 # v11.2.1
 
 This release fixes a bug in the initialization of tsserver plugin that prevented

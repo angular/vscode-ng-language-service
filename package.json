@@ -67,9 +67,7 @@
           "description": "Enables logging of the Angular server to a file. This log can be used to diagnose Angular Server issues. The log may contain file paths, source code, and other potentially sensitive information from your project."
         },
         "angular.experimental-ivy": {
-          "type": [
-            "boolean"
-          ],
+          "type": "boolean",
           "default": false,
           "description": "Opt-in to the Ivy language service. Note: To disable the Ivy language service in a workspace when it is enabled in the user settings, open the settings.json file and set the angular.experiment-ivy to false."
         },

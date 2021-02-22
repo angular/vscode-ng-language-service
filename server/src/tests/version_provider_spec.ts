@@ -6,6 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import {isAbsolute, resolve} from 'path';
+
 import {resolveNgLangSvc, resolveTsServer, Version} from '../version_provider';
 
 describe('Node Module Resolver', () => {
@@ -15,6 +17,14 @@ describe('Node Module Resolver', () => {
     const result = resolveTsServer(probeLocations);
     expect(result).toBeDefined();
     expect(result.resolvedPath).toMatch(/typescript\/lib\/tsserverlibrary.js$/);
+  });
+
+  it('should resolve tsserver from typescript.tsdk provided as fs path', () => {
+    // Resolve relative to cwd.
+    const absPath = resolve('node_modules/typescript/lib');
+    expect(isAbsolute(absPath)).toBeTrue();
+    const result = resolveTsServer([absPath]);
+    expect(result.resolvedPath.endsWith('typescript/lib/tsserverlibrary.js')).toBeTrue();
   });
 
   it('should be able to resolve Angular language service', () => {

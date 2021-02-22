@@ -7,10 +7,12 @@
  */
 
 import * as fs from 'fs';
+import * as path from 'path';
 
 const MIN_TS_VERSION = '4.1';
 const MIN_NG_VERSION = '11.2';
 export const NGLANGSVC = '@angular/language-service';
+const TSSERVERLIB = 'typescript/lib/tsserverlibrary';
 
 /**
  * Represents a valid node module that has been successfully resolved.
@@ -75,8 +77,41 @@ function resolveWithMinVersion(
  * @param probeLocations
  */
 export function resolveTsServer(probeLocations: string[]): NodeModule {
-  const tsserver = 'typescript/lib/tsserverlibrary';
-  return resolveWithMinVersion(tsserver, MIN_TS_VERSION, probeLocations, 'typescript');
+  if (probeLocations.length > 0) {
+    // The first probe location is `typescript.tsdk` if it is specified.
+    const resolvedFromTsdk = resolveTsServerFromTsdk(probeLocations[0]);
+    if (resolvedFromTsdk !== undefined) {
+      return resolvedFromTsdk;
+    }
+  }
+  return resolveWithMinVersion(TSSERVERLIB, MIN_TS_VERSION, probeLocations, 'typescript');
+}
+
+function resolveTsServerFromTsdk(tsdk: string): NodeModule|undefined {
+  // `tsdk` is the folder path to the tsserver and lib*.d.ts files under a
+  // TypeScript install, for example
+  // - /google/src/head/depot/google3/third_party/javascript/node_modules/typescript/stable/lib
+  if (!path.isAbsolute(tsdk)) {
+    return undefined;
+  }
+  const tsserverlib = path.join(tsdk, 'tsserverlibrary.js');
+  if (!fs.existsSync(tsserverlib)) {
+    return undefined;
+  }
+  const packageJson = path.resolve(tsserverlib, '../../package.json');
+  if (!fs.existsSync(packageJson)) {
+    return undefined;
+  }
+  try {
+    const json = JSON.parse(fs.readFileSync(packageJson, 'utf8'));
+    return {
+      name: TSSERVERLIB,
+      resolvedPath: tsserverlib,
+      version: new Version(json.version),
+    };
+  } catch {
+    return undefined;
+  }
 }
 
 /**

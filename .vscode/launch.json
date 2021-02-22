@@ -3,16 +3,6 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Integration test: Attach to server",
-      "port": 9330,
-      "request": "attach",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "outFiles": ["${workspaceRoot}/dist/integration/lsp/*.js"],
-      "type": "node"
-    },
-    {
       "type": "extensionHost",
       "request": "launch",
       "name": "Launch Client",
@@ -31,6 +21,16 @@
       "port": 6009,
       "restart": true,
       "outFiles": ["${workspaceRoot}/dist/server/*.js"]
+    },
+    {
+      "name": "Integration test: Attach to server",
+      "port": 9330,
+      "request": "attach",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "outFiles": ["${workspaceRoot}/dist/integration/lsp/*.js"],
+      "type": "node"
     },
     {
       "name": "Language Server E2E Test",

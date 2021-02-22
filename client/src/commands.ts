@@ -127,27 +127,18 @@ function goToComponentWithTemplateFile(ngClient: AngularLanguageClient): Command
     id: 'angular.goToComponentWithTemplateFile',
     isTextEditorCommand: true,
     async execute(textEditor: vscode.TextEditor) {
-      const componentLocations = await ngClient.getComponentsForOpenExternalTemplate(textEditor);
-      if (componentLocations === undefined) {
+      const locations = await ngClient.getComponentsForOpenExternalTemplate(textEditor);
+      if (locations === undefined) {
         return;
       }
 
-      const locations: vscode.Location[] =
-          componentLocations.map(location => new vscode.Location(location.uri, location.range));
-      // If there is more than one component that references the template, show them all. Otherwise
-      // go to the component immediately.
-      if (locations.length > 1) {
-        vscode.commands.executeCommand(
-            'editor.action.showReferences',
-            textEditor.document.uri,
-            new vscode.Position(
-                textEditor.selection.start.line, textEditor.selection.start.character),
-            locations,
-        );
-      } else {
-        const document = await vscode.workspace.openTextDocument(locations[0].uri);
-        await vscode.window.showTextDocument(document, {selection: locations[0].range});
-      }
+      vscode.commands.executeCommand(
+          'editor.action.goToLocations',
+          textEditor.document.uri,
+          textEditor.selection.active,
+          locations,
+          'peek', /** what to do when there are multiple results */
+      );
     },
   };
 }

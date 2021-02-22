@@ -1,3 +1,11 @@
+# v11.2.3
+
+This release upgrades `@angular/language-service` to v11.2.2.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1110-2021-01-20).
+
+Performance improvements:
+- The Ivy Language Service no longer slows down the operation of plain TS language service features when editing TS code outside of a template.
+
 # v11.2.2
 
 This release upgrades `@angular/language-service` to v11.2.1.

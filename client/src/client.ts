@@ -23,8 +23,6 @@ interface GetTcbResponse {
   selections: vscode.Range[];
 }
 
-type GetComponentsForOpenExternalTemplateResponse = Array<{uri: vscode.Uri; range: vscode.Range;}>;
-
 export class AngularLanguageClient implements vscode.Disposable {
   private client: lsp.LanguageClient|null = null;
   private readonly disposables: vscode.Disposable[] = [];
@@ -134,7 +132,7 @@ export class AngularLanguageClient implements vscode.Disposable {
   }
 
   async getComponentsForOpenExternalTemplate(textEditor: vscode.TextEditor):
-      Promise<GetComponentsForOpenExternalTemplateResponse|undefined> {
+      Promise<vscode.Location[]|undefined> {
     if (this.client === null) {
       return undefined;
     }
@@ -148,12 +146,8 @@ export class AngularLanguageClient implements vscode.Disposable {
     }
 
     const p2cConverter = this.client.protocol2CodeConverter;
-    return response.map(v => {
-      return {
-        range: p2cConverter.asRange(v.range),
-        uri: p2cConverter.asUri(v.uri),
-      };
-    });
+    return response.map(
+        v => new vscode.Location(p2cConverter.asUri(v.uri), p2cConverter.asRange(v.range)));
   }
 
   dispose() {

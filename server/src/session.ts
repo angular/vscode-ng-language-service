@@ -6,14 +6,14 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {GetComponentLocationsForTemplateResponse, NgLanguageService} from '@angular/language-service';
+import {NgLanguageService} from '@angular/language-service';
 import * as ts from 'typescript/lib/tsserverlibrary';
 import * as lsp from 'vscode-languageserver/node';
 
 import {ServerOptions} from '../common/initialize';
 import {ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestIvyLanguageService, SuggestStrictMode} from '../common/notifications';
 import {NgccProgressToken, NgccProgressType} from '../common/progress';
-import {GetComponentsWithTemplateFile, GetComponentsWithTemplateFileResponse, GetTcbParams, GetTcbRequest, GetTcbResponse} from '../common/requests';
+import {GetComponentsWithTemplateFile, GetTcbParams, GetTcbRequest, GetTcbResponse} from '../common/requests';
 
 import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './completion';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
@@ -161,20 +161,21 @@ export class Session {
     };
   }
 
-  private onGetComponentsWithTemplateFile(params: any): GetComponentsWithTemplateFileResponse
-      |undefined {
+  private onGetComponentsWithTemplateFile(params: any): lsp.Location[]|undefined {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === undefined) {
       return undefined;
     }
     const {languageService, scriptInfo} = lsInfo;
     const documentSpans = languageService.getComponentLocationsForTemplate(scriptInfo.fileName);
-    const results: GetComponentsWithTemplateFileResponse = [];
+    const results: lsp.Location[] = [];
     for (const documentSpan of documentSpans) {
       const scriptInfo = this.projectService.getScriptInfo(documentSpan.fileName);
-      const range =
-          scriptInfo ? tsTextSpanToLspRange(scriptInfo, documentSpan.textSpan) : EMPTY_RANGE;
-      results.push({uri: filePathToUri(documentSpan.fileName), range});
+      if (scriptInfo === undefined) {
+        continue;
+      }
+      const range = tsTextSpanToLspRange(scriptInfo, documentSpan.textSpan);
+      results.push(lsp.Location.create(filePathToUri(documentSpan.fileName), range));
     }
     return results;
   }

@@ -9,15 +9,12 @@
 import * as lsp from 'vscode-languageserver-protocol';
 
 export const GetComponentsWithTemplateFile = new lsp.RequestType<
-    GetComponentsWithTemplateFileParams, GetComponentsWithTemplateFileResponse,
+    GetComponentsWithTemplateFileParams, lsp.Location[],
     /* error */ void>('angular/getComponentsWithTemplateFile');
 
 export interface GetComponentsWithTemplateFileParams {
   textDocument: lsp.TextDocumentIdentifier;
 }
-
-/** An array of locations that represent component declarations. */
-export type GetComponentsWithTemplateFileResponse = Array<{uri: lsp.DocumentUri, range: lsp.Range}>;
 
 export interface GetTcbParams {
   textDocument: lsp.TextDocumentIdentifier;

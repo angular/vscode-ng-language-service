@@ -28,7 +28,7 @@ export function createConnection(serverOptions: ServerOptions): MessageConnectio
   const argv: string[] = [
     '--node-ipc',
     '--tsProbeLocations',
-    PACKAGE_ROOT,
+    SERVER_PATH,
     '--ngProbeLocations',
     [SERVER_PATH, PROJECT_PATH].join(','),
   ];

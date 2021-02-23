@@ -11,7 +11,6 @@ import * as path from 'path';
 
 const MIN_TS_VERSION = '4.1';
 const MIN_NG_VERSION = '12.0';
-export const NGLANGSVC = '@angular/language-service';
 const TSSERVERLIB = 'typescript/lib/tsserverlibrary';
 
 /**
@@ -120,8 +119,8 @@ function resolveTsServerFromTsdk(tsdk: string): NodeModule|undefined {
  * @param ivy true if Ivy language service is requested
  */
 export function resolveNgLangSvc(probeLocations: string[], ivy: boolean): NodeModule {
-  const packageName = ivy ? `${NGLANGSVC}/bundles/ivy` : NGLANGSVC;
-  return resolveWithMinVersion(packageName, MIN_NG_VERSION, probeLocations, NGLANGSVC);
+  const ngls = '@angular/language-service';
+  return resolveWithMinVersion(ngls, MIN_NG_VERSION, probeLocations, ngls);
 }
 
 /**

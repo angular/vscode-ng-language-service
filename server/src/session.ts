@@ -114,6 +114,7 @@ export class Session {
       pluginName: options.ngPlugin,
       configuration: {
         angularOnly: true,
+        ivy: options.ivy,
       },
     });
 

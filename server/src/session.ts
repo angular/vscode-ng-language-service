@@ -180,63 +180,23 @@ export class Session {
     return results;
   }
 
-  private async runNgcc(configFilePath: string) {
-    this.connection.sendProgress(NgccProgressType, NgccProgressToken, {
-      done: false,
-      configFilePath,
-      message: `Running ngcc for project ${configFilePath}`,
-    });
-
-    let success = false;
-
-    try {
-      await resolveAndRunNgcc(configFilePath, {
-        report: (msg: string) => {
-          this.connection.sendProgress(NgccProgressType, NgccProgressToken, {
-            done: false,
-            configFilePath,
-            message: msg,
-          });
-        },
-      });
-      success = true;
-    } catch (e) {
-      this.error(
-          `Failed to run ngcc for ${configFilePath}:\n` +
-          `    ${e.message}\n` +
-          `    Language service will remain disabled.`);
-    } finally {
-      this.connection.sendProgress(NgccProgressType, NgccProgressToken, {
-        done: true,
-        configFilePath,
-        success,
-      });
+  private enableLanguageServiceForProject(project: ts.server.Project, angularCore: string) {
+    const {projectName} = project;
+    if (!project.languageServiceEnabled) {
+      project.enableLanguageService();
+      // When the language service got disabled, the program was discarded via
+      // languageService.cleanupSemanticCache(). However, the program is not
+      // recreated when the language service is re-enabled. We manually mark the
+      // project as dirty to force update the graph.
+      project.markAsDirty();
     }
-
-    // Re-enable language service even if ngcc fails, because users could fix
-    // the problem by running ngcc themselves. If we keep language service
-    // disabled, there's no way users could use the extension even after
-    // resolving ngcc issues. On the client side, we will warn users about
-    // potentially degraded experience.
-
-    this.reenableLanguageServiceForProject(configFilePath);
-  }
-
-  private reenableLanguageServiceForProject(configFilePath: string) {
-    const project = this.projectService.findProject(configFilePath);
-    if (!project) {
-      this.error(
-          `Failed to find project for ${configFilePath} returned by ngcc.\n` +
-          `Language service will remain disabled.`);
+    if (!this.ivy) {
+      // Immediately enable Legacy / View Engine language service
+      this.info(`Enabling View Engine language service for ${projectName}.`);
+      this.promptToEnableIvyIfAvailable(project, angularCore);
       return;
     }
-    project.enableLanguageService();
-    // When the language service got disabled, the program was discarded via
-    // languageService.cleanupSemanticCache(). However, the program is not
-    // recreated when the language service is re-enabled. We manually mark the
-    // project as dirty to force update the graph.
-    project.markAsDirty();
-    this.info(`Enabling Ivy language service for ${project.projectName}.`);
+    this.info(`Enabling Ivy language service for ${projectName}.`);
     this.handleCompilerOptionsDiagnostics(project);
     // Send diagnostics since we skipped this step when opening the file
     // (because language service was disabled while waiting for ngcc).
@@ -296,7 +256,16 @@ export class Session {
           this.isProjectLoading = false;
           this.connection.sendNotification(ProjectLoadingFinish);
         }
-        this.checkProject(event.data.project);
+        const {project} = event.data;
+        const angularCore = this.findAngularCoreOrDisableLanguageService(project);
+        if (angularCore) {
+          if (this.ivy && isExternalAngularCore(angularCore)) {
+            // Do not wait on this promise otherwise we'll be blocking other requests
+            this.runNgcc(project, angularCore);
+          } else {
+            this.enableLanguageServiceForProject(project, angularCore);
+          }
+        }
         break;
       }
       case ts.server.ProjectsUpdatedInBackgroundEvent:
@@ -873,10 +842,13 @@ export class Session {
   }
 
   /**
-   * Disable the language service if the specified `project` is not Angular or
-   * Ivy mode is enabled.
+   * Find the main declaration file for `@angular/core` in the specified
+   * `project`. If found, return the declaration file. Otherwise, disable the
+   * language service and return undefined.
+   *
+   * @returns main declaration file in `@angular/core`.
    */
-  private checkProject(project: ts.server.Project) {
+  private findAngularCoreOrDisableLanguageService(project: ts.server.Project): string|undefined {
     const {projectName} = project;
     if (!project.languageServiceEnabled) {
       this.info(
@@ -884,31 +856,77 @@ export class Session {
           `This could be due to non-TS files that exceeded the size limit (${
               ts.server.maxProgramSizeForNonTsFiles} bytes).` +
           `Please check log file for details.`);
-
       return;
     }
-
-    const coreDts = this.checkIsAngularProject(project);
-    if (coreDts === undefined) {
-      return;
+    if (!project.hasRoots() || project.isNonTsProject()) {
+      return undefined;
     }
-
-    if (this.ivy && isConfiguredProject(project)) {
-      // Keep language service disabled until ngcc is completed.
+    const angularCore = project.getFileNames().find(isAngularCore);
+    if (angularCore === undefined) {
       project.disableLanguageService();
-      // Do not wait on this promise otherwise we'll be blocking other requests
-      this.runNgcc(project.getConfigFilePath()).catch((error: Error) => {
-        this.error(error.toString());
-      });
-    } else {
-      // Immediately enable Legacy/ViewEngine language service
-      this.info(`Enabling VE language service for ${projectName}.`);
-      this.promptToEnableIvyIfAvailable(project, coreDts);
+      this.info(
+          `Disabling language service for ${projectName} because it is not an Angular project ` +
+          `('@angular/core' could not be found).`);
+      if (project.getExcludedFiles().some(isAngularCore)) {
+        this.info(
+            `Please check your tsconfig.json to make sure 'node_modules' directory is not excluded.`);
+      }
     }
+    return angularCore;
   }
 
-  private promptToEnableIvyIfAvailable(
-      project: ts.server.Project, coreDts: ts.server.NormalizedPath) {
+  /**
+   * Disable the language service, run ngcc, then re-enable language service.
+   */
+  private async runNgcc(project: ts.server.Project, angularCore: string): Promise<void> {
+    if (!isConfiguredProject(project)) {
+      return;
+    }
+    // Disable language service until ngcc is completed.
+    project.disableLanguageService();
+    const configFilePath = project.getConfigFilePath();
+
+    this.connection.sendProgress(NgccProgressType, NgccProgressToken, {
+      done: false,
+      configFilePath,
+      message: `Running ngcc for ${configFilePath}`,
+    });
+
+    let success = false;
+
+    try {
+      await resolveAndRunNgcc(configFilePath, {
+        report: (msg: string) => {
+          this.connection.sendProgress(NgccProgressType, NgccProgressToken, {
+            done: false,
+            configFilePath,
+            message: msg,
+          });
+        },
+      });
+      success = true;
+    } catch (e) {
+      this.error(
+          `Failed to run ngcc for ${configFilePath}:\n` +
+          `    ${e.message}\n` +
+          `    Language service will remain disabled.`);
+    } finally {
+      this.connection.sendProgress(NgccProgressType, NgccProgressToken, {
+        done: true,
+        configFilePath,
+        success,
+      });
+    }
+
+    // Re-enable language service even if ngcc fails, because users could fix
+    // the problem by running ngcc themselves. If we keep language service
+    // disabled, there's no way users could use the extension even after
+    // resolving ngcc issues. On the client side, we will warn users about
+    // potentially degraded experience.
+    this.enableLanguageServiceForProject(project, angularCore);
+  }
+
+  private promptToEnableIvyIfAvailable(project: ts.server.Project, coreDts: string): void {
     let angularCoreVersion = this.angularCoreVersionMap.get(project);
     if (angularCoreVersion === undefined) {
       angularCoreVersion = resolve('@angular/core', coreDts)?.version;
@@ -921,37 +939,6 @@ export class Session {
       });
     }
   }
-
-  /**
-   * Determine if the specified `project` is Angular, and disable the language
-   * service if not.
-   *
-   * @returns The `ts.server.NormalizedPath` to the `@angular/core/core.d.ts` file.
-   */
-  private checkIsAngularProject(project: ts.server.Project): ts.server.NormalizedPath|undefined {
-    const {projectName} = project;
-    const NG_CORE = '@angular/core/core.d.ts';
-    const ngCoreDts = project.getFileNames().find(f => f.endsWith(NG_CORE));
-    const isAngularProject =
-        project.hasRoots() && !project.isNonTsProject() && ngCoreDts !== undefined;
-
-    if (isAngularProject) {
-      return ngCoreDts;
-    }
-
-    project.disableLanguageService();
-    this.info(
-        `Disabling language service for ${projectName} because it is not an Angular project ` +
-        `('${NG_CORE}' could not be found). ` +
-        `If you believe you are seeing this message in error, please reinstall the packages in your package.json.`);
-
-    if (project.getExcludedFiles().some(f => f.endsWith(NG_CORE))) {
-      this.info(
-          `Please check your tsconfig.json to make sure 'node_modules' directory is not excluded.`);
-    }
-
-    return undefined;
-  }
 }
 
 function toArray<T>(it: ts.Iterator<T>): T[] {
@@ -962,6 +949,19 @@ function toArray<T>(it: ts.Iterator<T>): T[] {
   return results;
 }
 
+// TODO: Replace with `isNgLanguageService` from `@angular/language-service`.
 function isNgLs(ls: ts.LanguageService|NgLanguageService): ls is NgLanguageService {
   return 'getTcb' in ls;
+}
+
+function isAngularCore(path: string): boolean {
+  return isExternalAngularCore(path) || isInternalAngularCore(path);
+}
+
+function isExternalAngularCore(path: string): boolean {
+  return path.endsWith('@angular/core/core.d.ts');
+}
+
+function isInternalAngularCore(path: string): boolean {
+  return path.endsWith('angular2/rc/packages/core/index.d.ts');
 }

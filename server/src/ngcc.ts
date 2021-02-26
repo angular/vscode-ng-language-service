@@ -48,6 +48,7 @@ export async function resolveAndRunNgcc(tsconfig: string, progress: Progress): P
       {
         cwd: resolve(cwd),
         silent: true,  // pipe stderr and stdout so that we can report progress
+        execArgv: [], // do not inherit flags like --inspect from parent process
       });
 
   let stderr = '';

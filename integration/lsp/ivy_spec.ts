@@ -7,6 +7,7 @@
  */
 
 import * as fs from 'fs';
+import {promisify} from 'util';
 import {MessageConnection} from 'vscode-jsonrpc';
 import * as lsp from 'vscode-languageserver-protocol';
 import {URI} from 'vscode-uri';
@@ -15,7 +16,9 @@ import {ProjectLanguageService, ProjectLanguageServiceParams, SuggestStrictMode,
 import {NgccProgress, NgccProgressToken, NgccProgressType} from '../../common/progress';
 import {GetComponentsWithTemplateFile, GetTcbRequest} from '../../common/requests';
 
-import {APP_COMPONENT, createConnection, createTracer, FOO_COMPONENT, FOO_TEMPLATE, initializeServer, openTextDocument, TSCONFIG} from './test_utils';
+import {APP_COMPONENT, createConnection, createTracer, FOO_COMPONENT, FOO_TEMPLATE, initializeServer, openTextDocument, PROJECT_PATH, TSCONFIG} from './test_utils';
+
+const setTimeoutP = promisify(setTimeout);
 
 describe('Angular Ivy language server', () => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000; /* 10 seconds */
@@ -122,6 +125,30 @@ describe('Angular Ivy language server', () => {
     expect(hoverResponse?.contents).toContain({
       language: 'typescript',
       value: 'declare (property) NgIf<boolean>.ngIf: boolean',
+    });
+  });
+
+  describe('project reload', () => {
+    const dummy = `${PROJECT_PATH}/node_modules/__foo__`;
+
+    afterEach(() => {
+      fs.unlinkSync(dummy);
+    });
+
+    it('should retain typecheck files', async () => {
+      openTextDocument(client, APP_COMPONENT);
+      const languageServiceEnabled = await waitForNgcc(client);
+      expect(languageServiceEnabled).toBeTrue();
+      // Create a file in node_modules, this will trigger a project reload via
+      // the directory watcher
+      fs.writeFileSync(dummy, '');
+      // Project reload happens after 250ms delay
+      // https://github.com/microsoft/TypeScript/blob/3c32f6e154ead6749b76ec9c19cbfdd2acad97d6/src/server/editorServices.ts#L957
+      await setTimeoutP(500);
+      // The following operation would result in compiler crash if typecheck
+      // files are not retained after project reload
+      const diagnostics = await getDiagnosticsForFile(client, APP_COMPONENT);
+      expect(diagnostics.length).toBe(0);
     });
   });
 

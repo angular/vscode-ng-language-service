@@ -14,7 +14,7 @@ import * as lsp from 'vscode-languageserver-protocol';
 
 const SERVER_PATH = resolve(__dirname, '../../../dist/npm/server/index.js');
 const PACKAGE_ROOT = resolve(__dirname, '../../..');
-const PROJECT_PATH = `${PACKAGE_ROOT}/integration/project`;
+export const PROJECT_PATH = `${PACKAGE_ROOT}/integration/project`;
 export const APP_COMPONENT = `${PROJECT_PATH}/app/app.component.ts`;
 export const FOO_TEMPLATE = `${PROJECT_PATH}/app/foo.component.html`;
 export const FOO_COMPONENT = `${PROJECT_PATH}/app/foo.component.ts`;
@@ -40,7 +40,11 @@ export function createConnection(serverOptions: ServerOptions): MessageConnectio
     // uncomment to debug server process
     // execArgv: ['--inspect-brk=9330']
   });
-
+  server.on('close', (code: number) => {
+    if (code !== null && code !== 0) {
+      throw new Error(`Server exited with code: ${code}`);
+    }
+  });
   const connection = createMessageConnection(
       new IPCMessageReader(server),
       new IPCMessageWriter(server),

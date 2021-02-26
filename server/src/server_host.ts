@@ -65,6 +65,9 @@ export class ServerHost implements ts.server.ServerHost {
   }
 
   fileExists(path: string): boolean {
+    if (path.endsWith('.ngtypecheck.ts')) {
+      return true;
+    }
     return ts.sys.fileExists(path);
   }
 

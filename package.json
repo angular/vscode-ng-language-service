@@ -40,6 +40,12 @@
       }
     ],
     "menus": {
+      "commandPalette": [
+        {
+          "command": "angular.goToComponentWithTemplateFile",
+          "when": "editorLangId == html"
+        }
+      ],
       "editor/context": [
         {
           "when": "resourceLangId == html || resourceLangId == typescript",

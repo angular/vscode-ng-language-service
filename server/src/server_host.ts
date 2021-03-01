@@ -65,6 +65,11 @@ export class ServerHost implements ts.server.ServerHost {
   }
 
   fileExists(path: string): boolean {
+    // When a project is reloaded (due to changes in node_modules for example),
+    // the typecheck files ought to be retained. However, if they do not exist
+    // on disk, tsserver will remove them from project. See
+    // https://github.com/microsoft/TypeScript/blob/3c32f6e154ead6749b76ec9c19cbfdd2acad97d6/src/server/editorServices.ts#L2188-L2193
+    // To fix this, we fake the existence of the typecheck files.
     if (path.endsWith('.ngtypecheck.ts')) {
       return true;
     }

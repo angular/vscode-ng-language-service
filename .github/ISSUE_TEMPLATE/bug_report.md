@@ -28,10 +28,10 @@ A clear and concise description of what you expected to happen.
 
 **Logs**
 
-Please attach two logs:
+Log file gives us deep insight into the behavior and performance of the extension, so we strongly
+recommend you upload it.
 
-1. Console output (Go to toolbar --> View --> Output, and copy the contents)
-2. Log file (Path is printed to the console output at startup)
+Go to the command palette (Cmd+Shift+P on Mac, Ctrl+Shift+P on Windows), search `Open Angular Server log`
 
 **Screenshots**
 

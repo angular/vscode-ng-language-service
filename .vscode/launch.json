@@ -7,8 +7,12 @@
       "request": "launch",
       "name": "Launch Client",
       "runtimeExecutable": "${execPath}",
-      "args": ["--extensionDevelopmentPath=${workspaceRoot}"],
-      "outFiles": ["${workspaceRoot}/dist/client/*.js"],
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/dist/client/*.js"
+      ],
       "preLaunchTask": {
         "type": "npm",
         "script": "watch"
@@ -20,7 +24,19 @@
       "name": "Attach to Server",
       "port": 6009,
       "restart": true,
-      "outFiles": ["${workspaceRoot}/dist/server/*.js"]
+      "outFiles": [
+        "${workspaceFolder}/dist/server/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach to Jasmine",
+      "port": 9229,
+      "restart": true,
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.js"
+      ],
     },
     {
       "name": "Integration test: Attach to server",
@@ -29,7 +45,9 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "outFiles": ["${workspaceRoot}/dist/integration/lsp/*.js"],
+      "outFiles": [
+        "${workspaceFolder}/dist/integration/lsp/*.js"
+      ],
       "type": "node"
     },
     {
@@ -38,11 +56,13 @@
       "request": "launch",
       "runtimeExecutable": "${execPath}",
       "args": [
-        "--extensionDevelopmentPath=${workspaceRoot}",
-        "--extensionTestsPath=${workspaceRoot}/dist/integration/e2e",
-        "${workspaceRoot}/integration/project"
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--extensionTestsPath=${workspaceFolder}/dist/integration/e2e",
+        "${workspaceFolder}/integration/project"
       ],
-      "outFiles": ["${workspaceRoot}/dist/integration/e2e/*.js"],
+      "outFiles": [
+        "${workspaceFolder}/dist/integration/e2e/*.js"
+      ],
       "preLaunchTask": {
         "type": "npm",
         "script": "compile:integration"
@@ -52,7 +72,10 @@
   "compounds": [
     {
       "name": "Client + Server",
-      "configurations": ["Launch Client", "Attach to Server"]
+      "configurations": [
+        "Launch Client",
+        "Attach to Server"
+      ]
     }
   ]
 }

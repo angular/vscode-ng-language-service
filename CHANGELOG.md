@@ -1,3 +1,26 @@
+# v11.2.4
+
+This release upgrades `@angular/language-service` to v11.2.4.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1124-2021-03-03).
+
+Bug fixes in `@angular/language-service`:
+- Add plugin option to force strictTemplates (#41063) (95f748c)
+- Always attempt HTML AST to template AST conversion for LS (#41068) (6dd5497), closes angular/vscode-ng-language-service#1140
+- can't provide the Input and Output custom binding property name (#41005) (1b1b65e)
+- don't show external template diagnostics in ts files (#41070) (9322e6a), closes #41032
+- only provide template results on reference requests (#41041) (ef87953)
+- provide element completions after open tag < (#41068) (f09e7ab), closes angular/vscode-ng-language-service#1140
+
+Bug fixes in `@angular/language-server`:
+- force enable Ivy and strictTemplates in google3
+- detect @angular/core in google3 and don't run ngcc
+- retain typecheck files after project reload
+- do not pass execArgv to ngcc process
+- attempt to resolve tsdk using fs path
+- Revert back to boolean type for experimental-ivy flag
+- remove TSC_NONPOLLING_WATCHER env variable
+- ensure project language service is the Angular LS
+
 # v11.2.3
 
 This release upgrades `@angular/language-service` to v11.2.2.

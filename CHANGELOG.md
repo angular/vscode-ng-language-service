@@ -1,3 +1,12 @@
+# v11.2.5
+
+This release contains a few performance improvements.
+
+Bug fixes:
+- do not load plugins except @angular/language-service
+- turn off logging by default
+- do not watch directories in google3
+
 # v11.2.4
 
 This release upgrades `@angular/language-service` to v11.2.4.

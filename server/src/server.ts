@@ -38,6 +38,7 @@ const session = new Session({
   logger,
   ngPlugin: NGLANGSVC,  // TypeScript allows only package names as plugin names.
   resolvedNgLsPath: ng.resolvedPath,
+  resolvedTsLsPath: ts.resolvedPath,
   ivy: options.ivy,
   logToConsole: options.logToConsole,
 });

@@ -9,6 +9,10 @@
 import * as ts from 'typescript/lib/tsserverlibrary';
 import {NGLANGSVC} from './version_provider';
 
+const NOOP_WATCHER: ts.FileWatcher = {
+  close() {},
+};
+
 /**
  * `ServerHost` is a wrapper around `ts.sys` for the Node system. In Node, all
  * optional methods of `ts.System` are implemented.
@@ -20,7 +24,7 @@ export class ServerHost implements ts.server.ServerHost {
   readonly newLine: string;
   readonly useCaseSensitiveFileNames: boolean;
 
-  constructor(private ivy: boolean) {
+  constructor(private ivy: boolean, readonly isG3: boolean) {
     this.args = ts.sys.args;
     this.newLine = ts.sys.newLine;
     this.useCaseSensitiveFileNames = ts.sys.useCaseSensitiveFileNames;
@@ -57,6 +61,9 @@ export class ServerHost implements ts.server.ServerHost {
 
   watchDirectory(path: string, callback: ts.DirectoryWatcherCallback, recursive?: boolean):
       ts.FileWatcher {
+    if (this.isG3 && path.startsWith('/google/src')) {
+      return NOOP_WATCHER;
+    }
     return ts.sys.watchDirectory!(path, callback, recursive);
   }
 

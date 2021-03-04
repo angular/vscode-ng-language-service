@@ -7,6 +7,7 @@
  */
 
 import {isNgLanguageService, NgLanguageService, PluginConfig} from '@angular/language-service/api';
+import * as assert from 'assert';
 import * as ts from 'typescript/lib/tsserverlibrary';
 import * as lsp from 'vscode-languageserver/node';
 
@@ -27,7 +28,6 @@ export interface SessionOptions {
   logger: ts.server.Logger;
   ngPlugin: string;
   resolvedNgLsPath: string;
-  resolvedTsLsPath: string;
   ivy: boolean;
   logToConsole: boolean;
 }
@@ -115,8 +115,8 @@ export class Session {
       angularOnly: true,
       ivy: options.ivy,
     };
-    if (options.resolvedTsLsPath.includes('/google3/')) {
-      pluginConfig.ivy = true;
+    if (options.host.isG3) {
+      assert(options.ivy === true, 'Ivy LS must be used in google3');
       pluginConfig.forceStrictTemplates = true;
     }
     projSvc.configurePlugin({

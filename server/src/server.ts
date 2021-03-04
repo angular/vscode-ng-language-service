@@ -29,8 +29,10 @@ const logger = createLogger({
 const ts = resolveTsServer(options.tsProbeLocations);
 const ng = resolveNgLangSvc(options.ngProbeLocations, options.ivy);
 
+const isG3 = ts.resolvedPath.includes('/google3/');
+
 // ServerHost provides native OS functionality
-const host = new ServerHost();
+const host = new ServerHost(isG3);
 
 // Establish a new server session that encapsulates lsp connection.
 const session = new Session({
@@ -39,8 +41,7 @@ const session = new Session({
   // TypeScript allows only package names as plugin names.
   ngPlugin: '@angular/language-service',
   resolvedNgLsPath: ng.resolvedPath,
-  resolvedTsLsPath: ts.resolvedPath,
-  ivy: options.ivy,
+  ivy: isG3 ? true : options.ivy,
   logToConsole: options.logToConsole,
 });
 

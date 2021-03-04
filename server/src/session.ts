@@ -89,7 +89,8 @@ export class Session {
       eventHandler: (e) => this.handleProjectServiceEvent(e),
       globalPlugins: [options.ngPlugin],
       pluginProbeLocations: [options.resolvedNgLsPath],
-      allowLocalPluginLoads: false,  // do not load plugins from tsconfig.json
+      // do not resolve plugins from the directory where tsconfig.json is located
+      allowLocalPluginLoads: false,
     });
 
     projSvc.setHostConfiguration({

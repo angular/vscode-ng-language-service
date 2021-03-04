@@ -176,7 +176,13 @@ export class ServerHost implements ts.server.ServerHost {
     return clearImmediate(timeoutId);
   }
 
-  require(initialPath: string, moduleName: string) {
+  require(initialPath: string, moduleName: string): ts.server.RequireResult {
+    if (moduleName !== '@angular/language-service') {
+      return {
+        module: undefined,
+        error: new Error(`Angular server will not load plugin '${moduleName}'.`),
+      };
+    }
     try {
       const modulePath = require.resolve(moduleName, {
         paths: [initialPath],

@@ -116,9 +116,8 @@ function resolveTsServerFromTsdk(tsdk: string): NodeModule|undefined {
 /**
  * Resolve `@angular/language-service` from the given locations.
  * @param probeLocations locations from which resolution is attempted
- * @param ivy true if Ivy language service is requested
  */
-export function resolveNgLangSvc(probeLocations: string[], ivy: boolean): NodeModule {
+export function resolveNgLangSvc(probeLocations: string[]): NodeModule {
   const ngls = '@angular/language-service';
   return resolveWithMinVersion(ngls, MIN_NG_VERSION, probeLocations, ngls);
 }

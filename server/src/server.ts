@@ -27,7 +27,7 @@ const logger = createLogger({
 });
 
 const ts = resolveTsServer(options.tsProbeLocations);
-const ng = resolveNgLangSvc(options.ngProbeLocations, options.ivy);
+const ng = resolveNgLangSvc(options.ngProbeLocations);
 
 const isG3 = ts.resolvedPath.includes('/google3/');
 

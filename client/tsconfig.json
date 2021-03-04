@@ -1,12 +1,23 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
+    "composite": true,
     "outDir": "../dist/client",
-    "rootDirs": [".", "../dist"]
+    "rootDir": "src",
+    "rootDirs": [
+      ".",
+      "../dist"
+    ]
   },
   "references": [
-    {"path": "../common"}
+    {
+      "path": "../common"
+    }
   ],
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -1,0 +1,7 @@
+{
+  "spec_dir": "dist",
+  "spec_files": [
+    "client/tests/*_spec.js",
+    "server/tests/*_spec.js"
+  ]
+}

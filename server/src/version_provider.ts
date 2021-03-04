@@ -124,6 +124,10 @@ export function resolveNgLangSvc(probeLocations: string[], ivy: boolean): NodeMo
   return resolveWithMinVersion(packageName, MIN_NG_VERSION, probeLocations, NGLANGSVC);
 }
 
+export function resolveNgcc(directory: string): NodeModule|undefined {
+  return resolve('@angular/compiler-cli/ngcc/main-ngcc.js', directory, '@angular/compiler-cli');
+}
+
 /**
  * Converts the specified string `a` to non-negative integer.
  * Returns -1 if the result is NaN.

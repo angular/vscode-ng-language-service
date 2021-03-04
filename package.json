@@ -154,7 +154,7 @@
   "scripts": {
     "compile": "yarn compile:banner && tsc -b && rollup -c",
     "compile:banner": "tsc -p server/banner.tsconfig.json && rollup -c banner.rollup.config.js",
-    "compile:test": "tsc -b server/src/tests",
+    "compile:test": "tsc -b server/src/tests && tsc -b client/src/tests",
     "compile:integration": "tsc -b integration",
     "compile:syntaxes-test": "tsc -b syntaxes/test",
     "build:syntaxes": "tsc -b syntaxes && node dist/syntaxes/build.js",
@@ -162,7 +162,8 @@
     "watch": "tsc -b -w",
     "postinstall": "vscode-install",
     "package": "rm -rf dist && node scripts/package.js",
-    "test": "yarn compile:test && jasmine dist/server/tests/*_spec.js",
+    "test": "yarn compile:test && jasmine --config=jasmine.json",
+    "test:inspect": "yarn compile:test && node --inspect-brk node_modules/jasmine/bin/jasmine.js --config=jasmine.json",
     "test:lsp": "yarn compile:integration && jasmine --config=integration/lsp/jasmine.json",
     "test:e2e": "yarn compile:integration && ./scripts/e2e.sh",
     "test:syntaxes": "yarn compile:syntaxes-test && yarn build:syntaxes && jasmine dist/syntaxes/test/driver.js"
@@ -188,6 +189,7 @@
     "vsce": "1.86.0",
     "vscode": "1.1.37",
     "vscode-languageserver-protocol": "3.16.0",
+    "vscode-languageserver-textdocument": "^1.0.1",
     "vscode-tmgrammar-test": "0.0.10"
   },
   "repository": {

@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {NgLanguageService} from '@angular/language-service';
+import {isNgLanguageService, NgLanguageService, PluginConfig} from '@angular/language-service/api';
 import * as ts from 'typescript/lib/tsserverlibrary';
 import * as lsp from 'vscode-languageserver/node';
 
@@ -27,6 +27,7 @@ export interface SessionOptions {
   logger: ts.server.Logger;
   ngPlugin: string;
   resolvedNgLsPath: string;
+  resolvedTsLsPath: string;
   ivy: boolean;
   logToConsole: boolean;
 }
@@ -110,12 +111,17 @@ export class Session {
       },
     });
 
+    const pluginConfig: PluginConfig = {
+      angularOnly: true,
+      ivy: options.ivy,
+    };
+    if (options.resolvedTsLsPath.includes('/google3/')) {
+      pluginConfig.ivy = true;
+      pluginConfig.forceStrictTemplates = true;
+    }
     projSvc.configurePlugin({
       pluginName: options.ngPlugin,
-      configuration: {
-        angularOnly: true,
-        ivy: options.ivy,
-      },
+      configuration: pluginConfig,
     });
 
     return projSvc;
@@ -699,7 +705,7 @@ export class Session {
       return undefined;
     }
     const languageService = project.getLanguageService();
-    if (!isNgLs(languageService)) {
+    if (!isNgLanguageService(languageService)) {
       return undefined;
     }
     return {
@@ -948,11 +954,6 @@ function toArray<T>(it: ts.Iterator<T>): T[] {
     results.push(itResult.value);
   }
   return results;
-}
-
-// TODO: Replace with `isNgLanguageService` from `@angular/language-service`.
-function isNgLs(ls: ts.LanguageService|NgLanguageService): ls is NgLanguageService {
-  return 'getTcb' in ls;
 }
 
 function isAngularCore(path: string): boolean {

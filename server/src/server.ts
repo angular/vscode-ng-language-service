@@ -49,7 +49,11 @@ const session = new Session({
 session.info(`Angular language server process ID: ${process.pid}`);
 session.info(`Using ${ts.name} v${ts.version} from ${ts.resolvedPath}`);
 session.info(`Using ${ng.name} v${ng.version} from ${ng.resolvedPath}`);
-session.info(`Log file: ${logger.getLogFileName()}`);
+if (logger.loggingEnabled()) {
+  session.info(`Log file: ${logger.getLogFileName()}`);
+} else {
+  session.info(`Logging is turned off. To enable, run command 'Open Angular server log'.`);
+}
 if (process.env.NG_DEBUG === 'true') {
   session.info('Angular Language Service is running under DEBUG mode');
 }

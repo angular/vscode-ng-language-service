@@ -39,6 +39,7 @@ const session = new Session({
   // TypeScript allows only package names as plugin names.
   ngPlugin: '@angular/language-service',
   resolvedNgLsPath: ng.resolvedPath,
+  resolvedTsLsPath: ts.resolvedPath,
   ivy: options.ivy,
   logToConsole: options.logToConsole,
 });

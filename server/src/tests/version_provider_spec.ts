@@ -28,16 +28,8 @@ describe('Node Module Resolver', () => {
   });
 
   it('should be able to resolve Angular language service', () => {
-    const result = resolveNgLangSvc(probeLocations, false /* ivy */);
+    const result = resolveNgLangSvc(probeLocations);
     expect(result).toBeDefined();
-    expect(result.resolvedPath.endsWith('@angular/language-service/index.js')).toBeTrue();
-  });
-
-  it('should be able to resolve Ivy version of Angular language service', () => {
-    const result = resolveNgLangSvc(probeLocations, true /* ivy */);
-    expect(result).toBeDefined();
-    // Starting from v12.0.0-next.3 @angular/language-service provides a single
-    // entry point
     expect(result.resolvedPath.endsWith('@angular/language-service/index.js')).toBeTrue();
   });
 });

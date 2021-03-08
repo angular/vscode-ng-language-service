@@ -10,6 +10,8 @@ import * as ts from 'typescript/lib/tsserverlibrary';
 import * as lsp from 'vscode-languageserver';
 import {URI} from 'vscode-uri';
 
+export const isDebugMode = process.env['NG_DEBUG'] === 'true';
+
 enum Scheme {
   File = 'file',
 }

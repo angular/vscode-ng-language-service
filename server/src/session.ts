@@ -9,6 +9,7 @@
 import {isNgLanguageService, NgLanguageService, PluginConfig} from '@angular/language-service/api';
 import * as assert from 'assert';
 import * as ts from 'typescript/lib/tsserverlibrary';
+import {promisify} from 'util';
 import * as lsp from 'vscode-languageserver/node';
 
 import {ServerOptions} from '../common/initialize';
@@ -20,7 +21,7 @@ import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './comp
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
 import {resolveAndRunNgcc} from './ngcc';
 import {ServerHost} from './server_host';
-import {filePathToUri, isConfiguredProject, lspPositionToTsPosition, lspRangeToTsPositions, tsTextSpanToLspRange, uriToFilePath} from './utils';
+import {filePathToUri, isConfiguredProject, isDebugMode, lspPositionToTsPosition, lspRangeToTsPositions, tsTextSpanToLspRange, uriToFilePath} from './utils';
 import {resolve, Version} from './version_provider';
 
 export interface SessionOptions {
@@ -39,6 +40,7 @@ enum LanguageId {
 
 // Empty definition range for files without `scriptInfo`
 const EMPTY_RANGE = lsp.Range.create(0, 0, 0, 0);
+const setImmediateP = promisify(setImmediate);
 
 /**
  * Session is a wrapper around lsp.IConnection, with all the necessary protocol
@@ -313,7 +315,7 @@ export class Session {
    * @param openFiles
    * @param delay time to wait before sending request (milliseconds)
    */
-  private triggerDiagnostics(openFiles: string[], delay: number = 200) {
+  private triggerDiagnostics(openFiles: string[], delay: number = 300) {
     // Do not immediately send a diagnostics request. Send only after user has
     // stopped typing after the specified delay.
     if (this.diagnosticsTimeout) {
@@ -333,19 +335,39 @@ export class Session {
    * Execute diagnostics request for each of the specified `openFiles`.
    * @param openFiles
    */
-  private sendPendingDiagnostics(openFiles: string[]) {
-    for (const fileName of openFiles) {
+  private async sendPendingDiagnostics(openFiles: string[]) {
+    for (let i = 0; i < openFiles.length; ++i) {
+      const fileName = openFiles[i];
       const result = this.getLSAndScriptInfo(fileName);
       if (!result) {
         continue;
       }
+      const label = `getSemanticDiagnostics - ${fileName}`;
+      if (isDebugMode) {
+        console.time(label);
+      }
       const diagnostics = result.languageService.getSemanticDiagnostics(fileName);
+      if (isDebugMode) {
+        console.timeEnd(label);
+      }
       // Need to send diagnostics even if it's empty otherwise editor state will
       // not be updated.
       this.connection.sendDiagnostics({
         uri: filePathToUri(fileName),
         diagnostics: diagnostics.map(d => tsDiagnosticToLspDiagnostic(d, result.scriptInfo)),
       });
+      if (this.diagnosticsTimeout) {
+        // There is a pending request to check diagnostics for all open files,
+        // so stop this one immediately.
+        return;
+      }
+      if (i < openFiles.length - 1) {
+        // If this is not the last file, yield so that pending I/O events get a
+        // chance to run. This will open an opportunity for the server to process
+        // incoming requests. The next file will be checked in the next iteration
+        // of the event loop.
+        await setImmediateP();
+      }
     }
   }
 

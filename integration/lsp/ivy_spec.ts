@@ -92,6 +92,24 @@ describe('Angular Ivy language server', () => {
         .toBe(`Property 'doesnotexist' does not exist on type 'FooComponent'.`);
   });
 
+  it('should support request cancellation', async () => {
+    openTextDocument(client, APP_COMPONENT);
+    const languageServiceEnabled = await waitForNgcc(client);
+    expect(languageServiceEnabled).toBeTrue();
+    // Send a request and immediately cancel it
+    const promise = client.sendRequest(lsp.HoverRequest.type, {
+      textDocument: {
+        uri: `file://${APP_COMPONENT}`,
+      },
+      position: {line: 4, character: 25},
+    });
+    // Request above is tagged with ID = 1
+    client.sendNotification('$/cancelRequest', {id: 1});
+    await expectAsync(promise).toBeRejectedWith(jasmine.objectContaining({
+      code: lsp.LSPErrorCodes.RequestCancelled,
+    }));
+  });
+
   it('does not break after opening `.d.ts` file from external template', async () => {
     client.sendNotification(lsp.DidOpenTextDocumentNotification.type, {
       textDocument: {

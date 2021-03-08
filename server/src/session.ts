@@ -67,7 +67,25 @@ export class Session {
     this.ivy = options.ivy;
     this.logToConsole = options.logToConsole;
     // Create a connection for the server. The connection uses Node's IPC as a transport.
-    this.connection = lsp.createConnection();
+    this.connection = lsp.createConnection({
+      // cancelUndispatched is a "middleware" to handle all cancellation requests.
+      // LSP spec requires every request to send a response back, even if it is
+      // cancelled. See
+      // https://microsoft.github.io/language-server-protocol/specifications/specification-current/#cancelRequest
+      cancelUndispatched(message: lsp.Message): lsp.ResponseMessage |
+      undefined {
+        return {
+          jsonrpc: message.jsonrpc,
+          // This ID is just a placeholder to satisfy the ResponseMessage type.
+          // `vscode-jsonrpc` will replace the ID with the ID of the message to
+          // be cancelled. See
+          // https://github.com/microsoft/vscode-languageserver-node/blob/193f06bf602ee1120afda8f0bac33c5161cab18e/jsonrpc/src/common/connection.ts#L619
+          id: -1,
+          error: new lsp.ResponseError(lsp.LSPErrorCodes.RequestCancelled, 'Request cancelled'),
+        };
+      }
+    });
+
     this.addProtocolHandlers(this.connection);
     this.projectService = this.createProjectService(options);
   }

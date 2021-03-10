@@ -152,8 +152,7 @@
   ],
   "main": "./dist/client/extension",
   "scripts": {
-    "compile": "yarn compile:banner && tsc -b && rollup -c",
-    "compile:banner": "tsc -p server/banner.tsconfig.json && rollup -c banner.rollup.config.js",
+    "compile": "tsc -p server/banner.tsconfig.json && tsc -b && node esbuild.js && rollup -c",
     "compile:test": "tsc -b server/src/tests && tsc -b client/src/tests",
     "compile:integration": "tsc -b integration",
     "compile:syntaxes-test": "tsc -b syntaxes/test",
@@ -180,6 +179,7 @@
     "@types/jasmine": "3.6.6",
     "@types/node": "12.20.5",
     "clang-format": "1.5.0",
+    "esbuild": "^0.9.0",
     "jasmine": "3.6.4",
     "prettier": "2.2.1",
     "rollup": "2.41.0",

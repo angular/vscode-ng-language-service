@@ -92,6 +92,11 @@
           "default": true,
           "description": "Prompt to enable the Ivy language service for the workspace when View Engine is in use."
         },
+        "angular.enable-strict-mode-prompt": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Prompt to enable the [strictTemplates](https://angular.io/guide/angular-compiler-options#stricttemplates) flag in [angularCompilerOptions](https://angular.io/guide/angular-compiler-options). Note that strict mode is only available when using Ivy."
+        },
         "angular.trace.server": {
           "type": "string",
           "scope": "window",

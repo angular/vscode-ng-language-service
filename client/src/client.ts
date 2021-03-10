@@ -173,19 +173,29 @@ function registerNotificationHandlers(
 
   const disposable2 =
       client.onNotification(SuggestStrictMode, async (params: SuggestStrictModeParams) => {
+        const config = vscode.workspace.getConfiguration();
+        if (config.get('angular.enable-strict-mode-prompt') === false) {
+          return;
+        }
+
         const openTsConfig = 'Open tsconfig.json';
         // Markdown is not generally supported in `showInformationMessage()`,
         // but links are supported. See
         // https://github.com/microsoft/vscode/issues/20595#issuecomment-281099832
+        const doNotPromptAgain = 'Do not show this again';
         const selection = await vscode.window.showInformationMessage(
             'Some language features are not available. To access all features, enable ' +
                 '[strictTemplates](https://angular.io/guide/angular-compiler-options#stricttemplates) in ' +
                 '[angularCompilerOptions](https://angular.io/guide/angular-compiler-options).',
             openTsConfig,
+            doNotPromptAgain,
         );
         if (selection === openTsConfig) {
           const document = await vscode.workspace.openTextDocument(params.configFilePath);
           vscode.window.showTextDocument(document);
+        } else if (selection === doNotPromptAgain) {
+          config.update(
+              'angular.enable-strict-mode-prompt', false, vscode.ConfigurationTarget.Global);
         }
       });
 

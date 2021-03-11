@@ -2,7 +2,7 @@
   "name": "ng-template",
   "displayName": "Angular Language Service",
   "description": "Editor services for Angular templates",
-  "version": "11.2.6",
+  "version": "11.2.7",
   "publisher": "Angular",
   "icon": "angular.png",
   "license": "MIT",

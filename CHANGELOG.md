@@ -1,3 +1,10 @@
+# v11.2.7
+
+This release reverts the following commits due to [#1198](https://github.com/angular/vscode-ng-language-service/issues/1198):
+
+- perf: prevent requests from being sent to the server when outside Angular context (fcbdf938e)
+- build: Switch to esbuild instead of rollup for the client and banner (27ccba8d0)
+
 # v11.2.6
 
 This release upgrades `@angular/language-service` to v11.2.5.

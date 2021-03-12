@@ -94,10 +94,6 @@ class Logger implements ts.server.Logger {
     }
   }
 
-  static padStringRight(str: string, padding: string) {
-    return (str + padding).slice(0, padding.length);
-  }
-
   close() {
     if (this.loggingEnabled()) {
       fs.close(this.fd, noop);
@@ -138,14 +134,14 @@ class Logger implements ts.server.Logger {
       return;
     }
 
-    s = `[${nowString()}] ${s}\n`;
+    let prefix = '';
     if (!this.inGroup || this.firstInGroup) {
-      const prefix = Logger.padStringRight(type + ' ' + this.seq.toString(), '          ');
-      s = prefix + s;
+      this.firstInGroup = false;
+      prefix = `${type} ${this.seq}`.padEnd(10) + `[${nowString()}] `;
     }
+    const entry = prefix + s + '\n';
 
-    const buf = Buffer.from(s);
-    fs.writeSync(this.fd, buf, 0, buf.length);
+    fs.writeSync(this.fd, entry);
 
     if (!this.inGroup) {
       this.seq++;

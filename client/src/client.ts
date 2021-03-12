@@ -302,9 +302,8 @@ function getProbeLocations(configValue: string|null, bundled: string): string[] 
 /**
  * Construct the arguments that's used to spawn the server process.
  * @param ctx vscode extension context
- * @param debug true if debug mode is on
  */
-function constructArgs(ctx: vscode.ExtensionContext, debug: boolean): string[] {
+function constructArgs(ctx: vscode.ExtensionContext): string[] {
   const config = vscode.workspace.getConfiguration();
   const args: string[] = ['--logToConsole'];
 
@@ -313,7 +312,7 @@ function constructArgs(ctx: vscode.ExtensionContext, debug: boolean): string[] {
     // Log file does not yet exist on disk. It is up to the server to create the file.
     const logFile = path.join(ctx.logPath, 'nglangsvc.log');
     args.push('--logFile', logFile);
-    args.push('--logVerbosity', debug ? 'verbose' : ngLog);
+    args.push('--logVerbosity', ngLog);
   }
 
   const ngdk: string|null = config.get('angular.ngdk', null);
@@ -358,7 +357,7 @@ function getServerOptions(ctx: vscode.ExtensionContext, debug: boolean): lsp.Nod
     // install prod bundle so we have to check whether dev bundle exists.
     module: debug && fs.existsSync(devBundle) ? devBundle : prodBundle,
     transport: lsp.TransportKind.ipc,
-    args: constructArgs(ctx, debug),
+    args: constructArgs(ctx),
     options: {
       env: debug ? devEnv : prodEnv,
       execArgv: debug ? devExecArgv : prodExecArgv,

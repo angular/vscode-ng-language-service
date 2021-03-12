@@ -75,7 +75,15 @@ describe('Angular Ivy language server', () => {
     });
   });
 
-  it('should show existing diagnostics on external template', async () => {
+  it('should show diagnostics for inline template on open', async () => {
+    openTextDocument(client, APP_COMPONENT);
+    const languageServiceEnabled = await waitForNgcc(client);
+    expect(languageServiceEnabled).toBeTrue();
+    const diagnostics = await getDiagnosticsForFile(client, APP_COMPONENT);
+    expect(diagnostics.length).toBe(0);
+  });
+
+  it('should show diagnostics for external template on open', async () => {
     client.sendNotification(lsp.DidOpenTextDocumentNotification.type, {
       textDocument: {
         uri: `file://${FOO_TEMPLATE}`,

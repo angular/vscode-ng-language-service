@@ -210,7 +210,6 @@ export class Session {
     // (because language service was disabled while waiting for ngcc).
     // First, make sure the Angular project is complete.
     this.runGlobalAnalysisForNewlyLoadedProject(project);
-    project.refreshDiagnostics();  // Show initial diagnostics
   }
 
   /**
@@ -222,8 +221,15 @@ export class Session {
       return;
     }
     const fileName = project.getRootScriptInfos()[0].fileName;
+    const label = `Global analysis - getSemanticDiagnostics for ${fileName}`;
+    if (isDebugMode) {
+      console.time(label);
+    }
     // Getting semantic diagnostics will trigger a global analysis.
     project.getLanguageService().getSemanticDiagnostics(fileName);
+    if (isDebugMode) {
+      console.timeEnd(label);
+    }
   }
 
   private handleCompilerOptionsDiagnostics(project: ts.server.Project) {
@@ -279,7 +285,7 @@ export class Session {
       case ts.server.ProjectsUpdatedInBackgroundEvent:
         // ProjectsUpdatedInBackgroundEvent is sent whenever diagnostics are
         // requested via project.refreshDiagnostics()
-        this.triggerDiagnostics(event.data.openFiles);
+        this.triggerDiagnostics(event.data.openFiles, event.eventName);
         break;
       case ts.server.ProjectLanguageServiceStateEvent:
         this.connection.sendNotification(ProjectLanguageService, {
@@ -290,12 +296,40 @@ export class Session {
   }
 
   /**
-   * Retrieve Angular diagnostics for the specified `openFiles` after a specific
+   * Request diagnostics to be computed due to the specified `file` being opened
+   * or changed.
+   * @param file File opened / changed
+   * @param reason Trace to explain why diagnostics are requested
+   */
+  private requestDiagnosticsOnOpenOrChangeFile(file: string, reason: string): void {
+    const files: string[] = [];
+    if (isExternalTemplate(file)) {
+      // If only external template is opened / changed, we know for sure it will
+      // not affect other files because it is local to the Component.
+      files.push(file);
+    } else {
+      // Get all open files. Cast is needed because the key of the map is
+      // actually ts.Path. See
+      // https://github.com/microsoft/TypeScript/blob/496a1d3caa21c762daa95b1ac1b75823f8774575/src/server/editorServices.ts#L978
+      const openFiles = toArray(this.projectService.openFiles.keys()) as ts.Path[];
+      for (const openFile of openFiles) {
+        const scriptInfo = this.projectService.getScriptInfoForPath(openFile);
+        if (scriptInfo) {
+          files.push(scriptInfo.fileName);
+        }
+      }
+    }
+    this.triggerDiagnostics(files, reason);
+  }
+
+  /**
+   * Retrieve Angular diagnostics for the specified `files` after a specific
    * `delay`, or renew the request if there's already a pending one.
-   * @param openFiles
+   * @param files files to be checked
+   * @param reason Trace to explain why diagnostics are triggered
    * @param delay time to wait before sending request (milliseconds)
    */
-  private triggerDiagnostics(openFiles: string[], delay: number = 300) {
+  private triggerDiagnostics(files: string[], reason: string, delay: number = 300) {
     // Do not immediately send a diagnostics request. Send only after user has
     // stopped typing after the specified delay.
     if (this.diagnosticsTimeout) {
@@ -305,24 +339,25 @@ export class Session {
     // Set a new timeout
     this.diagnosticsTimeout = setTimeout(() => {
       this.diagnosticsTimeout = null;  // clear the timeout
-      this.sendPendingDiagnostics(openFiles);
+      this.sendPendingDiagnostics(files, reason);
       // Default delay is 200ms, consistent with TypeScript. See
       // https://github.com/microsoft/vscode/blob/7b944a16f52843b44cede123dd43ae36c0405dfd/extensions/typescript-language-features/src/features/bufferSyncSupport.ts#L493)
     }, delay);
   }
 
   /**
-   * Execute diagnostics request for each of the specified `openFiles`.
-   * @param openFiles
+   * Execute diagnostics request for each of the specified `files`.
+   * @param files files to be checked
+   * @param reason Trace to explain why diagnostics is triggered
    */
-  private async sendPendingDiagnostics(openFiles: string[]) {
-    for (let i = 0; i < openFiles.length; ++i) {
-      const fileName = openFiles[i];
+  private async sendPendingDiagnostics(files: string[], reason: string) {
+    for (let i = 0; i < files.length; ++i) {
+      const fileName = files[i];
       const result = this.getLSAndScriptInfo(fileName);
       if (!result) {
         continue;
       }
-      const label = `getSemanticDiagnostics - ${fileName}`;
+      const label = `${reason} - getSemanticDiagnostics for ${fileName}`;
       if (isDebugMode) {
         console.time(label);
       }
@@ -341,7 +376,7 @@ export class Session {
         // so stop this one immediately.
         return;
       }
-      if (i < openFiles.length - 1) {
+      if (i < files.length - 1) {
         // If this is not the last file, yield so that pending I/O events get a
         // chance to run. This will open an opportunity for the server to process
         // incoming requests. The next file will be checked in the next iteration
@@ -447,7 +482,8 @@ export class Session {
         return;
       }
       if (project.languageServiceEnabled) {
-        project.refreshDiagnostics();  // Show initial diagnostics
+        // Show initial diagnostics
+        this.requestDiagnosticsOnOpenOrChangeFile(filePath, `Opening ${filePath}`);
       }
     } catch (error) {
       if (this.isProjectLoading) {
@@ -540,7 +576,7 @@ export class Session {
     if (!project || !project.languageServiceEnabled) {
       return;
     }
-    project.refreshDiagnostics();
+    this.requestDiagnosticsOnOpenOrChangeFile(scriptInfo.fileName, `Changing ${filePath}`);
   }
 
   private onDidSaveTextDocument(params: lsp.DidSaveTextDocumentParams) {
@@ -987,4 +1023,12 @@ function isExternalAngularCore(path: string): boolean {
 
 function isInternalAngularCore(path: string): boolean {
   return path.endsWith('angular2/rc/packages/core/index.d.ts');
+}
+
+function isTypeScriptFile(path: string): boolean {
+  return path.endsWith('.ts');
+}
+
+function isExternalTemplate(path: string): boolean {
+  return !isTypeScriptFile(path);
 }

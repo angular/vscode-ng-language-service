@@ -945,10 +945,10 @@ util-deprecate@^1.0.1:
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
 
-vsce@1.86.0:
-  version "1.86.0"
-  resolved "https://registry.yarnpkg.com/vsce/-/vsce-1.86.0.tgz#e95252ab3eb2636249de927a1e1fc9cb8625eebf"
-  integrity sha512-B+T46mvUnI2m7/AGHG0QshXNffGHiHJCha2YUZByNI8llFt9V4mksBFLt0iUY+Kx2akkQxi8gjxGeH7TfeHsIA==
+vsce@1.87.0:
+  version "1.87.0"
+  resolved "https://registry.yarnpkg.com/vsce/-/vsce-1.87.0.tgz#d592142c8781c984bc49dec60be940f9d26528e6"
+  integrity sha512-7Ow05XxIM4gHBq/Ho3hefdmiZG0fddHtu0M0XJ1sojyZBvxPxTHaMuBsRnfnMzgCqxDTFI5iLr94AgiwQnhOMQ==
   dependencies:
     azure-devops-node-api "^7.2.0"
     chalk "^2.4.2"

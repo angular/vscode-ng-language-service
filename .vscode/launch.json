@@ -7,8 +7,13 @@
       "request": "launch",
       "name": "Launch Client",
       "runtimeExecutable": "${execPath}",
-      "args": ["--extensionDevelopmentPath=${workspaceRoot}"],
-      "outFiles": ["${workspaceRoot}/dist/client/*.js"],
+      "args": [
+        "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceRoot}"
+      ],
+      "outFiles": [
+        "${workspaceRoot}/dist/client/*.js"
+      ],
       "preLaunchTask": {
         "type": "npm",
         "script": "watch"
@@ -20,7 +25,9 @@
       "name": "Attach to Server",
       "port": 6009,
       "restart": true,
-      "outFiles": ["${workspaceRoot}/dist/server/*.js"]
+      "outFiles": [
+        "${workspaceRoot}/dist/server/*.js"
+      ]
     },
     {
       "name": "Integration test: Attach to server",
@@ -29,7 +36,9 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "outFiles": ["${workspaceRoot}/dist/integration/lsp/*.js"],
+      "outFiles": [
+        "${workspaceRoot}/dist/integration/lsp/*.js"
+      ],
       "type": "node"
     },
     {
@@ -42,7 +51,9 @@
         "--extensionTestsPath=${workspaceRoot}/dist/integration/e2e",
         "${workspaceRoot}/integration/project"
       ],
-      "outFiles": ["${workspaceRoot}/dist/integration/e2e/*.js"],
+      "outFiles": [
+        "${workspaceRoot}/dist/integration/e2e/*.js"
+      ],
       "preLaunchTask": {
         "type": "npm",
         "script": "compile:integration"
@@ -52,7 +63,10 @@
   "compounds": [
     {
       "name": "Client + Server",
-      "configurations": ["Launch Client", "Attach to Server"]
+      "configurations": [
+        "Launch Client",
+        "Attach to Server"
+      ]
     }
   ]
 }

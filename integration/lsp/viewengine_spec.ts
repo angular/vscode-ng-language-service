@@ -94,7 +94,7 @@ describe('Angular language server', () => {
     client.sendNotification(lsp.DidOpenTextDocumentNotification.type, {
       textDocument: {
         uri: `file://${FOO_TEMPLATE}`,
-        languageId: 'typescript',
+        languageId: 'html',
         version: 1,
         text: `{{ doesnotexist }}`,
       },

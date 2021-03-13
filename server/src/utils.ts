@@ -81,3 +81,32 @@ export function isConfiguredProject(project: ts.server.Project):
     project is ts.server.ConfiguredProject {
   return project.projectKind === ts.server.ProjectKind.Configured;
 }
+
+/**
+ * A class that tracks items in most recently used order.
+ */
+export class MruTracker {
+  private readonly set = new Set<string>();
+
+  update(item: string) {
+    if (this.set.has(item)) {
+      this.set.delete(item);
+    }
+    this.set.add(item);
+  }
+
+  delete(item: string) {
+    this.set.delete(item);
+  }
+
+  /**
+   * Returns all items sorted by most recently used.
+   */
+  getAll(): string[] {
+    // Javascript Set maintains insertion order, see
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set
+    // Since items are sorted from least recently used to most recently used,
+    // we reverse the result.
+    return [...this.set].reverse();
+  }
+}

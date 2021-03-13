@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {filePathToUri, uriToFilePath} from '../utils';
+import {filePathToUri, MruTracker, uriToFilePath} from '../utils';
 
 describe('filePathToUri', () => {
   it('should return URI with File scheme', () => {
@@ -51,4 +51,41 @@ describe('uriToFilePath', () => {
       expect(filePath).toBe('//project/main.ts');
     });
   }
+});
+
+
+describe('MruTracker', () => {
+  it('should track new items', () => {
+    const tracker = new MruTracker();
+    tracker.update('a');
+    expect(tracker.getAll()).toEqual(['a']);
+  });
+
+  it('should delete existing items', () => {
+    const tracker = new MruTracker();
+    tracker.update('a');
+    tracker.delete('a');
+    expect(tracker.getAll()).toEqual([]);
+  });
+
+  it('should allow deletion of item that does not exist', () => {
+    const tracker = new MruTracker();
+    tracker.delete('a');
+    expect(tracker.getAll()).toEqual([]);
+  });
+
+  it('should return items in most recently used order', () => {
+    const tracker = new MruTracker();
+    tracker.update('a');
+    tracker.update('b');
+    expect(tracker.getAll()).toEqual(['b', 'a']);
+  });
+
+  it('should update existing item', () => {
+    const tracker = new MruTracker();
+    tracker.update('a');
+    tracker.update('b');
+    tracker.update('a');
+    expect(tracker.getAll()).toEqual(['a', 'b']);
+  });
 });

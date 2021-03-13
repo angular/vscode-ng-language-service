@@ -21,7 +21,7 @@ import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './comp
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
 import {resolveAndRunNgcc} from './ngcc';
 import {ServerHost} from './server_host';
-import {filePathToUri, isConfiguredProject, isDebugMode, lspPositionToTsPosition, lspRangeToTsPositions, tsTextSpanToLspRange, uriToFilePath} from './utils';
+import {filePathToUri, isConfiguredProject, isDebugMode, lspPositionToTsPosition, lspRangeToTsPositions, MruTracker, tsTextSpanToLspRange, uriToFilePath} from './utils';
 import {resolve, Version} from './version_provider';
 
 export interface SessionOptions {
@@ -54,6 +54,7 @@ export class Session {
   private readonly ivy: boolean;
   private readonly configuredProjToExternalProj = new Map<string, string>();
   private readonly logToConsole: boolean;
+  private readonly openFiles = new MruTracker();
   private diagnosticsTimeout: NodeJS.Timeout|null = null;
   private isProjectLoading = false;
   /**
@@ -358,12 +359,9 @@ export class Session {
       // not affect other files because it is local to the Component.
       files.push(file);
     } else {
-      // Get all open files. Cast is needed because the key of the map is
-      // actually ts.Path. See
-      // https://github.com/microsoft/TypeScript/blob/496a1d3caa21c762daa95b1ac1b75823f8774575/src/server/editorServices.ts#L978
-      const openFiles = toArray(this.projectService.openFiles.keys()) as ts.Path[];
-      for (const openFile of openFiles) {
-        const scriptInfo = this.projectService.getScriptInfoForPath(openFile);
+      // Get all open files, most recently used first.
+      for (const openFile of this.openFiles.getAll()) {
+        const scriptInfo = this.projectService.getScriptInfo(openFile);
         if (scriptInfo) {
           files.push(scriptInfo.fileName);
         }
@@ -511,6 +509,7 @@ export class Session {
     if (!filePath) {
       return;
     }
+    this.openFiles.update(filePath);
     // External templates (HTML files) should be tagged as ScriptKind.Unknown
     // so that they don't get parsed as TS files. See
     // https://github.com/microsoft/TypeScript/blob/b217f22e798c781f55d17da72ed099a9dee5c650/src/compiler/program.ts#L1897-L1899
@@ -572,6 +571,7 @@ export class Session {
     if (!filePath) {
       return;
     }
+    this.openFiles.delete(filePath);
     this.projectService.closeClientFile(filePath);
   }
 
@@ -608,6 +608,7 @@ export class Session {
     if (!filePath) {
       return;
     }
+    this.openFiles.update(filePath);
     const scriptInfo = this.projectService.getScriptInfo(filePath);
     if (!scriptInfo) {
       this.error(`Failed to get script info for ${filePath}`);
@@ -633,6 +634,10 @@ export class Session {
   private onDidSaveTextDocument(params: lsp.DidSaveTextDocumentParams) {
     const {text, textDocument} = params;
     const filePath = uriToFilePath(textDocument.uri);
+    if (!filePath) {
+      return;
+    }
+    this.openFiles.update(filePath);
     const scriptInfo = this.projectService.getScriptInfo(filePath);
     if (!scriptInfo) {
       return;

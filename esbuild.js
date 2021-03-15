@@ -21,7 +21,8 @@ const clientConfig = {
     'vscode-jsonrpc',
   ],
   format: 'cjs',
-  minify: true,
+  // Do not enable minification. It seems to break the extension on Windows (with WSL). See #1198.
+  minify: false,
 };
 
 /** @type esbuild.BuildOptions */

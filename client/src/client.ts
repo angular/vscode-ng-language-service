@@ -214,7 +214,7 @@ function registerNotificationHandlers(
         // Markdown is not generally supported in `showInformationMessage()`,
         // but links are supported. See
         // https://github.com/microsoft/vscode/issues/20595#issuecomment-281099832
-        const doNotPromptAgain = 'Do not show this again';
+        const doNotPromptAgain = 'Do not show again for this workspace';
         const selection = await vscode.window.showInformationMessage(
             'Some language features are not available. To access all features, enable ' +
                 '[strictTemplates](https://angular.io/guide/angular-compiler-options#stricttemplates) in ' +
@@ -227,7 +227,7 @@ function registerNotificationHandlers(
           vscode.window.showTextDocument(document);
         } else if (selection === doNotPromptAgain) {
           config.update(
-              'angular.enable-strict-mode-prompt', false, vscode.ConfigurationTarget.Global);
+              'angular.enable-strict-mode-prompt', false, vscode.ConfigurationTarget.Workspace);
         }
       });
 

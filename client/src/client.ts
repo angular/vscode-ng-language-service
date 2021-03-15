@@ -15,6 +15,7 @@ import {ProjectLoadingFinish, ProjectLoadingStart, SuggestIvyLanguageService, Su
 import {NgccProgress, NgccProgressToken, NgccProgressType} from '../common/progress';
 import {GetTcbRequest} from '../common/requests';
 
+import {isInsideComponentDecorator, isInsideInlineTemplateRegion} from './embedded_support';
 import {ProgressReporter} from './progress-reporter';
 
 interface GetTcbResponse {
@@ -50,6 +51,37 @@ export class AngularLanguageClient implements vscode.Disposable {
       // Don't let our output console pop open
       revealOutputChannelOn: lsp.RevealOutputChannelOn.Never,
       outputChannel: this.outputChannel,
+      middleware: {
+        provideDefinition: async (
+            document: vscode.TextDocument, position: vscode.Position,
+            token: vscode.CancellationToken, next: lsp.ProvideDefinitionSignature) => {
+          if (isInsideComponentDecorator(document, position)) {
+            return next(document, position, token);
+          }
+        },
+        provideTypeDefinition: async (
+            document: vscode.TextDocument, position: vscode.Position,
+            token: vscode.CancellationToken, next) => {
+          if (isInsideInlineTemplateRegion(document, position)) {
+            return next(document, position, token);
+          }
+        },
+        provideHover: async (
+            document: vscode.TextDocument, position: vscode.Position,
+            token: vscode.CancellationToken, next: lsp.ProvideHoverSignature) => {
+          if (isInsideInlineTemplateRegion(document, position)) {
+            return next(document, position, token);
+          }
+        },
+        provideCompletionItem: async (
+            document: vscode.TextDocument, position: vscode.Position,
+            context: vscode.CompletionContext, token: vscode.CancellationToken,
+            next: lsp.ProvideCompletionItemsSignature) => {
+          if (isInsideInlineTemplateRegion(document, position)) {
+            return next(document, position, context, token);
+          }
+        }
+      }
     };
   }
 

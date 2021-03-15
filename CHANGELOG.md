@@ -1,3 +1,11 @@
+# v11.2.8
+
+- perf: prevent requests from being sent to the server when outside Angular context (fcbdf938e)
+- build: Switch to esbuild instead of rollup for the client and banner (27ccba8d0)
+- perf: check diagnostics in most recently used order (7f2873f6f56fbaff6c8232389ce64f3e60484a09)
+- perf: Compute diagnostics for a single file if it is external template  (a2b77fa7680c8328c67f77e3765fc179702405c0)
+- fix: logger should print one timestamp for an entire group (4d94f40d4c699916b379c9dab38a9e9e254e6c3e)
+
 # v11.2.7
 
 This release reverts the following commits due to [#1198](https://github.com/angular/vscode-ng-language-service/issues/1198):

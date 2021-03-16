@@ -30,8 +30,15 @@ export class AngularLanguageClient implements vscode.Disposable {
   private readonly outputChannel: vscode.OutputChannel;
   private readonly clientOptions: lsp.LanguageClientOptions;
   private readonly name = 'Angular Language Service';
+  private readonly virtualDocumentContents = new Map<string, string>();
 
   constructor(private readonly context: vscode.ExtensionContext) {
+    vscode.workspace.registerTextDocumentContentProvider('angular-embedded-content', {
+      provideTextDocumentContent: uri => {
+        return this.virtualDocumentContents.get(uri.toString());
+      }
+    });
+
     this.outputChannel = vscode.window.createOutputChannel(this.name);
     // Options to control the language client
     this.clientOptions = {
@@ -69,20 +76,53 @@ export class AngularLanguageClient implements vscode.Disposable {
         provideHover: async (
             document: vscode.TextDocument, position: vscode.Position,
             token: vscode.CancellationToken, next: lsp.ProvideHoverSignature) => {
-          if (isInsideInlineTemplateRegion(document, position)) {
-            return next(document, position, token);
+          if (!isInsideInlineTemplateRegion(document, position)) {
+            return;
           }
+
+          const angularResultsPromise = next(document, position, token);
+
+          const vdocUri = this.createVirtualHtmlDoc(document);
+          const htmlProviderResultsPromise = vscode.commands.executeCommand<vscode.Hover[]>(
+              'vscode.executeHoverProvider', vdocUri, position);
+
+          const [angularResults, htmlProviderResults] =
+              await Promise.all([angularResultsPromise, htmlProviderResultsPromise]);
+          return angularResults ?? htmlProviderResults?.[0];
         },
         provideCompletionItem: async (
             document: vscode.TextDocument, position: vscode.Position,
             context: vscode.CompletionContext, token: vscode.CancellationToken,
             next: lsp.ProvideCompletionItemsSignature) => {
-          if (isInsideInlineTemplateRegion(document, position)) {
-            return next(document, position, context, token);
+          // If not in inline template, do not perform request forwarding
+          if (!isInsideInlineTemplateRegion(document, position)) {
+            return;
           }
+          const angularCompletionsPromise = next(document, position, context, token) as
+              Promise<vscode.CompletionItem[]|null|undefined>;
+
+          const vdocUri = this.createVirtualHtmlDoc(document);
+          // This will not include angular stuff because the vdoc is not associated with an angular
+          // component
+          const htmlProviderCompletionsPromise =
+              vscode.commands.executeCommand<vscode.CompletionList>(
+                  'vscode.executeCompletionItemProvider', vdocUri, position,
+                  context.triggerCharacter);
+          const [angularCompletions, htmlProviderCompletions] =
+              await Promise.all([angularCompletionsPromise, htmlProviderCompletionsPromise]);
+
+          return [...(angularCompletions ?? []), ...(htmlProviderCompletions?.items ?? [])];
         }
       }
     };
+  }
+
+  private createVirtualHtmlDoc(document: vscode.TextDocument): vscode.Uri {
+    const originalUri = document.uri.toString();
+    const vdocUri = vscode.Uri.file(encodeURIComponent(originalUri) + '.html')
+                        .with({scheme: 'angular-embedded-content', authority: 'html'});
+    this.virtualDocumentContents.set(vdocUri.toString(), document.getText());
+    return vdocUri;
   }
 
   /**

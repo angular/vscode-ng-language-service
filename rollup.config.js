@@ -1,5 +1,5 @@
+import commonjs from '@rollup/plugin-commonjs';
 import * as fs from 'fs';
-import commonjs from 'rollup-plugin-commonjs';
 
 module.exports = [
   {

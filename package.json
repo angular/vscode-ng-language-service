@@ -136,7 +136,7 @@
   ],
   "main": "./dist/client/extension",
   "scripts": {
-    "compile": "tsc -p server/banner.tsconfig.json && tsc -b && node esbuild.js && rollup -c",
+    "compile": "tsc -p server/banner.tsconfig.json && tsc -b && node esbuild.js",
     "compile:test": "tsc -b server/src/tests && tsc -b client/src/tests",
     "compile:integration": "tsc -b integration",
     "compile:syntaxes-test": "tsc -b syntaxes/test",
@@ -166,8 +166,6 @@
     "esbuild": "^0.9.0",
     "jasmine": "3.6.4",
     "prettier": "2.2.1",
-    "rollup": "2.38.5",
-    "rollup-plugin-commonjs": "10.1.0",
     "tslint": "6.1.3",
     "tslint-eslint-rules": "5.4.0",
     "vsce": "1.85.0",

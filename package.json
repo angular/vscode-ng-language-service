@@ -164,7 +164,6 @@
     "build:syntaxes": "tsc -b syntaxes && node dist/syntaxes/build.js",
     "format": "scripts/format.sh",
     "watch": "tsc -b -w",
-    "postinstall": "vscode-install",
     "package": "rm -rf dist && node scripts/package.js",
     "test": "yarn compile:test && jasmine --config=jasmine.json",
     "test:inspect": "yarn compile:test && node --inspect-brk node_modules/jasmine/bin/jasmine.js --config=jasmine.json",
@@ -183,6 +182,7 @@
   "devDependencies": {
     "@types/jasmine": "3.6.7",
     "@types/node": "12.20.6",
+    "@types/vscode": "1.52.0",
     "clang-format": "1.5.0",
     "esbuild": "0.9.6",
     "jasmine": "3.7.0",
@@ -192,7 +192,6 @@
     "tslint": "6.1.3",
     "tslint-eslint-rules": "5.4.0",
     "vsce": "1.87.0",
-    "vscode": "1.1.37",
     "vscode-languageserver-protocol": "3.16.0",
     "vscode-languageserver-textdocument": "1.0.1",
     "vscode-tmgrammar-test": "0.0.10"

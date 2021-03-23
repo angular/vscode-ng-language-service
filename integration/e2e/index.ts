@@ -1,3 +1,6 @@
+/*
+Disable e2e tests for now since they are not run on CI.
+
 import * as testRunner from 'vscode/lib/testrunner';
 
 // This is the entry point of the test.
@@ -6,3 +9,4 @@ import * as testRunner from 'vscode/lib/testrunner';
 testRunner.configure({ui: 'bdd', useColors: true, timeout: 100000});
 
 module.exports = testRunner;
+*/

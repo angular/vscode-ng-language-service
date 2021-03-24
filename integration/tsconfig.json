@@ -8,6 +8,7 @@
     { "path": "../server/tsconfig.json" }
   ],
   "include": [
+    "test_constants.ts",
     "e2e",
     "lsp"
   ]

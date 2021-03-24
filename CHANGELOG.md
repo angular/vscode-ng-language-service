@@ -1,3 +1,11 @@
+# v11.2.9
+This release upgrades `@angular/language-service` to v11.2.7.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1127-2021-03-24).
+
+bug fixes in `@angular/language-service`:
+* **compiler-cli:** add `useInlining` option to type check config ([#41268](https://github.com/angular/angular/issues/41268)) ([57644e9](https://github.com/angular/angular/commit/57644e95aadbfe9c8f336be77a22f7a5e1859758)), closes [#40963](https://github.com/angular/angular/issues/40963)
+* **language-service:** show suggestion when type inference is suboptimal ([#41072](https://github.com/angular/angular/issues/41072)) ([18cd7a0](https://github.com/angular/angular/commit/18cd7a0c6921983556fe1fffbff93d42ae138007)), closes [angular/vscode-ng-language-service#1155](https://github.com/angular/vscode-ng-language-service/issues/1155) [#41042](https://github.com/angular/angular/issues/41042)
+
 # v11.2.8
 
 - perf: prevent requests from being sent to the server when outside Angular context (fcbdf938e)

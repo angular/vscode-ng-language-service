@@ -3,14 +3,15 @@
 set -ex -o pipefail
 
 # Install test project dependencies
+if [[ -z "${CI}" ]]; then
+  (cd integration/project && yarn)
+  (cd integration/workspace && yarn)
+fi
+
+# Run ngcc before test starts
 (
   cd integration/project
-  yarn
   yarn ngcc
-)
-(
-  cd integration/workspace
-  yarn
 )
 
 # Server unit tests
@@ -20,7 +21,7 @@ yarn run test
 yarn run test:lsp
 
 # E2E test that brings up full vscode
-# TODO: Disabled for now because it cannot be run on Travis
+# TODO: Disabled for now because it cannot be run on CircleCI
 # yarn run test:e2e
 
 # Syntaxes tests

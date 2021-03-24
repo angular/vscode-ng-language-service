@@ -10,6 +10,12 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: yarn
+      - node/install-packages:
+          app-dir: integration/project
+          pkg-manager: yarn
+      - node/install-packages:
+          app-dir: integration/workspace
+          pkg-manager: yarn
       - run: scripts/lint.sh
       - run: scripts/format.sh
       - run: scripts/build.sh

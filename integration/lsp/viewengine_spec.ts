@@ -8,8 +8,11 @@
 
 import {MessageConnection} from 'vscode-jsonrpc';
 import * as lsp from 'vscode-languageserver-protocol';
+
 import {SuggestIvyLanguageService, SuggestIvyLanguageServiceParams} from '../../common/notifications';
-import {APP_COMPONENT, createConnection, FOO_TEMPLATE, initializeServer, openTextDocument} from './test_utils';
+import {APP_COMPONENT, FOO_TEMPLATE} from '../test_constants';
+
+import {createConnection, initializeServer, openTextDocument} from './test_utils';
 
 describe('Angular language server', () => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000; /* 10 seconds */

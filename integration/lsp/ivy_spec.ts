@@ -15,8 +15,9 @@ import {URI} from 'vscode-uri';
 import {ProjectLanguageService, ProjectLanguageServiceParams, SuggestStrictMode, SuggestStrictModeParams} from '../../common/notifications';
 import {NgccProgress, NgccProgressToken, NgccProgressType} from '../../common/progress';
 import {GetComponentsWithTemplateFile, GetTcbRequest} from '../../common/requests';
+import {APP_COMPONENT, FOO_COMPONENT, FOO_TEMPLATE, PROJECT_PATH, TSCONFIG} from '../test_constants';
 
-import {APP_COMPONENT, createConnection, createTracer, FOO_COMPONENT, FOO_TEMPLATE, initializeServer, openTextDocument, PROJECT_PATH, TSCONFIG} from './test_utils';
+import {createConnection, createTracer, initializeServer, openTextDocument} from './test_utils';
 
 const setTimeoutP = promisify(setTimeout);
 

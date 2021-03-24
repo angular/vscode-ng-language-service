@@ -8,17 +8,10 @@
 
 import {fork} from 'child_process';
 import * as fs from 'fs';
-import {resolve} from 'path';
 import {createMessageConnection, IPCMessageReader, IPCMessageWriter, MessageConnection} from 'vscode-jsonrpc/node';
 import * as lsp from 'vscode-languageserver-protocol';
 
-const SERVER_PATH = resolve(__dirname, '../../../dist/npm/server/index.js');
-const PACKAGE_ROOT = resolve(__dirname, '../../..');
-export const PROJECT_PATH = `${PACKAGE_ROOT}/integration/project`;
-export const APP_COMPONENT = `${PROJECT_PATH}/app/app.component.ts`;
-export const FOO_TEMPLATE = `${PROJECT_PATH}/app/foo.component.html`;
-export const FOO_COMPONENT = `${PROJECT_PATH}/app/foo.component.ts`;
-export const TSCONFIG = `${PROJECT_PATH}/tsconfig.json`;
+import {PROJECT_PATH, SERVER_PATH} from '../test_constants';
 
 export interface ServerOptions {
   ivy: boolean;

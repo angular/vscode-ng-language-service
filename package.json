@@ -181,7 +181,7 @@
   },
   "devDependencies": {
     "@types/jasmine": "3.6.9",
-    "@types/node": "12.20.6",
+    "@types/node": "12.20.7",
     "@types/vscode": "1.52.0",
     "clang-format": "1.5.0",
     "esbuild": "0.9.6",

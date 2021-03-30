@@ -184,7 +184,7 @@
     "@types/node": "12.20.6",
     "@types/vscode": "1.52.0",
     "clang-format": "1.5.0",
-    "esbuild": "0.9.6",
+    "esbuild": "0.11.2",
     "jasmine": "3.7.0",
     "prettier": "2.2.1",
     "rollup": "2.41.5",

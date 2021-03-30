@@ -115,8 +115,8 @@ export class AngularLanguageClient implements vscode.Disposable {
     await this.client.onReady();
     // Must wait for the client to be ready before registering notification
     // handlers.
-    registerNotificationHandlers(this.client, this.context);
-    registerProgressHandlers(this.client, this.context);
+    this.disposables.push(registerNotificationHandlers(this.client));
+    this.disposables.push(registerProgressHandlers(this.client));
   }
 
   /**
@@ -170,8 +170,7 @@ export class AngularLanguageClient implements vscode.Disposable {
   }
 }
 
-function registerNotificationHandlers(
-    client: lsp.LanguageClient, context: vscode.ExtensionContext) {
+function registerNotificationHandlers(client: lsp.LanguageClient): vscode.Disposable {
   const disposable1 = client.onNotification(ProjectLoadingStart, () => {
     vscode.window.withProgress(
         {
@@ -224,10 +223,10 @@ function registerNotificationHandlers(
         }
       });
 
-  context.subscriptions.push(disposable1, disposable2, disposable3);
+  return vscode.Disposable.from(disposable1, disposable2, disposable3);
 }
 
-function registerProgressHandlers(client: lsp.LanguageClient, context: vscode.ExtensionContext) {
+function registerProgressHandlers(client: lsp.LanguageClient) {
   const progressReporters = new Map<string, ProgressReporter>();
   const disposable =
       client.onProgress(NgccProgressType, NgccProgressToken, async (params: NgccProgress) => {
@@ -254,8 +253,15 @@ function registerProgressHandlers(client: lsp.LanguageClient, context: vscode.Ex
           reporter.report(params.message);
         }
       });
-  // Dispose the progress handler on exit
-  context.subscriptions.push(disposable);
+  const reporterDisposer = vscode.Disposable.from({
+    dispose() {
+      for (const reporter of progressReporters.values()) {
+        reporter.finish();
+      }
+      disposable.dispose();
+    }
+  });
+  return reporterDisposer;
 }
 
 /**

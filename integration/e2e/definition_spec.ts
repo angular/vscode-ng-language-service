@@ -3,22 +3,22 @@ import {APP_COMPONENT} from '../test_constants';
 import {activate} from './helper';
 
 const DEFINITION_COMMAND = 'vscode.executeDefinitionProvider';
+const APP_COMPONENT_URI = vscode.Uri.file(APP_COMPONENT);
 
-describe('Angular LS', () => {
+describe('Angular Ivy LS', () => {
+  beforeAll(async () => {
+    await activate(APP_COMPONENT_URI);
+  }, 25000 /* 25 seconds */);
+
   it(`returns definition for variable in template`, async () => {
-    const docUri = vscode.Uri.file(APP_COMPONENT);
-
     // vscode Position is zero-based
     //   template: `<h1>Hello {{name}}</h1>`,
     //                          ^-------- here
     const position = new vscode.Position(4, 25);
-
-    await activate(docUri);
-
     // For a complete list of standard commands, see
     // https://code.visualstudio.com/api/references/commands
     const definitions = await vscode.commands.executeCommand<vscode.LocationLink[]>(
-        DEFINITION_COMMAND, docUri, position);
+        DEFINITION_COMMAND, APP_COMPONENT_URI, position);
     expect(definitions?.length).toBe(1);
     const def = definitions![0];
     expect(def.targetUri.fsPath).toBe(APP_COMPONENT);  // in the same document

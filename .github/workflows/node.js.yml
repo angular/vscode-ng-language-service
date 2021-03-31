@@ -1,0 +1,30 @@
+# This workflow will do a clean install of node dependencies, build the source code and run the E2E tests.
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: E2E Test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - run: yarn install
+    - run: yarn install --cwd integration/project
+    - run: scripts/build.sh
+    - run: xvfb-run -a yarn run test:e2e
+      if: runner.os == 'Linux'
+    - run: yarn run test:e2e
+      if: runner.os != 'Linux'

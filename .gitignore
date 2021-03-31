@@ -9,3 +9,9 @@ dist/
 .vscode/settings.json
 .vimrc
 .nvimrc
+
+
+# Ignore files log and local only files related to ng-dev
+*.log
+.ng-dev.user*
+.husky/_

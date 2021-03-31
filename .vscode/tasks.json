@@ -28,6 +28,11 @@
       "problemMatcher": [
         "$tsc-watch"
       ]
+    },
+    {
+      "type": "shell",
+      "label": "build vsix",
+      "command": "./scripts/build.sh"
     }
   ]
 }

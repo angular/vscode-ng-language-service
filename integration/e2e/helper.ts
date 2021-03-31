@@ -6,5 +6,5 @@ function sleep(ms: number) {
 
 export async function activate(uri: vscode.Uri) {
   await vscode.window.showTextDocument(uri);
-  await sleep(3 * 1000);  // Wait for server activation
+  await sleep(20 * 1000);  // Wait for server activation, including ngcc run
 }

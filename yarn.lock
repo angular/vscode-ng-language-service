@@ -17,9 +17,10 @@
   dependencies:
     tslib "^2.0.0"
 
-"@angular/dev-infra-private@https://github.com/angular/dev-infra-private-builds.git#aeb8676ab6275272829e9d68388ec2e6c73b4eaa":
+"@angular/dev-infra-private@https://github.com/angular/dev-infra-private-builds.git#ebf0a487a4de71746b5b025e4e7878ca5714ba46":
   version "0.0.0"
-  resolved "https://github.com/angular/dev-infra-private-builds.git#aeb8676ab6275272829e9d68388ec2e6c73b4eaa"
+  uid ebf0a487a4de71746b5b025e4e7878ca5714ba46
+  resolved "https://github.com/angular/dev-infra-private-builds.git#ebf0a487a4de71746b5b025e4e7878ca5714ba46"
   dependencies:
     "@angular/benchpress" "0.2.1"
     "@bazel/buildifier" "^0.29.0"
@@ -31,6 +32,7 @@
     clang-format "^1.4.0"
     cli-progress "^3.7.0"
     conventional-commits-parser "^3.2.1"
+    git-raw-commits "^2.0.10"
     glob "7.1.2"
     inquirer "^7.3.3"
     minimatch "^3.0.4"
@@ -775,6 +777,11 @@ css-what@^4.0.0:
   resolved "https://registry.yarnpkg.com/css-what/-/css-what-4.0.0.tgz#35e73761cab2eeb3d3661126b23d7aa0e8432233"
   integrity sha512-teijzG7kwYfNVsUh2H/YN62xW3KK9YhXEgSlbxMlcyjPNvdKJqFx5lrwlJgoFP1ZHlB89iGDlo/JyshKeRhv5A==
 
+dargs@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/dargs/-/dargs-7.0.0.tgz#04015c41de0bcb69ec84050f3d9be0caf8d6d5cc"
+  integrity sha512-2iy1EkLdlBzQGvbweYRFxmFath8+K7+AKB0TlhHWkNuH+TmovaMH/Wp7V7R4u7f4SnX3OgLsU9t1NI9ioDnUpg==
+
 dashdash@^1.12.0:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/dashdash/-/dashdash-1.14.1.tgz#853cfa0f7cbe2fed5de20326b8dd581035f6e2f0"
@@ -1111,6 +1118,17 @@ getpass@^0.1.1:
   integrity sha1-Xv+OPmhNVprkyysSgmBOi6YhSfo=
   dependencies:
     assert-plus "^1.0.0"
+
+git-raw-commits@^2.0.10:
+  version "2.0.10"
+  resolved "https://registry.yarnpkg.com/git-raw-commits/-/git-raw-commits-2.0.10.tgz#e2255ed9563b1c9c3ea6bd05806410290297bbc1"
+  integrity sha512-sHhX5lsbG9SOO6yXdlwgEMQ/ljIn7qMpAbJZCGfXX2fq5T8M5SrDnpYk9/4HswTildcIqatsWa91vty6VhWSaQ==
+  dependencies:
+    dargs "^7.0.0"
+    lodash "^4.17.15"
+    meow "^8.0.0"
+    split2 "^3.0.0"
+    through2 "^4.0.0"
 
 glob@7.1.2:
   version "7.1.2"

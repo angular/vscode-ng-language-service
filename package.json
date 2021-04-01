@@ -160,6 +160,7 @@
     "vscode-uri": "3.0.2"
   },
   "devDependencies": {
+    "@angular/dev-infra-private": "https://github.com/angular/dev-infra-private-builds.git#aeb8676ab6275272829e9d68388ec2e6c73b4eaa",
     "@types/jasmine": "3.6.3",
     "@types/node": "12.19.16",
     "clang-format": "1.5.0",

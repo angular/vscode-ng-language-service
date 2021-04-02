@@ -14,7 +14,7 @@ import {URI} from 'vscode-uri';
 
 import {ProjectLanguageService, ProjectLanguageServiceParams, SuggestStrictMode, SuggestStrictModeParams} from '../../common/notifications';
 import {NgccProgress, NgccProgressToken, NgccProgressType} from '../../common/progress';
-import {GetComponentsWithTemplateFile, GetTcbRequest} from '../../common/requests';
+import {GetComponentsWithTemplateFile, GetTcbRequest, IsInAngularProject} from '../../common/requests';
 import {APP_COMPONENT, FOO_COMPONENT, FOO_TEMPLATE, PROJECT_PATH, TSCONFIG} from '../test_constants';
 
 import {createConnection, createTracer, initializeServer, openTextDocument} from './test_utils';
@@ -408,6 +408,23 @@ describe('Angular Ivy language server', () => {
     expect(codeLensResolveResponse).toBeDefined();
     expect(codeLensResolveResponse?.command?.title).toEqual('Go to component');
   });
+
+  it('detects an Angular project', async () => {
+    openTextDocument(client, FOO_TEMPLATE);
+    await waitForNgcc(client);
+    const templateResponse = await client.sendRequest(IsInAngularProject, {
+      textDocument: {
+        uri: `file://${FOO_TEMPLATE}`,
+      }
+    });
+    expect(templateResponse).toBe(true);
+    const componentResponse = await client.sendRequest(IsInAngularProject, {
+      textDocument: {
+        uri: `file://${FOO_COMPONENT}`,
+      }
+    });
+    expect(componentResponse).toBe(true);
+  })
 });
 
 function onNgccProgress(client: MessageConnection): Promise<string> {

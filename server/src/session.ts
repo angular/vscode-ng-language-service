@@ -228,6 +228,16 @@ export class Session {
   }
 
   private onCodeLensResolve(params: lsp.CodeLens): lsp.CodeLens {
+    const lsInfo = this.getLSAndScriptInfo(params.data);
+    if (lsInfo === undefined) {
+      return params;
+    }
+    const project = this.getDefaultProjectForScriptInfo(lsInfo.scriptInfo);
+    // If the language service is disabled, the angular command will not be available.
+    if (!project?.languageServiceEnabled) {
+      return params;
+    }
+
     const components = this.onGetComponentsWithTemplateFile({textDocument: params.data});
     if (components !== undefined && components.length > 0) {
       params.command = {

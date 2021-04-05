@@ -72,9 +72,9 @@
   ],
   "compounds": [
     {
-      "name": "Client + Server",
+      "name": "Dev Client + Server",
       "configurations": [
-        "Launch Client",
+        "Launch Dev Client",
         "Attach to Server"
       ]
     }

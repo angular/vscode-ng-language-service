@@ -544,6 +544,18 @@ export class Session {
       if (project.languageServiceEnabled) {
         // Show initial diagnostics
         this.requestDiagnosticsOnOpenOrChangeFile(filePath, `Opening ${filePath}`);
+        if (scriptKind === ts.ScriptKind.TS) {
+          // When a TS file is opened, its script version is changed because
+          // the internal representation switches from TextStorage to
+          // ScriptVersionCache.
+          // https://github.com/microsoft/TypeScript/blob/eebb89533b7f26a89eb6fc8d830f607573d934a5/src/server/scriptInfo.ts#L225
+          // The version change will cause the source file to be updated and
+          // invalidate the source file cached by NgCompiler.
+          // Here we mark the project as dirty to force a new program to be
+          // created, thereby triggering NgCompiler to reanalyze the program
+          // and pick up the changed source file.
+          project.markAsDirty();
+        }
       }
     } catch (error) {
       if (this.isProjectLoading) {

@@ -408,6 +408,41 @@ describe('Angular Ivy language server', () => {
     expect(codeLensResolveResponse).toBeDefined();
     expect(codeLensResolveResponse?.command?.title).toEqual('Go to component');
   });
+
+  it('should mark project as dirty after a TS file is opened', async () => {
+    // When the first file is opened, it initiates the global analysis.
+    // NgCompiler caches source file based on the input program (call it P0)
+    // at this point.
+    openTextDocument(client, APP_COMPONENT);
+    // Right after APP_COMPONENT is opened, diagnostics are requested.
+    // Because APP_COMPONENT has an inline template, NgCompiler injects the
+    // typecheck file and asks for a new program (P1).
+    const d0 = await getDiagnosticsForFile(client, APP_COMPONENT);
+    expect(d0.length).toBe(0);
+    // When the second file is opened, its script version is changed because
+    // the internal representation switches from TextStorage to ScriptVersionCache.
+    // https://github.com/microsoft/TypeScript/blob/eebb89533b7f26a89eb6fc8d830f607573d934a5/src/server/scriptInfo.ts#L225
+    // Although script info version is changed, program remains P1 because
+    // project is not marked as dirty (rightly so because there is no
+    // user-initiated change).
+    openTextDocument(client, FOO_COMPONENT);
+    // Right after FOO_COMPONENT is opened, diagnostics are requested.
+    // Because FOO_COMPONENT has an external template, NgCompiler injects the
+    // typecheck file and asks for a new program (P2).
+    const d1 = await getDiagnosticsForFile(client, FOO_COMPONENT);
+    expect(d1.length).toBe(0);
+    // When getDefinition is requested on FOO_COMPONENT, NgCommpiler compares
+    // the input source file from P2 with the cached source file from P0.
+    // If the source file for FOO_COMPONENT is not updated, NgCompiler will not
+    // return any information.
+    const response = await client.sendRequest(lsp.DefinitionRequest.type, {
+      textDocument: {
+        uri: `file://${FOO_COMPONENT}`,
+      },
+      position: {line: 3, character: 24},
+    }) as lsp.LocationLink[];
+    expect(response[0].targetUri).toBe(`file://${FOO_TEMPLATE}`);
+  });
 });
 
 function onNgccProgress(client: MessageConnection): Promise<string> {

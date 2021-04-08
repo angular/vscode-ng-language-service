@@ -1,3 +1,16 @@
+# v11.2.10
+
+This release upgrades `@angular/language-service` to v11.2.9.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1129-2021-04-07).
+
+Bug fixes:
+1. Allow analysis to continue with invalid style url (#41403) (#41489) (07131fa)
+1. Dispose reporters and notification handlers when client is stopped (ef5297de7)
+1. Only restart language server on angular configuration change (ba99ed814)
+
+Performance improvements:
+1. Add perf tracing to LanguageService (#41401) (7b0a800)
+
 # v11.2.9
 This release upgrades `@angular/language-service` to v11.2.7.
 For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1127-2021-03-24).

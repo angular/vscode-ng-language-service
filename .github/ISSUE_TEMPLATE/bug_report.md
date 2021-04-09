@@ -34,7 +34,7 @@ recommend you upload it.
 Go to the command palette (Cmd+Shift+P on Mac, Ctrl+Shift+P on Windows), search `Open Angular Server log`
 
 Set Angular Log level to verbose.
-Open settings (File/Preferences/Settings on Windows, Code/Preferences/Settings on Mac), go to Extensions/Angular Language Service, set `Angular: Log` to `verbose`.
+Open settings (File/Preferences/Settings on Windows, Code/Preferences/Settings on Mac), go to Extensions/Angular Language Service, set `angular.log` to `verbose`.
 
 **Screenshots**
 

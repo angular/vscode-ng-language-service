@@ -15,7 +15,7 @@ import * as lsp from 'vscode-languageserver/node';
 import {ServerOptions} from '../common/initialize';
 import {ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestIvyLanguageService, SuggestStrictMode} from '../common/notifications';
 import {NgccProgressToken, NgccProgressType} from '../common/progress';
-import {GetTcbParams, GetTcbRequest, GetTcbResponse} from '../common/requests';
+import {GetTcbParams, GetTcbRequest, GetTcbResponse, IsInAngularProject, IsInAngularProjectParams} from '../common/requests';
 
 import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './completion';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
@@ -164,6 +164,27 @@ export class Session {
     conn.onCompletion(p => this.onCompletion(p));
     conn.onCompletionResolve(p => this.onCompletionResolve(p));
     conn.onRequest(GetTcbRequest, p => this.onGetTcb(p));
+    conn.onRequest(IsInAngularProject, p => this.isInAngularProject(p));
+  }
+
+  private isInAngularProject(params: IsInAngularProjectParams): boolean {
+    const filePath = uriToFilePath(params.textDocument.uri);
+    if (!filePath) {
+      return false;
+    }
+    const scriptInfo = this.projectService.getScriptInfo(filePath);
+    if (!scriptInfo) {
+      return false;
+    }
+    const project = this.projectService.getDefaultProjectForFile(
+        scriptInfo.fileName,
+        false  // ensureProject
+    );
+    if (!project) {
+      return false;
+    }
+    const angularCore = project.getFileNames().find(isAngularCore);
+    return angularCore !== undefined;
   }
 
   private onGetTcb(params: GetTcbParams): GetTcbResponse|undefined {

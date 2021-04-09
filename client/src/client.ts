@@ -13,7 +13,7 @@ import * as lsp from 'vscode-languageclient/node';
 
 import {ProjectLoadingFinish, ProjectLoadingStart, SuggestIvyLanguageService, SuggestIvyLanguageServiceParams, SuggestStrictMode, SuggestStrictModeParams} from '../common/notifications';
 import {NgccProgress, NgccProgressToken, NgccProgressType} from '../common/progress';
-import {GetTcbRequest} from '../common/requests';
+import {GetTcbRequest, IsInAngularProject} from '../common/requests';
 
 import {isInsideComponentDecorator, isInsideInlineTemplateRegion} from './embedded_support';
 import {ProgressReporter} from './progress-reporter';
@@ -30,6 +30,9 @@ export class AngularLanguageClient implements vscode.Disposable {
   private readonly outputChannel: vscode.OutputChannel;
   private readonly clientOptions: lsp.LanguageClientOptions;
   private readonly name = 'Angular Language Service';
+  private readonly virtualDocumentContents = new Map<string, string>();
+  /** A map that indicates whether Angular could be found in the file's project. */
+  private readonly fileToIsInAngularProjectMap = new Map<string, boolean>();
 
   constructor(private readonly context: vscode.ExtensionContext) {
     this.outputChannel = vscode.window.createOutputChannel(this.name);
@@ -55,34 +58,69 @@ export class AngularLanguageClient implements vscode.Disposable {
         provideDefinition: async (
             document: vscode.TextDocument, position: vscode.Position,
             token: vscode.CancellationToken, next: lsp.ProvideDefinitionSignature) => {
-          if (isInsideComponentDecorator(document, position)) {
+          if (await this.isInAngularProject(document) &&
+              isInsideComponentDecorator(document, position)) {
             return next(document, position, token);
           }
         },
         provideTypeDefinition: async (
             document: vscode.TextDocument, position: vscode.Position,
             token: vscode.CancellationToken, next) => {
-          if (isInsideInlineTemplateRegion(document, position)) {
+          if (await this.isInAngularProject(document) &&
+              isInsideInlineTemplateRegion(document, position)) {
             return next(document, position, token);
           }
         },
         provideHover: async (
             document: vscode.TextDocument, position: vscode.Position,
             token: vscode.CancellationToken, next: lsp.ProvideHoverSignature) => {
-          if (isInsideInlineTemplateRegion(document, position)) {
-            return next(document, position, token);
+          if (!(await this.isInAngularProject(document)) ||
+              !isInsideInlineTemplateRegion(document, position)) {
+            return;
           }
+          return next(document, position, token);
         },
         provideCompletionItem: async (
             document: vscode.TextDocument, position: vscode.Position,
             context: vscode.CompletionContext, token: vscode.CancellationToken,
             next: lsp.ProvideCompletionItemsSignature) => {
-          if (isInsideInlineTemplateRegion(document, position)) {
-            return next(document, position, context, token);
+          // If not in inline template, do not perform request forwarding
+          if (!(await this.isInAngularProject(document)) ||
+              !isInsideInlineTemplateRegion(document, position)) {
+            return;
           }
+          return next(document, position, context, token);
         }
       }
     };
+  }
+
+  private async isInAngularProject(doc: vscode.TextDocument): Promise<boolean> {
+    if (this.client === null) {
+      return false;
+    }
+    const uri = doc.uri.toString();
+    if (this.fileToIsInAngularProjectMap.has(uri)) {
+      return this.fileToIsInAngularProjectMap.get(uri)!;
+    }
+
+    try {
+      const response = await this.client.sendRequest(IsInAngularProject, {
+        textDocument: this.client.code2ProtocolConverter.asTextDocumentIdentifier(doc),
+      });
+      this.fileToIsInAngularProjectMap.set(uri, response);
+      return response;
+    } catch {
+      return false;
+    }
+  }
+
+  private createVirtualHtmlDoc(document: vscode.TextDocument): vscode.Uri {
+    const originalUri = document.uri.toString();
+    const vdocUri = vscode.Uri.file(encodeURIComponent(originalUri) + '.html')
+                        .with({scheme: 'angular-embedded-content', authority: 'html'});
+    this.virtualDocumentContents.set(vdocUri.toString(), document.getText());
+    return vdocUri;
   }
 
   /**
@@ -171,7 +209,8 @@ export class AngularLanguageClient implements vscode.Disposable {
 }
 
 function registerNotificationHandlers(client: lsp.LanguageClient): vscode.Disposable {
-  const disposable1 = client.onNotification(ProjectLoadingStart, () => {
+  const disposables: vscode.Disposable[] = [];
+  disposables.push(client.onNotification(ProjectLoadingStart, () => {
     vscode.window.withProgress(
         {
           location: vscode.ProgressLocation.Window,
@@ -181,27 +220,26 @@ function registerNotificationHandlers(client: lsp.LanguageClient): vscode.Dispos
           client.onNotification(ProjectLoadingFinish, resolve);
         }),
     );
-  });
+  }));
 
-  const disposable2 =
-      client.onNotification(SuggestStrictMode, async (params: SuggestStrictModeParams) => {
-        const openTsConfig = 'Open tsconfig.json';
-        // Markdown is not generally supported in `showInformationMessage()`,
-        // but links are supported. See
-        // https://github.com/microsoft/vscode/issues/20595#issuecomment-281099832
-        const selection = await vscode.window.showInformationMessage(
-            'Some language features are not available. To access all features, enable ' +
-                '[strictTemplates](https://angular.io/guide/angular-compiler-options#stricttemplates) in ' +
-                '[angularCompilerOptions](https://angular.io/guide/angular-compiler-options).',
-            openTsConfig,
-        );
-        if (selection === openTsConfig) {
-          const document = await vscode.workspace.openTextDocument(params.configFilePath);
-          vscode.window.showTextDocument(document);
-        }
-      });
+  disposables.push(client.onNotification(SuggestStrictMode, async (params: SuggestStrictModeParams) => {
+    const openTsConfig = 'Open tsconfig.json';
+    // Markdown is not generally supported in `showInformationMessage()`,
+    // but links are supported. See
+    // https://github.com/microsoft/vscode/issues/20595#issuecomment-281099832
+    const selection = await vscode.window.showInformationMessage(
+        'Some language features are not available. To access all features, enable ' +
+            '[strictTemplates](https://angular.io/guide/angular-compiler-options#stricttemplates) in ' +
+            '[angularCompilerOptions](https://angular.io/guide/angular-compiler-options).',
+        openTsConfig,
+    );
+    if (selection === openTsConfig) {
+      const document = await vscode.workspace.openTextDocument(params.configFilePath);
+      vscode.window.showTextDocument(document);
+    }
+  }));
 
-  const disposable3 = client.onNotification(
+  disposables.push(client.onNotification(
       SuggestIvyLanguageService, async (params: SuggestIvyLanguageServiceParams) => {
         const config = vscode.workspace.getConfiguration();
         if (config.get('angular.enable-experimental-ivy-prompt') === false) {
@@ -221,9 +259,9 @@ function registerNotificationHandlers(client: lsp.LanguageClient): vscode.Dispos
           config.update(
               'angular.enable-experimental-ivy-prompt', false, vscode.ConfigurationTarget.Global);
         }
-      });
+      }));
 
-  return vscode.Disposable.from(disposable1, disposable2, disposable3);
+  return vscode.Disposable.from(...disposables);
 }
 
 function registerProgressHandlers(client: lsp.LanguageClient) {

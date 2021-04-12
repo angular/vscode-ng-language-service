@@ -29,8 +29,7 @@ function hasArgument(argv: string[], argName: string): boolean {
 interface CommandLineOptions {
   help: boolean;
   /**
-   * If true, use the Ivy version of Angular LS. For now this is only used for
-   * development.
+   * If true, use Ivy LS, otherwise use legacy View Engine LS.
    */
   ivy: boolean;
   logFile?: string;
@@ -43,7 +42,7 @@ interface CommandLineOptions {
 export function parseCommandLine(argv: string[]): CommandLineOptions {
   return {
     help: hasArgument(argv, '--help'),
-    ivy: hasArgument(argv, '--experimental-ivy'),
+    ivy: !hasArgument(argv, '--viewEngine'),
     logFile: findArgument(argv, '--logFile'),
     logVerbosity: findArgument(argv, '--logVerbosity'),
     logToConsole: hasArgument(argv, '--logToConsole'),
@@ -59,7 +58,7 @@ export function generateHelpMessage(argv: string[]) {
 
   Options:
     --help: Prints help message.
-    --experimental-ivy: Enables the Ivy language service. Defaults to false.
+    --viewEngine: Use legacy View Engine language service. Defaults to false.
     --logFile: Location to log messages. Logging to file is disabled if not provided.
     --logVerbosity: terse|normal|verbose|requestTime. See ts.server.LogLevel.
     --logToConsole: Enables logging to console via 'window/logMessage'. Defaults to false.

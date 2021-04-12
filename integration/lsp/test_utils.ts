@@ -25,8 +25,8 @@ export function createConnection(serverOptions: ServerOptions): MessageConnectio
     '--ngProbeLocations',
     [SERVER_PATH, PROJECT_PATH].join(','),
   ];
-  if (serverOptions.ivy) {
-    argv.push('--experimental-ivy');
+  if (!serverOptions.ivy) {
+    argv.push('--viewEngine');
   }
   const server = fork(SERVER_PATH, argv, {
     cwd: PROJECT_PATH,

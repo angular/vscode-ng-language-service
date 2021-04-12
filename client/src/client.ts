@@ -296,28 +296,6 @@ function registerNotificationHandlers(client: lsp.LanguageClient): vscode.Dispos
     }
   }));
 
-  disposables.push(client.onNotification(
-      SuggestIvyLanguageService, async (params: SuggestIvyLanguageServiceParams) => {
-        const config = vscode.workspace.getConfiguration();
-        if (config.get('angular.enable-experimental-ivy-prompt') === false) {
-          return;
-        }
-
-        const enableIvy = 'Enable';
-        const doNotPromptAgain = 'Do not show this again';
-        const selection = await vscode.window.showInformationMessage(
-            params.message,
-            enableIvy,
-            doNotPromptAgain,
-        );
-        if (selection === enableIvy) {
-          config.update('angular.experimental-ivy', true, vscode.ConfigurationTarget.Global);
-        } else if (selection === doNotPromptAgain) {
-          config.update(
-              'angular.enable-experimental-ivy-prompt', false, vscode.ConfigurationTarget.Global);
-        }
-      }));
-
   return vscode.Disposable.from(...disposables);
 }
 
@@ -401,9 +379,9 @@ function constructArgs(ctx: vscode.ExtensionContext): string[] {
   const ngProbeLocations = getProbeLocations(ngdk, ctx.extensionPath);
   args.push('--ngProbeLocations', ngProbeLocations.join(','));
 
-  const experimentalIvy: boolean = config.get('angular.experimental-ivy', false);
-  if (experimentalIvy) {
-    args.push('--experimental-ivy');
+  const viewEngine: boolean = config.get('angular.view-engine', false);
+  if (viewEngine) {
+    args.push('--viewEngine');
   }
 
   const tsdk: string|null = config.get('typescript.tsdk', null);

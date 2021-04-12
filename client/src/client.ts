@@ -95,6 +95,15 @@ export class AngularLanguageClient implements vscode.Disposable {
               await Promise.all([angularResultsPromise, htmlProviderResultsPromise]);
           return angularResults ?? htmlProviderResults?.[0];
         },
+        provideSignatureHelp: async (
+            document: vscode.TextDocument, position: vscode.Position,
+            context: vscode.SignatureHelpContext, token: vscode.CancellationToken,
+            next: lsp.ProvideSignatureHelpSignature) => {
+          if (await this.isInAngularProject(document) &&
+              isInsideInlineTemplateRegion(document, position)) {
+            return next(document, position, context, token);
+          }
+        },
         provideCompletionItem: async (
             document: vscode.TextDocument, position: vscode.Position,
             context: vscode.CompletionContext, token: vscode.CancellationToken,

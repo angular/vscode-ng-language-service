@@ -21,7 +21,7 @@ import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './comp
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
 import {resolveAndRunNgcc} from './ngcc';
 import {ServerHost} from './server_host';
-import {filePathToUri, isConfiguredProject, isDebugMode, lspPositionToTsPosition, lspRangeToTsPositions, MruTracker, tsTextSpanToLspRange, uriToFilePath} from './utils';
+import {filePathToUri, isConfiguredProject, isDebugMode, lspPositionToTsPosition, lspRangeToTsPositions, MruTracker, tsDisplayPartsToText, tsTextSpanToLspRange, uriToFilePath} from './utils';
 import {resolve, Version} from './version_provider';
 
 export interface SessionOptions {
@@ -168,6 +168,7 @@ export class Session {
     conn.onRequest(IsInAngularProject, p => this.isInAngularProject(p));
     conn.onCodeLens(p => this.onCodeLens(p));
     conn.onCodeLensResolve(p => this.onCodeLensResolve(p));
+    conn.onSignatureHelp(p => this.onSignatureHelp(p));
   }
 
   private isInAngularProject(params: IsInAngularProjectParams): boolean {
@@ -230,6 +231,57 @@ export class Session {
       results.push(lsp.Location.create(filePathToUri(documentSpan.fileName), range));
     }
     return results;
+  }
+
+  private onSignatureHelp(params: lsp.SignatureHelpParams): lsp.SignatureHelp|undefined {
+    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    if (lsInfo === undefined) {
+      return undefined;
+    }
+
+    const {languageService, scriptInfo} = lsInfo;
+    const offset = lspPositionToTsPosition(scriptInfo, params.position);
+
+    const help = languageService.getSignatureHelpItems(scriptInfo.fileName, offset, undefined);
+    if (help === undefined) {
+      return undefined;
+    }
+
+    return {
+      activeParameter: help.argumentCount > 0 ? help.argumentIndex : null,
+      activeSignature: help.selectedItemIndex,
+      signatures: help.items.map((item: ts.SignatureHelpItem): lsp.SignatureInformation => {
+        // For each signature, build up a 'label' which represents the full signature text, as well
+        // as a parameter list where each parameter label is a span within the signature label.
+        let label = tsDisplayPartsToText(item.prefixDisplayParts);
+        const parameters: lsp.ParameterInformation[] = [];
+        let first = true;
+        for (const param of item.parameters) {
+          if (!first) {
+            label += tsDisplayPartsToText(item.separatorDisplayParts);
+          }
+          first = false;
+
+          // Add the parameter to the label, keeping track of its start and end positions.
+          const start = label.length;
+          label += tsDisplayPartsToText(param.displayParts);
+          const end = label.length;
+
+          // The parameter itself uses a range within the signature label as its own label.
+          parameters.push({
+            label: [start, end],
+            documentation: tsDisplayPartsToText(param.documentation),
+          });
+        }
+
+        label += tsDisplayPartsToText(item.suffixDisplayParts);
+        return {
+          label,
+          documentation: tsDisplayPartsToText(item.documentation),
+          parameters,
+        };
+      }),
+    };
   }
 
   private onCodeLens(params: lsp.CodeLensParams): lsp.CodeLens[]|undefined {
@@ -526,6 +578,11 @@ export class Session {
         } :
                                    false,
         hoverProvider: true,
+        signatureHelpProvider: this.ivy ? {
+          triggerCharacters: ['(', ','],
+          retriggerCharacters: [','],
+        } :
+                                          undefined,
         workspace: {
           workspaceFolders: {supported: true},
         },

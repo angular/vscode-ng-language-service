@@ -33,6 +33,9 @@ Please attach two logs:
 1. Console output (Go to toolbar --> View --> Output, and copy the contents)
 2. Log file (Path is printed to the console output at startup)
 
+Set Angular Log level to verbose.
+Open settings (File/Preferences/Settings on Windows, Code/Preferences/Settings on Mac), go to Extensions/Angular Language Service, set `angular.log` to `verbose`.
+
 **Screenshots**
 
 If applicable, add screenshots to help explain your problem.

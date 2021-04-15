@@ -110,3 +110,7 @@ export class MruTracker {
     return [...this.set].reverse();
   }
 }
+
+export function tsDisplayPartsToText(parts: ts.SymbolDisplayPart[]): string {
+  return parts.map(dp => dp.text).join('');
+}

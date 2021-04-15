@@ -155,6 +155,61 @@ describe('Angular Ivy language server', () => {
     });
   });
 
+  describe('signature help', () => {
+    it('should show signature help for an empty call', async () => {
+      client.sendNotification(lsp.DidOpenTextDocumentNotification.type, {
+        textDocument: {
+          uri: `file://${FOO_TEMPLATE}`,
+          languageId: 'html',
+          version: 1,
+          text: `{{ title.toString() }}`,
+        },
+      });
+      const languageServiceEnabled = await waitForNgcc(client);
+      expect(languageServiceEnabled).toBeTrue();
+      const response = (await client.sendRequest(lsp.SignatureHelpRequest.type, {
+        textDocument: {
+          uri: `file://${FOO_TEMPLATE}`,
+        },
+        position: {line: 0, character: 18},
+      }))!;
+      expect(response).not.toBeNull();
+      expect(response.signatures.length).toEqual(1);
+      expect(response.signatures[0].label).toEqual('toString(): string');
+    });
+
+    it('should show signature help with multiple arguments', async () => {
+      client.sendNotification(lsp.DidOpenTextDocumentNotification.type, {
+        textDocument: {
+          uri: `file://${FOO_TEMPLATE}`,
+          languageId: 'html',
+          version: 1,
+          text: `{{ title.substr(0, ) }}`,
+        },
+      });
+      const languageServiceEnabled = await waitForNgcc(client);
+      expect(languageServiceEnabled).toBeTrue();
+      const response = (await client.sendRequest(lsp.SignatureHelpRequest.type, {
+        textDocument: {
+          uri: `file://${FOO_TEMPLATE}`,
+        },
+        position: {line: 0, character: 19},
+      }))!;
+      expect(response).not.toBeNull();
+      expect(response.signatures.length).toEqual(1);
+      expect(response.signatures[0].label).toEqual('substr(from: number, length?: number): string');
+      expect(response.signatures[0].parameters).not.toBeUndefined();
+      expect(response.activeParameter).toBe(1);
+
+      const label = response.signatures[0].label;
+      const paramLabels = response.signatures[0].parameters!.map(param => {
+        const [start, end] = param.label as [number, number];
+        return label.substring(start, end);
+      });
+      expect(paramLabels).toEqual(['from: number', 'length?: number']);
+    });
+  });
+
   describe('project reload', () => {
     const dummy = `${PROJECT_PATH}/node_modules/__foo__`;
 

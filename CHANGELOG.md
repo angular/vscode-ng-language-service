@@ -1,5 +1,19 @@
 # v11.2.10
 
+This release upgrades `@angular/language-service` to v11.2.10.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#11210-2021-04-14).
+
+Bug fixes:
+1. language-service: bound attributes should not break directive matching (#41597) (3dbcc7f)
+1. language-service: resolve to the pre-compiled style when compiled css url is provided (#41538) (3d54980)
+1. language-service: use 'any' instead of failing for inline TCBs (#41513) (f76873e)
+
+Performance improvements:
+1. Avoid making Angular-related decisions for files not in an Angular project
+(#1259) (154cf5efa)
+
+# v11.2.10
+
 This release upgrades `@angular/language-service` to v11.2.9.
 For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1129-2021-04-07).
 

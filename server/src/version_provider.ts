@@ -9,40 +9,11 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
+import {NodeModule, resolve, Version} from '../common/resolver';
+
 const MIN_TS_VERSION = '4.2';
 const MIN_NG_VERSION = '12.0';
 const TSSERVERLIB = 'typescript/lib/tsserverlibrary';
-
-/**
- * Represents a valid node module that has been successfully resolved.
- */
-interface NodeModule {
-  name: string;
-  resolvedPath: string;
-  version: Version;
-}
-
-export function resolve(packageName: string, location: string, rootPackage?: string): NodeModule|
-    undefined {
-  rootPackage = rootPackage || packageName;
-  try {
-    const packageJsonPath = require.resolve(`${rootPackage}/package.json`, {
-      paths: [location],
-    });
-    // Do not use require() to read JSON files since it's a potential security
-    // vulnerability.
-    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-    const resolvedPath = require.resolve(packageName, {
-      paths: [location],
-    });
-    return {
-      name: packageName,
-      resolvedPath,
-      version: new Version(packageJson.version),
-    };
-  } catch {
-  }
-}
 
 /**
  * Resolve the node module with the specified `packageName` that satisfies
@@ -124,64 +95,4 @@ export function resolveNgLangSvc(probeLocations: string[]): NodeModule {
 
 export function resolveNgcc(directory: string): NodeModule|undefined {
   return resolve('@angular/compiler-cli/ngcc/main-ngcc.js', directory, '@angular/compiler-cli');
-}
-
-/**
- * Converts the specified string `a` to non-negative integer.
- * Returns -1 if the result is NaN.
- * @param a
- */
-function parseNonNegativeInt(a: string): number {
-  // parseInt() will try to convert as many as possible leading characters that
-  // are digits. This means a string like "123abc" will be converted to 123.
-  // For our use case, this is sufficient.
-  const i = parseInt(a, 10 /* radix */);
-  return isNaN(i) ? -1 : i;
-}
-
-export class Version {
-  readonly major: number;
-  readonly minor: number;
-  readonly patch: number;
-
-  constructor(private readonly versionStr: string) {
-    const [major, minor, patch] = Version.parseVersionStr(versionStr);
-    this.major = major;
-    this.minor = minor;
-    this.patch = patch;
-  }
-
-  greaterThanOrEqual(other: Version): boolean {
-    if (this.major < other.major) {
-      return false;
-    }
-    if (this.major > other.major) {
-      return true;
-    }
-    if (this.minor < other.minor) {
-      return false;
-    }
-    if (this.minor > other.minor) {
-      return true;
-    }
-    return this.patch >= other.patch;
-  }
-
-  toString(): string {
-    return this.versionStr;
-  }
-
-  /**
-   * Converts the specified `versionStr` to its number constituents. Invalid
-   * number value is represented as negative number.
-   * @param versionStr
-   */
-  static parseVersionStr(versionStr: string): [number, number, number] {
-    const [major, minor, patch] = versionStr.split('.').map(parseNonNegativeInt);
-    return [
-      major === undefined ? 0 : major,
-      minor === undefined ? 0 : minor,
-      patch === undefined ? 0 : patch,
-    ];
-  }
 }

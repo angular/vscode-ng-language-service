@@ -54,17 +54,19 @@ export class ServerHost implements ts.server.ServerHost {
    * @pollingInterval - this parameter is used in polling-based watchers and
    * ignored in watchers that use native OS file watching
    */
-  watchFile(path: string, callback: ts.FileWatcherCallback, pollingInterval?: number):
-      ts.FileWatcher {
-    return ts.sys.watchFile!(path, callback, pollingInterval);
+  watchFile(
+      path: string, callback: ts.FileWatcherCallback, pollingInterval?: number,
+      options?: ts.WatchOptions): ts.FileWatcher {
+    return ts.sys.watchFile!(path, callback, pollingInterval, options);
   }
 
-  watchDirectory(path: string, callback: ts.DirectoryWatcherCallback, recursive?: boolean):
-      ts.FileWatcher {
+  watchDirectory(
+      path: string, callback: ts.DirectoryWatcherCallback, recursive?: boolean,
+      options?: ts.WatchOptions): ts.FileWatcher {
     if (this.isG3 && path.startsWith('/google/src')) {
       return NOOP_WATCHER;
     }
-    return ts.sys.watchDirectory!(path, callback, recursive);
+    return ts.sys.watchDirectory!(path, callback, recursive, options);
   }
 
   resolvePath(path: string): string {

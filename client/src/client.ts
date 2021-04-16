@@ -14,6 +14,7 @@ import * as lsp from 'vscode-languageclient/node';
 import {ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode, SuggestStrictModeParams} from '../common/notifications';
 import {NgccProgress, NgccProgressToken, NgccProgressType} from '../common/progress';
 import {GetComponentsWithTemplateFile, GetTcbRequest, IsInAngularProject} from '../common/requests';
+import {resolve, Version} from '../common/resolver';
 
 import {isInsideComponentDecorator, isInsideInlineTemplateRegion} from './embedded_support';
 import {ProgressReporter} from './progress-reporter';
@@ -314,7 +315,8 @@ function registerProgressHandlers(client: lsp.LanguageClient) {
       client.onProgress(NgccProgressType, NgccProgressToken, async (params: NgccProgress) => {
         const {configFilePath} = params;
         if (!progressReporters.has(configFilePath)) {
-          progressReporters.set(configFilePath, new ProgressReporter());
+          const reporter = new ProgressReporter();
+          progressReporters.set(configFilePath, reporter);
         }
         const reporter = progressReporters.get(configFilePath)!;
         if (params.done) {
@@ -388,7 +390,8 @@ function constructArgs(ctx: vscode.ExtensionContext): string[] {
   const ngProbeLocations = getProbeLocations(ngdk, ctx.extensionPath);
   args.push('--ngProbeLocations', ngProbeLocations.join(','));
 
-  const viewEngine: boolean = config.get('angular.view-engine', false);
+  console.error(vscode.workspace.workspaceFolders);
+  const viewEngine: boolean = config.get('angular.view-engine', !allProjectsSupportIvy());
   if (viewEngine) {
     args.push('--viewEngine');
   }
@@ -432,4 +435,15 @@ function getServerOptions(ctx: vscode.ExtensionContext, debug: boolean): lsp.Nod
       execArgv: debug ? devExecArgv : prodExecArgv,
     },
   };
+}
+
+function allProjectsSupportIvy() {
+  const workspaceFolders = vscode.workspace.workspaceFolders || [];
+  for (const workspaceFolder of workspaceFolders) {
+    const angularCore = resolve('@angular/core', workspaceFolder.uri.fsPath);
+    if (angularCore?.version.greaterThanOrEqual(new Version('9')) === false) {
+      return false;
+    }
+  }
+  return true;
 }

@@ -9,7 +9,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-const MIN_TS_VERSION = '4.1';
+const MIN_TS_VERSION = '4.2';
 const MIN_NG_VERSION = '12.0';
 const TSSERVERLIB = 'typescript/lib/tsserverlibrary';
 

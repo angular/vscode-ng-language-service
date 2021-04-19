@@ -379,7 +379,7 @@ function constructArgs(ctx: vscode.ExtensionContext): string[] {
   const ngLog: string = config.get('angular.log', 'off');
   if (ngLog !== 'off') {
     // Log file does not yet exist on disk. It is up to the server to create the file.
-    const logFile = path.join(ctx.logPath, 'nglangsvc.log');
+    const logFile = path.join(ctx.logUri.fsPath, 'nglangsvc.log');
     args.push('--logFile', logFile);
     args.push('--logVerbosity', ngLog);
   }

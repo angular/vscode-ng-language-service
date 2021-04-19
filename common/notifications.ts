@@ -26,10 +26,3 @@ export interface SuggestStrictModeParams {
 
 export const SuggestStrictMode =
     new NotificationType<SuggestStrictModeParams>('angular/suggestStrictMode');
-
-export interface SuggestIvyLanguageServiceParams {
-  message: string;
-}
-
-export const SuggestIvyLanguageService =
-    new NotificationType<SuggestIvyLanguageServiceParams>('angular/suggestIvyLanguageServiceMode');

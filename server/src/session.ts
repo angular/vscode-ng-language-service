@@ -13,7 +13,7 @@ import {promisify} from 'util';
 import * as lsp from 'vscode-languageserver/node';
 
 import {ServerOptions} from '../common/initialize';
-import {ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestIvyLanguageService, SuggestStrictMode} from '../common/notifications';
+import {ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode} from '../common/notifications';
 import {NgccProgressToken, NgccProgressType} from '../common/progress';
 import {GetComponentsWithTemplateFile, GetTcbParams, GetTcbRequest, GetTcbResponse, IsInAngularProject, IsInAngularProjectParams} from '../common/requests';
 
@@ -22,7 +22,6 @@ import {tsDiagnosticToLspDiagnostic} from './diagnostic';
 import {resolveAndRunNgcc} from './ngcc';
 import {ServerHost} from './server_host';
 import {filePathToUri, isConfiguredProject, isDebugMode, lspPositionToTsPosition, lspRangeToTsPositions, MruTracker, tsDisplayPartsToText, tsTextSpanToLspRange, uriToFilePath} from './utils';
-import {resolve, Version} from './version_provider';
 
 export interface SessionOptions {
   host: ServerHost;
@@ -50,7 +49,6 @@ export class Session {
   private readonly connection: lsp.Connection;
   private readonly projectService: ts.server.ProjectService;
   private readonly logger: ts.server.Logger;
-  private readonly angularCoreVersionMap = new WeakMap<ts.server.Project, Version>();
   private readonly ivy: boolean;
   private readonly configuredProjToExternalProj = new Map<string, string>();
   private readonly logToConsole: boolean;
@@ -322,7 +320,7 @@ export class Session {
     return params;
   }
 
-  private enableLanguageServiceForProject(project: ts.server.Project, angularCore: string) {
+  private enableLanguageServiceForProject(project: ts.server.Project) {
     const {projectName} = project;
     if (!project.languageServiceEnabled) {
       project.enableLanguageService();
@@ -335,7 +333,6 @@ export class Session {
     if (!this.ivy) {
       // Immediately enable Legacy / View Engine language service
       this.info(`Enabling View Engine language service for ${projectName}.`);
-      this.promptToEnableIvyIfAvailable(project, angularCore);
       return;
     }
     this.info(`Enabling Ivy language service for ${projectName}.`);
@@ -345,6 +342,15 @@ export class Session {
     // First, make sure the Angular project is complete.
     this.runGlobalAnalysisForNewlyLoadedProject(project);
   }
+
+  private disableLanguageServiceForProject(project: ts.server.Project, reason: string) {
+    if (!project.languageServiceEnabled) {
+      return;
+    }
+    project.disableLanguageService(
+        `Disabling language service for ${project.projectName} because ${reason}.`);
+  }
+
 
   /**
    * Invoke the compiler for the first time so that external templates get
@@ -405,14 +411,17 @@ export class Session {
           this.connection.sendNotification(ProjectLoadingFinish);
         }
         const {project} = event.data;
-        const angularCore = this.findAngularCoreOrDisableLanguageService(project);
+        const angularCore = this.findAngularCore(project);
         if (angularCore) {
           if (this.ivy && isExternalAngularCore(angularCore)) {
             // Do not wait on this promise otherwise we'll be blocking other requests
-            this.runNgcc(project, angularCore);
+            this.runNgcc(project);
           } else {
-            this.enableLanguageServiceForProject(project, angularCore);
+            this.enableLanguageServiceForProject(project);
           }
+        } else {
+          this.disableLanguageServiceForProject(
+              project, `project is not an Angular project ('@angular/core' could not be found)`);
         }
         break;
       }
@@ -1051,12 +1060,11 @@ export class Session {
 
   /**
    * Find the main declaration file for `@angular/core` in the specified
-   * `project`. If found, return the declaration file. Otherwise, disable the
-   * language service and return undefined.
+   * `project`.
    *
    * @returns main declaration file in `@angular/core`.
    */
-  private findAngularCoreOrDisableLanguageService(project: ts.server.Project): string|undefined {
+  private findAngularCore(project: ts.server.Project): string|undefined {
     const {projectName} = project;
     if (!project.languageServiceEnabled) {
       this.info(
@@ -1070,15 +1078,9 @@ export class Session {
       return undefined;
     }
     const angularCore = project.getFileNames().find(isAngularCore);
-    if (angularCore === undefined) {
-      project.disableLanguageService();
+    if (angularCore === undefined && project.getExcludedFiles().some(isAngularCore)) {
       this.info(
-          `Disabling language service for ${projectName} because it is not an Angular project ` +
-          `('@angular/core' could not be found).`);
-      if (project.getExcludedFiles().some(isAngularCore)) {
-        this.info(
-            `Please check your tsconfig.json to make sure 'node_modules' directory is not excluded.`);
-      }
+          `Please check your tsconfig.json to make sure 'node_modules' directory is not excluded.`);
     }
     return angularCore;
   }
@@ -1086,12 +1088,12 @@ export class Session {
   /**
    * Disable the language service, run ngcc, then re-enable language service.
    */
-  private async runNgcc(project: ts.server.Project, angularCore: string): Promise<void> {
+  private async runNgcc(project: ts.server.Project): Promise<void> {
     if (!isConfiguredProject(project)) {
       return;
     }
     // Disable language service until ngcc is completed.
-    project.disableLanguageService();
+    this.disableLanguageServiceForProject(project, 'ngcc is running');
     const configFilePath = project.getConfigFilePath();
 
     this.connection.sendProgress(NgccProgressType, NgccProgressToken, {
@@ -1131,21 +1133,7 @@ export class Session {
     // disabled, there's no way users could use the extension even after
     // resolving ngcc issues. On the client side, we will warn users about
     // potentially degraded experience.
-    this.enableLanguageServiceForProject(project, angularCore);
-  }
-
-  private promptToEnableIvyIfAvailable(project: ts.server.Project, coreDts: string): void {
-    let angularCoreVersion = this.angularCoreVersionMap.get(project);
-    if (angularCoreVersion === undefined) {
-      angularCoreVersion = resolve('@angular/core', coreDts)?.version;
-    }
-
-    if (angularCoreVersion !== undefined && !this.ivy && angularCoreVersion.major >= 9) {
-      this.connection.sendNotification(SuggestIvyLanguageService, {
-        message:
-            'Would you like to enable the new Ivy-native language service to get the latest features and bug fixes?',
-      });
-    }
+    this.enableLanguageServiceForProject(project);
   }
 }
 

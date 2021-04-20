@@ -152,8 +152,8 @@
   ],
   "main": "./dist/client/extension",
   "scripts": {
-    "compile": "tsc -p server/banner.tsconfig.json && tsc -b && node esbuild.js",
-    "compile:test": "tsc -b server/src/tests && tsc -b client/src/tests",
+    "compile": "tsc -b server/banner.tsconfig.json && tsc -b && node esbuild.js",
+    "compile:test": "tsc -b test.tsconfig.json",
     "compile:integration": "tsc -b integration",
     "compile:syntaxes-test": "tsc -b syntaxes/test",
     "build:syntaxes": "tsc -b syntaxes && node dist/syntaxes/build.js",

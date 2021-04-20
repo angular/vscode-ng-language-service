@@ -8,7 +8,10 @@
 
 import {fork} from 'child_process';
 import {dirname, resolve} from 'path';
-import {resolveNgcc, Version} from './version_provider';
+
+import {Version} from '../common/resolver';
+
+import {resolveNgcc} from './version_provider';
 
 interface Progress {
   report(msg: string): void;

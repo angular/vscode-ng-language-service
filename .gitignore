@@ -9,6 +9,8 @@ dist/
 .vscode/settings.json
 .vimrc
 .nvimrc
+*.swo
+*.swp
 
 
 # Ignore files log and local only files related to ng-dev

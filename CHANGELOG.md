@@ -1,3 +1,11 @@
+# v11.2.12
+This release upgrades `@angular/language-service` to v11.2.11.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#11211-2021-04-21).
+
+Bug fixes:
+1. compiler-cli: autocomplete literal types in templates (296f887)
+
+
 # v11.2.11
 
 This release upgrades `@angular/language-service` to v11.2.10.

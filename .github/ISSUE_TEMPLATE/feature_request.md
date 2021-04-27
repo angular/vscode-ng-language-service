@@ -1,6 +1,6 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
+name: "\U0001F680 Feature request"
+about: Suggest a feature for the Angular Language Service extension, or in the language server.
 title: ''
 labels: feature
 assignees: ''
@@ -8,17 +8,38 @@ assignees: ''
 ---
 
 **Is your feature request related to a problem? Please describe.**
+<!--🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅
 
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+Oh hi there! 😄
 
-**Describe the solution you'd like**
+To expedite issue processing please search open and closed issues before submitting a new one.
+Existing issues often contain information about workarounds, resolution, or progress updates.
 
-A clear and concise description of what you want to happen.
+🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅-->
 
-**Describe alternatives you've considered**
 
-A clear and concise description of any alternative solutions or features you've considered.
+# 🚀 feature request
 
-**Additional context**
+### Description
+<!-- ✍️--> A clear and concise description of the problem or missing capability...
 
-Add any other context or screenshots about the feature request here.
+### Feature Type
+What does this bug affect
+
+<!-- Please check the one that applies to this bug report using "x". -->
+
+- [ ] Angular Language Service VSCode extension
+- [ ] Angular Language Service server
+
+### Describe the solution you'd like
+<!-- ✍️--> If you have a solution in mind, please describe it.
+
+
+### Describe alternatives you've considered
+<!-- ✍️--> Have you considered any alternative solutions or workarounds?
+
+
+### Anything else relevant?
+
+<!-- ✍️Aare screenshots or any other information needed to prvoide context? If so, please mention it below. --> 
+

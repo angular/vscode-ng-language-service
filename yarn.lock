@@ -17,18 +17,18 @@
   dependencies:
     tslib "^2.0.0"
 
-"@angular/dev-infra-private@https://github.com/angular/dev-infra-private-builds.git#07fce87e260370045b573df32553f01f192de42c":
+"@angular/dev-infra-private@https://github.com/angular/dev-infra-private-builds.git#a1946348ee84812b0b58d12e27c924d86187997e":
   version "0.0.0"
-  uid "07fce87e260370045b573df32553f01f192de42c"
-  resolved "https://github.com/angular/dev-infra-private-builds.git#07fce87e260370045b573df32553f01f192de42c"
+  uid a1946348ee84812b0b58d12e27c924d86187997e
+  resolved "https://github.com/angular/dev-infra-private-builds.git#a1946348ee84812b0b58d12e27c924d86187997e"
   dependencies:
     "@angular/benchpress" "0.2.1"
     "@bazel/buildifier" "^4.0.1"
     "@octokit/graphql" "^4.6.1"
     "@octokit/rest" "16.28.7"
-    "@octokit/types" "^5.5.0"
+    "@octokit/types" "^6.0.0"
     brotli "^1.3.2"
-    chalk "^2.3.1"
+    chalk "^4.1.0"
     clang-format "^1.4.0"
     cli-progress "^3.7.0"
     conventional-commits-parser "^3.2.1"
@@ -47,7 +47,7 @@
     shelljs "^0.8.4"
     ts-node "^9.1.1"
     tslib "^2.1.0"
-    typed-graphqlify "^2.3.0"
+    typed-graphqlify "^3.1.1"
     typescript "~4.2.4"
     yaml "^1.10.0"
     yargs "^16.2.0"
@@ -105,6 +105,11 @@
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/@octokit/openapi-types/-/openapi-types-6.0.0.tgz#7da8d7d5a72d3282c1a3ff9f951c8133a707480d"
   integrity sha512-CnDdK7ivHkBtJYzWzZm7gEkanA7gKH6a09Eguz7flHw//GacPJLmkHA3f3N++MJmlxD1Fl+mB7B32EEpSCwztQ==
+
+"@octokit/openapi-types@^6.1.1":
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/@octokit/openapi-types/-/openapi-types-6.1.1.tgz#27f9386fcbcb9846b27b1bc8a41ba6f313c922a6"
+  integrity sha512-ICBhnEb+ahi/TTdNuYb/kTyKVBgAM0VD4k6JPzlhJyzt3Z+Tq/bynwCD+gpkJP7AEcNnzC8YO5R39trmzEo2UA==
 
 "@octokit/request-error@^1.0.2":
   version "1.2.1"
@@ -164,12 +169,12 @@
   dependencies:
     "@types/node" ">= 8"
 
-"@octokit/types@^5.5.0":
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/@octokit/types/-/types-5.5.0.tgz#e5f06e8db21246ca102aa28444cdb13ae17a139b"
-  integrity sha512-UZ1pErDue6bZNjYOotCNveTXArOMZQFG6hKJfOnGnulVCMcVVi7YIIuuR4WfBhjo7zgpmzn/BkPDnUXtNx+PcQ==
+"@octokit/types@^6.0.0":
+  version "6.13.2"
+  resolved "https://registry.yarnpkg.com/@octokit/types/-/types-6.13.2.tgz#e3423dc733567ac4836e116b34d154a8e9cbbf3c"
+  integrity sha512-jN5LImYHvv7W6SZargq1UMJ3EiaqIz5qkpfsv4GAb4b16SGqctxtOU2TQAZxvsKHkOw2A4zxdsi5wR9en1/ezQ==
   dependencies:
-    "@types/node" ">= 8"
+    "@octokit/openapi-types" "^6.1.1"
 
 "@octokit/types@^6.0.3", "@octokit/types@^6.7.1":
   version "6.13.0"
@@ -555,7 +560,7 @@ chalk@^1.1.1, chalk@^1.1.3:
     strip-ansi "^3.0.0"
     supports-color "^2.0.0"
 
-chalk@^2.0.0, chalk@^2.3.0, chalk@^2.3.1, chalk@^2.4.2:
+chalk@^2.0.0, chalk@^2.3.0, chalk@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
   integrity sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==
@@ -2595,10 +2600,10 @@ type-fest@^0.8.1:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
 
-typed-graphqlify@^2.3.0:
-  version "2.4.5"
-  resolved "https://registry.yarnpkg.com/typed-graphqlify/-/typed-graphqlify-2.4.5.tgz#e881f8a90911c32aec76a112e8e5077ead36e151"
-  integrity sha512-0iD2WkYmdxsTS2TGchnrY+vuSZHrTkj2i/Pa3UKTNPdrig5bV2f8UpGEfQ4Gq8pp3Vd9esqGIVgjC7hYR6OsOg==
+typed-graphqlify@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/typed-graphqlify/-/typed-graphqlify-3.1.1.tgz#461d433922ff33ec10bb17dee7e332a0a0eafa27"
+  integrity sha512-Tr8DarPhPUdW7vsGc9Vi5INtAqjt+Xm5k3shZ8FH/j+odVMABC8+xnZrcgKq5AJeUBJt+2w+iH81AMQb9vvlqg==
 
 typed-rest-client@1.2.0:
   version "1.2.0"

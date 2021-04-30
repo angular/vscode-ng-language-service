@@ -56,5 +56,8 @@ if (logger.loggingEnabled()) {
 if (process.env.NG_DEBUG === 'true') {
   session.info('Angular Language Service is running under DEBUG mode');
 }
+if (process.env.TSC_NONPOLLING_WATCHER !== 'true') {
+  session.warn(`Using less efficient polling watcher. Set TSC_NONPOLLING_WATCHER to true.`);
+}
 
 session.listen();

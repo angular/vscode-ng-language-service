@@ -30,6 +30,9 @@ export function createConnection(serverOptions: ServerOptions): MessageConnectio
   }
   const server = fork(SERVER_PATH, argv, {
     cwd: PROJECT_PATH,
+    env: {
+      TSC_NONPOLLING_WATCHER: 'true',
+    },
     // uncomment to debug server process
     // execArgv: ['--inspect-brk=9330']
   });

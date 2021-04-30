@@ -403,7 +403,10 @@ function constructArgs(ctx: vscode.ExtensionContext): string[] {
 
 function getServerOptions(ctx: vscode.ExtensionContext, debug: boolean): lsp.NodeModule {
   // Environment variables for server process
-  const prodEnv = {};
+  const prodEnv = {
+    // Force TypeScript to use the non-polling version of the file watchers.
+    TSC_NONPOLLING_WATCHER: true,
+  };
   const devEnv = {
     ...prodEnv,
     NG_DEBUG: true,

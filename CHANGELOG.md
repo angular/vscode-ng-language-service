@@ -1,3 +1,9 @@
+# v11.2.13
+This release upgrades `@angular/language-service` to v11.2.12.
+
+Bug fixes:
+1. High CPU usage when idle due to file watching (#1317) (06f1add66)
+
 # v11.2.12
 This release upgrades `@angular/language-service` to v11.2.11.
 For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#11211-2021-04-21).

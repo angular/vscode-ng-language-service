@@ -129,6 +129,12 @@ export class Session {
         // https://devblogs.microsoft.com/typescript/announcing-typescript-4-0/#smarter-auto-imports
         includePackageJsonAutoImports: 'off',
       },
+      watchOptions: {
+        // Used as watch options when not specified by user's `tsconfig`.
+        watchFile: ts.WatchFileKind.UseFsEvents,
+        watchDirectory: ts.WatchDirectoryKind.UseFsEvents,
+        fallbackPolling: ts.PollingWatchKind.DynamicPriority,
+      }
     });
 
     const pluginConfig: PluginConfig = {

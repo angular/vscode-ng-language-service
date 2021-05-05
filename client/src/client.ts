@@ -96,23 +96,12 @@ export class AngularLanguageClient implements vscode.Disposable {
   }
 
   private async isInAngularProject(doc: vscode.TextDocument): Promise<boolean> {
-    if (this.client === null) {
-      return false;
-    }
-    const uri = doc.uri.toString();
-    if (this.fileToIsInAngularProjectMap.has(uri)) {
-      return this.fileToIsInAngularProjectMap.get(uri)!;
-    }
-
-    try {
-      const response = await this.client.sendRequest(IsInAngularProject, {
-        textDocument: this.client.code2ProtocolConverter.asTextDocumentIdentifier(doc),
-      });
-      this.fileToIsInAngularProjectMap.set(uri, response);
-      return response;
-    } catch {
-      return false;
-    }
+    // TODO(#1330): The logic below has been found to have some race conditions. It appears that
+    // when trying to do operations in an external while the language service is still initializing
+    // will result in this function determining that the file is not in an Angular project.
+    // We should disable this check (by always returning assuming the document is inside an Angular
+    // project) until a solution is found.
+    return true;
   }
 
   private createVirtualHtmlDoc(document: vscode.TextDocument): vscode.Uri {

@@ -1,3 +1,9 @@
+# v11.2.14
+
+Bug fixes:
+1. files incorrectly determined as not being in an Angular project (#1331) (d26daaaa5)
+2. remove TSC_NONPOLLING_WATCHER env variable and provide default watchOptions (#1323) (#1326) (bbd0c60fa)
+
 # v11.2.13
 This release upgrades `@angular/language-service` to v11.2.12.
 

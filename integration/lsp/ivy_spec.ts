@@ -294,83 +294,62 @@ describe('Angular Ivy language server', () => {
         expect(languageServiceEnabled).toBeTrue();
       });
 
-      it('should not be enabled, see https://github.com/microsoft/vscode/issues/115354',
-         async () => {
-           const prepareRenameResponse = await client.sendRequest(lsp.PrepareRenameRequest.type, {
-             textDocument: {
-               uri: `file://${APP_COMPONENT}`,
-             },
-             position: {line: 4, character: 25},
-           }) as {range: lsp.Range, placeholder: string};
-           expect(prepareRenameResponse).toBeNull();
-           const renameResponse = await client.sendRequest(lsp.RenameRequest.type, {
-             textDocument: {
-               uri: `file://${APP_COMPONENT}`,
-             },
-             position: {line: 4, character: 25},
-             newName: 'surname'
-           });
-           expect(renameResponse).toBeNull();
-         });
+      it('should handle prepare rename request for inline template property read', async () => {
+        const response = await client.sendRequest(lsp.PrepareRenameRequest.type, {
+          textDocument: {
+            uri: `file://${APP_COMPONENT}`,
+          },
+          position: {line: 4, character: 25},
+        }) as {range: lsp.Range, placeholder: string};
+        expect(response.range).toEqual({
+          start: {line: 4, character: 25},
+          end: {line: 4, character: 29},
+        });
+        expect(response.placeholder).toEqual('name');
+      });
 
-      xdescribe('Blocked by https://github.com/microsoft/vscode/issues/115354', () => {
-        it('should handle prepare rename request for property read', async () => {
-          const response = await client.sendRequest(lsp.PrepareRenameRequest.type, {
+      describe('property rename', () => {
+        const expectedRenameInComponent = {
+          range: {
+            start: {line: 7, character: 2},
+            end: {line: 7, character: 6},
+          },
+          newText: 'surname',
+        };
+        const expectedRenameInTemplate = {
+          range: {
+            start: {line: 4, character: 25},
+            end: {line: 4, character: 29},
+          },
+          newText: 'surname',
+        };
+
+        it('should handle rename request for property read in a template', async () => {
+          const response = await client.sendRequest(lsp.RenameRequest.type, {
             textDocument: {
               uri: `file://${APP_COMPONENT}`,
             },
             position: {line: 4, character: 25},
-          }) as {range: lsp.Range, placeholder: string};
-          expect(response.range).toEqual({
-            start: {line: 4, character: 25},
-            end: {line: 4, character: 29},
+            newName: 'surname'
           });
-          expect(response.placeholder).toEqual('name');
+          expect(response).not.toBeNull();
+          expect(response?.changes?.[APP_COMPONENT].length).toBe(2);
+          expect(response?.changes?.[APP_COMPONENT]).toContain(expectedRenameInComponent);
+          expect(response?.changes?.[APP_COMPONENT]).toContain(expectedRenameInTemplate);
         });
 
-        describe('property rename', () => {
-          const expectedRenameInComponent = {
-            range: {
-              start: {line: 7, character: 2},
-              end: {line: 7, character: 6},
+        it('should handle rename request for property in the component', async () => {
+          const response = await client.sendRequest(lsp.RenameRequest.type, {
+            textDocument: {
+              uri: `file://${APP_COMPONENT}`,
             },
-            newText: 'surname',
-          };
-          const expectedRenameInTemplate = {
-            range: {
-              start: {line: 4, character: 25},
-              end: {line: 4, character: 29},
-            },
-            newText: 'surname',
-          };
-
-          it('should handle rename request for property read in a template', async () => {
-            const response = await client.sendRequest(lsp.RenameRequest.type, {
-              textDocument: {
-                uri: `file://${APP_COMPONENT}`,
-              },
-              position: {line: 4, character: 25},
-              newName: 'surname'
-            });
-            expect(response).not.toBeNull();
-            expect(response?.changes?.[APP_COMPONENT].length).toBe(2);
-            expect(response?.changes?.[APP_COMPONENT]).toContain(expectedRenameInComponent);
-            expect(response?.changes?.[APP_COMPONENT]).toContain(expectedRenameInTemplate);
+            position: {line: 7, character: 4},
+            newName: 'surname'
           });
-
-          it('should handle rename request for property in the component', async () => {
-            const response = await client.sendRequest(lsp.RenameRequest.type, {
-              textDocument: {
-                uri: `file://${APP_COMPONENT}`,
-              },
-              position: {line: 7, character: 4},
-              newName: 'surname'
-            });
-            expect(response).not.toBeNull();
-            expect(response?.changes?.[APP_COMPONENT].length).toBe(2);
-            expect(response?.changes?.[APP_COMPONENT]).toContain(expectedRenameInComponent);
-            expect(response?.changes?.[APP_COMPONENT]).toContain(expectedRenameInTemplate);
-          });
+          expect(response).not.toBeNull();
+          expect(response?.changes?.[APP_COMPONENT].length).toBe(2);
+          expect(response?.changes?.[APP_COMPONENT]).toContain(expectedRenameInComponent);
+          expect(response?.changes?.[APP_COMPONENT]).toContain(expectedRenameInTemplate);
         });
       });
     });

@@ -1,3 +1,209 @@
+# v12.0.0
+
+This release upgrades `@angular/language-service` to v12.0.0.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1200-2021-05-12).
+
+New features:
+1. add support for signature help (#1277) (ec148073f)
+1. forward completion and hover requests to html providers for inline templates (72ee5c71c)
+1. Allow users to hide strictTemplates prompt (bd612107a)
+1. Add codelens with a link to go to the component from a template (76e234281)
+1. add command to go to component(s) from external template (d1ca20a14)
+1. update typescript to v4.2.3 (730ce54bf)
+
+Bug fixes:
+1. fix: files incorrectly determined as not being in an Angular project (#1331) (43bcbb732)
+1. remove TSC_NONPOLLING_WATCHER env variable and provide default watchOptions (#1323) (6eb2984cb)
+1. Use View Engine LS for projects < v9 (7ff10b898)
+1. Use View Engine LS for projects < v9 (2585e0310)
+1. set minimum TS version to 4.2 (ea3a73900)
+1. pass watch options to watchFile and watchDirectory (bae335dc4)
+1. make Ivy LS the default (c23612f9b)
+1. do not resolve CodeLens command until LS is enabled (#1260) (93b47487a)
+1. dispose reporters and notification handlers when client is stopped (aa8ac6eb9)
+1. only restart language server on angular configuration change (fb5f89590)
+1. do not minify the client code (1068ef40a)
+1. logger should print one timestamp for an entire group (f3930c1dc)
+1. do not load plugins except @angular/language-service (0901addfd)
+1. turn off logging by default (f5925ff26)
+1. do not watch directories in google3 (6a8a2d9b2)
+1. force enable Ivy and strictTemplates in google3 (9182c4cc5)
+1. use single entry point for @angular/language-service (93c541f2e)
+1. detect @angular/core in google3 and don't run ngcc (ea1a7de77)
+1. retain typecheck files after project reload (bc9d9fc78)
+1. do not pass execArgv to ngcc process (460ef30f2)
+1. show Go to component in HTML files only (d4e70c641)
+1. attempt to resolve tsdk using fs path (7a8cb6084)
+1. Revert back to boolean type for experimental-ivy flag (c1daa2cc0)
+1. remove TSC_NONPOLLING_WATCHER env variable (17708d44c)
+1. ensure project language service is the Angular LS (dfedf3cbb)
+1. unable to load ivy native plugin (b08b295b2)
+
+Performance improvements:
+1. perf: Avoid making Angular-related decisions for files not in an Angular project (#1259) (d8666d835)
+1. perf: check diagnostics in most recently used order (dcd32294a)
+1. perf: Compute diagnostics for a single file if it is external template (237d3f6df)
+1. perf: prevent requests from being sent to the sesrver when outside Angular context (5c3eda19d)
+1. perf: yield after checking diagnostics for an open file (d4ab1a21e)
+1. perf: Support request cancellation (af0b5a46c)
+
+# v11.2.14
+
+Bug fixes:
+1. files incorrectly determined as not being in an Angular project (#1331) (d26daaaa5)
+2. remove TSC_NONPOLLING_WATCHER env variable and provide default watchOptions (#1323) (#1326) (bbd0c60fa)
+
+# v11.2.13
+This release upgrades `@angular/language-service` to v11.2.12.
+
+Bug fixes:
+1. High CPU usage when idle due to file watching (#1317) (06f1add66)
+
+# v11.2.12
+This release upgrades `@angular/language-service` to v11.2.11.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#11211-2021-04-21).
+
+Bug fixes:
+1. compiler-cli: autocomplete literal types in templates (296f887)
+
+
+# v11.2.11
+
+This release upgrades `@angular/language-service` to v11.2.10.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#11210-2021-04-14).
+
+Bug fixes:
+1. language-service: bound attributes should not break directive matching (#41597) (3dbcc7f)
+1. language-service: resolve to the pre-compiled style when compiled css url is provided (#41538) (3d54980)
+1. language-service: use 'any' instead of failing for inline TCBs (#41513) (f76873e)
+
+Performance improvements:
+1. Avoid making Angular-related decisions for files not in an Angular project
+(#1259) (154cf5efa)
+
+# v11.2.10
+
+This release upgrades `@angular/language-service` to v11.2.9.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1129-2021-04-07).
+
+Bug fixes:
+1. Allow analysis to continue with invalid style url (#41403) (#41489) (07131fa)
+1. Dispose reporters and notification handlers when client is stopped (ef5297de7)
+1. Only restart language server on angular configuration change (ba99ed814)
+
+Performance improvements:
+1. Add perf tracing to LanguageService (#41401) (7b0a800)
+
+# v11.2.9
+This release upgrades `@angular/language-service` to v11.2.7.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1127-2021-03-24).
+
+bug fixes in `@angular/language-service`:
+* **compiler-cli:** add `useInlining` option to type check config ([#41268](https://github.com/angular/angular/issues/41268)) ([57644e9](https://github.com/angular/angular/commit/57644e95aadbfe9c8f336be77a22f7a5e1859758)), closes [#40963](https://github.com/angular/angular/issues/40963)
+* **language-service:** show suggestion when type inference is suboptimal ([#41072](https://github.com/angular/angular/issues/41072)) ([18cd7a0](https://github.com/angular/angular/commit/18cd7a0c6921983556fe1fffbff93d42ae138007)), closes [angular/vscode-ng-language-service#1155](https://github.com/angular/vscode-ng-language-service/issues/1155) [#41042](https://github.com/angular/angular/issues/41042)
+
+# v11.2.8
+
+- perf: prevent requests from being sent to the server when outside Angular context (fcbdf938e)
+- build: Switch to esbuild instead of rollup for the client and banner (27ccba8d0)
+- perf: check diagnostics in most recently used order (7f2873f6f56fbaff6c8232389ce64f3e60484a09)
+- perf: Compute diagnostics for a single file if it is external template  (a2b77fa7680c8328c67f77e3765fc179702405c0)
+- fix: logger should print one timestamp for an entire group (4d94f40d4c699916b379c9dab38a9e9e254e6c3e)
+
+# v11.2.7
+
+This release reverts the following commits due to [#1198](https://github.com/angular/vscode-ng-language-service/issues/1198):
+
+- perf: prevent requests from being sent to the server when outside Angular context (fcbdf938e)
+- build: Switch to esbuild instead of rollup for the client and banner (27ccba8d0)
+
+# v11.2.6
+
+This release upgrades `@angular/language-service` to v11.2.5.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1125-2021-03-10).
+
+This release contains various performance improvements.
+
+# v11.2.5
+
+This release contains a few performance improvements.
+
+Bug fixes:
+- do not load plugins except @angular/language-service
+- turn off logging by default
+- do not watch directories in google3
+
+# v11.2.4
+
+This release upgrades `@angular/language-service` to v11.2.4.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1124-2021-03-03).
+
+Bug fixes in `@angular/language-service`:
+- Add plugin option to force strictTemplates (#41063) (95f748c)
+- Always attempt HTML AST to template AST conversion for LS (#41068) (6dd5497), closes angular/vscode-ng-language-service#1140
+- can't provide the Input and Output custom binding property name (#41005) (1b1b65e)
+- don't show external template diagnostics in ts files (#41070) (9322e6a), closes #41032
+- only provide template results on reference requests (#41041) (ef87953)
+- provide element completions after open tag < (#41068) (f09e7ab), closes angular/vscode-ng-language-service#1140
+
+Bug fixes in `@angular/language-server`:
+- force enable Ivy and strictTemplates in google3
+- detect @angular/core in google3 and don't run ngcc
+- retain typecheck files after project reload
+- do not pass execArgv to ngcc process
+- attempt to resolve tsdk using fs path
+- Revert back to boolean type for experimental-ivy flag
+- remove TSC_NONPOLLING_WATCHER env variable
+- ensure project language service is the Angular LS
+
+# v11.2.3
+
+This release upgrades `@angular/language-service` to v11.2.2.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1110-2021-01-20).
+
+Performance improvements:
+- The Ivy Language Service no longer slows down the operation of plain TS language service features when editing TS code outside of a template.
+
+# v11.2.2
+
+This release upgrades `@angular/language-service` to v11.2.1.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1200-next1-2021-02-17).
+
+# v11.2.1
+
+This release fixes a bug in the initialization of tsserver plugin that prevented
+the Ivy-native language service from being loaded correctly.
+See https://github.com/angular/vscode-ng-language-service/issues/1109
+
+# v11.2.0
+
+This release upgrades `@angular/language-service` to v11.2.0.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1120-2021-02-10).
+
+Bug fixes:
+- disable rename feature when strictTemplates is disabled
+- implement realpath to resolve symlinks
+- recognize incomplete pipe bindings with whitespace
+
+Features:
+- Prompt to use the Ivy Language Service if VE is detected
+- Add Command to view template typecheck block
+- Add diagnostics to suggest turning on strict mode
+
+# v11.1.3
+
+This release upgrades `@angular/language-service` to v11.1.2.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1112-2021-02-03).
+
+# v11.1.2
+
+No major updates in this release.
+
+# v11.1.1
+
+This release upgrades `@angular/language-service` to v11.1.1.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1111-2021-01-27).
+
 # v11.1.0
 
 Ivy-native language service is officially available for preview!

@@ -40,12 +40,12 @@ Bug fixes:
 1. unable to load ivy native plugin (b08b295b2)
 
 Performance improvements:
-1. perf: Avoid making Angular-related decisions for files not in an Angular project (#1259) (d8666d835)
-1. perf: check diagnostics in most recently used order (dcd32294a)
-1. perf: Compute diagnostics for a single file if it is external template (237d3f6df)
-1. perf: prevent requests from being sent to the sesrver when outside Angular context (5c3eda19d)
-1. perf: yield after checking diagnostics for an open file (d4ab1a21e)
-1. perf: Support request cancellation (af0b5a46c)
+1. Avoid making Angular-related decisions for files not in an Angular project (#1259) (d8666d835)
+1. check diagnostics in most recently used order (dcd32294a)
+1. Compute diagnostics for a single file if it is external template (237d3f6df)
+1. prevent requests from being sent to the sesrver when outside Angular context (5c3eda19d)
+1. yield after checking diagnostics for an open file (d4ab1a21e)
+1. Support request cancellation (af0b5a46c)
 
 # v11.2.14
 

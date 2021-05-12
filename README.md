@@ -16,6 +16,20 @@ and external templates including:
 
 Download the extension from [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=Angular.ng-template).
 
+## Configuring compiler options for the Angular Language Service
+
+The Angular Language Service uses the same set of options that are used to compile the application. 
+To get the most complete information in the editor, set the `strictTemplates` option in `tsconfig.json`,
+as shown in the following example:
+
+```
+"angularCompilerOptions": {
+  "strictTemplates": true
+}
+```
+
+For more information, see the [Angular compiler options](https://angular.io/guide/angular-compiler-options) guide.
+
 ## Versioning
 
 The language service extension relies on the `@angular/language-service` and `typescript` packages

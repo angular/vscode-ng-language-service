@@ -29,6 +29,33 @@ export function isInsideComponentDecorator(
 }
 
 /**
+ * Determines if the position is inside a string literal. Returns `true` if the document language is
+ * not TypeScript.
+ */
+export function isInsideStringLiteral(
+    document: vscode.TextDocument, position: vscode.Position): boolean {
+  if (document.languageId !== 'typescript') {
+    return true;
+  }
+  const offset = document.offsetAt(position);
+  const scanner = ts.createScanner(ts.ScriptTarget.ESNext, true /* skipTrivia */);
+  scanner.setText(document.getText());
+
+  let token: ts.SyntaxKind = scanner.scan();
+  while (token !== ts.SyntaxKind.EndOfFileToken && scanner.getStartPos() < offset) {
+    const isStringToken = token === ts.SyntaxKind.StringLiteral ||
+        token === ts.SyntaxKind.NoSubstitutionTemplateLiteral;
+    const isCursorInToken = scanner.getStartPos() <= offset &&
+        scanner.getStartPos() + scanner.getTokenText().length >= offset;
+    if (isCursorInToken && isStringToken) {
+      return true;
+    }
+    token = scanner.scan();
+  }
+  return false;
+}
+
+/**
  * Basic scanner to determine if we're inside a string of a property with one of the given names.
  *
  * This scanner is not currently robust or perfect but provides us with an accurate answer _most_ of

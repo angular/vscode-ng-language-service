@@ -787,12 +787,6 @@ export class Session {
       return;
     }
     const {languageService, scriptInfo} = lsInfo;
-    if (scriptInfo.scriptKind === ts.ScriptKind.TS) {
-      // Because we cannot ensure our extension is prioritized for renames in TS files (see
-      // https://github.com/microsoft/vscode/issues/115354) we disable renaming completely so we can
-      // provide consistent expectations.
-      return;
-    }
     const project = this.getDefaultProjectForScriptInfo(scriptInfo);
     if (project === undefined || this.renameDisabledProjects.has(project)) {
       return;
@@ -830,12 +824,6 @@ export class Session {
       return;
     }
     const {languageService, scriptInfo} = lsInfo;
-    if (scriptInfo.scriptKind === ts.ScriptKind.TS) {
-      // Because we cannot ensure our extension is prioritized for renames in TS files (see
-      // https://github.com/microsoft/vscode/issues/115354) we disable renaming completely so we can
-      // provide consistent expectations.
-      return;
-    }
     const project = this.getDefaultProjectForScriptInfo(scriptInfo);
     if (project === undefined || this.renameDisabledProjects.has(project)) {
       return;

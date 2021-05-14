@@ -180,7 +180,7 @@
     "@types/node": "12.20.13",
     "@types/vscode": "1.56.0",
     "clang-format": "1.5.0",
-    "esbuild": "0.11.20",
+    "esbuild": "0.11.21",
     "jasmine": "3.7.0",
     "prettier": "2.3.0",
     "tslint": "6.1.3",

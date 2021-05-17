@@ -62,15 +62,6 @@
     "configuration": {
       "title": "Angular Language Service",
       "properties": {
-        "angular.ngdk": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "default": null,
-          "description": "Specifies the folder path to @angular/language-service.",
-          "scope": "machine"
-        },
         "angular.log": {
           "type": "string",
           "enum": [

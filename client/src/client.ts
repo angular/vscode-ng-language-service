@@ -394,7 +394,10 @@ function constructArgs(ctx: vscode.ExtensionContext): string[] {
   const ngProbeLocations = getProbeLocations(ngdk, ctx.extensionPath);
   args.push('--ngProbeLocations', ngProbeLocations.join(','));
 
-  const viewEngine: boolean = config.get('angular.view-engine', !allProjectsSupportIvy());
+  // Because the configuration is typed as "boolean" in package.json, vscode
+  // will return false even when the value is not set. If value is false, then
+  // we need to check if all projects support Ivy language service.
+  const viewEngine: boolean = config.get('angular.view-engine') || !allProjectsSupportIvy();
   if (viewEngine) {
     args.push('--viewEngine');
   }

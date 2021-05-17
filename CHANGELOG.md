@@ -1,3 +1,10 @@
+# v12.0.1
+
+This release fixes a bug where View Engine is not launched for older projects
+even though the Angular version is resolved correctly.
+This is because the configuration value is typed as `boolean`, and defaults to
+`false` even when the value is not set. (d6cb5cb5ad)
+
 # v12.0.0
 
 This release upgrades `@angular/language-service` to v12.0.0.

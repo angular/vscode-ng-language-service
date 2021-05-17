@@ -1123,9 +1123,9 @@ export class Session {
       success = true;
     } catch (e) {
       this.error(
-          `Failed to run ngcc for ${configFilePath}:\n` +
-          `    ${e.message}\n` +
-          `    Language service will remain disabled.`);
+          `Failed to run ngcc for ${
+              configFilePath}, language service may not operate correctly:\n` +
+          `    ${e.message}`);
     } finally {
       this.connection.sendProgress(NgccProgressType, NgccProgressToken, {
         done: true,

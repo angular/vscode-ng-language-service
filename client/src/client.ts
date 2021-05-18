@@ -168,8 +168,8 @@ export class AngularLanguageClient implements vscode.Disposable {
     // Create the language client and start the client.
     const forceDebug = process.env['NG_DEBUG'] === 'true';
     this.client = new lsp.LanguageClient(
-        // This is the ID for Angular-specific configurations, like angular.log,
-        // angular.ngdk, etc. See contributes.configuration in package.json.
+        // This is the ID for Angular-specific configurations, like "angular.log".
+        // See contributes.configuration in package.json.
         'angular',
         this.name,
         serverOptions,
@@ -374,8 +374,7 @@ function constructArgs(ctx: vscode.ExtensionContext): string[] {
     args.push('--logVerbosity', ngLog);
   }
 
-  const ngdk: string|null = config.get('angular.ngdk', null);
-  const ngProbeLocations = getProbeLocations(ngdk, ctx.extensionPath);
+  const ngProbeLocations = getProbeLocations(null, ctx.extensionPath);
   args.push('--ngProbeLocations', ngProbeLocations.join(','));
 
   // Because the configuration is typed as "boolean" in package.json, vscode

@@ -227,6 +227,8 @@ export class AngularLanguageClient implements vscode.Disposable {
     this.outputChannel.clear();
     this.dispose();
     this.client = null;
+    this.fileToIsInAngularProjectMap.clear();
+    this.virtualDocumentContents.clear();
   }
 
   /**

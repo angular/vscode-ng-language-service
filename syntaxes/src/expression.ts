@@ -176,7 +176,7 @@ export const Expression: GrammarDefinition = {
         },
         {
           name: 'keyword.operator.logical.ts',
-          match: /\!|&&|\|\|/,
+          match: /\!|&&|\?\?|\|\|/,
         },
         {
           name: 'keyword.operator.bitwise.ts',
@@ -594,11 +594,12 @@ export const Expression: GrammarDefinition = {
     },
 
     // Derived from
-    // https://github.com/sheetalkamat/TypeScript-TmLanguage-VsCode/blob/04219109f3e2090f787c0fa8743e73a4bd1ad876/syntaxes/TypeScript.tmLanguage.json#L2830-L2848
+    // https://github.com/microsoft/vscode-typescript-next/blob/849bce9ce68c4b87e6e1de0c31573ff376c7078d/syntaxes/TypeScript.tmLanguage.json#L2855-L2873
     ternaryExpression: {
       // 1. negative lookahead (?!\?\.\s*[^[:digit:]]) ensures safe navigation does not match
       // 2. match the ternary question mark with (\?)
-      begin: /(?!\?\.\s*[^[:digit:]])(\?)/,
+      // 3. negative lookahead (?!\?) ensures nullish coalesce does not match
+      begin: /(?!\?\.\s*[^[:digit:]])(\?)(?!\?)/,
       beginCaptures: {
         1: {
           name: 'keyword.operator.ternary.ts',

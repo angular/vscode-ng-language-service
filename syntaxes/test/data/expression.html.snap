@@ -623,6 +623,19 @@
 #                                                                 ^ template.ng expression.ng
 #                                                                  ^^ template.ng punctuation.definition.block.ts
 >
+><!-- Nullish coalesce -->
+#^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+>{{a ?? 'empty'}}
+#^^ template.ng punctuation.definition.block.ts
+#  ^ template.ng expression.ng variable.other.readwrite.ts
+#   ^ template.ng expression.ng
+#    ^^ template.ng expression.ng keyword.operator.logical.ts
+#      ^ template.ng expression.ng
+#       ^ template.ng expression.ng string.quoted.single.ts punctuation.definition.string.begin.ts
+#        ^^^^^ template.ng expression.ng string.quoted.single.ts
+#             ^ template.ng expression.ng string.quoted.single.ts punctuation.definition.string.end.ts
+#              ^^ template.ng punctuation.definition.block.ts
+>
 ><!-- Ternary expression -->
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
 >{{ condition ? true : false }}
@@ -653,7 +666,36 @@
 #                      ^^^^^ template.ng expression.ng constant.language.boolean.false.ts
 #                           ^^ template.ng expression.ng
 #                             ^^ template.ng punctuation.definition.block.ts
->{{ condition() ? call(1 + 2 + 3) : call()  }}
+>{{ condition() ? call(1 + 2 + 3) : call() }}
+#^^ template.ng punctuation.definition.block.ts
+#  ^ template.ng expression.ng
+#   ^^^^^^^^^ template.ng expression.ng entity.name.function.ts
+#            ^ template.ng expression.ng meta.brace.round.ts
+#             ^ template.ng expression.ng meta.brace.round.ts
+#              ^ template.ng expression.ng
+#               ^ template.ng expression.ng keyword.operator.ternary.ts
+#                ^ template.ng expression.ng
+#                 ^^^^ template.ng expression.ng entity.name.function.ts
+#                     ^ template.ng expression.ng meta.brace.round.ts
+#                      ^ template.ng expression.ng constant.numeric.decimal.ts
+#                       ^ template.ng expression.ng
+#                        ^ template.ng expression.ng keyword.operator.arithmetic.ts
+#                         ^ template.ng expression.ng
+#                          ^ template.ng expression.ng constant.numeric.decimal.ts
+#                           ^ template.ng expression.ng
+#                            ^ template.ng expression.ng keyword.operator.arithmetic.ts
+#                             ^ template.ng expression.ng
+#                              ^ template.ng expression.ng constant.numeric.decimal.ts
+#                               ^ template.ng expression.ng meta.brace.round.ts
+#                                ^ template.ng expression.ng
+#                                 ^ template.ng expression.ng keyword.operator.ternary.ts
+#                                  ^ template.ng expression.ng
+#                                   ^^^^ template.ng expression.ng entity.name.function.ts
+#                                       ^ template.ng expression.ng meta.brace.round.ts
+#                                        ^ template.ng expression.ng meta.brace.round.ts
+#                                         ^ template.ng expression.ng
+#                                          ^^ template.ng punctuation.definition.block.ts
+>{{ condition() ? call(1 + 2 + 3) : call(); }}
 #^^ template.ng punctuation.definition.block.ts
 #  ^ template.ng expression.ng
 #   ^^^^^^^^^ template.ng expression.ng entity.name.function.ts
@@ -682,35 +724,6 @@
 #                                        ^ template.ng expression.ng meta.brace.round.ts
 #                                         ^^ template.ng expression.ng
 #                                           ^^ template.ng punctuation.definition.block.ts
->{{ condition() ? call(1 + 2 + 3) : call();  }}
-#^^ template.ng punctuation.definition.block.ts
-#  ^ template.ng expression.ng
-#   ^^^^^^^^^ template.ng expression.ng entity.name.function.ts
-#            ^ template.ng expression.ng meta.brace.round.ts
-#             ^ template.ng expression.ng meta.brace.round.ts
-#              ^ template.ng expression.ng
-#               ^ template.ng expression.ng keyword.operator.ternary.ts
-#                ^ template.ng expression.ng
-#                 ^^^^ template.ng expression.ng entity.name.function.ts
-#                     ^ template.ng expression.ng meta.brace.round.ts
-#                      ^ template.ng expression.ng constant.numeric.decimal.ts
-#                       ^ template.ng expression.ng
-#                        ^ template.ng expression.ng keyword.operator.arithmetic.ts
-#                         ^ template.ng expression.ng
-#                          ^ template.ng expression.ng constant.numeric.decimal.ts
-#                           ^ template.ng expression.ng
-#                            ^ template.ng expression.ng keyword.operator.arithmetic.ts
-#                             ^ template.ng expression.ng
-#                              ^ template.ng expression.ng constant.numeric.decimal.ts
-#                               ^ template.ng expression.ng meta.brace.round.ts
-#                                ^ template.ng expression.ng
-#                                 ^ template.ng expression.ng keyword.operator.ternary.ts
-#                                  ^ template.ng expression.ng
-#                                   ^^^^ template.ng expression.ng entity.name.function.ts
-#                                       ^ template.ng expression.ng meta.brace.round.ts
-#                                        ^ template.ng expression.ng meta.brace.round.ts
-#                                         ^^^ template.ng expression.ng
-#                                            ^^ template.ng punctuation.definition.block.ts
 >{{ condition()?.object ? call()!.test() : false }}
 #^^ template.ng punctuation.definition.block.ts
 #  ^ template.ng expression.ng
@@ -837,6 +850,28 @@
 #                  ^ template.ng expression.ng constant.numeric.decimal.ts
 #                   ^ template.ng expression.ng
 #                    ^^ template.ng punctuation.definition.block.ts
+><!-- Don't match nullish coalesce -->
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+>{{ condition ?? (a ? 1 : 2) }}
+#^^ template.ng punctuation.definition.block.ts
+#  ^ template.ng expression.ng
+#   ^^^^^^^^^ template.ng expression.ng variable.other.readwrite.ts
+#            ^ template.ng expression.ng
+#             ^^ template.ng expression.ng keyword.operator.logical.ts
+#               ^ template.ng expression.ng
+#                ^ template.ng expression.ng meta.brace.round.ts
+#                 ^ template.ng expression.ng variable.other.readwrite.ts
+#                  ^ template.ng expression.ng
+#                   ^ template.ng expression.ng keyword.operator.ternary.ts
+#                    ^ template.ng expression.ng
+#                     ^ template.ng expression.ng constant.numeric.decimal.ts
+#                      ^ template.ng expression.ng
+#                       ^ template.ng expression.ng keyword.operator.ternary.ts
+#                        ^ template.ng expression.ng
+#                         ^ template.ng expression.ng constant.numeric.decimal.ts
+#                          ^ template.ng expression.ng meta.brace.round.ts
+#                           ^ template.ng expression.ng
+#                            ^^ template.ng punctuation.definition.block.ts
 >
 ><!-- Microsyntax -->
 #^^^^^^^^^^^^^^^^^^^^^ template.ng
@@ -1219,7 +1254,7 @@
 >
 ><!-- Mixed -->
 #^^^^^^^^^^^^^^^ template.ng
->{{ (let param of params?.get('value')!.property | async).anotherProperty | translate: ['language1', 'language2']; index as i }}
+>{{ (let param of params?.get('value')!.property | async).anotherProperty | translate: ['language1', 'language2']; index
 #^^ template.ng punctuation.definition.block.ts
 #  ^ template.ng expression.ng
 #   ^ template.ng expression.ng meta.brace.round.ts
@@ -1265,12 +1300,12 @@
 #                                                                                                               ^ template.ng expression.ng meta.array.literal.ts meta.brace.square.ts
 #                                                                                                                ^^ template.ng expression.ng
 #                                                                                                                  ^^^^^ template.ng expression.ng variable.other.readwrite.ts
-#                                                                                                                       ^ template.ng expression.ng
-#                                                                                                                        ^^ template.ng expression.ng storage.type.as.ts
-#                                                                                                                          ^ template.ng expression.ng
-#                                                                                                                           ^ template.ng expression.ng entity.name.type.ts
-#                                                                                                                            ^ template.ng expression.ng
-#                                                                                                                             ^^ template.ng punctuation.definition.block.ts
+>as i }}
+#^^ template.ng expression.ng storage.type.as.ts
+#  ^ template.ng expression.ng
+#   ^ template.ng expression.ng entity.name.type.ts
+#    ^ template.ng expression.ng
+#     ^^ template.ng punctuation.definition.block.ts
 >{{ (let param of params?.anotherParam!.param().param | async) as p; let i = index; let first = first }}
 #^^ template.ng punctuation.definition.block.ts
 #  ^ template.ng expression.ng
@@ -1318,7 +1353,7 @@
 #                                                                                               ^^^^^ template.ng expression.ng variable.other.readwrite.ts
 #                                                                                                    ^ template.ng expression.ng
 #                                                                                                     ^^ template.ng punctuation.definition.block.ts
->{{ (let param of params?.get('value')!.property | async).anotherProperty | translate: ['language1', 'language2']; let i = index; }}
+>{{ (let param of params?.get('value')!.property | async).anotherProperty | translate: ['language1', 'language2']; let i
 #^^ template.ng punctuation.definition.block.ts
 #  ^ template.ng expression.ng
 #   ^ template.ng expression.ng meta.brace.round.ts
@@ -1366,12 +1401,12 @@
 #                                                                                                                  ^^^ template.ng expression.ng storage.type.ts
 #                                                                                                                     ^ template.ng expression.ng
 #                                                                                                                      ^ template.ng expression.ng variable.other.readwrite.ts
-#                                                                                                                       ^ template.ng expression.ng
-#                                                                                                                        ^ template.ng expression.ng keyword.operator.assignment.ts
-#                                                                                                                         ^ template.ng expression.ng
-#                                                                                                                          ^^^^^ template.ng expression.ng variable.other.readwrite.ts
-#                                                                                                                               ^^ template.ng expression.ng
-#                                                                                                                                 ^^ template.ng punctuation.definition.block.ts
+>= index; }}
+#^ template.ng expression.ng keyword.operator.assignment.ts
+# ^ template.ng expression.ng
+#  ^^^^^ template.ng expression.ng variable.other.readwrite.ts
+#       ^^ template.ng expression.ng
+#         ^^ template.ng punctuation.definition.block.ts
 >
 ><!-- Regression -->
 #^^^^^^^^^^^^^^^^^^^^ template.ng
@@ -1419,4 +1454,3 @@
 #                          ^ template.ng meta.ng-binding.template.html expression.ng entity.name.type.ts
 #                           ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.end.html
 #                            ^^^^^^^^ template.ng
->

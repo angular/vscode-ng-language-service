@@ -290,7 +290,7 @@ export class Session {
   }
 
   private onCodeLens(params: lsp.CodeLensParams): lsp.CodeLens[]|undefined {
-    if (!params.textDocument.uri.endsWith('.html')) {
+    if (!params.textDocument.uri.endsWith('.html') || !this.isInAngularProject(params)) {
       return undefined;
     }
     const position = lsp.Position.create(0, 0);
@@ -306,24 +306,21 @@ export class Session {
   }
 
   private onCodeLensResolve(params: lsp.CodeLens): lsp.CodeLens {
-    const lsInfo = this.getLSAndScriptInfo(params.data);
-    if (lsInfo === undefined) {
-      return params;
-    }
-    const project = this.getDefaultProjectForScriptInfo(lsInfo.scriptInfo);
-    // If the language service is disabled, the angular command will not be available.
-    if (!project?.languageServiceEnabled) {
-      return params;
-    }
-
     const components = this.onGetComponentsWithTemplateFile({textDocument: params.data});
-    if (components !== undefined && components.length > 0) {
-      params.command = {
-        command: 'angular.goToComponentWithTemplateFile',
-        title: components.length > 1 ? `Used as templateUrl in ${components.length} components` :
-                                       'Go to component',
-      };
+    if (components === undefined || components.length === 0) {
+      // While the command is supposed to be optional, vscode will show `!!MISSING: command!!` that
+      // fails if you click on it when a command is not provided. Instead, throwing an error will
+      // make vscode show the text "no commands" (and it's not a link).
+      // It is documented that code lens resolution can throw an error:
+      // https://microsoft.github.io/language-server-protocol/specification#codeLens_resolve
+      throw new Error(
+          'Could not determine component for ' + (params.data as lsp.TextDocumentIdentifier).uri);
     }
+    params.command = {
+      command: 'angular.goToComponentWithTemplateFile',
+      title: components.length > 1 ? `Used as templateUrl in ${components.length} components` :
+                                     'Go to component',
+    };
     return params;
   }
 

@@ -61,11 +61,14 @@
 {{ call({ test: 123 }) }}
 {{ call({ test: [123, 321, { value: ['string', false, true] }] }) }}
 
+<!-- Nullish coalesce -->
+{{a ?? 'empty'}}
+
 <!-- Ternary expression -->
 {{ condition ? true : false }}
 {{ condition ? true : false; }}
-{{ condition() ? call(1 + 2 + 3) : call()  }}
-{{ condition() ? call(1 + 2 + 3) : call();  }}
+{{ condition() ? call(1 + 2 + 3) : call() }}
+{{ condition() ? call(1 + 2 + 3) : call(); }}
 {{ condition()?.object ? call()!.test() : false }}
 {{ condition ? ['123'] : { test: 'a' } }}
 {{ condition ? 'test' : "test" }}
@@ -73,6 +76,8 @@
 {{ condition ? condition2 ? condition3 ? 1 : 2 : 3 : 4 }}
 <!-- Don't match safe navigations -->
 {{ condition?.a : 1 }}
+<!-- Don't match nullish coalesce -->
+{{ condition ?? (a ? 1 : 2) }}
 
 <!-- Microsyntax -->
 <!-- Let Expression -->
@@ -99,9 +104,11 @@
 {{ ((let param of params) | async) | translate }}
 
 <!-- Mixed -->
-{{ (let param of params?.get('value')!.property | async).anotherProperty | translate: ['language1', 'language2']; index as i }}
+{{ (let param of params?.get('value')!.property | async).anotherProperty | translate: ['language1', 'language2']; index
+as i }}
 {{ (let param of params?.anotherParam!.param().param | async) as p; let i = index; let first = first }}
-{{ (let param of params?.get('value')!.property | async).anotherProperty | translate: ['language1', 'language2']; let i = index; }}
+{{ (let param of params?.get('value')!.property | async).anotherProperty | translate: ['language1', 'language2']; let i
+= index; }}
 
 <!-- Regression -->
 <!-- #575 -->

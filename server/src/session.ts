@@ -182,13 +182,13 @@ export class Session {
     }
     const lsAndScriptInfo = this.getLSAndScriptInfo(params.textDocument);
     if (!lsAndScriptInfo) {
-      // If we cannot get language service / script info, return undefined to indicate we don't know
+      // If we cannot get language service / script info, return null to indicate we don't know
       // the answer definitively.
       return null;
     }
     const project = this.getDefaultProjectForScriptInfo(lsAndScriptInfo.scriptInfo);
     if (!project) {
-      // If we cannot get project, return undefined to indicate we don't know
+      // If we cannot get project, return null to indicate we don't know
       // the answer definitively.
       return null;
     }
@@ -196,21 +196,21 @@ export class Session {
     return angularCore !== undefined;
   }
 
-  private onGetTcb(params: GetTcbParams): GetTcbResponse|undefined {
+  private onGetTcb(params: GetTcbParams): GetTcbResponse|null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
-    if (lsInfo === undefined) {
-      return undefined;
+    if (lsInfo === null) {
+      return null;
     }
     const {languageService, scriptInfo} = lsInfo;
     const offset = lspPositionToTsPosition(scriptInfo, params.position);
     const response = languageService.getTcb(scriptInfo.fileName, offset);
     if (response === undefined) {
-      return undefined;
+      return null;
     }
     const {fileName: tcfName} = response;
     const tcfScriptInfo = this.projectService.getScriptInfo(tcfName);
     if (!tcfScriptInfo) {
-      return undefined;
+      return null;
     }
     return {
       uri: filePathToUri(tcfName),
@@ -219,10 +219,10 @@ export class Session {
     };
   }
 
-  private onGetComponentsWithTemplateFile(params: any): lsp.Location[]|undefined {
+  private onGetComponentsWithTemplateFile(params: any): lsp.Location[]|null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
-    if (lsInfo === undefined) {
-      return undefined;
+    if (lsInfo === null) {
+      return null;
     }
     const {languageService, scriptInfo} = lsInfo;
     const documentSpans = languageService.getComponentLocationsForTemplate(scriptInfo.fileName);
@@ -238,10 +238,10 @@ export class Session {
     return results;
   }
 
-  private onSignatureHelp(params: lsp.SignatureHelpParams): lsp.SignatureHelp|undefined {
+  private onSignatureHelp(params: lsp.SignatureHelpParams): lsp.SignatureHelp|null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
-    if (lsInfo === undefined) {
-      return undefined;
+    if (lsInfo === null) {
+      return null;
     }
 
     const {languageService, scriptInfo} = lsInfo;
@@ -249,7 +249,7 @@ export class Session {
 
     const help = languageService.getSignatureHelpItems(scriptInfo.fileName, offset, undefined);
     if (help === undefined) {
-      return undefined;
+      return null;
     }
 
     return {
@@ -289,9 +289,9 @@ export class Session {
     };
   }
 
-  private onCodeLens(params: lsp.CodeLensParams): lsp.CodeLens[]|undefined {
+  private onCodeLens(params: lsp.CodeLensParams): lsp.CodeLens[]|null {
     if (!params.textDocument.uri.endsWith('.html') || !this.isInAngularProject(params)) {
-      return undefined;
+      return null;
     }
     const position = lsp.Position.create(0, 0);
     const topOfDocument = lsp.Range.create(position, position);
@@ -307,7 +307,7 @@ export class Session {
 
   private onCodeLensResolve(params: lsp.CodeLens): lsp.CodeLens {
     const components = this.onGetComponentsWithTemplateFile({textDocument: params.data});
-    if (components === undefined || components.length === 0) {
+    if (components === null || components.length === 0) {
       // While the command is supposed to be optional, vscode will show `!!MISSING: command!!` that
       // fails if you click on it when a command is not provided. Instead, throwing an error will
       // make vscode show the text "no commands" (and it's not a link).
@@ -752,7 +752,7 @@ export class Session {
 
   private onDefinition(params: lsp.TextDocumentPositionParams): lsp.LocationLink[]|undefined {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
-    if (lsInfo === undefined) {
+    if (lsInfo === null) {
       return;
     }
     const {languageService, scriptInfo} = lsInfo;
@@ -767,7 +767,7 @@ export class Session {
 
   private onTypeDefinition(params: lsp.TextDocumentPositionParams): lsp.LocationLink[]|undefined {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
-    if (lsInfo === undefined) {
+    if (lsInfo === null) {
       return;
     }
     const {languageService, scriptInfo} = lsInfo;
@@ -781,7 +781,7 @@ export class Session {
 
   private onRenameRequest(params: lsp.RenameParams): lsp.WorkspaceEdit|undefined {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
-    if (lsInfo === undefined) {
+    if (lsInfo === null) {
       return;
     }
     const {languageService, scriptInfo} = lsInfo;
@@ -804,7 +804,7 @@ export class Session {
       const fileEdits = changes[location.fileName];
 
       const lsInfo = this.getLSAndScriptInfo(location.fileName);
-      if (lsInfo === undefined) {
+      if (lsInfo === null) {
         return changes;
       }
       const range = tsTextSpanToLspRange(lsInfo.scriptInfo, location.textSpan);
@@ -816,21 +816,21 @@ export class Session {
   }
 
   private onPrepareRename(params: lsp.PrepareRenameParams):
-      {range: lsp.Range, placeholder: string}|undefined {
+      {range: lsp.Range, placeholder: string}|null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
-    if (lsInfo === undefined) {
-      return;
+    if (lsInfo === null) {
+      return null;
     }
     const {languageService, scriptInfo} = lsInfo;
     const project = this.getDefaultProjectForScriptInfo(scriptInfo);
     if (project === undefined || this.renameDisabledProjects.has(project)) {
-      return;
+      return null;
     }
 
     const offset = lspPositionToTsPosition(scriptInfo, params.position);
     const renameInfo = languageService.getRenameInfo(scriptInfo.fileName, offset);
     if (!renameInfo.canRename) {
-      return undefined;
+      return null;
     }
     const range = tsTextSpanToLspRange(scriptInfo, renameInfo.triggerSpan);
     return {
@@ -841,7 +841,7 @@ export class Session {
 
   private onReferences(params: lsp.TextDocumentPositionParams): lsp.Location[]|undefined {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
-    if (lsInfo === undefined) {
+    if (lsInfo === null) {
       return;
     }
     const {languageService, scriptInfo} = lsInfo;
@@ -887,28 +887,28 @@ export class Session {
   }
 
   private getLSAndScriptInfo(textDocumentOrFileName: lsp.TextDocumentIdentifier|string):
-      {languageService: NgLanguageService, scriptInfo: ts.server.ScriptInfo}|undefined {
+      {languageService: NgLanguageService, scriptInfo: ts.server.ScriptInfo}|null {
     const filePath = lsp.TextDocumentIdentifier.is(textDocumentOrFileName) ?
         uriToFilePath(textDocumentOrFileName.uri) :
         textDocumentOrFileName;
     const scriptInfo = this.projectService.getScriptInfo(filePath);
     if (!scriptInfo) {
       this.error(`Script info not found for ${filePath}`);
-      return;
+      return null;
     }
 
     const project = this.getDefaultProjectForScriptInfo(scriptInfo);
     if (!project?.languageServiceEnabled) {
-      return;
+      return null;
     }
     if (project.isClosed()) {
       scriptInfo.detachFromProject(project);
       this.logger.info(`Failed to get language service for closed project ${project.projectName}.`);
-      return undefined;
+      return null;
     }
     const languageService = project.getLanguageService();
     if (!isNgLanguageService(languageService)) {
-      return undefined;
+      return null;
     }
     return {
       languageService,
@@ -918,7 +918,7 @@ export class Session {
 
   private onHover(params: lsp.TextDocumentPositionParams) {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
-    if (lsInfo === undefined) {
+    if (lsInfo === null) {
       return;
     }
     const {languageService, scriptInfo} = lsInfo;
@@ -953,7 +953,7 @@ export class Session {
 
   private onCompletion(params: lsp.CompletionParams) {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
-    if (lsInfo === undefined) {
+    if (lsInfo === null) {
       return;
     }
     const {languageService, scriptInfo} = lsInfo;
@@ -980,7 +980,7 @@ export class Session {
 
     const {filePath, position} = data;
     const lsInfo = this.getLSAndScriptInfo(filePath);
-    if (lsInfo === undefined) {
+    if (lsInfo === null) {
       return item;
     }
     const {languageService, scriptInfo} = lsInfo;
@@ -1056,7 +1056,7 @@ export class Session {
    *
    * @returns main declaration file in `@angular/core`.
    */
-  private findAngularCore(project: ts.server.Project): string|undefined {
+  private findAngularCore(project: ts.server.Project): string|null {
     const {projectName} = project;
     if (!project.languageServiceEnabled) {
       this.info(
@@ -1064,17 +1064,17 @@ export class Session {
           `This could be due to non-TS files that exceeded the size limit (${
               ts.server.maxProgramSizeForNonTsFiles} bytes).` +
           `Please check log file for details.`);
-      return;
+      return null;
     }
     if (!project.hasRoots() || project.isNonTsProject()) {
-      return undefined;
+      return null;
     }
     const angularCore = project.getFileNames().find(isAngularCore);
     if (angularCore === undefined && project.getExcludedFiles().some(isAngularCore)) {
       this.info(
           `Please check your tsconfig.json to make sure 'node_modules' directory is not excluded.`);
     }
-    return angularCore;
+    return angularCore ?? null;
   }
 
   /**

@@ -427,4 +427,3 @@
 #                                         ^^^^^^^^^^^^^^^^^ template.ng
 ><my-component *%invalid="expr"></my-component>
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
->

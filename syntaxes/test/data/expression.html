@@ -64,8 +64,8 @@
 <!-- Ternary expression -->
 {{ condition ? true : false }}
 {{ condition ? true : false; }}
-{{ condition() ? call(1 + 2 + 3) : call()  }}
-{{ condition() ? call(1 + 2 + 3) : call();  }}
+{{ condition() ? call(1 + 2 + 3) : call() }}
+{{ condition() ? call(1 + 2 + 3) : call(); }}
 {{ condition()?.object ? call()!.test() : false }}
 {{ condition ? ['123'] : { test: 'a' } }}
 {{ condition ? 'test' : "test" }}
@@ -99,9 +99,11 @@
 {{ ((let param of params) | async) | translate }}
 
 <!-- Mixed -->
-{{ (let param of params?.get('value')!.property | async).anotherProperty | translate: ['language1', 'language2']; index as i }}
+{{ (let param of params?.get('value')!.property | async).anotherProperty | translate: ['language1', 'language2']; index
+as i }}
 {{ (let param of params?.anotherParam!.param().param | async) as p; let i = index; let first = first }}
-{{ (let param of params?.get('value')!.property | async).anotherProperty | translate: ['language1', 'language2']; let i = index; }}
+{{ (let param of params?.get('value')!.property | async).anotherProperty | translate: ['language1', 'language2']; let i
+= index; }}
 
 <!-- Regression -->
 <!-- #575 -->

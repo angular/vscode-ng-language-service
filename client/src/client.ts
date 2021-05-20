@@ -88,13 +88,18 @@ export class AngularLanguageClient implements vscode.Disposable {
 
           const angularResultsPromise = next(document, position, token);
 
-          const vdocUri = this.createVirtualHtmlDoc(document);
-          const htmlProviderResultsPromise = vscode.commands.executeCommand<vscode.Hover[]>(
-              'vscode.executeHoverProvider', vdocUri, position);
+          // Include results for inline HTML via virtual document and native html providers.
+          if (document.languageId === 'typescript') {
+            const vdocUri = this.createVirtualHtmlDoc(document);
+            const htmlProviderResultsPromise = vscode.commands.executeCommand<vscode.Hover[]>(
+                'vscode.executeHoverProvider', vdocUri, position);
 
-          const [angularResults, htmlProviderResults] =
-              await Promise.all([angularResultsPromise, htmlProviderResultsPromise]);
-          return angularResults ?? htmlProviderResults?.[0];
+            const [angularResults, htmlProviderResults] =
+                await Promise.all([angularResultsPromise, htmlProviderResultsPromise]);
+            return angularResults ?? htmlProviderResults?.[0];
+          }
+
+          return angularResultsPromise;
         },
         provideSignatureHelp: async (
             document: vscode.TextDocument, position: vscode.Position,
@@ -117,17 +122,21 @@ export class AngularLanguageClient implements vscode.Disposable {
           const angularCompletionsPromise = next(document, position, context, token) as
               Promise<vscode.CompletionItem[]|null|undefined>;
 
-          const vdocUri = this.createVirtualHtmlDoc(document);
-          // This will not include angular stuff because the vdoc is not associated with an angular
-          // component
-          const htmlProviderCompletionsPromise =
-              vscode.commands.executeCommand<vscode.CompletionList>(
-                  'vscode.executeCompletionItemProvider', vdocUri, position,
-                  context.triggerCharacter);
-          const [angularCompletions, htmlProviderCompletions] =
-              await Promise.all([angularCompletionsPromise, htmlProviderCompletionsPromise]);
+          // Include results for inline HTML via virtual document and native html providers.
+          if (document.languageId === 'typescript') {
+            const vdocUri = this.createVirtualHtmlDoc(document);
+            // This will not include angular stuff because the vdoc is not associated with an
+            // angular component
+            const htmlProviderCompletionsPromise =
+                vscode.commands.executeCommand<vscode.CompletionList>(
+                    'vscode.executeCompletionItemProvider', vdocUri, position,
+                    context.triggerCharacter);
+            const [angularCompletions, htmlProviderCompletions] =
+                await Promise.all([angularCompletionsPromise, htmlProviderCompletionsPromise]);
+            return [...(angularCompletions ?? []), ...(htmlProviderCompletions?.items ?? [])];
+          }
 
-          return [...(angularCompletions ?? []), ...(htmlProviderCompletions?.items ?? [])];
+          return angularCompletionsPromise;
         }
       }
     };

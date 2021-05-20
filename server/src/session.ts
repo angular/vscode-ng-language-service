@@ -175,7 +175,7 @@ export class Session {
     conn.onSignatureHelp(p => this.onSignatureHelp(p));
   }
 
-  private isInAngularProject(params: IsInAngularProjectParams): boolean|undefined {
+  private isInAngularProject(params: IsInAngularProjectParams): boolean|null {
     const filePath = uriToFilePath(params.textDocument.uri);
     if (!filePath) {
       return false;
@@ -184,13 +184,13 @@ export class Session {
     if (!lsAndScriptInfo) {
       // If we cannot get language service / script info, return undefined to indicate we don't know
       // the answer definitively.
-      return undefined;
+      return null;
     }
     const project = this.getDefaultProjectForScriptInfo(lsAndScriptInfo.scriptInfo);
     if (!project) {
       // If we cannot get project, return undefined to indicate we don't know
       // the answer definitively.
-      return undefined;
+      return null;
     }
     const angularCore = project.getFileNames().find(isAngularCore);
     return angularCore !== undefined;

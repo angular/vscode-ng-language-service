@@ -162,7 +162,7 @@ export class AngularLanguageClient implements vscode.Disposable {
       const response = await this.client.sendRequest(IsInAngularProject, {
         textDocument: this.client.code2ProtocolConverter.asTextDocumentIdentifier(doc),
       });
-      if (response === undefined) {
+      if (response == null) {
         // If the response indicates the answer can't be determined at the moment, return `false`
         // but do not cache the result so we can try to get the real answer on follow-up requests.
         return false;

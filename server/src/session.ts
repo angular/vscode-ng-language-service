@@ -832,7 +832,7 @@ export class Session {
       // Because we cannot ensure our extension is prioritized for renames in TS files (see
       // https://github.com/microsoft/vscode/issues/115354) we disable renaming completely so we can
       // provide consistent expectations.
-      return;
+      return null;
     }
     const project = this.getDefaultProjectForScriptInfo(scriptInfo);
     if (project === undefined || this.renameDisabledProjects.has(project)) {

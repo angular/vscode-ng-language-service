@@ -623,6 +623,19 @@
 #                                                                 ^ template.ng expression.ng
 #                                                                  ^^ template.ng punctuation.definition.block.ts
 >
+><!-- Nullish coalesce -->
+#^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+>{{a ?? 'empty'}}
+#^^ template.ng punctuation.definition.block.ts
+#  ^ template.ng expression.ng variable.other.readwrite.ts
+#   ^ template.ng expression.ng
+#    ^^ template.ng expression.ng keyword.operator.logical.ts
+#      ^ template.ng expression.ng
+#       ^ template.ng expression.ng string.quoted.single.ts punctuation.definition.string.begin.ts
+#        ^^^^^ template.ng expression.ng string.quoted.single.ts
+#             ^ template.ng expression.ng string.quoted.single.ts punctuation.definition.string.end.ts
+#              ^^ template.ng punctuation.definition.block.ts
+>
 ><!-- Ternary expression -->
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
 >{{ condition ? true : false }}
@@ -837,6 +850,28 @@
 #                  ^ template.ng expression.ng constant.numeric.decimal.ts
 #                   ^ template.ng expression.ng
 #                    ^^ template.ng punctuation.definition.block.ts
+><!-- Don't match nullish coalesce -->
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+>{{ condition ?? (a ? 1 : 2) }}
+#^^ template.ng punctuation.definition.block.ts
+#  ^ template.ng expression.ng
+#   ^^^^^^^^^ template.ng expression.ng variable.other.readwrite.ts
+#            ^ template.ng expression.ng
+#             ^^ template.ng expression.ng keyword.operator.logical.ts
+#               ^ template.ng expression.ng
+#                ^ template.ng expression.ng meta.brace.round.ts
+#                 ^ template.ng expression.ng variable.other.readwrite.ts
+#                  ^ template.ng expression.ng
+#                   ^ template.ng expression.ng keyword.operator.ternary.ts
+#                    ^ template.ng expression.ng
+#                     ^ template.ng expression.ng constant.numeric.decimal.ts
+#                      ^ template.ng expression.ng
+#                       ^ template.ng expression.ng keyword.operator.ternary.ts
+#                        ^ template.ng expression.ng
+#                         ^ template.ng expression.ng constant.numeric.decimal.ts
+#                          ^ template.ng expression.ng meta.brace.round.ts
+#                           ^ template.ng expression.ng
+#                            ^^ template.ng punctuation.definition.block.ts
 >
 ><!-- Microsyntax -->
 #^^^^^^^^^^^^^^^^^^^^^ template.ng

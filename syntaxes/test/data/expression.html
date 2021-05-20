@@ -61,6 +61,9 @@
 {{ call({ test: 123 }) }}
 {{ call({ test: [123, 321, { value: ['string', false, true] }] }) }}
 
+<!-- Nullish coalesce -->
+{{a ?? 'empty'}}
+
 <!-- Ternary expression -->
 {{ condition ? true : false }}
 {{ condition ? true : false; }}
@@ -73,6 +76,8 @@
 {{ condition ? condition2 ? condition3 ? 1 : 2 : 3 : 4 }}
 <!-- Don't match safe navigations -->
 {{ condition?.a : 1 }}
+<!-- Don't match nullish coalesce -->
+{{ condition ?? (a ? 1 : 2) }}
 
 <!-- Microsyntax -->
 <!-- Let Expression -->

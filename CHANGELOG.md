@@ -1,3 +1,11 @@
+# v12.0.2
+
+fix: only give html provider completions for inline templates (#1369) (98d5c97bb)
+fix: avoid showing MISSING: command for code lens in templates (#1370) (fa5212faf)
+perf: Avoid making Angular-related decisions for files not in an Angular project (#1360) (f83b02eb0)
+fix: remove angular.ngdk configuration (#1361) (797140c2b)
+fix: remove message about disabled LS if ngcc fails (#1359) (0fdc5fb20)
+
 # v12.0.1
 
 This release fixes a bug where View Engine is not launched for older projects

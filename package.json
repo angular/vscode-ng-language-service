@@ -13,6 +13,12 @@
   "engines": {
     "vscode": "^1.56.0"
   },
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "This extension requires workspace trust because it needs to execute ngcc from the node_modules in the workspace."
+    }
+  },
   "categories": [
     "Programming Languages"
   ],

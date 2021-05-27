@@ -1,3 +1,8 @@
+# v12.0.3
+This release upgrades `@angular/language-service` to v12.0.2.
+
+* fix: support nullish coalesce for syntax highlighting  (#1376) (fa8a98678)
+
 # v12.0.2
 
 * fix: only give html provider completions for inline templates (#1369) (98d5c97bb)

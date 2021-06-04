@@ -1,3 +1,10 @@
+# v12.0.4
+
+This release upgrades `@angular/language-service` to v12.0.3.
+
+Bug fixes:
+1. compiler-cli: better detect classes that are indirectly exported (#42207)
+
 # v12.0.3
 This release upgrades `@angular/language-service` to v12.0.2.
 

@@ -929,7 +929,7 @@ export class Session {
     }
     const {kind, kindModifiers, textSpan, displayParts, documentation} = info;
     let desc = kindModifiers ? kindModifiers + ' ' : '';
-    if (displayParts) {
+    if (displayParts && displayParts.length > 0) {
       // displayParts does not contain info about kindModifiers
       // but displayParts does contain info about kind
       desc += displayParts.map(dp => dp.text).join('');
@@ -994,7 +994,7 @@ export class Session {
 
     const {kind, kindModifiers, displayParts, documentation} = details;
     let desc = kindModifiers ? kindModifiers + ' ' : '';
-    if (displayParts) {
+    if (displayParts && displayParts.length > 0) {
       // displayParts does not contain info about kindModifiers
       // but displayParts does contain info about kind
       desc += displayParts.map(dp => dp.text).join('');

@@ -17,7 +17,9 @@ enum CompletionKind {
   htmlAttribute = 'html attribute',
   property = 'property',
   component = 'component',
+  directive = 'directive',
   element = 'element',
+  event = 'event',
   key = 'key',
   method = 'method',
   pipe = 'pipe',
@@ -72,7 +74,9 @@ function ngCompletionKindToLspCompletionItemKind(kind: CompletionKind): lsp.Comp
     case CompletionKind.attribute:
     case CompletionKind.htmlAttribute:
     case CompletionKind.property:
+    case CompletionKind.event:
       return lsp.CompletionItemKind.Property;
+    case CompletionKind.directive:
     case CompletionKind.component:
     case CompletionKind.element:
     case CompletionKind.key:

@@ -234,6 +234,27 @@ describe('Angular Ivy language server', () => {
     });
   });
 
+  describe('completions', () => {
+    it('for events', async () => {
+      openTextDocument(client, FOO_TEMPLATE, `<my-app ()></my-app>`);
+      const languageServiceEnabled = await waitForNgcc(client);
+      expect(languageServiceEnabled).toBeTrue();
+      const response = await client.sendRequest(lsp.CompletionRequest.type, {
+        textDocument: {
+          uri: `file://${FOO_TEMPLATE}`,
+        },
+        position: {line: 0, character: 9},
+      }) as lsp.CompletionItem[];
+      const outputCompletion = response.find(i => i.label === '(appOutput)')!;
+      expect(outputCompletion.kind).toEqual(lsp.CompletionItemKind.Property);
+      expect((outputCompletion.textEdit as lsp.InsertReplaceEdit).insert)
+          .toEqual({start: {line: 0, character: 8}, end: {line: 0, character: 9}});
+      // replace range includes the closing )
+      expect((outputCompletion.textEdit as lsp.InsertReplaceEdit).replace)
+          .toEqual({start: {line: 0, character: 8}, end: {line: 0, character: 10}});
+    });
+  });
+
   describe('renaming', () => {
     describe('from template files', () => {
       beforeEach(async () => {

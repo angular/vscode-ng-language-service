@@ -66,7 +66,7 @@ export function initializeServer(client: MessageConnection): Promise<lsp.Initial
   });
 }
 
-export function openTextDocument(client: MessageConnection, filePath: string) {
+export function openTextDocument(client: MessageConnection, filePath: string, newText?: string) {
   let languageId = 'unknown';
   if (filePath.endsWith('ts')) {
     languageId = 'typescript';
@@ -78,7 +78,7 @@ export function openTextDocument(client: MessageConnection, filePath: string) {
       uri: `file://${filePath}`,
       languageId,
       version: 1,
-      text: fs.readFileSync(filePath, 'utf-8'),
+      text: newText ?? fs.readFileSync(filePath, 'utf-8'),
     },
   });
 }

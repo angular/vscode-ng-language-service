@@ -9,7 +9,7 @@
 import * as ts from 'typescript/lib/tsserverlibrary';
 import * as lsp from 'vscode-languageserver';
 
-import {tsTextSpanToLspRange} from './utils';
+import {lspPositionToTsPosition, tsTextSpanToLspRange} from './utils';
 
 // TODO: Move this to `@angular/language-service`.
 enum CompletionKind {
@@ -118,9 +118,16 @@ export function tsCompletionEntryToLspCompletionItem(
   // from 'entry.name'. For example, a method name could be 'greet', but the
   // insertText is 'greet()'.
   const insertText = entry.insertText || entry.name;
-  item.textEdit = entry.replacementSpan ?
-      lsp.TextEdit.replace(tsTextSpanToLspRange(scriptInfo, entry.replacementSpan), insertText) :
-      lsp.TextEdit.insert(position, insertText);
+  if (entry.replacementSpan) {
+    const replacementRange = tsTextSpanToLspRange(scriptInfo, entry.replacementSpan);
+    const tsPosition = lspPositionToTsPosition(scriptInfo, position);
+    const insertLength = tsPosition - entry.replacementSpan.start;
+    const insertionRange =
+        tsTextSpanToLspRange(scriptInfo, {...entry.replacementSpan, length: insertLength});
+    item.textEdit = lsp.InsertReplaceEdit.create(insertText, insertionRange, replacementRange);
+  } else {
+    item.textEdit = lsp.TextEdit.insert(position, insertText);
+  }
   item.data = {
     kind: 'ngCompletionOriginData',
     filePath: scriptInfo.fileName,

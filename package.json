@@ -186,7 +186,7 @@
     "vscode-languageserver-protocol": "3.16.0",
     "vscode-languageserver-textdocument": "1.0.1",
     "vscode-test": "1.5.2",
-    "vscode-tmgrammar-test": "0.0.10"
+    "vscode-tmgrammar-test": "0.0.11"
   },
   "repository": {
     "type": "git",

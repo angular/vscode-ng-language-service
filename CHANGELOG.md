@@ -1,3 +1,11 @@
+# v12.0.5
+
+Bug fixes:
+
+1. fix(completions): fix completions for inputs / outputs (#1405) (d602cf933)
+2. fix(language-service): fix autocomplete info display for attributes (https://github.com/angular/angular/pull/42472)
+
+
 # v12.0.4
 
 This release upgrades `@angular/language-service` to v12.0.3.

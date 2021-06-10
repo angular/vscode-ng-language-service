@@ -2,7 +2,7 @@
   "name": "ng-template",
   "displayName": "Angular Language Service",
   "description": "Editor services for Angular templates",
-  "version": "12.0.4",
+  "version": "12.0.5",
   "publisher": "Angular",
   "icon": "angular.png",
   "license": "MIT",
@@ -158,7 +158,7 @@
     "test:syntaxes": "yarn compile:syntaxes-test && yarn build:syntaxes && jasmine dist/syntaxes/test/driver.js"
   },
   "dependencies": {
-    "@angular/language-service": "12.0.3",
+    "@angular/language-service": "12.0.4",
     "typescript": "4.2.4",
     "vscode-jsonrpc": "6.0.0",
     "vscode-languageclient": "7.0.0",

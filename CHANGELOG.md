@@ -1,3 +1,48 @@
+# v12.1.0
+
+
+This release upgrades `@angular/language-service` to v12.1.0.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1210-2021-06-24).
+
+Features:
+1. feat: Allow renaming from string literals in TS files (#1337) (9dba839b3)
+
+# v12.0.5
+
+Bug fixes:
+
+1. fix(completions): fix completions for inputs / outputs (#1405) (d602cf933)
+2. fix(language-service): fix autocomplete info display for attributes (https://github.com/angular/angular/pull/42472)
+
+
+# v12.0.4
+
+This release upgrades `@angular/language-service` to v12.0.3.
+
+Bug fixes:
+1. compiler-cli: better detect classes that are indirectly exported (#42207)
+
+# v12.0.3
+This release upgrades `@angular/language-service` to v12.0.2.
+
+* fix: support nullish coalesce for syntax highlighting  (#1376) (fa8a98678)
+
+# v12.0.2
+
+* fix: only give html provider completions for inline templates (#1369) (98d5c97bb)
+* fix: avoid showing MISSING: command for code lens in templates (#1370) (fa5212faf)
+* perf: Avoid making Angular-related decisions for files not in an Angular project (#1360) (f83b02eb0)
+* fix: remove angular.ngdk configuration (#1361) (797140c2b)
+* fix: remove message about disabled LS if ngcc fails (#1359) (0fdc5fb20)
+
+# v12.0.1
+
+This release fixes a bug where View Engine is not launched for older projects
+even though the Angular version is resolved correctly.
+This is because the configuration value is typed as `boolean`, and defaults to
+`false` even when the value is not set. (d6cb5cb5ad)
+
+
 # v12.0.0
 
 This release upgrades `@angular/language-service` to v12.0.0.

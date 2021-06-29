@@ -987,7 +987,8 @@ export class Session {
 
     const offset = lspPositionToTsPosition(scriptInfo, position);
     const details = languageService.getCompletionEntryDetails(
-        filePath, offset, item.insertText ?? item.label, undefined, undefined, undefined);
+        filePath, offset, item.insertText ?? item.label, undefined, undefined, undefined,
+        undefined);
     if (details === undefined) {
       return item;
     }

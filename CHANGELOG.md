@@ -1,3 +1,10 @@
+# v12.1.1
+
+This release upgrades `@angular/language-service` to v12.1.1.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1211-2021-06-30).
+
+* update to TS 4.3.4 (#1428) (fb6681ee6)
+
 # v12.1.0
 
 

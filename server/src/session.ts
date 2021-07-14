@@ -53,6 +53,9 @@ export class Session {
   private readonly configuredProjToExternalProj = new Map<string, string>();
   private readonly logToConsole: boolean;
   private readonly openFiles = new MruTracker();
+  // Tracks the spawn order and status of the `ngcc` processes. This allows us to ensure we enable
+  // the LS in the same order the projects were created in.
+  private projectNgccQueue: Array<{project: ts.server.Project, done: boolean}> = [];
   private diagnosticsTimeout: NodeJS.Timeout|null = null;
   private isProjectLoading = false;
   /**
@@ -1098,6 +1101,7 @@ export class Session {
     let success = false;
 
     try {
+      this.projectNgccQueue.push({project, done: false});
       await resolveAndRunNgcc(configFilePath, {
         report: (msg: string) => {
           this.connection.sendProgress(NgccProgressType, NgccProgressToken, {
@@ -1114,6 +1118,10 @@ export class Session {
               configFilePath}, language service may not operate correctly:\n` +
           `    ${e.message}`);
     } finally {
+      const loadingStatus = this.projectNgccQueue.find(p => p.project === project);
+      if (loadingStatus !== undefined) {
+        loadingStatus.done = true;
+      }
       this.connection.sendProgress(NgccProgressType, NgccProgressToken, {
         done: true,
         configFilePath,
@@ -1121,12 +1129,23 @@ export class Session {
       });
     }
 
-    // Re-enable language service even if ngcc fails, because users could fix
-    // the problem by running ngcc themselves. If we keep language service
-    // disabled, there's no way users could use the extension even after
-    // resolving ngcc issues. On the client side, we will warn users about
-    // potentially degraded experience.
-    this.enableLanguageServiceForProject(project);
+    // ngcc processes might finish out of order, but we need to re-enable the language service for
+    // the projects in the same order that the ngcc processes were spawned in. With solution-style
+    // configs, we need to ensure that the language service enabling respects the order that the
+    // projects were defined in the references list. If we enable the language service out of order,
+    // the second project in the list will request diagnostics first and then be the project that's
+    // prioritized for that project's set of files. This will cause issues if the second project is,
+    // for example, one that only includes `*.spec.ts` files and not the entire set of files needed
+    // to compile the app (i.e. `*.module.ts`).
+    for (let i = 0; i < this.projectNgccQueue.length && this.projectNgccQueue[i].done; i++) {
+      // Re-enable language service even if ngcc fails, because users could fix
+      // the problem by running ngcc themselves. If we keep language service
+      // disabled, there's no way users could use the extension even after
+      // resolving ngcc issues. On the client side, we will warn users about
+      // potentially degraded experience.
+      this.enableLanguageServiceForProject(this.projectNgccQueue[i].project);
+    }
+    this.projectNgccQueue = this.projectNgccQueue.filter(({done}) => !done);
   }
 }
 

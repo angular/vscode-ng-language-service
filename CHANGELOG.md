@@ -1,5 +1,13 @@
 # v12.1.1
 
+This release upgrades `@angular/language-service` to v12.1.2.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1212-2021-07-14).
+
+1. fix(language-server): Ensure LS is enabled in same order as project initialization for solution-style projects (#1447) (68ee8344e)
+1. fix(compiler-cli): return directives for an element on a microsyntax template (https://github.com/angular/angular/pull/42640)
+
+# v12.1.1
+
 This release upgrades `@angular/language-service` to v12.1.1.
 For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1211-2021-06-30).
 

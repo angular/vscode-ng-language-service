@@ -65,6 +65,7 @@ export class Session {
    * disable renaming because we know that there are many cases where it will not work correctly.
    */
   private renameDisabledProjects: WeakSet<ts.server.Project> = new WeakSet();
+  private clientCapabilities: lsp.ClientCapabilities = {};
 
   constructor(options: SessionOptions) {
     this.logger = options.logger;
@@ -576,6 +577,7 @@ export class Session {
     const serverOptions: ServerOptions = {
       logFile: this.logger.getLogFileName(),
     };
+    this.clientCapabilities = params.capabilities;
     return {
       capabilities: {
         codeLensProvider: this.ivy ? {resolveProvider: true} : undefined,
@@ -969,8 +971,12 @@ export class Session {
     if (!completions) {
       return;
     }
+    const clientSupportsInsertReplaceCompletion =
+        this.clientCapabilities.textDocument?.completion?.completionItem?.insertReplaceSupport ??
+        false;
     return completions.entries.map(
-        (e) => tsCompletionEntryToLspCompletionItem(e, params.position, scriptInfo));
+        (e) => tsCompletionEntryToLspCompletionItem(
+            e, params.position, scriptInfo, clientSupportsInsertReplaceCompletion));
   }
 
   private onCompletionResolve(item: lsp.CompletionItem): lsp.CompletionItem {

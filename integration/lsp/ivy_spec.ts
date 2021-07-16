@@ -247,10 +247,8 @@ describe('Angular Ivy language server', () => {
       }) as lsp.CompletionItem[];
       const outputCompletion = response.find(i => i.label === '(appOutput)')!;
       expect(outputCompletion.kind).toEqual(lsp.CompletionItemKind.Property);
-      expect((outputCompletion.textEdit as lsp.InsertReplaceEdit).insert)
-          .toEqual({start: {line: 0, character: 8}, end: {line: 0, character: 9}});
-      // replace range includes the closing )
-      expect((outputCompletion.textEdit as lsp.InsertReplaceEdit).replace)
+      // // replace range includes the closing )
+      expect((outputCompletion.textEdit as lsp.TextEdit).range)
           .toEqual({start: {line: 0, character: 8}, end: {line: 0, character: 10}});
     });
   });

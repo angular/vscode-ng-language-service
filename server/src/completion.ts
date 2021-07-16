@@ -103,8 +103,8 @@ function ngCompletionKindToLspCompletionItemKind(kind: CompletionKind): lsp.Comp
  * @param scriptInfo
  */
 export function tsCompletionEntryToLspCompletionItem(
-    entry: ts.CompletionEntry, position: lsp.Position,
-    scriptInfo: ts.server.ScriptInfo): lsp.CompletionItem {
+    entry: ts.CompletionEntry, position: lsp.Position, scriptInfo: ts.server.ScriptInfo,
+    insertReplaceSupport: boolean): lsp.CompletionItem {
   const item = lsp.CompletionItem.create(entry.name);
   // Even though `entry.kind` is typed as ts.ScriptElementKind, it's
   // really Angular's CompletionKind. This is because ts.ScriptElementKind does
@@ -118,20 +118,30 @@ export function tsCompletionEntryToLspCompletionItem(
   // from 'entry.name'. For example, a method name could be 'greet', but the
   // insertText is 'greet()'.
   const insertText = entry.insertText || entry.name;
-  if (entry.replacementSpan) {
-    const replacementRange = tsTextSpanToLspRange(scriptInfo, entry.replacementSpan);
-    const tsPosition = lspPositionToTsPosition(scriptInfo, position);
-    const insertLength = tsPosition - entry.replacementSpan.start;
-    const insertionRange =
-        tsTextSpanToLspRange(scriptInfo, {...entry.replacementSpan, length: insertLength});
-    item.textEdit = lsp.InsertReplaceEdit.create(insertText, insertionRange, replacementRange);
-  } else {
-    item.textEdit = lsp.TextEdit.insert(position, insertText);
-  }
+  item.textEdit = createTextEdit(scriptInfo, entry, position, insertText, insertReplaceSupport);
+
   item.data = {
     kind: 'ngCompletionOriginData',
     filePath: scriptInfo.fileName,
     position,
   } as NgCompletionOriginData;
   return item;
+}
+
+function createTextEdit(
+    scriptInfo: ts.server.ScriptInfo, entry: ts.CompletionEntry, position: lsp.Position,
+    insertText: string, insertReplaceSupport: boolean) {
+  if (entry.replacementSpan === undefined) {
+    return lsp.TextEdit.insert(position, insertText);
+  } else if (insertReplaceSupport) {
+    const replacementRange = tsTextSpanToLspRange(scriptInfo, entry.replacementSpan);
+    const tsPosition = lspPositionToTsPosition(scriptInfo, position);
+    const insertLength = tsPosition - entry.replacementSpan.start;
+    const insertionRange =
+        tsTextSpanToLspRange(scriptInfo, {...entry.replacementSpan, length: insertLength});
+    return lsp.InsertReplaceEdit.create(insertText, insertionRange, replacementRange);
+  } else {
+    return lsp.TextEdit.replace(
+        tsTextSpanToLspRange(scriptInfo, entry.replacementSpan), insertText);
+  }
 }

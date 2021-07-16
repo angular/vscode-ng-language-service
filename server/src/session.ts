@@ -636,6 +636,16 @@ export class Session {
         return;
       }
       if (project.languageServiceEnabled) {
+        // The act of opening a file can cause the text storage to switchToScriptVersionCache for
+        // version tracking, which results in an identity change for the source file. This isn't
+        // typically an issue but the identity can change during an update operation for template
+        // type-checking, when we _only_ expect the typecheck files to change. This _is_ an issue
+        // because the because template type-checking should not modify the identity of any other
+        // source files (other than the generated typecheck files). We need to ensure that the
+        // compiler is aware of this change that shouldn't have happened and recompiles the file
+        // because we store references to some string expressions (inline templates, style/template
+        // urls).
+        project.markAsDirty();
         // Show initial diagnostics
         this.requestDiagnosticsOnOpenOrChangeFile(filePath, `Opening ${filePath}`);
       }

@@ -1,4 +1,4 @@
-# v12.1.1
+# v12.1.3
 
 This release upgrades `@angular/language-service` to v12.1.3.
 For a complete change log see
@@ -6,7 +6,7 @@ For a complete change log see
 
 1. fix(server): Only provide InsertReplaceEdit when the client supports it (#1452) (7c22c4c3a)
 
-# v12.1.1
+# v12.1.2
 
 This release upgrades `@angular/language-service` to v12.1.2.
 For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1212-2021-07-14).

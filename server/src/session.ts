@@ -330,6 +330,10 @@ export class Session {
 
   private enableLanguageServiceForProject(project: ts.server.Project) {
     const {projectName} = project;
+    if (project.isClosed()) {
+      this.info(`Cannot enable language service for closed project ${projectName}.`);
+      return;
+    }
     if (!project.languageServiceEnabled) {
       project.enableLanguageService();
       // When the language service got disabled, the program was discarded via

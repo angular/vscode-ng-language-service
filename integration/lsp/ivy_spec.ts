@@ -15,7 +15,7 @@ import {URI} from 'vscode-uri';
 import {ProjectLanguageService, ProjectLanguageServiceParams, SuggestStrictMode, SuggestStrictModeParams} from '../../common/notifications';
 import {NgccProgress, NgccProgressToken, NgccProgressType} from '../../common/progress';
 import {GetComponentsWithTemplateFile, GetTcbRequest, IsInAngularProject} from '../../common/requests';
-import {APP_COMPONENT, FOO_COMPONENT, FOO_TEMPLATE, PROJECT_PATH, TSCONFIG} from '../test_constants';
+import {APP_COMPONENT, APP_COMPONENT_URI, FOO_COMPONENT_URI, FOO_TEMPLATE, FOO_TEMPLATE_URI, PROJECT_PATH, TSCONFIG} from '../test_constants';
 
 import {createConnection, createTracer, initializeServer, openTextDocument} from './test_utils';
 
@@ -66,7 +66,7 @@ describe('Angular Ivy language server', () => {
     expect(languageServiceEnabled).toBeTrue();
     const response = await client.sendRequest(lsp.HoverRequest.type, {
       textDocument: {
-        uri: `file://${APP_COMPONENT}`,
+        uri: APP_COMPONENT_URI,
       },
       position: {line: 4, character: 25},
     });
@@ -87,7 +87,7 @@ describe('Angular Ivy language server', () => {
   it('should show diagnostics for external template on open', async () => {
     client.sendNotification(lsp.DidOpenTextDocumentNotification.type, {
       textDocument: {
-        uri: `file://${FOO_TEMPLATE}`,
+        uri: FOO_TEMPLATE_URI,
         languageId: 'html',
         version: 1,
         text: `{{ doesnotexist }}`,
@@ -108,7 +108,7 @@ describe('Angular Ivy language server', () => {
     // Send a request and immediately cancel it
     const promise = client.sendRequest(lsp.HoverRequest.type, {
       textDocument: {
-        uri: `file://${APP_COMPONENT}`,
+        uri: FOO_COMPONENT_URI,
       },
       position: {line: 4, character: 25},
     });
@@ -122,7 +122,7 @@ describe('Angular Ivy language server', () => {
   it('does not break after opening `.d.ts` file from external template', async () => {
     client.sendNotification(lsp.DidOpenTextDocumentNotification.type, {
       textDocument: {
-        uri: `file://${FOO_TEMPLATE}`,
+        uri: FOO_TEMPLATE_URI,
         languageId: 'html',
         version: 1,
         text: `<div *ngIf="false"></div>`,
@@ -132,7 +132,7 @@ describe('Angular Ivy language server', () => {
     expect(languageServiceEnabled).toBeTrue();
     const response = await client.sendRequest(lsp.DefinitionRequest.type, {
       textDocument: {
-        uri: `file://${FOO_TEMPLATE}`,
+        uri: FOO_TEMPLATE_URI,
       },
       position: {line: 0, character: 7},
     }) as lsp.LocationLink[];
@@ -145,7 +145,7 @@ describe('Angular Ivy language server', () => {
     // try a hover operation again on *ngIf
     const hoverResponse = await client.sendRequest(lsp.HoverRequest.type, {
       textDocument: {
-        uri: `file://${FOO_TEMPLATE}`,
+        uri: FOO_TEMPLATE_URI,
       },
       position: {line: 0, character: 7},
     });
@@ -159,7 +159,7 @@ describe('Angular Ivy language server', () => {
     it('should show signature help for an empty call', async () => {
       client.sendNotification(lsp.DidOpenTextDocumentNotification.type, {
         textDocument: {
-          uri: `file://${FOO_TEMPLATE}`,
+          uri: FOO_TEMPLATE_URI,
           languageId: 'html',
           version: 1,
           text: `{{ title.toString() }}`,
@@ -169,7 +169,7 @@ describe('Angular Ivy language server', () => {
       expect(languageServiceEnabled).toBeTrue();
       const response = (await client.sendRequest(lsp.SignatureHelpRequest.type, {
         textDocument: {
-          uri: `file://${FOO_TEMPLATE}`,
+          uri: FOO_TEMPLATE_URI,
         },
         position: {line: 0, character: 18},
       }))!;
@@ -181,7 +181,7 @@ describe('Angular Ivy language server', () => {
     it('should show signature help with multiple arguments', async () => {
       client.sendNotification(lsp.DidOpenTextDocumentNotification.type, {
         textDocument: {
-          uri: `file://${FOO_TEMPLATE}`,
+          uri: FOO_TEMPLATE_URI,
           languageId: 'html',
           version: 1,
           text: `{{ title.substr(0, ) }}`,
@@ -191,7 +191,7 @@ describe('Angular Ivy language server', () => {
       expect(languageServiceEnabled).toBeTrue();
       const response = (await client.sendRequest(lsp.SignatureHelpRequest.type, {
         textDocument: {
-          uri: `file://${FOO_TEMPLATE}`,
+          uri: FOO_TEMPLATE_URI,
         },
         position: {line: 0, character: 19},
       }))!;
@@ -241,7 +241,7 @@ describe('Angular Ivy language server', () => {
       expect(languageServiceEnabled).toBeTrue();
       const response = await client.sendRequest(lsp.CompletionRequest.type, {
         textDocument: {
-          uri: `file://${FOO_TEMPLATE}`,
+          uri: FOO_TEMPLATE_URI,
         },
         position: {line: 0, character: 9},
       }) as lsp.CompletionItem[];
@@ -264,7 +264,7 @@ describe('Angular Ivy language server', () => {
       it('should handle prepare rename request for property read', async () => {
         const response = await client.sendRequest(lsp.PrepareRenameRequest.type, {
           textDocument: {
-            uri: `file://${FOO_TEMPLATE}`,
+            uri: FOO_TEMPLATE_URI,
           },
           position: {line: 0, character: 3},
         }) as {range: lsp.Range, placeholder: string};
@@ -293,16 +293,16 @@ describe('Angular Ivy language server', () => {
       it('should handle rename request for property read', async () => {
         const response = await client.sendRequest(lsp.RenameRequest.type, {
           textDocument: {
-            uri: `file://${FOO_TEMPLATE}`,
+            uri: FOO_TEMPLATE_URI,
           },
           position: {line: 0, character: 3},
           newName: 'subtitle'
         });
         expect(response).not.toBeNull();
-        expect(response?.changes?.[FOO_TEMPLATE].length).toBe(1);
-        expect(response?.changes?.[FOO_TEMPLATE]).toContain(expectedRenameInTemplate);
-        expect(response?.changes?.[FOO_COMPONENT].length).toBe(1);
-        expect(response?.changes?.[FOO_COMPONENT]).toContain(expectedRenameInComponent);
+        expect(response?.changes?.[FOO_TEMPLATE_URI].length).toBe(1);
+        expect(response?.changes?.[FOO_TEMPLATE_URI]).toContain(expectedRenameInTemplate);
+        expect(response?.changes?.[FOO_COMPONENT_URI].length).toBe(1);
+        expect(response?.changes?.[FOO_COMPONENT_URI]).toContain(expectedRenameInComponent);
       });
     });
 
@@ -316,7 +316,7 @@ describe('Angular Ivy language server', () => {
       it('should handle prepare rename request for inline template property read', async () => {
         const response = await client.sendRequest(lsp.PrepareRenameRequest.type, {
           textDocument: {
-            uri: `file://${APP_COMPONENT}`,
+            uri: APP_COMPONENT_URI,
           },
           position: {line: 4, character: 25},
         }) as {range: lsp.Range, placeholder: string};
@@ -346,29 +346,29 @@ describe('Angular Ivy language server', () => {
         it('should handle rename request for property read in a template', async () => {
           const response = await client.sendRequest(lsp.RenameRequest.type, {
             textDocument: {
-              uri: `file://${APP_COMPONENT}`,
+              uri: APP_COMPONENT_URI,
             },
             position: {line: 4, character: 25},
             newName: 'surname'
           });
           expect(response).not.toBeNull();
-          expect(response?.changes?.[APP_COMPONENT].length).toBe(2);
-          expect(response?.changes?.[APP_COMPONENT]).toContain(expectedRenameInComponent);
-          expect(response?.changes?.[APP_COMPONENT]).toContain(expectedRenameInTemplate);
+          expect(response?.changes?.[APP_COMPONENT_URI].length).toBe(2);
+          expect(response?.changes?.[APP_COMPONENT_URI]).toContain(expectedRenameInComponent);
+          expect(response?.changes?.[APP_COMPONENT_URI]).toContain(expectedRenameInTemplate);
         });
 
         it('should handle rename request for property in the component', async () => {
           const response = await client.sendRequest(lsp.RenameRequest.type, {
             textDocument: {
-              uri: `file://${APP_COMPONENT}`,
+              uri: APP_COMPONENT_URI,
             },
             position: {line: 7, character: 4},
             newName: 'surname'
           });
           expect(response).not.toBeNull();
-          expect(response?.changes?.[APP_COMPONENT].length).toBe(2);
-          expect(response?.changes?.[APP_COMPONENT]).toContain(expectedRenameInComponent);
-          expect(response?.changes?.[APP_COMPONENT]).toContain(expectedRenameInTemplate);
+          expect(response?.changes?.[APP_COMPONENT_URI].length).toBe(2);
+          expect(response?.changes?.[APP_COMPONENT_URI]).toContain(expectedRenameInComponent);
+          expect(response?.changes?.[APP_COMPONENT_URI]).toContain(expectedRenameInTemplate);
         });
       });
     });
@@ -403,7 +403,7 @@ describe('Angular Ivy language server', () => {
 
         const prepareRenameResponse = await client.sendRequest(lsp.PrepareRenameRequest.type, {
           textDocument: {
-            uri: `file://${APP_COMPONENT}`,
+            uri: FOO_COMPONENT_URI,
           },
           position: {line: 4, character: 25},
         }) as {range: lsp.Range, placeholder: string};
@@ -411,7 +411,7 @@ describe('Angular Ivy language server', () => {
 
         const renameResponse = await client.sendRequest(lsp.RenameRequest.type, {
           textDocument: {
-            uri: `file://${APP_COMPONENT}`,
+            uri: FOO_COMPONENT_URI,
           },
           position: {line: 4, character: 25},
           newName: 'surname'
@@ -426,7 +426,7 @@ describe('Angular Ivy language server', () => {
     await waitForNgcc(client);
     const response = await client.sendRequest(GetTcbRequest, {
       textDocument: {
-        uri: `file://${FOO_TEMPLATE}`,
+        uri: FOO_TEMPLATE_URI,
       },
       position: {line: 0, character: 3},
     });
@@ -438,7 +438,7 @@ describe('Angular Ivy language server', () => {
     await waitForNgcc(client);
     const response = await client.sendRequest(GetComponentsWithTemplateFile, {
       textDocument: {
-        uri: `file://${FOO_TEMPLATE}`,
+        uri: FOO_TEMPLATE_URI,
       }
     });
     expect(response).toBeDefined();
@@ -449,12 +449,12 @@ describe('Angular Ivy language server', () => {
     await waitForNgcc(client);
     const codeLensResponse = await client.sendRequest(lsp.CodeLensRequest.type, {
       textDocument: {
-        uri: `file://${FOO_TEMPLATE}`,
+        uri: FOO_TEMPLATE_URI,
       }
     });
     expect(codeLensResponse).toBeDefined();
     const [codeLens] = codeLensResponse!;
-    expect(codeLens.data.uri).toEqual(`file://${FOO_TEMPLATE}`);
+    expect(codeLens.data.uri).toEqual(FOO_TEMPLATE_URI);
 
     const codeLensResolveResponse =
         await client.sendRequest(lsp.CodeLensResolveRequest.type, codeLensResponse![0]);
@@ -467,13 +467,13 @@ describe('Angular Ivy language server', () => {
     await waitForNgcc(client);
     const templateResponse = await client.sendRequest(IsInAngularProject, {
       textDocument: {
-        uri: `file://${FOO_TEMPLATE}`,
+        uri: FOO_TEMPLATE_URI,
       }
     });
     expect(templateResponse).toBe(true);
     const componentResponse = await client.sendRequest(IsInAngularProject, {
       textDocument: {
-        uri: `file://${FOO_COMPONENT}`,
+        uri: FOO_COMPONENT_URI,
       }
     });
     expect(componentResponse).toBe(true);

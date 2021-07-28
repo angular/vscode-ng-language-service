@@ -817,10 +817,11 @@ export class Session {
     }
 
     const changes = renameLocations.reduce((changes, location) => {
-      if (changes[location.fileName] === undefined) {
-        changes[location.fileName] = [];
+      let uri: lsp.URI = filePathToUri(location.fileName);
+      if (changes[uri] === undefined) {
+        changes[uri] = [];
       }
-      const fileEdits = changes[location.fileName];
+      const fileEdits = changes[uri];
 
       const lsInfo = this.getLSAndScriptInfo(location.fileName);
       if (lsInfo === null) {

@@ -1,3 +1,13 @@
+# v12.1.4
+
+This release upgrades `@angular/language-service` to v12.1.4.
+For a complete change log see
+[here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1214-2021-07-28).
+
+1. fix(language-server): rename response should use URI instead of file name (#1462) (49d81aa4a)
+1. fix(language-server): Only enable language service on open projects (#1461) (26f6fcf1b)
+1. fix: unchanged files sometimes have no Angular information for string… (#1453) (9ca675a3a)
+
 # v12.1.3
 
 This release upgrades `@angular/language-service` to v12.1.3.

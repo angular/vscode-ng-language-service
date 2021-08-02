@@ -2,9 +2,9 @@
   "name": "workspace",
   "private": true,
   "dependencies": {
-    "@angular/common": "12.1.0",
-    "@angular/compiler-cli": "12.1.0",
-    "@angular/core": "12.1.0",
+    "@angular/common": "12.1.4",
+    "@angular/compiler-cli": "12.1.4",
+    "@angular/core": "12.1.4",
     "rxjs": "6.6.7",
     "zone.js": "0.11.4"
   }

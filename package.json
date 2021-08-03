@@ -99,6 +99,11 @@
           ],
           "default": "off",
           "description": "Traces the communication between VS Code and the Angular language server."
+        },
+        "angular.suggest.includeAutomaticOptionalChainCompletions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable showing completions on potentially undefined values that insert an optional chain call. Requires TS 3.7+ and strict null checks to be enabled."
         }
       }
     },

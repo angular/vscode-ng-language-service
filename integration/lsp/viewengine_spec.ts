@@ -65,6 +65,7 @@ describe('Angular language server', () => {
         },
         newText: 'charAt()',
       },
+      filterText: 'charAt()',
       // The 'data' field is only meaningful in Ivy mode.
       data: jasmine.anything(),
     });

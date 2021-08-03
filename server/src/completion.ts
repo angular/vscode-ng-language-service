@@ -120,6 +120,11 @@ export function tsCompletionEntryToLspCompletionItem(
   const insertText = entry.insertText || entry.name;
   item.textEdit = createTextEdit(scriptInfo, entry, position, insertText, insertReplaceSupport);
 
+  // If the user enables the config `includeAutomaticOptionalChainCompletions`, the `insertText`
+  // range will include the dot. the `insertText` should be assigned to the `filterText` to filter
+  // the completion items.
+  item.filterText = entry.insertText;
+
   item.data = {
     kind: 'ngCompletionOriginData',
     filePath: scriptInfo.fileName,

@@ -30,6 +30,7 @@ export interface SessionOptions {
   resolvedNgLsPath: string;
   ivy: boolean;
   logToConsole: boolean;
+  includeAutomaticOptionalChainCompletions: boolean;
 }
 
 enum LanguageId {
@@ -53,6 +54,7 @@ export class Session {
   private readonly configuredProjToExternalProj = new Map<string, string>();
   private readonly logToConsole: boolean;
   private readonly openFiles = new MruTracker();
+  private readonly includeAutomaticOptionalChainCompletions: boolean;
   // Tracks the spawn order and status of the `ngcc` processes. This allows us to ensure we enable
   // the LS in the same order the projects were created in.
   private projectNgccQueue: Array<{project: ts.server.Project, done: boolean}> = [];
@@ -68,6 +70,8 @@ export class Session {
   private clientCapabilities: lsp.ClientCapabilities = {};
 
   constructor(options: SessionOptions) {
+    this.includeAutomaticOptionalChainCompletions =
+        options.includeAutomaticOptionalChainCompletions;
     this.logger = options.logger;
     this.ivy = options.ivy;
     this.logToConsole = options.logToConsole;
@@ -978,11 +982,17 @@ export class Session {
     }
     const {languageService, scriptInfo} = lsInfo;
     const offset = lspPositionToTsPosition(scriptInfo, params.position);
-    const completions = languageService.getCompletionsAtPosition(
-        scriptInfo.fileName, offset,
-        {
-            // options
-        });
+
+    let options: ts.GetCompletionsAtPositionOptions = {};
+    if (this.includeAutomaticOptionalChainCompletions) {
+      options = {
+        includeAutomaticOptionalChainCompletions: this.includeAutomaticOptionalChainCompletions,
+        includeCompletionsWithInsertText: this.includeAutomaticOptionalChainCompletions,
+      };
+    }
+
+    const completions =
+        languageService.getCompletionsAtPosition(scriptInfo.fileName, offset, options);
     if (!completions) {
       return;
     }

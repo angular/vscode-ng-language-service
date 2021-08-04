@@ -1,3 +1,45 @@
+# v12.2.0
+
+This release upgrades `@angular/language-service` to v12.2.0.
+For a complete change log see
+[here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1220-2021-08-04).
+
+1. fix(language-service): provide literal completions as well as context completions (#42923)
+
+
+# v12.1.4
+
+This release upgrades `@angular/language-service` to v12.1.4.
+For a complete change log see
+[here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1214-2021-07-28).
+
+1. fix(language-server): rename response should use URI instead of file name (#1462) (49d81aa4a)
+1. fix(language-server): Only enable language service on open projects (#1461) (26f6fcf1b)
+1. fix: unchanged files sometimes have no Angular information for string… (#1453) (9ca675a3a)
+
+# v12.1.3
+
+This release upgrades `@angular/language-service` to v12.1.3.
+For a complete change log see
+[here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1213-2021-07-21).
+
+1. fix(server): Only provide InsertReplaceEdit when the client supports it (#1452) (7c22c4c3a)
+
+# v12.1.2
+
+This release upgrades `@angular/language-service` to v12.1.2.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1212-2021-07-14).
+
+1. fix(language-server): Ensure LS is enabled in same order as project initialization for solution-style projects (#1447) (68ee8344e)
+1. fix(compiler-cli): return directives for an element on a microsyntax template (https://github.com/angular/angular/pull/42640)
+
+# v12.1.1
+
+This release upgrades `@angular/language-service` to v12.1.1.
+For a complete change log see [here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1211-2021-06-30).
+
+* update to TS 4.3.4 (#1428) (fb6681ee6)
+
 # v12.1.0
 
 

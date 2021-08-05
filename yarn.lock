@@ -19,7 +19,6 @@
 
 "@angular/dev-infra-private@https://github.com/angular/dev-infra-private-builds.git#5fad38db75f746e76af8b015dd8f674579a54ab3":
   version "0.0.0"
-  uid "5fad38db75f746e76af8b015dd8f674579a54ab3"
   resolved "https://github.com/angular/dev-infra-private-builds.git#5fad38db75f746e76af8b015dd8f674579a54ab3"
   dependencies:
     "@angular/benchpress" "0.2.1"
@@ -53,10 +52,10 @@
     yaml "^1.10.0"
     yargs "^17.0.0"
 
-"@angular/language-service@12.1.4":
-  version "12.1.4"
-  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-12.1.4.tgz#4ff59452864147f77996b05cb5a4125895fc0a5d"
-  integrity sha512-NooCGWiTY74DN3uFE8eI1ATtxx4TQzulbV7qNNG9Bz8QJyLRykYart7Ajxh0bF5upR1bjPmHr6MvgO6aI43VUQ==
+"@angular/language-service@13.0.0-next.0":
+  version "13.0.0-next.0"
+  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-13.0.0-next.0.tgz#15bf69c67f8de05b32e3966eea63ac2cb04d6563"
+  integrity sha512-45nITynaQmWzD6n11eB0YK1WRsRnySpoEoznl4+sNWMGv7KociCqm94IE3ol0L4FybLVZ6qqUgial33CYNtAvw==
 
 "@babel/code-frame@^7.0.0":
   version "7.12.13"

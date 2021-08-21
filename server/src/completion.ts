@@ -104,7 +104,7 @@ function ngCompletionKindToLspCompletionItemKind(kind: CompletionKind): lsp.Comp
  */
 export function tsCompletionEntryToLspCompletionItem(
     entry: ts.CompletionEntry, position: lsp.Position, scriptInfo: ts.server.ScriptInfo,
-    insertReplaceSupport: boolean): lsp.CompletionItem {
+    insertReplaceSupport: boolean, isIvy: boolean): lsp.CompletionItem {
   const item = lsp.CompletionItem.create(entry.name);
   // Even though `entry.kind` is typed as ts.ScriptElementKind, it's
   // really Angular's CompletionKind. This is because ts.ScriptElementKind does
@@ -120,10 +120,12 @@ export function tsCompletionEntryToLspCompletionItem(
   const insertText = entry.insertText || entry.name;
   item.textEdit = createTextEdit(scriptInfo, entry, position, insertText, insertReplaceSupport);
 
-  // If the user enables the config `includeAutomaticOptionalChainCompletions`, the `insertText`
-  // range will include the dot. the `insertText` should be assigned to the `filterText` to filter
-  // the completion items.
-  item.filterText = entry.insertText;
+  if (isIvy) {
+    // If the user enables the config `includeAutomaticOptionalChainCompletions`, the `insertText`
+    // range will include the dot. the `insertText` should be assigned to the `filterText` to filter
+    // the completion items.
+    item.filterText = entry.insertText;
+  }
 
   item.data = {
     kind: 'ngCompletionOriginData',

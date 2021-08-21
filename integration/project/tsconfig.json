@@ -3,6 +3,7 @@
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "target": "es2015",
+    "strict": true,
     "typeRoots": [
       "node_modules/@types"
     ]

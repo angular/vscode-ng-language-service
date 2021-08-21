@@ -1001,7 +1001,7 @@ export class Session {
         false;
     return completions.entries.map(
         (e) => tsCompletionEntryToLspCompletionItem(
-            e, params.position, scriptInfo, clientSupportsInsertReplaceCompletion));
+            e, params.position, scriptInfo, clientSupportsInsertReplaceCompletion, this.ivy));
   }
 
   private onCompletionResolve(item: lsp.CompletionItem): lsp.CompletionItem {

@@ -15,6 +15,7 @@ import {PROJECT_PATH, SERVER_PATH} from '../test_constants';
 
 export interface ServerOptions {
   ivy: boolean;
+  includeAutomaticOptionalChainCompletions?: boolean;
 }
 
 export function createConnection(serverOptions: ServerOptions): MessageConnection {
@@ -27,6 +28,9 @@ export function createConnection(serverOptions: ServerOptions): MessageConnectio
   ];
   if (!serverOptions.ivy) {
     argv.push('--viewEngine');
+  }
+  if (serverOptions.includeAutomaticOptionalChainCompletions) {
+    argv.push('--includeAutomaticOptionalChainCompletions');
   }
   const server = fork(SERVER_PATH, argv, {
     cwd: PROJECT_PATH,

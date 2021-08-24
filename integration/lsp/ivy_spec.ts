@@ -15,7 +15,7 @@ import {URI} from 'vscode-uri';
 import {ProjectLanguageService, ProjectLanguageServiceParams, SuggestStrictMode, SuggestStrictModeParams} from '../../common/notifications';
 import {NgccProgress, NgccProgressToken, NgccProgressType} from '../../common/progress';
 import {GetComponentsWithTemplateFile, GetTcbRequest, IsInAngularProject} from '../../common/requests';
-import {APP_COMPONENT, APP_COMPONENT_URI, FOO_COMPONENT_URI, FOO_TEMPLATE, FOO_TEMPLATE_URI, PROJECT_PATH, TSCONFIG} from '../test_constants';
+import {APP_COMPONENT, APP_COMPONENT_URI, FOO_COMPONENT, FOO_COMPONENT_URI, FOO_TEMPLATE, FOO_TEMPLATE_URI, PROJECT_PATH, TSCONFIG} from '../test_constants';
 
 import {createConnection, createTracer, initializeServer, openTextDocument} from './test_utils';
 
@@ -197,7 +197,8 @@ describe('Angular Ivy language server', () => {
       }))!;
       expect(response).not.toBeNull();
       expect(response.signatures.length).toEqual(1);
-      expect(response.signatures[0].label).toEqual('substr(from: number, length?: number): string');
+      expect(response.signatures[0].label)
+          .toEqual('substr(from: number, length?: number | undefined): string');
       expect(response.signatures[0].parameters).not.toBeUndefined();
       expect(response.activeParameter).toBe(1);
 
@@ -206,7 +207,7 @@ describe('Angular Ivy language server', () => {
         const [start, end] = param.label as [number, number];
         return label.substring(start, end);
       });
-      expect(paramLabels).toEqual(['from: number', 'length?: number']);
+      expect(paramLabels).toEqual(['from: number', 'length?: number | undefined']);
     });
   });
 
@@ -478,6 +479,67 @@ describe('Angular Ivy language server', () => {
     });
     expect(componentResponse).toBe(true);
   })
+});
+
+describe('auto-apply optional chaining', () => {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000; /* 10 seconds */
+
+  let client: MessageConnection;
+  beforeEach(async () => {
+    client = createConnection({
+      ivy: true,
+      includeAutomaticOptionalChainCompletions: true,
+    });
+    // If debugging, set to
+    // - lsp.Trace.Messages to inspect request/response/notification, or
+    // - lsp.Trace.Verbose to inspect payload
+    client.trace(lsp.Trace.Off, createTracer());
+    client.listen();
+    await initializeServer(client);
+  });
+
+  afterEach(() => {
+    client.dispose();
+  });
+
+  it('should work on nullable symbol', async () => {
+    openTextDocument(client, FOO_COMPONENT, `
+    import {Component} from '@angular/core';
+    @Component({
+      templateUrl: 'foo.component.html',
+    })
+    export class FooComponent {
+      person?: undefined|{name: string};
+    }
+    `);
+    openTextDocument(client, FOO_TEMPLATE, `{{ person.n }}`);
+    const languageServiceEnabled = await waitForNgcc(client);
+    expect(languageServiceEnabled).toBeTrue();
+    const response = await client.sendRequest(lsp.CompletionRequest.type, {
+      textDocument: {
+        uri: FOO_TEMPLATE_URI,
+      },
+      position: {line: 0, character: 11},
+    }) as lsp.CompletionItem[];
+    const completion = response.find(i => i.label === 'name')!;
+    expect(completion.kind).toEqual(lsp.CompletionItemKind.Property);
+    expect((completion.textEdit as lsp.TextEdit).newText).toEqual('?.name');
+  });
+
+  it('should work on NonNullable symbol', async () => {
+    openTextDocument(client, FOO_TEMPLATE, `{{ title.substr }}`);
+    const languageServiceEnabled = await waitForNgcc(client);
+    expect(languageServiceEnabled).toBeTrue();
+    const response = await client.sendRequest(lsp.CompletionRequest.type, {
+      textDocument: {
+        uri: FOO_TEMPLATE_URI,
+      },
+      position: {line: 0, character: 15},
+    }) as lsp.CompletionItem[];
+    const completion = response.find(i => i.label === 'substr')!;
+    expect(completion.kind).toEqual(lsp.CompletionItemKind.Method);
+    expect((completion.textEdit as lsp.TextEdit).newText).toEqual('substr');
+  });
 });
 
 function onNgccProgress(client: MessageConnection): Promise<string> {

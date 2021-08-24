@@ -16,6 +16,15 @@ export interface GetComponentsWithTemplateFileParams {
   textDocument: lsp.TextDocumentIdentifier;
 }
 
+export const GetTemplateLocationForComponent = new lsp.RequestType<
+    GetTemplateLocationForComponentParams, lsp.Location,
+    /* error */ void>('angular/getTemplateLocationForComponent');
+
+export interface GetTemplateLocationForComponentParams {
+  textDocument: lsp.TextDocumentIdentifier;
+  position: lsp.Position;
+}
+
 export interface GetTcbParams {
   textDocument: lsp.TextDocumentIdentifier;
   position: lsp.Position;

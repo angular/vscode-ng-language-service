@@ -15,7 +15,7 @@ import * as lsp from 'vscode-languageserver/node';
 import {ServerOptions} from '../common/initialize';
 import {ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode} from '../common/notifications';
 import {NgccProgressToken, NgccProgressType} from '../common/progress';
-import {GetComponentsWithTemplateFile, GetTcbParams, GetTcbRequest, GetTcbResponse, IsInAngularProject, IsInAngularProjectParams} from '../common/requests';
+import {GetComponentsWithTemplateFile, GetTcbParams, GetTcbRequest, GetTcbResponse, GetTemplateLocationForComponent, GetTemplateLocationForComponentParams, IsInAngularProject, IsInAngularProjectParams} from '../common/requests';
 
 import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './completion';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
@@ -176,6 +176,7 @@ export class Session {
     conn.onCompletion(p => this.onCompletion(p));
     conn.onCompletionResolve(p => this.onCompletionResolve(p));
     conn.onRequest(GetComponentsWithTemplateFile, p => this.onGetComponentsWithTemplateFile(p));
+    conn.onRequest(GetTemplateLocationForComponent, p => this.onGetTemplateLocationForComponent(p));
     conn.onRequest(GetTcbRequest, p => this.onGetTcb(p));
     conn.onRequest(IsInAngularProject, p => this.isInAngularProject(p));
     conn.onCodeLens(p => this.onCodeLens(p));
@@ -225,6 +226,27 @@ export class Session {
       content: response.content,
       selections: response.selections.map((span => tsTextSpanToLspRange(tcfScriptInfo, span))),
     };
+  }
+
+  private onGetTemplateLocationForComponent(params: GetTemplateLocationForComponentParams):
+      lsp.Location|null {
+    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    if (lsInfo === null) {
+      return null;
+    }
+    const {languageService, scriptInfo} = lsInfo;
+    const offset = lspPositionToTsPosition(scriptInfo, params.position);
+    const documentSpan =
+        languageService.getTemplateLocationForComponent(scriptInfo.fileName, offset);
+    if (documentSpan === undefined) {
+      return null;
+    }
+    const templateScriptInfo = this.projectService.getScriptInfo(documentSpan.fileName);
+    if (templateScriptInfo === undefined) {
+      return null;
+    }
+    const range = tsTextSpanToLspRange(templateScriptInfo, documentSpan.textSpan);
+    return lsp.Location.create(filePathToUri(documentSpan.fileName), range);
   }
 
   private onGetComponentsWithTemplateFile(params: any): lsp.Location[]|null {

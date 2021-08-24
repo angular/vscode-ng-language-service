@@ -77,6 +77,35 @@ export function lspRangeToTsPositions(
   return [start, end];
 }
 
+/**
+ * Convert a ts.DiagnosticRelatedInformation array to a
+ * lsp.DiagnosticRelatedInformation array
+ * @param scriptInfo Used to determine the offsets.
+ * @param relatedInfo
+ */
+export function tsRelatedInformationToLspRelatedInformation(
+    scriptInfo: ts.server.ScriptInfo,
+    relatedInfo?: ts.DiagnosticRelatedInformation[]): lsp.DiagnosticRelatedInformation[]|undefined {
+  if (relatedInfo === undefined) return;
+  const lspRelatedInfo: lsp.DiagnosticRelatedInformation[] = [];
+  for (const info of relatedInfo) {
+    if (info.file === undefined || info.start === undefined || info.length === undefined) continue;
+    const textSpan: ts.TextSpan = {
+      start: info.start,
+      length: info.length,
+    };
+    const location = lsp.Location.create(
+        filePathToUri(info.file.fileName),
+        tsTextSpanToLspRange(scriptInfo, textSpan),
+    );
+    lspRelatedInfo.push(lsp.DiagnosticRelatedInformation.create(
+        location,
+        ts.flattenDiagnosticMessageText(info.messageText, '\n'),
+        ));
+  }
+  return lspRelatedInfo;
+}
+
 export function isConfiguredProject(project: ts.server.Project):
     project is ts.server.ConfiguredProject {
   return project.projectKind === ts.server.ProjectKind.Configured;

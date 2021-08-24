@@ -99,6 +99,11 @@ describe('Angular Ivy language server', () => {
     expect(diagnostics.length).toBe(1);
     expect(diagnostics[0].message)
         .toBe(`Property 'doesnotexist' does not exist on type 'FooComponent'.`);
+    expect(diagnostics[0].relatedInformation).toBeDefined();
+    expect(diagnostics[0].relatedInformation!.length).toBe(1);
+    expect(diagnostics[0].relatedInformation![0].message)
+        .toBe(`Error occurs in the template of component FooComponent.`);
+    expect(diagnostics[0].relatedInformation![0].location.uri).toBe(FOO_COMPONENT_URI);
   });
 
   it('should support request cancellation', async () => {

@@ -8,7 +8,7 @@
 
 import * as ts from 'typescript/lib/tsserverlibrary';
 import * as lsp from 'vscode-languageserver';
-import {tsTextSpanToLspRange} from './utils';
+import {tsRelatedInformationToLspRelatedInformation, tsTextSpanToLspRange} from './utils';
 
 /**
  * Convert ts.DiagnosticCategory to lsp.DiagnosticSeverity
@@ -45,5 +45,6 @@ export function tsDiagnosticToLspDiagnostic(
       tsDiagnosticCategoryToLspDiagnosticSeverity(tsDiag.category),
       tsDiag.code,
       tsDiag.source,
+      tsRelatedInformationToLspRelatedInformation(scriptInfo, tsDiag.relatedInformation),
   );
 }

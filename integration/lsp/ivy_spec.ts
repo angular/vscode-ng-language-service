@@ -14,7 +14,7 @@ import {URI} from 'vscode-uri';
 
 import {ProjectLanguageService, ProjectLanguageServiceParams, SuggestStrictMode, SuggestStrictModeParams} from '../../common/notifications';
 import {NgccProgress, NgccProgressToken, NgccProgressType} from '../../common/progress';
-import {GetComponentsWithTemplateFile, GetTcbRequest, IsInAngularProject} from '../../common/requests';
+import {GetComponentsWithTemplateFile, GetTcbRequest, GetTemplateLocationForComponent, IsInAngularProject} from '../../common/requests';
 import {APP_COMPONENT, APP_COMPONENT_URI, FOO_COMPONENT, FOO_COMPONENT_URI, FOO_TEMPLATE, FOO_TEMPLATE_URI, PROJECT_PATH, TSCONFIG} from '../test_constants';
 
 import {createConnection, createTracer, initializeServer, openTextDocument} from './test_utils';
@@ -448,6 +448,31 @@ describe('Angular Ivy language server', () => {
       }
     });
     expect(response).toBeDefined();
+  });
+
+  it('should handle GetTemplateLocationForComponent request', async () => {
+    openTextDocument(client, FOO_TEMPLATE);
+    await waitForNgcc(client);
+    const response = await client.sendRequest(GetTemplateLocationForComponent, {
+      textDocument: {
+        uri: FOO_COMPONENT_URI,
+      },
+      position: {line: 6, character: 0},
+    });
+    expect(response).toBeDefined();
+    expect(response.uri).toContain('foo.component.html');
+  });
+
+  it('should handle GetTemplateLocationForComponent request when not in component', async () => {
+    openTextDocument(client, FOO_TEMPLATE);
+    await waitForNgcc(client);
+    const response = await client.sendRequest(GetTemplateLocationForComponent, {
+      textDocument: {
+        uri: FOO_COMPONENT_URI,
+      },
+      position: {line: 1, character: 0},
+    });
+    expect(response).toBeNull();
   });
 
   it('should provide a "go to component" codelens', async () => {

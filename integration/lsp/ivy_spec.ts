@@ -463,6 +463,18 @@ describe('Angular Ivy language server', () => {
     expect(response.uri).toContain('foo.component.html');
   });
 
+  it('should handle GetTemplateLocationForComponent request when not in component', async () => {
+    openTextDocument(client, FOO_TEMPLATE);
+    await waitForNgcc(client);
+    const response = await client.sendRequest(GetTemplateLocationForComponent, {
+      textDocument: {
+        uri: FOO_COMPONENT_URI,
+      },
+      position: {line: 1, character: 0},
+    });
+    expect(response).toBeNull();
+  });
+
   it('should provide a "go to component" codelens', async () => {
     openTextDocument(client, FOO_TEMPLATE);
     await waitForNgcc(client);

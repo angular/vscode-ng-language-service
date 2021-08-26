@@ -332,7 +332,7 @@ export class Session {
     return params;
   }
 
-  private enableLanguageServiceForProject(project: ts.server.Project) {
+  private enableLanguageServiceForProject(project: ts.server.Project): void {
     const {projectName} = project;
     if (project.isClosed()) {
       this.info(`Cannot enable language service for closed project ${projectName}.`);
@@ -359,7 +359,7 @@ export class Session {
     this.runGlobalAnalysisForNewlyLoadedProject(project);
   }
 
-  private disableLanguageServiceForProject(project: ts.server.Project, reason: string) {
+  private disableLanguageServiceForProject(project: ts.server.Project, reason: string): void {
     if (!project.languageServiceEnabled) {
       return;
     }
@@ -372,7 +372,7 @@ export class Session {
    * Invoke the compiler for the first time so that external templates get
    * matched to the project they belong to.
    */
-  private runGlobalAnalysisForNewlyLoadedProject(project: ts.server.Project) {
+  private runGlobalAnalysisForNewlyLoadedProject(project: ts.server.Project): void {
     if (!project.hasRoots()) {
       return;
     }
@@ -388,7 +388,7 @@ export class Session {
     }
   }
 
-  private handleCompilerOptionsDiagnostics(project: ts.server.Project) {
+  private handleCompilerOptionsDiagnostics(project: ts.server.Project): void {
     if (!isConfiguredProject(project)) {
       return;
     }
@@ -550,7 +550,7 @@ export class Session {
    * an inferred project.
    * @param scriptInfo
    */
-  getDefaultProjectForScriptInfo(scriptInfo: ts.server.ScriptInfo): ts.server.Project|undefined {
+  getDefaultProjectForScriptInfo(scriptInfo: ts.server.ScriptInfo): ts.server.Project|null {
     let project = this.projectService.getDefaultProjectForFile(
         scriptInfo.fileName,
         // ensureProject tries to find a default project for the scriptInfo if
@@ -567,11 +567,11 @@ export class Session {
       if (!configFileName) {
         // Failed to find a config file. There is nothing we could do.
         this.error(`No config file for ${scriptInfo.fileName}`);
-        return;
+        return null;
       }
       project = this.projectService.findProject(configFileName);
       if (!project) {
-        return;
+        return null;
       }
       scriptInfo.detachAllProjects();
       scriptInfo.attachToProject(project);
@@ -676,7 +676,7 @@ export class Session {
    * Creates an external project with the same config path as `project` so that TypeScript keeps the
    * project open when navigating away from `html` files.
    */
-  private createExternalProject(project: ts.server.Project) {
+  private createExternalProject(project: ts.server.Project): void {
     if (isConfiguredProject(project) &&
         !this.configuredProjToExternalProj.has(project.projectName)) {
       const extProjectName = `${project.projectName}-external`;
@@ -705,7 +705,7 @@ export class Session {
    * checks if there are no longer any open files in any external project. If there
    * aren't, we also close the external project that was created.
    */
-  private closeOrphanedExternalProjects() {
+  private closeOrphanedExternalProjects(): void {
     for (const [configuredProjName, externalProjName] of this.configuredProjToExternalProj) {
       const configuredProj = this.projectService.findProject(configuredProjName);
       if (!configuredProj || configuredProj.isClosed()) {
@@ -726,7 +726,7 @@ export class Session {
     }
   }
 
-  private onDidChangeTextDocument(params: lsp.DidChangeTextDocumentParams) {
+  private onDidChangeTextDocument(params: lsp.DidChangeTextDocumentParams): void {
     const {contentChanges, textDocument} = params;
     const filePath = uriToFilePath(textDocument.uri);
     if (!filePath) {
@@ -755,7 +755,7 @@ export class Session {
     this.requestDiagnosticsOnOpenOrChangeFile(scriptInfo.fileName, `Changing ${filePath}`);
   }
 
-  private onDidSaveTextDocument(params: lsp.DidSaveTextDocumentParams) {
+  private onDidSaveTextDocument(params: lsp.DidSaveTextDocumentParams): void {
     const {text, textDocument} = params;
     const filePath = uriToFilePath(textDocument.uri);
     if (!filePath) {
@@ -773,51 +773,51 @@ export class Session {
     }
   }
 
-  private onDefinition(params: lsp.TextDocumentPositionParams): lsp.LocationLink[]|undefined {
+  private onDefinition(params: lsp.TextDocumentPositionParams): lsp.LocationLink[]|null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
-      return;
+      return null;
     }
     const {languageService, scriptInfo} = lsInfo;
     const offset = lspPositionToTsPosition(scriptInfo, params.position);
     const definition = languageService.getDefinitionAndBoundSpan(scriptInfo.fileName, offset);
     if (!definition || !definition.definitions) {
-      return;
+      return null;
     }
     const originSelectionRange = tsTextSpanToLspRange(scriptInfo, definition.textSpan);
     return this.tsDefinitionsToLspLocationLinks(definition.definitions, originSelectionRange);
   }
 
-  private onTypeDefinition(params: lsp.TextDocumentPositionParams): lsp.LocationLink[]|undefined {
+  private onTypeDefinition(params: lsp.TextDocumentPositionParams): lsp.LocationLink[]|null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
-      return;
+      return null;
     }
     const {languageService, scriptInfo} = lsInfo;
     const offset = lspPositionToTsPosition(scriptInfo, params.position);
     const definitions = languageService.getTypeDefinitionAtPosition(scriptInfo.fileName, offset);
     if (!definitions) {
-      return;
+      return null;
     }
     return this.tsDefinitionsToLspLocationLinks(definitions);
   }
 
-  private onRenameRequest(params: lsp.RenameParams): lsp.WorkspaceEdit|undefined {
+  private onRenameRequest(params: lsp.RenameParams): lsp.WorkspaceEdit|null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
-      return;
+      return null;
     }
     const {languageService, scriptInfo} = lsInfo;
     const project = this.getDefaultProjectForScriptInfo(scriptInfo);
-    if (project === undefined || this.renameDisabledProjects.has(project)) {
-      return;
+    if (project === null || this.renameDisabledProjects.has(project)) {
+      return null;
     }
 
     const offset = lspPositionToTsPosition(scriptInfo, params.position);
     const renameLocations = languageService.findRenameLocations(
         scriptInfo.fileName, offset, /*findInStrings*/ false, /*findInComments*/ false);
     if (renameLocations === undefined) {
-      return;
+      return null;
     }
 
     const changes = renameLocations.reduce((changes, location) => {
@@ -847,7 +847,7 @@ export class Session {
     }
     const {languageService, scriptInfo} = lsInfo;
     const project = this.getDefaultProjectForScriptInfo(scriptInfo);
-    if (project === undefined || this.renameDisabledProjects.has(project)) {
+    if (project === null || this.renameDisabledProjects.has(project)) {
       return null;
     }
 
@@ -863,16 +863,16 @@ export class Session {
     };
   }
 
-  private onReferences(params: lsp.TextDocumentPositionParams): lsp.Location[]|undefined {
+  private onReferences(params: lsp.TextDocumentPositionParams): lsp.Location[]|null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
-      return;
+      return null;
     }
     const {languageService, scriptInfo} = lsInfo;
     const offset = lspPositionToTsPosition(scriptInfo, params.position);
     const references = languageService.getReferencesAtPosition(scriptInfo.fileName, offset);
     if (references === undefined) {
-      return;
+      return null;
     }
     return references.map(ref => {
       const scriptInfo = this.projectService.getScriptInfo(ref.fileName);
@@ -940,16 +940,16 @@ export class Session {
     };
   }
 
-  private onHover(params: lsp.TextDocumentPositionParams) {
+  private onHover(params: lsp.TextDocumentPositionParams): lsp.Hover|null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
-      return;
+      return null;
     }
     const {languageService, scriptInfo} = lsInfo;
     const offset = lspPositionToTsPosition(scriptInfo, params.position);
     const info = languageService.getQuickInfoAtPosition(scriptInfo.fileName, offset);
     if (!info) {
-      return;
+      return null;
     }
     const {kind, kindModifiers, textSpan, displayParts, documentation} = info;
     let desc = kindModifiers ? kindModifiers + ' ' : '';
@@ -975,10 +975,10 @@ export class Session {
     };
   }
 
-  private onCompletion(params: lsp.CompletionParams) {
+  private onCompletion(params: lsp.CompletionParams): lsp.CompletionItem[]|null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
-      return;
+      return null;
     }
     const {languageService, scriptInfo} = lsInfo;
     const offset = lspPositionToTsPosition(scriptInfo, params.position);
@@ -994,7 +994,7 @@ export class Session {
     const completions =
         languageService.getCompletionsAtPosition(scriptInfo.fileName, offset, options);
     if (!completions) {
-      return;
+      return null;
     }
     const clientSupportsInsertReplaceCompletion =
         this.clientCapabilities.textDocument?.completion?.completionItem?.insertReplaceSupport ??
@@ -1081,7 +1081,7 @@ export class Session {
   /**
    * Start listening on the input stream for messages to process.
    */
-  listen() {
+  listen(): void {
     this.connection.listen();
   }
 

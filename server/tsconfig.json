@@ -4,12 +4,20 @@
     "composite": true,
     "outDir": "../dist/server",
     "rootDir": "src",
-    "rootDirs": [".", "../dist"]
+    "rootDirs": [
+      ".",
+      "../dist"
+    ],
+    "useUnknownInCatchVariables": false
   },
   "references": [
-    {"path": "../common"}
+    {
+      "path": "../common"
+    }
   ],
-  "include": ["src/*.ts"],
+  "include": [
+    "src/*.ts"
+  ],
   "exclude": [
     "src/banner.ts",
     "node_modules"

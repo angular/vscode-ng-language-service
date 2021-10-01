@@ -17,6 +17,7 @@ import {PROJECT_PATH, SERVER_PATH} from '../test_constants';
 export interface ServerOptions {
   ivy: boolean;
   includeAutomaticOptionalChainCompletions?: boolean;
+  includeCompletionsWithSnippetText?: boolean;
 }
 
 export function createConnection(serverOptions: ServerOptions): MessageConnection {
@@ -32,6 +33,9 @@ export function createConnection(serverOptions: ServerOptions): MessageConnectio
   }
   if (serverOptions.includeAutomaticOptionalChainCompletions) {
     argv.push('--includeAutomaticOptionalChainCompletions');
+  }
+  if (serverOptions.includeCompletionsWithSnippetText) {
+    argv.push('--includeCompletionsWithSnippetText');
   }
   const server = fork(SERVER_PATH, argv, {
     cwd: PROJECT_PATH,
@@ -61,7 +65,16 @@ export function initializeServer(client: MessageConnection): Promise<lsp.Initial
      */
     processId: process.pid,
     rootUri: `file://${PROJECT_PATH}`,
-    capabilities: {},
+    capabilities: {
+      textDocument: {
+        completion: {
+          completionItem: {
+            snippetSupport: true,
+          }
+        },
+        moniker: {},
+      }
+    },
     /**
      * Options are 'off' | 'messages' | 'verbose'.
      * To debug test failure, set to 'verbose'.

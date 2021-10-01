@@ -125,6 +125,9 @@ export function tsCompletionEntryToLspCompletionItem(
     // range will include the dot. the `insertText` should be assigned to the `filterText` to filter
     // the completion items.
     item.filterText = entry.insertText;
+    if (entry.isSnippet) {
+      item.insertTextFormat = lsp.InsertTextFormat.Snippet;
+    }
   }
 
   item.data = {

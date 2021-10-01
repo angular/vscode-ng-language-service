@@ -173,7 +173,7 @@
   },
   "devDependencies": {
     "@angular/dev-infra-private": "https://github.com/angular/dev-infra-private-builds.git#5fad38db75f746e76af8b015dd8f674579a54ab3",
-    "@types/jasmine": "3.8.2",
+    "@types/jasmine": "3.9.1",
     "@types/node": "14.17.12",
     "@types/vscode": "1.56.0",
     "clang-format": "1.5.0",

@@ -14,7 +14,6 @@ import * as lsp from 'vscode-languageserver-protocol';
 import {PROJECT_PATH, SERVER_PATH} from '../test_constants';
 
 export interface ServerOptions {
-  ivy: boolean;
   includeAutomaticOptionalChainCompletions?: boolean;
 }
 
@@ -26,9 +25,6 @@ export function createConnection(serverOptions: ServerOptions): MessageConnectio
     '--ngProbeLocations',
     [SERVER_PATH, PROJECT_PATH].join(','),
   ];
-  if (!serverOptions.ivy) {
-    argv.push('--viewEngine');
-  }
   if (serverOptions.includeAutomaticOptionalChainCompletions) {
     argv.push('--includeAutomaticOptionalChainCompletions');
   }

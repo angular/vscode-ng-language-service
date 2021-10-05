@@ -27,9 +27,7 @@ describe('Angular Ivy language server', () => {
   let client: MessageConnection;
 
   beforeEach(async () => {
-    client = createConnection({
-      ivy: true,
-    });
+    client = createConnection({});
     // If debugging, set to
     // - lsp.Trace.Messages to inspect request/response/notification, or
     // - lsp.Trace.Verbose to inspect payload
@@ -517,7 +515,6 @@ describe('auto-apply optional chaining', () => {
   let client: MessageConnection;
   beforeEach(async () => {
     client = createConnection({
-      ivy: true,
       includeAutomaticOptionalChainCompletions: true,
     });
     // If debugging, set to

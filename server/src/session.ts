@@ -28,7 +28,6 @@ export interface SessionOptions {
   logger: ts.server.Logger;
   ngPlugin: string;
   resolvedNgLsPath: string;
-  ivy: boolean;
   logToConsole: boolean;
   includeAutomaticOptionalChainCompletions: boolean;
 }
@@ -50,7 +49,6 @@ export class Session {
   private readonly connection: lsp.Connection;
   private readonly projectService: ts.server.ProjectService;
   private readonly logger: ts.server.Logger;
-  private readonly ivy: boolean;
   private readonly configuredProjToExternalProj = new Map<string, string>();
   private readonly logToConsole: boolean;
   private readonly openFiles = new MruTracker();
@@ -73,7 +71,6 @@ export class Session {
     this.includeAutomaticOptionalChainCompletions =
         options.includeAutomaticOptionalChainCompletions;
     this.logger = options.logger;
-    this.ivy = options.ivy;
     this.logToConsole = options.logToConsole;
     // Create a connection for the server. The connection uses Node's IPC as a transport.
     this.connection = lsp.createConnection({
@@ -146,11 +143,10 @@ export class Session {
     });
 
     const pluginConfig: PluginConfig = {
+      ivy: true,  // TODO(atscott): remove when @angular/language-service removes this property
       angularOnly: true,
-      ivy: options.ivy,
     };
     if (options.host.isG3) {
-      assert(options.ivy === true, 'Ivy LS must be used in google3');
       pluginConfig.forceStrictTemplates = true;
     }
     projSvc.configurePlugin({
@@ -368,11 +364,6 @@ export class Session {
       // project as dirty to force update the graph.
       project.markAsDirty();
     }
-    if (!this.ivy) {
-      // Immediately enable Legacy / View Engine language service
-      this.info(`Enabling View Engine language service for ${projectName}.`);
-      return;
-    }
     this.info(`Enabling Ivy language service for ${projectName}.`);
     this.handleCompilerOptionsDiagnostics(project);
     // Send diagnostics since we skipped this step when opening the file
@@ -451,7 +442,7 @@ export class Session {
         const {project} = event.data;
         const angularCore = this.findAngularCore(project);
         if (angularCore) {
-          if (this.ivy && isExternalAngularCore(angularCore)) {
+          if (isExternalAngularCore(angularCore)) {
             // Do not wait on this promise otherwise we'll be blocking other requests
             this.runNgcc(project);
           } else {
@@ -610,27 +601,25 @@ export class Session {
     this.clientCapabilities = params.capabilities;
     return {
       capabilities: {
-        codeLensProvider: this.ivy ? {resolveProvider: true} : undefined,
+        codeLensProvider: {resolveProvider: true},
         textDocumentSync: lsp.TextDocumentSyncKind.Incremental,
         completionProvider: {
           // Only the Ivy LS provides support for additional completion resolution.
-          resolveProvider: this.ivy,
+          resolveProvider: true,
           triggerCharacters: ['<', '.', '*', '[', '(', '$', '|']
         },
         definitionProvider: true,
-        typeDefinitionProvider: this.ivy,
-        referencesProvider: this.ivy,
-        renameProvider: this.ivy ? {
+        typeDefinitionProvider: true,
+        referencesProvider: true,
+        renameProvider: {
           // Renames should be checked and tested before being executed.
           prepareProvider: true,
-        } :
-                                   false,
+        },
         hoverProvider: true,
-        signatureHelpProvider: this.ivy ? {
+        signatureHelpProvider: {
           triggerCharacters: ['(', ','],
           retriggerCharacters: [','],
-        } :
-                                          undefined,
+        },
         workspace: {
           workspaceFolders: {supported: true},
         },
@@ -1023,7 +1012,7 @@ export class Session {
         false;
     return completions.entries.map(
         (e) => tsCompletionEntryToLspCompletionItem(
-            e, params.position, scriptInfo, clientSupportsInsertReplaceCompletion, this.ivy));
+            e, params.position, scriptInfo, clientSupportsInsertReplaceCompletion));
   }
 
   private onCompletionResolve(item: lsp.CompletionItem): lsp.CompletionItem {

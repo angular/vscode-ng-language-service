@@ -42,7 +42,6 @@ function main() {
     // TypeScript allows only package names as plugin names.
     ngPlugin: '@angular/language-service',
     resolvedNgLsPath: ng.resolvedPath,
-    ivy: isG3 ? true : options.ivy,
     logToConsole: options.logToConsole,
     includeAutomaticOptionalChainCompletions: options.includeAutomaticOptionalChainCompletions
   });

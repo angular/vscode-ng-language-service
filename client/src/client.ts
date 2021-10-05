@@ -440,14 +440,6 @@ function constructArgs(ctx: vscode.ExtensionContext): string[] {
   const ngProbeLocations = getProbeLocations(null, ctx.extensionPath);
   args.push('--ngProbeLocations', ngProbeLocations.join(','));
 
-  // Because the configuration is typed as "boolean" in package.json, vscode
-  // will return false even when the value is not set. If value is false, then
-  // we need to check if all projects support Ivy language service.
-  const viewEngine: boolean = config.get('angular.view-engine') || !allProjectsSupportIvy();
-  if (viewEngine) {
-    args.push('--viewEngine');
-  }
-
   const includeAutomaticOptionalChainCompletions =
       config.get<boolean>('angular.suggest.includeAutomaticOptionalChainCompletions');
   if (includeAutomaticOptionalChainCompletions) {
@@ -493,19 +485,4 @@ function getServerOptions(ctx: vscode.ExtensionContext, debug: boolean): lsp.Nod
       execArgv: debug ? devExecArgv : prodExecArgv,
     },
   };
-}
-
-/**
- * Returns true if all projects in the workspace support Ivy LS, otherwise
- * return false.
- */
-function allProjectsSupportIvy() {
-  const workspaceFolders = vscode.workspace.workspaceFolders || [];
-  for (const workspaceFolder of workspaceFolders) {
-    const angularCore = resolve('@angular/core', workspaceFolder.uri.fsPath);
-    if (angularCore?.version.greaterThanOrEqual(new Version('9')) === false) {
-      return false;
-    }
-  }
-  return true;
 }

@@ -118,6 +118,7 @@ export class Session {
       pluginProbeLocations: [options.resolvedNgLsPath],
       // do not resolve plugins from the directory where tsconfig.json is located
       allowLocalPluginLoads: false,
+      session: undefined,
     });
 
     projSvc.setHostConfiguration({

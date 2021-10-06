@@ -11,8 +11,8 @@ import * as path from 'path';
 
 import {NodeModule, resolve, Version} from '../common/resolver';
 
-const MIN_TS_VERSION = '4.2';
-const MIN_NG_VERSION = '12.0';
+const MIN_TS_VERSION = '4.3';
+const MIN_NG_VERSION = '13.0';
 const TSSERVERLIB = 'typescript/lib/tsserverlibrary';
 
 /**

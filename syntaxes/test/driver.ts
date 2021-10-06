@@ -10,7 +10,7 @@ import 'jasmine';
 import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as SNAPSHOT_TEST_CASES from './cases.json';
+import {cases} from './cases';
 
 interface TestCase {
   name: string;
@@ -48,7 +48,7 @@ async function snapshotTest({scopeName, grammarFiles, testFile}: TestCase): Prom
 }
 
 describe('snapshot tests', () => {
-  for (let tc of SNAPSHOT_TEST_CASES) {
+  for (let tc of cases) {
     it(`should work for ${tc.name}`, async () => {
       const ec = await snapshotTest(tc);
       expect(ec).toBe(0);

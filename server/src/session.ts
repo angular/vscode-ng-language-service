@@ -148,6 +148,7 @@ export class Session {
     // TODO(atscott): The Ivy flag was removed in v13. We need to include a legacy version (some
     // v12) of the language service in order to continue supporting view engine.
     const pluginConfig: PluginConfig = {
+      ivy: true,
       angularOnly: true,
     };
     if (options.host.isG3) {

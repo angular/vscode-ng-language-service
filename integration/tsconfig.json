@@ -2,10 +2,15 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../dist/integration",
-    "rootDirs": ["..", "dist"]
+    "rootDirs": [
+      "..",
+      "dist"
+    ]
   },
   "references": [
-    { "path": "../server/tsconfig.json" }
+    {
+      "path": "../server/tsconfig.json"
+    }
   ],
   "include": [
     "test_constants.ts",

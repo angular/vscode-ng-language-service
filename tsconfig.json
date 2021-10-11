@@ -4,12 +4,19 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
-    "strict": true
+    "strict": true,
+    "esModuleInterop": true
   },
   "files": [],
   "references": [
-    { "path": "./client" },
-    { "path": "./server" },
-    { "path": "./syntaxes" }
+    {
+      "path": "./client"
+    },
+    {
+      "path": "./server"
+    },
+    {
+      "path": "./syntaxes"
+    }
   ]
 }

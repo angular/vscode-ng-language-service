@@ -8,12 +8,6 @@ if [[ -z "${CI}" ]]; then
   (cd integration/workspace && yarn)
 fi
 
-# Run ngcc before test starts
-(
-  cd integration/project
-  yarn ngcc
-)
-
 # Server unit tests
 yarn run test
 

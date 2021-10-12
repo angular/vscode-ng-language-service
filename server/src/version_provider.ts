@@ -8,6 +8,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import url from 'url';
 
 import {NodeModule, resolve, Version} from '../common/resolver';
 
@@ -85,6 +86,22 @@ function resolveTsServerFromTsdk(tsdk: string): NodeModule|undefined {
 }
 
 /**
+ * This uses a dynamic import to load a module which may be ESM.
+ * CommonJS code can load ESM code via a dynamic import. Unfortunately, TypeScript
+ * will currently, unconditionally downlevel dynamic import into a require call.
+ * require calls cannot load ESM code and will result in a runtime error. To workaround
+ * this, a Function constructor is used to prevent TypeScript from changing the dynamic import.
+ * Once TypeScript provides support for keeping the dynamic import this workaround can
+ * be dropped.
+ *
+ * @param modulePath The path of the module to load.
+ * @returns A Promise that resolves to the dynamically imported module.
+ */
+export function loadEsmModule<T>(modulePath: string|URL): Promise<T> {
+  return new Function('modulePath', `return import(modulePath);`)(modulePath) as Promise<T>;
+}
+
+/**
  * Resolve `@angular/language-service` from the given locations.
  * @param probeLocations locations from which resolution is attempted
  */
@@ -93,6 +110,18 @@ export function resolveNgLangSvc(probeLocations: string[]): NodeModule {
   return resolveWithMinVersion(ngls, MIN_NG_VERSION, probeLocations, ngls);
 }
 
-export function resolveNgcc(directory: string): NodeModule|undefined {
-  return resolve('@angular/compiler-cli/ngcc/main-ngcc.js', directory, '@angular/compiler-cli');
+export async function resolveNgcc(directory: string): Promise<NodeModule|undefined> {
+  const ngcc = resolve('@angular/compiler-cli/ngcc', directory, '@angular/compiler-cli');
+  if (ngcc === undefined) {
+    return undefined;
+  }
+
+  // The Angular compiler-CLI package is strict ESM as of v13.
+  const ngccModule = await loadEsmModule</* ideally use a type here?? */ any>(
+      url.pathToFileURL(ngcc.resolvedPath));
+
+  return {
+    ...ngcc,
+    resolvedPath: ngccModule.ngccMainFilePath,
+  };
 }

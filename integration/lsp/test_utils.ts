@@ -10,6 +10,7 @@ import {fork} from 'child_process';
 import * as fs from 'fs';
 import {createMessageConnection, IPCMessageReader, IPCMessageWriter, MessageConnection} from 'vscode-jsonrpc/node';
 import * as lsp from 'vscode-languageserver-protocol';
+import {URI} from 'vscode-uri';
 
 import {PROJECT_PATH, SERVER_PATH} from '../test_constants';
 
@@ -79,12 +80,16 @@ export function openTextDocument(client: MessageConnection, filePath: string, ne
   }
   client.sendNotification(lsp.DidOpenTextDocumentNotification.type, {
     textDocument: {
-      uri: `file://${filePath}`,
+      uri: convertPathToFileUrl(filePath),
       languageId,
       version: 1,
       text: newText ?? fs.readFileSync(filePath, 'utf-8'),
     },
   });
+}
+
+export function convertPathToFileUrl(filePath: string): string {
+  return URI.file(filePath).toString();
 }
 
 export function createTracer(): lsp.Tracer {

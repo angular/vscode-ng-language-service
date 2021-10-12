@@ -17,7 +17,7 @@ import {NgccProgress, NgccProgressToken, NgccProgressType} from '../../common/pr
 import {GetComponentsWithTemplateFile, GetTcbRequest, GetTemplateLocationForComponent, IsInAngularProject} from '../../common/requests';
 import {APP_COMPONENT, APP_COMPONENT_URI, FOO_COMPONENT, FOO_COMPONENT_URI, FOO_TEMPLATE, FOO_TEMPLATE_URI, PROJECT_PATH, TSCONFIG} from '../test_constants';
 
-import {createConnection, createTracer, initializeServer, openTextDocument} from './test_utils';
+import {convertPathToFileUrl, createConnection, createTracer, initializeServer, openTextDocument} from './test_utils';
 
 const setTimeoutP = promisify(setTimeout);
 
@@ -603,7 +603,7 @@ function getDiagnosticsForFile(
   return new Promise(resolve => {
     client.onNotification(
         lsp.PublishDiagnosticsNotification.type, (params: lsp.PublishDiagnosticsParams) => {
-          if (params.uri === `file://${fileName}`) {
+          if (params.uri === convertPathToFileUrl(fileName)) {
             resolve(params.diagnostics);
           }
         });

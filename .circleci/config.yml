@@ -13,6 +13,9 @@ jobs:
           app-dir: integration/project
           pkg-manager: yarn
       - node/install-packages:
+          app-dir: integration/pre_apf_project
+          pkg-manager: yarn
+      - node/install-packages:
           app-dir: integration/workspace
           pkg-manager: yarn
       - run: scripts/lint.sh

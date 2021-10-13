@@ -23,7 +23,7 @@ interface Progress {
  */
 export async function resolveAndRunNgcc(tsconfig: string, progress: Progress): Promise<void> {
   const directory = dirname(tsconfig);
-  const ngcc = resolveNgcc(directory);
+  const ngcc = await resolveNgcc(directory);
   if (!ngcc) {
     throw new Error(`Failed to resolve ngcc from ${directory}`);
   }

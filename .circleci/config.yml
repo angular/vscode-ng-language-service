@@ -5,13 +5,16 @@ jobs:
   build-and-test:
     executor:
       name: node/default
-      tag: '12.18'
+      tag: '12.20'
     steps:
       - checkout
       - node/install-packages:
           pkg-manager: yarn
       - node/install-packages:
           app-dir: integration/project
+          pkg-manager: yarn
+      - node/install-packages:
+          app-dir: integration/apf_project
           pkg-manager: yarn
       - node/install-packages:
           app-dir: integration/workspace

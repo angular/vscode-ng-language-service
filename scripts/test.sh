@@ -5,6 +5,7 @@ set -ex -o pipefail
 # Install test project dependencies
 if [[ -z "${CI}" ]]; then
   (cd integration/project && yarn)
+  (cd integration/apf_project && yarn)
   (cd integration/workspace && yarn)
 fi
 

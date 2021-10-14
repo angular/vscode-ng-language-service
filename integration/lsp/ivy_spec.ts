@@ -572,6 +572,60 @@ describe('auto-apply optional chaining', () => {
   });
 });
 
+describe('insert snippet text', () => {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000; /* 10 seconds */
+
+  let client: MessageConnection;
+  beforeEach(async () => {
+    client = createConnection({
+      ivy: true,
+      includeCompletionsWithSnippetText: true,
+    });
+    // If debugging, set to
+    // - lsp.Trace.Messages to inspect request/response/notification, or
+    // - lsp.Trace.Verbose to inspect payload
+    client.trace(lsp.Trace.Off, createTracer());
+    client.listen();
+    await initializeServer(client);
+  });
+
+  afterEach(() => {
+    client.dispose();
+  });
+
+  it('should be able to complete for an attribute with the value is empty', async () => {
+    openTextDocument(client, FOO_TEMPLATE, `<my-app appOut></my-app>`);
+    const languageServiceEnabled = await waitForNgcc(client);
+    expect(languageServiceEnabled).toBeTrue();
+    const response = await client.sendRequest(lsp.CompletionRequest.type, {
+      textDocument: {
+        uri: FOO_TEMPLATE_URI,
+      },
+      position: {line: 0, character: 14},
+    }) as lsp.CompletionItem[];
+    const completion = response.find(i => i.label === '(appOutput)')!;
+    expect(completion.kind).toEqual(lsp.CompletionItemKind.Property);
+    expect(completion.insertTextFormat).toEqual(lsp.InsertTextFormat.Snippet);
+    expect((completion.textEdit as lsp.TextEdit).newText).toEqual('(appOutput)="$1"');
+  });
+
+  it('should not be included in the completion for an attribute with a value', async () => {
+    openTextDocument(client, FOO_TEMPLATE, `<my-app [appInput]="1"></my-app>`);
+    const languageServiceEnabled = await waitForNgcc(client);
+    expect(languageServiceEnabled).toBeTrue();
+    const response = await client.sendRequest(lsp.CompletionRequest.type, {
+      textDocument: {
+        uri: FOO_TEMPLATE_URI,
+      },
+      position: {line: 0, character: 17},
+    }) as lsp.CompletionItem[];
+    const completion = response.find(i => i.label === 'appInput')!;
+    expect(completion.kind).toEqual(lsp.CompletionItemKind.Property);
+    expect(completion.insertTextFormat).toBeUndefined;
+    expect((completion.textEdit as lsp.TextEdit).newText).toEqual('appInput');
+  });
+});
+
 function onNgccProgress(client: MessageConnection): Promise<string> {
   return new Promise(resolve => {
     client.onProgress(NgccProgressType, NgccProgressToken, (params: NgccProgress) => {

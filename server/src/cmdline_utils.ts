@@ -38,6 +38,7 @@ interface CommandLineOptions {
   ngProbeLocations: string[];
   tsProbeLocations: string[];
   includeAutomaticOptionalChainCompletions: boolean;
+  includeCompletionsWithSnippetText: boolean;
 }
 
 export function parseCommandLine(argv: string[]): CommandLineOptions {
@@ -51,6 +52,7 @@ export function parseCommandLine(argv: string[]): CommandLineOptions {
     tsProbeLocations: parseStringArray(argv, '--tsProbeLocations'),
     includeAutomaticOptionalChainCompletions:
         hasArgument(argv, '--includeAutomaticOptionalChainCompletions'),
+    includeCompletionsWithSnippetText: hasArgument(argv, '--includeCompletionsWithSnippetText'),
   };
 }
 

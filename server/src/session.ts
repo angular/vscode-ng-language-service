@@ -30,6 +30,7 @@ export interface SessionOptions {
   ivy: boolean;
   logToConsole: boolean;
   includeAutomaticOptionalChainCompletions: boolean;
+  includeCompletionsWithSnippetText: boolean;
 }
 
 enum LanguageId {
@@ -54,6 +55,8 @@ export class Session {
   private readonly logToConsole: boolean;
   private readonly openFiles = new MruTracker();
   private readonly includeAutomaticOptionalChainCompletions: boolean;
+  private readonly includeCompletionsWithSnippetText: boolean;
+  private snippetSupport: boolean|undefined;
   // Tracks the spawn order and status of the `ngcc` processes. This allows us to ensure we enable
   // the LS in the same order the projects were created in.
   private projectNgccQueue: Array<{project: ts.server.Project, done: boolean}> = [];
@@ -71,6 +74,7 @@ export class Session {
   constructor(options: SessionOptions) {
     this.includeAutomaticOptionalChainCompletions =
         options.includeAutomaticOptionalChainCompletions;
+    this.includeCompletionsWithSnippetText = options.includeCompletionsWithSnippetText;
     this.logger = options.logger;
     this.ivy = options.ivy;
     this.logToConsole = options.logToConsole;
@@ -605,6 +609,8 @@ export class Session {
   }
 
   private onInitialize(params: lsp.InitializeParams): lsp.InitializeResult {
+    this.snippetSupport =
+        params.capabilities.textDocument?.completion?.completionItem?.snippetSupport;
     const serverOptions: ServerOptions = {
       logFile: this.logger.getLogFileName(),
     };
@@ -1007,10 +1013,14 @@ export class Session {
     const offset = lspPositionToTsPosition(scriptInfo, params.position);
 
     let options: ts.GetCompletionsAtPositionOptions = {};
-    if (this.includeAutomaticOptionalChainCompletions) {
+    const includeCompletionsWithSnippetText =
+        this.includeCompletionsWithSnippetText && this.snippetSupport;
+    if (this.includeAutomaticOptionalChainCompletions || includeCompletionsWithSnippetText) {
       options = {
         includeAutomaticOptionalChainCompletions: this.includeAutomaticOptionalChainCompletions,
-        includeCompletionsWithInsertText: this.includeAutomaticOptionalChainCompletions,
+        includeCompletionsWithSnippetText: includeCompletionsWithSnippetText,
+        includeCompletionsWithInsertText:
+            this.includeAutomaticOptionalChainCompletions || includeCompletionsWithSnippetText,
       };
     }
 

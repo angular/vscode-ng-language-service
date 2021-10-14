@@ -44,7 +44,8 @@ function main() {
     resolvedNgLsPath: ng.resolvedPath,
     ivy: isG3 ? true : options.ivy,
     logToConsole: options.logToConsole,
-    includeAutomaticOptionalChainCompletions: options.includeAutomaticOptionalChainCompletions
+    includeAutomaticOptionalChainCompletions: options.includeAutomaticOptionalChainCompletions,
+    includeCompletionsWithSnippetText: options.includeCompletionsWithSnippetText,
   });
 
   // Log initialization info

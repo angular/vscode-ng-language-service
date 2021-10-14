@@ -454,6 +454,12 @@ function constructArgs(ctx: vscode.ExtensionContext): string[] {
     args.push('--includeAutomaticOptionalChainCompletions');
   }
 
+  const includeCompletionsWithSnippetText =
+      config.get<boolean>('angular.suggest.includeCompletionsWithSnippetText');
+  if (includeCompletionsWithSnippetText) {
+    args.push('--includeCompletionsWithSnippetText');
+  }
+
   const tsdk: string|null = config.get('typescript.tsdk', null);
   const tsProbeLocations = getProbeLocations(tsdk, ctx.extensionPath);
   args.push('--tsProbeLocations', tsProbeLocations.join(','));

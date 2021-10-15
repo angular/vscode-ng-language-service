@@ -8,6 +8,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import * as url from 'url';
 
 import {NodeModule, resolve, Version} from '../common/resolver';
 
@@ -93,6 +94,44 @@ export function resolveNgLangSvc(probeLocations: string[]): NodeModule {
   return resolveWithMinVersion(ngls, MIN_NG_VERSION, probeLocations, ngls);
 }
 
-export function resolveNgcc(directory: string): NodeModule|undefined {
-  return resolve('@angular/compiler-cli/ngcc/main-ngcc.js', directory, '@angular/compiler-cli');
+/**
+ * This uses a dynamic import to load a module which may be ESM.
+ * CommonJS code can load ESM code via a dynamic import. Unfortunately, TypeScript
+ * will currently, unconditionally downlevel dynamic import into a require call.
+ * require calls cannot load ESM code and will result in a runtime error. To workaround
+ * this, a Function constructor is used to prevent TypeScript from changing the dynamic import.
+ * Once TypeScript provides support for keeping the dynamic import this workaround can
+ * be dropped.
+ *
+ * @param modulePath The path of the module to load.
+ * @returns A Promise that resolves to the dynamically imported module.
+ */
+export function loadEsmModule<T>(modulePath: string|URL): Promise<T> {
+  return new Function('modulePath', `return import(modulePath);`)(modulePath) as Promise<T>;
+}
+
+export async function resolveNgcc(directory: string): Promise<NodeModule|undefined> {
+  // Try to resolve ngcc from the new package format since the v13 release
+  try {
+    const ngcc = resolve('@angular/compiler-cli/ngcc', directory, '@angular/compiler-cli');
+    if (ngcc === undefined) {
+      throw new Error('Could not resolve ngcc');
+    }
+
+    // The Angular compiler-CLI package is strict ESM as of v13.
+    const ngccModule = await loadEsmModule<{ngccMainFilePath: string | undefined}>(
+        url.pathToFileURL(ngcc.resolvedPath));
+    const resolvedPath = ngccModule.ngccMainFilePath;
+    if (resolvedPath === undefined) {
+      throw new Error('Could not resolve ngcc path.');
+    }
+
+    return {
+      ...ngcc,
+      resolvedPath,
+    };
+  } catch (e) {
+    // Try to resolve ngcc through with pre-v13 package format
+    return resolve('@angular/compiler-cli/ngcc/main-ngcc.js', directory, '@angular/compiler-cli');
+  }
 }

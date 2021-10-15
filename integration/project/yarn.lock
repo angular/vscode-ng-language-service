@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@angular/common@13.0.0-next.15":
-  version "13.0.0-next.15"
-  resolved "https://registry.yarnpkg.com/@angular/common/-/common-13.0.0-next.15.tgz#9d55f51fbda235bea9510ca30a2f6389b22a19c2"
-  integrity sha512-T0LPfZ4kKbcoT0QVluyT1Jo7J5ZK3vVSKSYMEHxqE21pFqlI5MMGdqn9X+SDlIEvEikARXG4w10Q3uJuAaaS5Q==
+"@angular/common@13.0.0-rc.0":
+  version "13.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@angular/common/-/common-13.0.0-rc.0.tgz#016a08ce3124887568fd30b1afba97c9eee7ef10"
+  integrity sha512-2w/9I2A2cC0R6ipE9V89KvpoTXhc98fNZ/VIwCnlyeuCmWGmaztarz8aSmDYSJeUym5CDhJf9h4zlm+TKh8cMg==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/compiler-cli@13.0.0-next.15":
-  version "13.0.0-next.15"
-  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-13.0.0-next.15.tgz#4f25b6d3feb1dbb0a6dd0f7d5445f24d20b49709"
-  integrity sha512-15w0fFrqFfHNbQ7nrzTB4rrObsIpmsbGAlrKoFPdWN2LbAYUEauUhRIPi1Et+4A1eh9beIUHpofwb+VRrUhuLw==
+"@angular/compiler-cli@13.0.0-rc.0":
+  version "13.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-13.0.0-rc.0.tgz#89b628eae5f2bba3812985d720554216b3326e46"
+  integrity sha512-juZ5+f8Dg2uc790FZ3EtV0TbSQqPPKKW0Aik48ls9txhjr5lu5k7pbca/NuwLlNeujdq/A8/lRkSTz65US6jMg==
   dependencies:
     "@babel/core" "^7.8.6"
     canonical-path "1.0.0"
@@ -26,17 +26,17 @@
     tslib "^2.3.0"
     yargs "^17.2.1"
 
-"@angular/compiler@13.0.0-next.15":
-  version "13.0.0-next.15"
-  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-13.0.0-next.15.tgz#bd9eaf5edc017112cf0c43de584f4167c6a3008f"
-  integrity sha512-R2rKkSvONDuSW7D7WsN4nBH1fmZ9YagSiAb4F7cch5408DOMT6OlEgJDWAp69eWXiVDagd8R3e6K8j8StoZ6PQ==
+"@angular/compiler@13.0.0-rc.0":
+  version "13.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-13.0.0-rc.0.tgz#82997864b9ea9adf1b5948d17136f241d39b791f"
+  integrity sha512-JL8URauB3V/c8ZP3VehQRCW/hyGmm+ZWgffRWBbCC2xvVTswKgRY7wyeE+JvQdsBb4scsD5AyytfjhVCvvHQZg==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/core@13.0.0-next.15":
-  version "13.0.0-next.15"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-13.0.0-next.15.tgz#0d6083c7154bedf9a825e6270f41b83bacb325b3"
-  integrity sha512-lBjH+dUWCj+Ki4najMRF4yoXq0p6MF+4hEQEwimlvUo3BFRMRTl9CMv82oSBeSYJkZlov1w5zhaA1PQO6zjyKQ==
+"@angular/core@13.0.0-rc.0":
+  version "13.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-13.0.0-rc.0.tgz#ec3013f7d262915d8b0f2929fb4110e693909e74"
+  integrity sha512-wviKQikwHwThvLKU36WWbrRTs1tZjHY6pn0sAz2zB5Mz3zxUexLWKP/t2guIkI1rrrqW7z8KcKYusOdOZW2lOw==
   dependencies:
     tslib "^2.3.0"
 

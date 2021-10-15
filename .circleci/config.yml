@@ -4,7 +4,7 @@ orbs:
 jobs:
   build-and-test:
     docker:
-      - image: cimg/node:16.10.0-browsers@sha256:83ff2dcad3043c4b3f7f58513805a0c8757ba5541a1f3c213f80bd242a3c77ac
+      - image: cimg/node:14.17.6@sha256:589b5e494173bfb48923fa8d29b010b4d17079ac98d08de95dd4a78e57f5aa0b
     steps:
       - checkout
       - node/install-packages:

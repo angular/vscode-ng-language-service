@@ -111,17 +111,27 @@ export function resolveNgLangSvc(probeLocations: string[]): NodeModule {
 }
 
 export async function resolveNgcc(directory: string): Promise<NodeModule|undefined> {
-  const ngcc = resolve('@angular/compiler-cli/ngcc', directory, '@angular/compiler-cli');
-  if (ngcc === undefined) {
-    return undefined;
+  // Try to resolve ngcc from the new package format since the v13 release
+  try {
+    const ngcc = resolve('@angular/compiler-cli/ngcc', directory, '@angular/compiler-cli');
+    if (ngcc === undefined) {
+      throw new Error('Could not resolve ngcc');
+    }
+
+    // The Angular compiler-CLI package is strict ESM as of v13.
+    const ngccModule = await loadEsmModule<{ngccMainFilePath: string | undefined}>(
+        url.pathToFileURL(ngcc.resolvedPath));
+    const resolvedPath = ngccModule.ngccMainFilePath;
+    if (resolvedPath === undefined) {
+      throw new Error('could not resolve ngcc path.');
+    }
+
+    return {
+      ...ngcc,
+      resolvedPath,
+    };
+  } catch (e) {
+    // Try to resolve ngcc through with pre-v13 package format
+    return resolve('@angular/compiler-cli/ngcc/main-ngcc.js', directory, '@angular/compiler-cli');
   }
-
-  // The Angular compiler-CLI package is strict ESM as of v13.
-  const ngccModule = await loadEsmModule</* ideally use a type here?? */ any>(
-      url.pathToFileURL(ngcc.resolvedPath));
-
-  return {
-    ...ngcc,
-    resolvedPath: ngccModule.ngccMainFilePath,
-  };
 }

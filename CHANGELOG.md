@@ -1,3 +1,9 @@
+# v12.2.2
+
+This release upgrades `@angular/language-service` to v12.2.10.
+
+* support resolving ngcc from APF v13 output (#1523) (f8aa9927c)
+
 # v12.2.1
 
 This release upgrades `@angular/language-service` to v12.2.9.

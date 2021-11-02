@@ -1,3 +1,9 @@
+# v12.2.3
+
+This release upgrades `@angular/language-service` to v12.2.12.
+
+This release contains various internal refactorings and dependency updates.
+
 # v12.2.2
 
 This release upgrades `@angular/language-service` to v12.2.10.

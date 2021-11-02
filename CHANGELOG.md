@@ -1,3 +1,32 @@
+# v13.0.0-rc.0
+
+This release upgrades `@angular/language-service` to v13.0.0-rc.3.
+For a complete change log see
+[here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1300-rc3-2021-11-01).
+
+1. feat: provide snippets for attribute (#1509) (0428c31fa)
+1. feat: Add support for going to template from component  (#1491) (3014713e1)
+1. feat(server): add related information to diagnostics (#1492) (04b215b09)
+1. feat: add config to enable auto-apply optional chaining on nullable symbol (#1469) (4fcbdb74a)
+
+# v12.2.3
+
+This release upgrades `@angular/language-service` to v12.2.12.
+
+This release contains various internal refactorings and dependency updates.
+
+# v12.2.2
+
+This release upgrades `@angular/language-service` to v12.2.10.
+
+* support resolving ngcc from APF v13 output (#1523) (f8aa9927c)
+
+# v12.2.1
+
+This release upgrades `@angular/language-service` to v12.2.9.
+
+This release contains various internal refactorings and dependency updates.
+
 # v12.2.0
 
 This release upgrades `@angular/language-service` to v12.2.0.

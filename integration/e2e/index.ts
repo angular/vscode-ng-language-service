@@ -9,7 +9,7 @@ async function main() {
   try {
     await runTests({
       // Keep version in sync with vscode engine version in package.json
-      version: '1.61.0',
+      version: '1.60.0',
       extensionDevelopmentPath: EXT_DEVELOPMENT_PATH,
       extensionTestsPath: EXT_TESTS_PATH,
       launchArgs: [

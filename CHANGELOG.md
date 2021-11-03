@@ -1,8 +1,8 @@
-# v13.0.0-rc.0
+# v13.0.0
 
-This release upgrades `@angular/language-service` to v13.0.0-rc.3.
+This release upgrades `@angular/language-service` to v13.0.0.
 For a complete change log see
-[here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1300-rc3-2021-11-01).
+[here](https://github.com/angular/angular/blob/master/CHANGELOG.md#1300-2021-11-03).
 
 1. feat: provide snippets for attribute (#1509) (0428c31fa)
 1. feat: Add support for going to template from component  (#1491) (3014713e1)

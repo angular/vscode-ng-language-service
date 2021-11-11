@@ -1,6 +1,7 @@
 ---
 name: "\U0001F41E Bug report"
-about: Report a bug in the Angular Language Service extension, or in the language server.
+about: Report a bug in the Angular Language Service extension, or in the language
+  server.
 title: ''
 labels: bug
 assignees: ''
@@ -104,6 +105,21 @@ Operating System:
 
 </code></pre>
 
+
+Extension options:
+<pre><code>
+<!-- 
+Provide any workspace or user settings configured for the extension in the `settings.json` files.
+These are prefixed with the `angular.` namespace.
+Example:
+```
+"angular.log": "terse",
+"angular.view-engine": true,
+```
+ -->
+<!-- ✍️-->
+
+</code></pre>
+
 **Anything else relevant?**
 <!-- ✍️Do any of these matter hardware, other extensions installed, build environment, ...? If so, please mention it below. -->
-

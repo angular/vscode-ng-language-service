@@ -1,6 +1,7 @@
 ---
 name: "\U0001F680 Feature request"
-about: Suggest a feature for the Angular Language Service extension, or in the language server.
+about: Suggest a feature for the Angular Language Service extension, or in the language
+  server.
 title: ''
 labels: feature
 assignees: ''
@@ -41,5 +42,4 @@ What does this bug affect
 
 ### Anything else relevant?
 
-<!-- ✍️Aare screenshots or any other information needed to prvoide context? If so, please mention it below. --> 
-
+<!-- ✍️Aare screenshots or any other information needed to prvoide context? If so, please mention it below. -->

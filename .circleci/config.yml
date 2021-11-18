@@ -3,6 +3,11 @@ orbs:
   node: circleci/node@4.4.0
 jobs:
   build-and-test:
+    parameters:
+      dependency_type:
+        # Whether the test should build using the commit dependency versions or the latest builds.
+        type: enum
+        enum: ["package.json", "builds-repo"]
     docker:
       - image: cimg/node:14.18.1@sha256:50bd08d36e3b6b1bbc5172705f53630d439b959c94e11cdad7f4810f90c5f598
     steps:
@@ -20,9 +25,25 @@ jobs:
           pkg-manager: yarn
       - run: scripts/lint.sh
       - run: scripts/format.sh
-      - run: scripts/build.sh
+      - run: scripts/build.sh << parameters.dependency_type >>
       - run: scripts/test.sh
 workflows:
     build-and-test:
       jobs:
-        - build-and-test
+        - build-and-test:
+            name: build-and-test
+            dependency_type: "package.json"
+    buid-and-test-against-builds:
+      jobs:
+        - build-and-test:
+            name: build-and-test-builds-repo
+            dependency_type: "builds-repo"
+      triggers:
+        - schedule:
+            filters:
+              branches:
+                only:
+                  - master
+            # Runs monitoring jobs at 10:00AM every day.
+            cron: '0 10 * * *'
+    

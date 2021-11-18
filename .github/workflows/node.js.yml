@@ -24,7 +24,7 @@ jobs:
     - run: yarn install
     - run: yarn install --cwd integration/project
     - run: cd integration/project && yarn ngcc
-    - run: scripts/build.sh
+    - run: scripts/build.sh package.json
     - run: xvfb-run -a yarn run test:e2e
       if: runner.os == 'Linux'
     - run: yarn run test:e2e

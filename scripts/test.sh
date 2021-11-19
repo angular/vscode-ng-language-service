@@ -21,7 +21,11 @@ yarn run test:lsp
 
 # Syntaxes tests
 yarn run test:syntaxes
-if [[ -n "$(git status --porcelain)" ]]; then
+# Check git status to see if there are modified files
+STATUS="$(git status --porcelain)"
+echo $STATUS
+# If the status contains modified files in the syntaxes folder, they are out of date
+if [[ "$STATUS" == *"syntaxes"* ]]; then
   echo 'Syntax files are out-of-sync with source. Please run "yarn run build:syntaxes".'
   exit 1
 fi

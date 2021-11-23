@@ -96,7 +96,7 @@
         "angular.view-engine": {
           "type": "boolean",
           "default": false,
-          "description": "Use legacy View Engine language service."
+          "description": "Use legacy View Engine language service. This option is incompatible with projects using Angular v13 and above."
         },
         "angular.enable-strict-mode-prompt": {
           "type": "boolean",

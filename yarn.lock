@@ -52,10 +52,10 @@
     yaml "^1.10.0"
     yargs "^17.0.0"
 
-"@angular/language-service@13.1.0-next.0":
-  version "13.1.0-next.0"
-  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-13.1.0-next.0.tgz#b9422a1824b2de6a201d5a3fad0913ca0f4994c4"
-  integrity sha512-uBLOtgET699ywagSQBTIzLeDRAHf8EPlGMPUVHCIKU9BFuHSjSLM/LBJELslUmb4MzK1vgvI+aY59zPR5QMO5g==
+"@angular/language-service@13.2.0-next.0":
+  version "13.2.0-next.0"
+  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-13.2.0-next.0.tgz#9a1434b76b8a666b7666fe0474e49c25f0bb6033"
+  integrity sha512-kH23ATluPytzRBcC4u0XenkrmS42UnZARNNOO4Zm5+f4vTtJ6QqbnyfSmZBaYuW+Y6My/VBnn+nzl02E8SNM7Q==
 
 "@babel/code-frame@^7.0.0":
   version "7.12.13"

@@ -1,3 +1,9 @@
+# v13.1.0
+
+This release upgrades `@angular/language-service` to v13.1.0.
+
+* fix: Correctly parse inputs and selectors with dollar signs (#44268)
+
 # v13.0.0
 
 This release upgrades `@angular/language-service` to v13.0.0.

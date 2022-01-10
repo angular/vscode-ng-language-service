@@ -475,7 +475,20 @@ function getServerOptions(ctx: vscode.ExtensionContext, debug: boolean): lsp.Nod
   // will return false even when the value is not set. If value is false, then
   // we need to check if all projects support Ivy language service.
   const config = vscode.workspace.getConfiguration();
-  const viewEngine: boolean = config.get('angular.view-engine') || !allProjectsSupportIvy();
+  let viewEngine: boolean = config.get('angular.view-engine') || !allProjectsSupportIvy();
+  if (viewEngine && !allProjectsSupportVE()) {
+    viewEngine = false;
+    if (config.get('angular.view-engine')) {
+      vscode.window.showErrorMessage(
+          `The legacy View Engine option is enabled but the workspace contains a version 13 Angular project.` +
+              ` Legacy View Engine will be disabled since support for it was dropped in v13.`,
+      );
+    } else if (!allProjectsSupportIvy() && !allProjectsSupportVE()) {
+      vscode.window.showErrorMessage(
+          `The workspace contains a project that does not support legacy View Engine (Angular v13+) and a project that does not support the new current runtime (v8 and below).` +
+          `The extension will not work for the legacy project in this workspace.`);
+    }
+  }
 
   // Node module for the language server
   const args = constructArgs(ctx, viewEngine);
@@ -517,6 +530,17 @@ function allProjectsSupportIvy() {
   for (const workspaceFolder of workspaceFolders) {
     const angularCore = resolve('@angular/core', workspaceFolder.uri.fsPath);
     if (angularCore?.version.greaterThanOrEqual(new Version('9')) === false) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function allProjectsSupportVE() {
+  const workspaceFolders = vscode.workspace.workspaceFolders || [];
+  for (const workspaceFolder of workspaceFolders) {
+    const angularCore = resolve('@angular/core', workspaceFolder.uri.fsPath);
+    if (angularCore?.version.greaterThanOrEqual(new Version('13')) === true) {
       return false;
     }
   }

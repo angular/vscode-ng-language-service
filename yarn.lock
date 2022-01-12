@@ -57,6 +57,9 @@
   resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-14.0.0-next.0.tgz#644e73e03810559079c29192c0eb1f59c2dfbd11"
   integrity sha512-jiN1XQQI4sFWUIsDpBQtWNLDCoYfAYwDG/LQqjmgR1yAgDEKQDZRHEbbccDVgcWp7jI3H0QRv9mUE9XlfjJZPg==
 
+"@angular/override-rename-ts-plugin@file:override_rename_ts_plugin":
+  version "0.0.1"
+
 "@babel/code-frame@^7.0.0":
   version "7.12.13"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.12.13.tgz#dcfc826beef65e75c50e21d3837d7d95798dd658"

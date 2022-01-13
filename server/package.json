@@ -18,7 +18,7 @@
     "@angular/language-service": "13.1.0",
     "vscode-jsonrpc": "6.0.0",
     "vscode-languageserver": "7.0.0",
-    "vscode-uri": "3.0.2"
+    "vscode-uri": "3.0.3"
   },
   "publishConfig": {
     "registry": "https://wombat-dressing-room.appspot.com"

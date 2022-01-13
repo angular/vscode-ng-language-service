@@ -200,7 +200,7 @@
     "@types/jasmine": "3.10.3",
     "@types/node": "16.11.19",
     "@types/vscode": "1.60.0",
-    "clang-format": "1.5.0",
+    "clang-format": "1.6.0",
     "esbuild": "0.14.11",
     "jasmine": "3.10.0",
     "prettier": "2.5.1",

@@ -1,5 +1,6 @@
 import {join} from 'path';
 import {runTests} from 'vscode-test';
+
 import {PACKAGE_ROOT, PROJECT_PATH} from '../test_constants';
 
 async function main() {

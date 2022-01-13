@@ -1,4 +1,5 @@
 import {join, resolve} from 'path';
+
 import {convertPathToFileUrl} from './lsp/test_utils';
 
 export const PACKAGE_ROOT = resolve(__dirname, '../..');

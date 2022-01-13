@@ -8,6 +8,7 @@
 
 import * as ts from 'typescript/lib/tsserverlibrary';
 import * as lsp from 'vscode-languageserver';
+
 import {tsRelatedInformationToLspRelatedInformation, tsTextSpanToLspRange} from './utils';
 
 /**

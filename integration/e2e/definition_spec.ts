@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
+
 import {APP_COMPONENT} from '../test_constants';
+
 import {activate} from './helper';
 
 const DEFINITION_COMMAND = 'vscode.executeDefinitionProvider';

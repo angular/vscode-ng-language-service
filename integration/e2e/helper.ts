@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+
 import {APP_COMPONENT, FOO_TEMPLATE} from '../test_constants';
 
 export const COMPLETION_COMMAND = 'vscode.executeCompletionItemProvider';

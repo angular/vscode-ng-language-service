@@ -10,6 +10,6 @@ jobs:
     if: github.repository == 'angular/vscode-ng-language-service'
     runs-on: ubuntu-latest
     steps:
-      - uses: angular/dev-infra/github-actions/lock-closed@d0e796ace4be8c53acc152622d6198c60c7bbe8a
+      - uses: angular/dev-infra/github-actions/lock-closed@47168baf0b140436ad30c923ba8de24cad0aefc2
         with:
           lock-bot-key: ${{ secrets.LOCK_BOT_PRIVATE_KEY }}

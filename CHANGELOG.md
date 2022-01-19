@@ -1,3 +1,9 @@
+# v13.1.1
+
+This release upgrades `@angular/language-service` to v13.1.2.
+
+* fix: Prevent legacy VE from being used with v13 projects (#1575) (b866d6db1)
+
 # v13.1.0
 
 This release upgrades `@angular/language-service` to v13.1.0.

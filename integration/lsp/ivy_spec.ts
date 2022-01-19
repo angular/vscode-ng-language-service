@@ -180,7 +180,7 @@ describe('Angular Ivy language server', () => {
       }))!;
       expect(response).not.toBeNull();
       expect(response.signatures.length).toEqual(1);
-      expect(response.signatures[0].label).toEqual('(): string');
+      expect(response.signatures[0].label).toContain('(): string');
     });
 
     it('should show signature help with multiple arguments', async () => {
@@ -203,7 +203,7 @@ describe('Angular Ivy language server', () => {
       expect(response).not.toBeNull();
       expect(response.signatures.length).toEqual(1);
       expect(response.signatures[0].label)
-          .toEqual('(from: number, length?: number | undefined): string');
+          .toContain('(from: number, length?: number | undefined): string');
       expect(response.signatures[0].parameters).not.toBeUndefined();
       expect(response.activeParameter).toBe(1);
 

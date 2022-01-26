@@ -160,6 +160,28 @@ describe('Angular Ivy language server', () => {
     });
   });
 
+  it('goes to definition of original source when compiled with source maps', async () => {
+    client.sendNotification(lsp.DidOpenTextDocumentNotification.type, {
+      textDocument: {
+        uri: FOO_TEMPLATE_URI,
+        languageId: 'html',
+        version: 1,
+        text: `<lib-post></lib-post>`,
+      },
+    });
+    const languageServiceEnabled = await waitForNgcc(client);
+    expect(languageServiceEnabled).toBeTrue();
+    const response = await client.sendRequest(lsp.DefinitionRequest.type, {
+      textDocument: {
+        uri: FOO_TEMPLATE_URI,
+      },
+      position: {line: 0, character: 1},
+    }) as lsp.LocationLink[];
+    expect(Array.isArray(response)).toBe(true);
+    const {targetUri} = response[0];
+    expect(targetUri).toContain('libs/post/src/lib/post.component.ts');
+  });
+
   describe('signature help', () => {
     it('should show signature help for an empty call', async () => {
       client.sendNotification(lsp.DidOpenTextDocumentNotification.type, {

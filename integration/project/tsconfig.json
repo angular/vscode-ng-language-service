@@ -6,7 +6,13 @@
     "strict": true,
     "typeRoots": [
       "node_modules/@types"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "post": [
+        "dist/post"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "strictTemplates": true,

@@ -20,7 +20,7 @@ import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './comp
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
 import {resolveAndRunNgcc} from './ngcc';
 import {ServerHost} from './server_host';
-import {filePathToUri, isConfiguredProject, isDebugMode, lspPositionToTsPosition, lspRangeToTsPositions, MruTracker, tsDisplayPartsToText, tsTextSpanToLspRange, uriToFilePath} from './utils';
+import {filePathToUri, getMappedDefinitionInfo, isConfiguredProject, isDebugMode, lspPositionToTsPosition, lspRangeToTsPositions, MruTracker, tsDisplayPartsToText, tsTextSpanToLspRange, uriToFilePath} from './utils';
 
 export interface SessionOptions {
   host: ServerHost;
@@ -924,9 +924,16 @@ export class Session {
       if (!scriptInfo && d.textSpan.length > 0) {
         continue;
       }
-      const range = scriptInfo ? tsTextSpanToLspRange(scriptInfo, d.textSpan) : EMPTY_RANGE;
 
-      const targetUri = filePathToUri(d.fileName);
+      let mappedInfo = d;
+      let range = EMPTY_RANGE;
+      if (scriptInfo) {
+        const project = this.getDefaultProjectForScriptInfo(scriptInfo);
+        mappedInfo = project ? getMappedDefinitionInfo(d, project) : mappedInfo;
+        range = tsTextSpanToLspRange(scriptInfo, mappedInfo.textSpan);
+      }
+
+      const targetUri = filePathToUri(mappedInfo.fileName);
       results.push({
         originSelectionRange,
         targetUri,

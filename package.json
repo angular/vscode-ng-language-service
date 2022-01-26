@@ -175,7 +175,7 @@
   "scripts": {
     "compile": "tsc -b server/banner.tsconfig.json && tsc -b && node esbuild.js",
     "compile:test": "tsc -b test.tsconfig.json",
-    "compile:integration": "tsc -b integration",
+    "compile:integration": "tsc -b integration && yarn --cwd integration/project build",
     "compile:syntaxes-test": "tsc -b syntaxes/test",
     "build:syntaxes": "tsc -b syntaxes && node dist/syntaxes/build.js",
     "format": "scripts/format.sh",

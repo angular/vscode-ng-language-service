@@ -143,3 +143,69 @@ export class MruTracker {
 export function tsDisplayPartsToText(parts: ts.SymbolDisplayPart[]): string {
   return parts.map(dp => dp.text).join('');
 }
+
+interface DocumentPosition {
+  fileName: string;
+  pos: number;
+}
+
+/**
+ *
+ * This function attempts to use *internal* TypeScript APIs to find the original source spans for
+ * the `ts.DefinitionInfo` using source maps. If it fails, this function returns the same
+ * `ts.DefinitionInfo` that was passed in.
+ *
+ * @see https://github.com/angular/vscode-ng-language-service/issues/1588
+ */
+export function getMappedDefinitionInfo(
+    info: ts.DefinitionInfo, project: ts.server.Project): ts.DefinitionInfo {
+  try {
+    const mappedDocumentSpan = getMappedDocumentSpan(info, project);
+    return {...info, ...mappedDocumentSpan};
+  } catch {
+    return info;
+  }
+}
+
+function getMappedDocumentSpan(
+    documentSpan: ts.DocumentSpan, project: ts.server.Project): ts.DocumentSpan|undefined {
+  const newPosition = getMappedLocation(documentSpanLocation(documentSpan), project);
+  if (!newPosition) return undefined;
+  return {
+    fileName: newPosition.fileName,
+    textSpan: {start: newPosition.pos, length: documentSpan.textSpan.length},
+    originalFileName: documentSpan.fileName,
+    originalTextSpan: documentSpan.textSpan,
+    contextSpan: getMappedContextSpan(documentSpan, project),
+    originalContextSpan: documentSpan.contextSpan
+  };
+}
+
+function getMappedLocation(
+    location: DocumentPosition, project: ts.server.Project): DocumentPosition|undefined {
+  const mapsTo = (project as any).getSourceMapper().tryGetSourcePosition(location);
+  return mapsTo &&
+          (project.projectService as any).fileExists(ts.server.toNormalizedPath(mapsTo.fileName)) ?
+      mapsTo :
+      undefined;
+}
+
+function documentSpanLocation({fileName, textSpan}: ts.DocumentSpan): DocumentPosition {
+  return {fileName, pos: textSpan.start};
+}
+
+function getMappedContextSpan(
+    documentSpan: ts.DocumentSpan, project: ts.server.Project): ts.TextSpan|undefined {
+  const contextSpanStart = documentSpan.contextSpan &&
+      getMappedLocation({fileName: documentSpan.fileName, pos: documentSpan.contextSpan.start},
+                        project);
+  const contextSpanEnd = documentSpan.contextSpan &&
+      getMappedLocation({
+                          fileName: documentSpan.fileName,
+                          pos: documentSpan.contextSpan.start + documentSpan.contextSpan.length
+                         },
+                        project);
+  return contextSpanStart && contextSpanEnd ?
+      {start: contextSpanStart.pos, length: contextSpanEnd.pos - contextSpanStart.pos} :
+      undefined;
+}

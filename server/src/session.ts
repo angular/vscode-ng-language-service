@@ -930,7 +930,10 @@ export class Session {
       if (scriptInfo) {
         const project = this.getDefaultProjectForScriptInfo(scriptInfo);
         mappedInfo = project ? getMappedDefinitionInfo(d, project) : mappedInfo;
-        range = tsTextSpanToLspRange(scriptInfo, mappedInfo.textSpan);
+        // After the DTS file maps to original source file, the `scriptInfo` should be updated.
+        const originalScriptInfo =
+            this.projectService.getScriptInfo(mappedInfo.fileName) ?? scriptInfo;
+        range = tsTextSpanToLspRange(originalScriptInfo, mappedInfo.textSpan);
       }
 
       const targetUri = filePathToUri(mappedInfo.fileName);

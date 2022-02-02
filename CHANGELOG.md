@@ -1,3 +1,14 @@
+# v13.2.2
+
+This release upgrades `@angular/language-service` to v13.2.1.
+
+* fix(server): return the right range for the original source file of DTS (#1604) (2caa6cf23)
+
+
+# v13.2.1
+
+Skipped due to release process mistake.
+
 # v13.2.0
 
 This release upgrades `@angular/language-service` to v13.2.0.

@@ -15,7 +15,6 @@ This release upgrades `@angular/language-service` to v13.2.0.
 
 * feat(server): Definitions for sources compiled with `declarationMap` go to
   original source
-* feat(language-service): support completions for animation (https://github.com/angular/angular/pull/44630)
 
 
 # v13.1.0

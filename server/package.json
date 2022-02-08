@@ -9,7 +9,7 @@
   "author": "Angular",
   "license": "MIT",
   "engines": {
-    "node": ">=10.9.0 <15.0.0"
+    "node": "^12.20.0 || ^14.15.0 || >=16.10.0"
   },
   "bin": {
     "ngserver": "./bin/ngserver"

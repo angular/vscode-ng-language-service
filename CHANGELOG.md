@@ -1,3 +1,9 @@
+# v13.2.3
+
+This release upgrades `@angular/language-service` to v13.2.2.
+
+* build(server): Update node version to match angular/angular (including v16) (#1612) (8d2420f11)
+
 # v13.2.2
 
 This release upgrades `@angular/language-service` to v13.2.1.

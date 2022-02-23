@@ -1,3 +1,12 @@
+# v13.2.4
+
+This release upgrades `@angular/language-service` to v13.2.4.
+
+* feat(language-service): support completions for animation
+  (https://github.com/angular/angular/pull/44630)
+* fix(compiler-cli): Support resolve animation name from the DTS
+  (https://github.com/angular/angular/pull/45107)
+
 # v13.2.3
 
 This release upgrades `@angular/language-service` to v13.2.2.

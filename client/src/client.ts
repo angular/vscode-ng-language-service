@@ -11,13 +11,11 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import * as lsp from 'vscode-languageclient/node';
 
-import {ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode, SuggestStrictModeParams} from '../common/notifications';
-import {NgccProgress, NgccProgressToken, NgccProgressType} from '../common/progress';
+import {OpenOutputChannel, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode, SuggestStrictModeParams} from '../common/notifications';
 import {GetComponentsWithTemplateFile, GetTcbRequest, GetTemplateLocationForComponent, IsInAngularProject} from '../common/requests';
 import {resolve, Version} from '../common/resolver';
 
 import {isInsideComponentDecorator, isInsideInlineTemplateRegion, isInsideStringLiteral} from './embedded_support';
-import {ProgressReporter} from './progress-reporter';
 
 interface GetTcbResponse {
   uri: vscode.Uri;
@@ -222,7 +220,6 @@ export class AngularLanguageClient implements vscode.Disposable {
     // Must wait for the client to be ready before registering notification
     // handlers.
     this.disposables.push(registerNotificationHandlers(this.client));
-    this.disposables.push(registerProgressHandlers(this.client));
   }
 
   /**
@@ -358,45 +355,11 @@ function registerNotificationHandlers(client: lsp.LanguageClient): vscode.Dispos
     }
   }));
 
-  return vscode.Disposable.from(...disposables);
-}
+  disposables.push(client.onNotification(OpenOutputChannel, () => {
+    client.outputChannel.show();
+  }));
 
-function registerProgressHandlers(client: lsp.LanguageClient) {
-  const progressReporters = new Map<string, ProgressReporter>();
-  const disposable =
-      client.onProgress(NgccProgressType, NgccProgressToken, async (params: NgccProgress) => {
-        const {configFilePath} = params;
-        if (!progressReporters.has(configFilePath)) {
-          progressReporters.set(configFilePath, new ProgressReporter());
-        }
-        const reporter = progressReporters.get(configFilePath)!;
-        if (params.done) {
-          reporter.finish();
-          progressReporters.delete(configFilePath);
-          if (!params.success) {
-            const selection = await vscode.window.showErrorMessage(
-                `Angular extension might not work correctly because ngcc operation failed. ` +
-                    `Try to invoke ngcc manually by running 'npm/yarn run ngcc'. ` +
-                    `Please see the extension output for more information.`,
-                'Show output',
-            );
-            if (selection) {
-              client.outputChannel.show();
-            }
-          }
-        } else {
-          reporter.report(params.message);
-        }
-      });
-  const reporterDisposer = vscode.Disposable.from({
-    dispose() {
-      for (const reporter of progressReporters.values()) {
-        reporter.finish();
-      }
-      disposable.dispose();
-    }
-  });
-  return reporterDisposer;
+  return vscode.Disposable.from(...disposables);
 }
 
 /**

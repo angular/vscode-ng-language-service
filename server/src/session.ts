@@ -12,8 +12,7 @@ import {promisify} from 'util';
 import * as lsp from 'vscode-languageserver/node';
 
 import {ServerOptions} from '../common/initialize';
-import {ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode} from '../common/notifications';
-import {NgccProgressToken, NgccProgressType} from '../common/progress';
+import {NgccProgressEnd, OpenOutputChannel, ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode} from '../common/notifications';
 import {GetComponentsWithTemplateFile, GetTcbParams, GetTcbRequest, GetTcbResponse, GetTemplateLocationForComponent, GetTemplateLocationForComponentParams, IsInAngularProject, IsInAngularProjectParams} from '../common/requests';
 
 import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './completion';
@@ -41,6 +40,10 @@ enum LanguageId {
 // Empty definition range for files without `scriptInfo`
 const EMPTY_RANGE = lsp.Range.create(0, 0, 0, 0);
 const setImmediateP = promisify(setImmediate);
+
+enum NgccErrorMessageAction {
+  showOutput,
+}
 
 /**
  * Session is a wrapper around lsp.IConnection, with all the necessary protocol
@@ -1164,41 +1167,45 @@ export class Session {
     this.disableLanguageServiceForProject(project, 'ngcc is running');
     const configFilePath = project.getConfigFilePath();
 
-    this.connection.sendProgress(NgccProgressType, NgccProgressToken, {
-      done: false,
-      configFilePath,
-      message: `Running ngcc for ${configFilePath}`,
-    });
+    const progressReporter = await this.connection.window.createWorkDoneProgress();
 
-    let success = false;
+    progressReporter.begin('Angular', undefined, `Running ngcc for ${configFilePath}`);
 
     try {
       this.projectNgccQueue.push({project, done: false});
       await resolveAndRunNgcc(configFilePath, {
         report: (msg: string) => {
-          this.connection.sendProgress(NgccProgressType, NgccProgressToken, {
-            done: false,
-            configFilePath,
-            message: msg,
-          });
+          progressReporter.report(msg);
         },
       });
-      success = true;
     } catch (e) {
       this.error(
           `Failed to run ngcc for ${
               configFilePath}, language service may not operate correctly:\n` +
           `    ${e.message}`);
+
+      this.connection.window
+          .showErrorMessage<{
+            action: NgccErrorMessageAction,
+            title: string,
+          }>(`Angular extension might not work correctly because ngcc operation failed. ` +
+                 `Try to invoke ngcc manually by running 'npm/yarn run ngcc'. ` +
+                 `Please see the extension output for more information.`,
+             {title: 'Show output', action: NgccErrorMessageAction.showOutput})
+          .then((selection) => {
+            if (selection?.action === NgccErrorMessageAction.showOutput) {
+              this.connection.sendNotification(OpenOutputChannel, {});
+            }
+          });
     } finally {
       const loadingStatus = this.projectNgccQueue.find(p => p.project === project);
       if (loadingStatus !== undefined) {
         loadingStatus.done = true;
       }
-      this.connection.sendProgress(NgccProgressType, NgccProgressToken, {
-        done: true,
+      this.connection.sendNotification(NgccProgressEnd, {
         configFilePath,
-        success,
       });
+      progressReporter.done();
     }
 
     // ngcc processes might finish out of order, but we need to re-enable the language service for

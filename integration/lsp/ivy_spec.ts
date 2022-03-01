@@ -12,8 +12,7 @@ import {MessageConnection} from 'vscode-jsonrpc';
 import * as lsp from 'vscode-languageserver-protocol';
 import {URI} from 'vscode-uri';
 
-import {ProjectLanguageService, ProjectLanguageServiceParams, SuggestStrictMode, SuggestStrictModeParams} from '../../common/notifications';
-import {NgccProgress, NgccProgressToken, NgccProgressType} from '../../common/progress';
+import {NgccProgressEnd, ProjectLanguageService, ProjectLanguageServiceParams, SuggestStrictMode, SuggestStrictModeParams} from '../../common/notifications';
 import {GetComponentsWithTemplateFile, GetTcbRequest, GetTemplateLocationForComponent, IsInAngularProject} from '../../common/requests';
 import {APP_COMPONENT, APP_COMPONENT_URI, FOO_COMPONENT, FOO_COMPONENT_URI, FOO_TEMPLATE, FOO_TEMPLATE_URI, PROJECT_PATH, TSCONFIG} from '../test_constants';
 
@@ -650,10 +649,8 @@ describe('insert snippet text', () => {
 
 function onNgccProgress(client: MessageConnection): Promise<string> {
   return new Promise(resolve => {
-    client.onProgress(NgccProgressType, NgccProgressToken, (params: NgccProgress) => {
-      if (params.done) {
-        resolve(params.configFilePath);
-      }
+    client.onNotification(NgccProgressEnd, (params) => {
+      resolve(params.configFilePath);
     });
   });
 }

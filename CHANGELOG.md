@@ -1,3 +1,9 @@
+# v13.2.5
+
+This release upgrades `@angular/language-service` to v13.2.5.
+
+* refactor: use built-in `WorkDoneProgressReport` to report NGCC progress (#1614) (be264f09d)
+
 # v13.2.4
 
 This release upgrades `@angular/language-service` to v13.2.4.

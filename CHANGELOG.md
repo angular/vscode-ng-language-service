@@ -1,3 +1,9 @@
+# v13.2.6
+
+This release upgrades `@angular/language-service` to v13.2.6.
+
+* language-service: Prioritize Angular-specific completions over DOM completions (https://github.com/angular/angular/pull/45293)
+
 # v13.2.5
 
 This release upgrades `@angular/language-service` to v13.2.5.

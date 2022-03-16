@@ -1,3 +1,9 @@
+# v13.3.0
+
+This release upgrades `@angular/language-service` to v13.3.0.
+
+* feat: support TypeScript 4.6
+
 # v13.2.6
 
 This release upgrades `@angular/language-service` to v13.2.6.

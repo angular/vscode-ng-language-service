@@ -52,10 +52,10 @@
     yaml "^1.10.0"
     yargs "^17.0.0"
 
-"@angular/language-service@14.0.0-next.0":
-  version "14.0.0-next.0"
-  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-14.0.0-next.0.tgz#644e73e03810559079c29192c0eb1f59c2dfbd11"
-  integrity sha512-jiN1XQQI4sFWUIsDpBQtWNLDCoYfAYwDG/LQqjmgR1yAgDEKQDZRHEbbccDVgcWp7jI3H0QRv9mUE9XlfjJZPg==
+"@angular/language-service@14.0.0-next.9":
+  version "14.0.0-next.9"
+  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-14.0.0-next.9.tgz#027759c07ef0af745c28f5eb19dbf7a40344130a"
+  integrity sha512-JvS0B8YYefg3vh7NB1pan55M05C5fq8WOH6MJ6+IgpkbqQCHIbMSUwUeiA9cumg2VYb6gkh2NCMuk3nTA4r9/g==
 
 "@angular/override-rename-ts-plugin@file:override_rename_ts_plugin":
   version "0.0.1"

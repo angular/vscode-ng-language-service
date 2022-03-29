@@ -447,6 +447,11 @@ function constructArgs(ctx: vscode.ExtensionContext, viewEngine: boolean): strin
     args.push('--includeCompletionsWithSnippetText');
   }
 
+  const disableNgcc = config.get<boolean>('angular.disableNgcc');
+  if (disableNgcc) {
+    args.push('--disableNgcc');
+  }
+
   const tsdk: string|null = config.get('typescript.tsdk', null);
   const tsProbeLocations = [tsdk, ...getProbeLocations(ctx.extensionPath)];
   args.push('--tsProbeLocations', tsProbeLocations.join(','));

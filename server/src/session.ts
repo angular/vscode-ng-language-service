@@ -28,6 +28,7 @@ export interface SessionOptions {
   ngPlugin: string;
   resolvedNgLsPath: string;
   ivy: boolean;
+  disableNgcc: boolean;
   logToConsole: boolean;
   includeAutomaticOptionalChainCompletions: boolean;
   includeCompletionsWithSnippetText: boolean;
@@ -51,6 +52,7 @@ export class Session {
   private readonly projectService: ts.server.ProjectService;
   private readonly logger: ts.server.Logger;
   private readonly ivy: boolean;
+  private readonly disableNgcc: boolean;
   private readonly configuredProjToExternalProj = new Map<string, string>();
   private readonly logToConsole: boolean;
   private readonly openFiles = new MruTracker();
@@ -77,6 +79,7 @@ export class Session {
     this.includeCompletionsWithSnippetText = options.includeCompletionsWithSnippetText;
     this.logger = options.logger;
     this.ivy = options.ivy;
+    this.disableNgcc = options.disableNgcc;
     this.logToConsole = options.logToConsole;
     // Create a connection for the server. The connection uses Node's IPC as a transport.
     this.connection = lsp.createConnection({
@@ -454,7 +457,7 @@ export class Session {
         const {project} = event.data;
         const angularCore = this.findAngularCore(project);
         if (angularCore) {
-          if (this.ivy && isExternalAngularCore(angularCore)) {
+          if (this.ivy && isExternalAngularCore(angularCore) && !this.disableNgcc) {
             // Do not wait on this promise otherwise we'll be blocking other requests
             this.runNgcc(project);
           } else {

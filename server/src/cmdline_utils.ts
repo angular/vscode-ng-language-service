@@ -32,6 +32,10 @@ interface CommandLineOptions {
    * If true, use Ivy LS, otherwise use legacy View Engine LS.
    */
   ivy: boolean;
+  /**
+   * If true, skips the running ngcc when using Ivy LS.
+   */
+  disableNgcc: boolean;
   logFile?: string;
   logVerbosity?: string;
   logToConsole: boolean;
@@ -45,6 +49,7 @@ export function parseCommandLine(argv: string[]): CommandLineOptions {
   return {
     help: hasArgument(argv, '--help'),
     ivy: !hasArgument(argv, '--viewEngine'),
+    disableNgcc: hasArgument(argv, '--disableNgcc'),
     logFile: findArgument(argv, '--logFile'),
     logVerbosity: findArgument(argv, '--logVerbosity'),
     logToConsole: hasArgument(argv, '--logToConsole'),

@@ -13,7 +13,7 @@ import * as lsp from 'vscode-languageserver/node';
 
 import {ServerOptions} from '../common/initialize';
 import {NgccProgressEnd, OpenOutputChannel, ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode} from '../common/notifications';
-import {GetComponentsWithTemplateFile, GetTcbParams, GetTcbRequest, GetTcbResponse, GetTemplateLocationForComponent, GetTemplateLocationForComponentParams, IsInAngularProject, IsInAngularProjectParams} from '../common/requests';
+import {GetComponentsWithTemplateFile, GetTcbParams, GetTcbRequest, GetTcbResponse, GetTemplateLocationForComponent, GetTemplateLocationForComponentParams, IsInAngularProject, IsInAngularProjectParams, RunNgccParams, RunNgccRequest} from '../common/requests';
 
 import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './completion';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
@@ -27,7 +27,7 @@ export interface SessionOptions {
   ngPlugin: string;
   resolvedNgLsPath: string;
   ivy: boolean;
-  disableNgcc: boolean;
+  disableAutomaticNgcc: boolean;
   logToConsole: boolean;
   includeAutomaticOptionalChainCompletions: boolean;
   includeCompletionsWithSnippetText: boolean;
@@ -55,7 +55,7 @@ export class Session {
   private readonly projectService: ts.server.ProjectService;
   private readonly logger: ts.server.Logger;
   private readonly ivy: boolean;
-  private readonly disableNgcc: boolean;
+  private readonly disableAutomaticNgcc: boolean;
   private readonly configuredProjToExternalProj = new Map<string, string>();
   private readonly logToConsole: boolean;
   private readonly openFiles = new MruTracker();
@@ -82,7 +82,7 @@ export class Session {
     this.includeCompletionsWithSnippetText = options.includeCompletionsWithSnippetText;
     this.logger = options.logger;
     this.ivy = options.ivy;
-    this.disableNgcc = options.disableNgcc;
+    this.disableAutomaticNgcc = options.disableAutomaticNgcc;
     this.logToConsole = options.logToConsole;
     // Create a connection for the server. The connection uses Node's IPC as a transport.
     this.connection = lsp.createConnection({
@@ -187,6 +187,7 @@ export class Session {
     conn.onRequest(GetComponentsWithTemplateFile, p => this.onGetComponentsWithTemplateFile(p));
     conn.onRequest(GetTemplateLocationForComponent, p => this.onGetTemplateLocationForComponent(p));
     conn.onRequest(GetTcbRequest, p => this.onGetTcb(p));
+    conn.onRequest(RunNgccRequest, p => this.onRunNgcc(p));
     conn.onRequest(IsInAngularProject, p => this.isInAngularProject(p));
     conn.onCodeLens(p => this.onCodeLens(p));
     conn.onCodeLensResolve(p => this.onCodeLensResolve(p));
@@ -235,6 +236,18 @@ export class Session {
       content: response.content,
       selections: response.selections.map((span => tsTextSpanToLspRange(tcfScriptInfo, span))),
     };
+  }
+
+  private onRunNgcc(params: RunNgccParams): void {
+    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    if (lsInfo === null) {
+      return;
+    }
+    const project = this.getDefaultProjectForScriptInfo(lsInfo.scriptInfo);
+    if (!project) {
+      return;
+    }
+    this.runNgcc(project);
   }
 
   private onGetTemplateLocationForComponent(params: GetTemplateLocationForComponentParams):
@@ -460,7 +473,7 @@ export class Session {
         const {project} = event.data;
         const angularCore = this.findAngularCore(project);
         if (angularCore) {
-          if (this.ivy && isExternalAngularCore(angularCore) && !this.disableNgcc) {
+          if (this.ivy && isExternalAngularCore(angularCore) && !this.disableAutomaticNgcc) {
             // Do not wait on this promise otherwise we'll be blocking other requests
             this.runNgcc(project);
           } else {
@@ -1163,7 +1176,7 @@ export class Session {
    * Disable the language service, run ngcc, then re-enable language service.
    */
   private async runNgcc(project: ts.server.Project): Promise<void> {
-    if (!isConfiguredProject(project)) {
+    if (!isConfiguredProject(project) || this.projectNgccQueue.some(p => p.project === project)) {
       return;
     }
     // Disable language service until ngcc is completed.

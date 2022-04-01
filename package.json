@@ -48,6 +48,11 @@
         "command": "angular.goToTemplateForComponent",
         "title": "Go to template",
         "category": "Angular"
+      },
+      {
+        "command": "angular.runNgcc",
+        "title": "Run ngcc",
+        "category": "Angular"
       }
     ],
     "menus": {
@@ -124,10 +129,10 @@
           "default": true,
           "markdownDescription": "Enable/disable snippet completions from Angular language server. Requires using TypeScript 4.3+ in the workspace and the `legacy View Engine` option to be disabled."
         },
-        "angular.disableNgcc": {
+        "angular.disableAutomaticNgcc": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "Manually disable the step to run ngcc. [ngcc](https://github.com/angular/angular/blob/master/packages/compiler/design/architecture.md#high-level-proposal) is required to run and gather metadata from libraries not published with Ivy instructions. This can be run outside of VSCode instead (for example, as part of the build/rebuild in the CLI). Note that ngcc needs to run not only at startup, but also whenever the dependencies change. Failing to run ngcc when required can result in incomplete information and spurious errors reported by the language service."
+          "markdownDescription": "Disable the step to automatically run ngcc. [ngcc](https://github.com/angular/angular/blob/master/packages/compiler/design/architecture.md#high-level-proposal) is required to run and gather metadata from libraries not published with Ivy instructions. This can be run outside of VSCode instead (for example, as part of the build/rebuild in the CLI). Note that ngcc needs to run not only at startup, but also whenever the dependencies change. Failing to run ngcc when required can result in incomplete information and spurious errors reported by the language service."
         }
       }
     },

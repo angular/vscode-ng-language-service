@@ -115,6 +115,15 @@ function getTemplateTcb(
     }
   };
 }
+function runNgcc(ngClient: AngularLanguageClient): Command {
+  return {
+    id: 'angular.runNgcc',
+    isTextEditorCommand: true,
+    async execute(textEditor: vscode.TextEditor) {
+      ngClient.runNgcc(textEditor);
+    }
+  };
+}
 
 /**
  * Command goToComponentWithTemplateFile finds components which reference an external template in
@@ -180,6 +189,7 @@ export function registerCommands(
     restartNgServer(client),
     openLogFile(client),
     getTemplateTcb(client, context),
+    runNgcc(client),
     goToComponentWithTemplateFile(client),
     goToTemplateForComponent(client),
   ];

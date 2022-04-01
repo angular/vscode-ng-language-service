@@ -43,7 +43,7 @@ function main() {
     ngPlugin: '@angular/language-service',
     resolvedNgLsPath: ng.resolvedPath,
     ivy: isG3 ? true : options.ivy,
-    disableNgcc: options.disableNgcc,
+    disableAutomaticNgcc: options.disableAutomaticNgcc,
     logToConsole: options.logToConsole,
     includeAutomaticOptionalChainCompletions: options.includeAutomaticOptionalChainCompletions,
     includeCompletionsWithSnippetText: options.includeCompletionsWithSnippetText,

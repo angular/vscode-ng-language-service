@@ -9,7 +9,7 @@ jobs:
         type: enum
         enum: ["package.json", "builds-repo"]
     docker:
-      - image: cimg/node:14.18.3@sha256:30583ce79b08d318b1fc5e17a613d21ef960091e5442b06eb49c56fa180a3b30
+      - image: cimg/node:17.9.0@sha256:c899934e7118d46a18f77a5fc3ca483bf6f7226ebd2ad5896c28d6e3ae1a30e6
     steps:
       - checkout
       - node/install-packages:

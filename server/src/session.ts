@@ -198,24 +198,19 @@ export class Session {
     if (!filePath) {
       return false;
     }
-    const lsAndScriptInfo = this.getLSAndScriptInfo(params.textDocument);
+    const lsAndScriptInfo = this.getFileInfo(params.textDocument);
     if (!lsAndScriptInfo) {
       // If we cannot get language service / script info, return null to indicate we don't know
       // the answer definitively.
       return null;
     }
-    const project = this.getDefaultProjectForScriptInfo(lsAndScriptInfo.scriptInfo);
-    if (!project) {
-      // If we cannot get project, return null to indicate we don't know
-      // the answer definitively.
-      return null;
-    }
+    const {project} = lsAndScriptInfo;
     const angularCore = project.getFileNames().find(isAngularCore);
     return angularCore !== undefined;
   }
 
   private onGetTcb(params: GetTcbParams): GetTcbResponse|null {
-    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    const lsInfo = this.getFileInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
     }
@@ -238,20 +233,16 @@ export class Session {
   }
 
   private onRunNgcc(params: RunNgccParams): void {
-    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    const lsInfo = this.getFileInfo(params.textDocument);
     if (lsInfo === null) {
       return;
     }
-    const project = this.getDefaultProjectForScriptInfo(lsInfo.scriptInfo);
-    if (!project) {
-      return;
-    }
-    this.runNgcc(project);
+    this.runNgcc(lsInfo.project);
   }
 
   private onGetTemplateLocationForComponent(params: GetTemplateLocationForComponentParams):
       lsp.Location|null {
-    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    const lsInfo = this.getFileInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
     }
@@ -271,7 +262,7 @@ export class Session {
   }
 
   private onGetComponentsWithTemplateFile(params: any): lsp.Location[]|null {
-    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    const lsInfo = this.getFileInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
     }
@@ -290,7 +281,7 @@ export class Session {
   }
 
   private onSignatureHelp(params: lsp.SignatureHelpParams): lsp.SignatureHelp|null {
-    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    const lsInfo = this.getFileInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
     }
@@ -612,7 +603,7 @@ export class Session {
   private async sendPendingDiagnostics(files: string[], reason: string) {
     for (let i = 0; i < files.length; ++i) {
       const fileName = files[i];
-      const result = this.getLSAndScriptInfo(fileName);
+      const result = this.getFileInfo(fileName);
       if (!result) {
         continue;
       }
@@ -846,7 +837,7 @@ export class Session {
   }
 
   private onDefinition(params: lsp.TextDocumentPositionParams): lsp.LocationLink[]|null {
-    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    const lsInfo = this.getFileInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
     }
@@ -861,7 +852,7 @@ export class Session {
   }
 
   private onTypeDefinition(params: lsp.TextDocumentPositionParams): lsp.LocationLink[]|null {
-    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    const lsInfo = this.getFileInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
     }
@@ -875,13 +866,12 @@ export class Session {
   }
 
   private onRenameRequest(params: lsp.RenameParams): lsp.WorkspaceEdit|null {
-    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    const lsInfo = this.getFileInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
     }
-    const {languageService, scriptInfo} = lsInfo;
-    const project = this.getDefaultProjectForScriptInfo(scriptInfo);
-    if (project === null || this.renameDisabledProjects.has(project)) {
+    const {languageService, scriptInfo, project} = lsInfo;
+    if (this.renameDisabledProjects.has(project)) {
       return null;
     }
 
@@ -899,7 +889,7 @@ export class Session {
       }
       const fileEdits = changes[uri];
 
-      const lsInfo = this.getLSAndScriptInfo(location.fileName);
+      const lsInfo = this.getFileInfo(location.fileName);
       if (lsInfo === null) {
         return changes;
       }
@@ -913,13 +903,12 @@ export class Session {
 
   private onPrepareRename(params: lsp.PrepareRenameParams):
       {range: lsp.Range, placeholder: string}|null {
-    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    const lsInfo = this.getFileInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
     }
-    const {languageService, scriptInfo} = lsInfo;
-    const project = this.getDefaultProjectForScriptInfo(scriptInfo);
-    if (project === null || this.renameDisabledProjects.has(project)) {
+    const {languageService, scriptInfo, project} = lsInfo;
+    if (this.renameDisabledProjects.has(project)) {
       return null;
     }
 
@@ -936,7 +925,7 @@ export class Session {
   }
 
   private onReferences(params: lsp.TextDocumentPositionParams): lsp.Location[]|null {
-    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    const lsInfo = this.getFileInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
     }
@@ -992,8 +981,11 @@ export class Session {
     return results;
   }
 
-  private getLSAndScriptInfo(textDocumentOrFileName: lsp.TextDocumentIdentifier|string):
-      {languageService: NgLanguageService, scriptInfo: ts.server.ScriptInfo}|null {
+  private getFileInfo(textDocumentOrFileName: lsp.TextDocumentIdentifier|string): {
+    languageService: NgLanguageService,
+    scriptInfo: ts.server.ScriptInfo,
+    project: ts.server.Project
+  }|null {
     const filePath = lsp.TextDocumentIdentifier.is(textDocumentOrFileName) ?
         uriToFilePath(textDocumentOrFileName.uri) :
         textDocumentOrFileName;
@@ -1019,11 +1011,12 @@ export class Session {
     return {
       languageService,
       scriptInfo,
+      project,
     };
   }
 
   private onHover(params: lsp.TextDocumentPositionParams): lsp.Hover|null {
-    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    const lsInfo = this.getFileInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
     }
@@ -1058,7 +1051,7 @@ export class Session {
   }
 
   private onCompletion(params: lsp.CompletionParams): lsp.CompletionItem[]|null {
-    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    const lsInfo = this.getFileInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
     }
@@ -1099,7 +1092,7 @@ export class Session {
     }
 
     const {filePath, position} = data;
-    const lsInfo = this.getLSAndScriptInfo(filePath);
+    const lsInfo = this.getFileInfo(filePath);
     if (lsInfo === null) {
       return item;
     }

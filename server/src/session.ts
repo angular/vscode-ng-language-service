@@ -432,27 +432,16 @@ export class Session {
    * when navigating away from HTML files. Since a `tsconfig` cannot express including non-TS files,
    * we need another way to indicate the template files are considered part of the project.
    *
-   * Note that this does not ensure that the project in question _directly_ contains the component
+   * Note that this attempts ensure that the project in question _directly_ contains the component
    * file. That is, the project might just include the component file through the program rather
    * than directly in the `include` glob of the `tsconfig`. This distinction is somewhat important
    * because the TypeScript language service/server prefers projects which _directly_ contain the TS
-   * file (see `projectContainsInfoDirectly` in the TS codebase). What this means it that there can
-   * possibly be a different project used between the TS and HTML files.
+   * file (see `projectContainsInfoDirectly` in the TS codebase).
    *
    * For example, in Nx projects, the referenced configs are `tsconfig.app.json` and
    * `tsconfig.editor.json`. `tsconfig.app.json` comes first in the base `tsconfig.json` and
    * contains the entry point of the app. `tsconfig.editor.json` contains the `**.ts` glob of all TS
-   * files. This means that `tsconfig.editor.json` will be preferred by the TS server for TS files
-   * but the `tsconfig.app.json` will be used for HTML files since it comes first and we cannot
-   * effectively express `projectContainsInfoDirectly` for HTML files.
-   *
-   * We could consider referencing the internal `project.projectContainsInfoDirectly` to only add
-   * the template to the rootFiles for when the project _directly_ contains the TS. Or as a
-   * workaround, just check `project.isRoot(componentTsFile)`. In addition, we would need to update
-   * our `getDefaultProjectForScriptInfo` implementation to ensure the template file is a root of
-   * the project since the `projectService` implementation again is not capable of making this
-   * distinction and will simply choose the first containing project for the HTML's
-   * `ts.server.scriptInfo`.
+   * files. This means that `tsconfig.editor.json` will be preferred by the TS server for TS files.
    *
    * Finally, keeping the projects open is hugely important in the solution style config case like
    * Nx. When a TS file is opened, TypeScript will only retain `tsconfig.editor.json` and not
@@ -475,9 +464,12 @@ export class Session {
       }
       const ngLs = project.getLanguageService() as NgLanguageService;
       const templateComponents = ngLs.getComponentLocationsForTemplate(templatePath);
-      const projectContainsComponentTs = templateComponents.some(
-          c => project.containsFile(ts.server.toNormalizedPath(c.fileName)));
-      if (projectContainsComponentTs && !project.isRoot(scriptInfo)) {
+      const projectContainsComponentTsDirectly = templateComponents.some(c => {
+        const filePath = ts.server.toNormalizedPath(c.fileName)
+        const scriptInfo = project.getScriptInfo(filePath);
+        return project.containsFile(filePath) && scriptInfo && project.isRoot(scriptInfo);
+      });
+      if (projectContainsComponentTsDirectly && !project.isRoot(scriptInfo)) {
         project.addRoot(scriptInfo);
       }
     }
@@ -645,13 +637,23 @@ export class Session {
    * @param scriptInfo
    */
   getDefaultProjectForScriptInfo(scriptInfo: ts.server.ScriptInfo): ts.server.Project|null {
-    let project = this.projectService.getDefaultProjectForFile(
-        scriptInfo.fileName,
-        // ensureProject tries to find a default project for the scriptInfo if
-        // it does not already have one. It is not needed here because we are
-        // going to assign it a project below if it does not have one.
-        false  // ensureProject
-    );
+    let project: ts.server.Project|undefined;
+    if (scriptInfo.scriptKind === ts.ScriptKind.TS) {
+      project = this.projectService.getDefaultProjectForFile(
+          scriptInfo.fileName,
+          // ensureProject tries to find a default project for the scriptInfo if
+          // it does not already have one. It is not needed here because we are
+          // going to assign it a project below if it does not have one.
+          false  // ensureProject
+      );
+    } else {
+      // Since we only add template files to projects that contain the corresponding component, if
+      // the templateUrl wasn't set up correctly right away, this may result in an orphaned template
+      // file. We should correct that here.
+      this.addTemplateToContainingProjectRootFiles(scriptInfo.fileName);
+      project =
+          scriptInfo.containingProjects.find(p => isConfiguredProject(p) && p.isRoot(scriptInfo));
+    }
 
     // TODO: verify that HTML files are attached to Inferred project by default.
     // If they are already part of a ConfiguredProject then the following is
@@ -671,13 +673,6 @@ export class Session {
       scriptInfo.attachToProject(project);
     }
 
-    // If the template file is not a root file of the project, it must have become part of the
-    // compilation after the template file was added and opened. Since we only add template files to
-    // projects that contain the corresponding component, if the templateUrl wasn't set up correctly
-    // right away, this may result in an orphaned template file. We should correct that here.
-    if (scriptInfo.scriptKind === ts.ScriptKind.Unknown && !project.isRoot(scriptInfo)) {
-      this.addTemplateToContainingProjectRootFiles(scriptInfo.fileName);
-    }
 
     this.logger.info(`Using project ${project.projectName} for request.`);
     return project;
@@ -1246,11 +1241,11 @@ export class Session {
     // ngcc processes might finish out of order, but we need to re-enable the language service for
     // the projects in the same order that the ngcc processes were spawned in. With solution-style
     // configs, we need to ensure that the language service enabling respects the order that the
-    // projects were defined in the references list. If we enable the language service out of order,
-    // the second project in the list will request diagnostics first and then be the project that's
-    // prioritized for that project's set of files. This will cause issues if the second project is,
-    // for example, one that only includes `*.spec.ts` files and not the entire set of files needed
-    // to compile the app (i.e. `*.module.ts`).
+    // projects were defined in the references list. If we enable the language service out of
+    // order, the second project in the list will request diagnostics first and then be the
+    // project that's prioritized for that project's set of files. This will cause issues if the
+    // second project is, for example, one that only includes `*.spec.ts` files and not the entire
+    // set of files needed to compile the app (i.e. `*.module.ts`).
     for (let i = 0; i < this.projectNgccQueue.length && this.projectNgccQueue[i].done; i++) {
       // Re-enable language service even if ngcc fails, because users could fix
       // the problem by running ngcc themselves. If we keep language service

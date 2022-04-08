@@ -56,7 +56,6 @@ export class Session {
   private readonly logger: ts.server.Logger;
   private readonly ivy: boolean;
   private readonly disableAutomaticNgcc: boolean;
-  private readonly configuredProjToExternalProj = new Map<string, string>();
   private readonly logToConsole: boolean;
   private readonly openFiles = new MruTracker();
   private readonly includeAutomaticOptionalChainCompletions: boolean;
@@ -426,9 +425,70 @@ export class Session {
       console.time(label);
     }
     // Getting semantic diagnostics will trigger a global analysis.
-    project.getLanguageService().getSemanticDiagnostics(fileName);
+    const ngLs = project.getLanguageService() as NgLanguageService;
+    ngLs.getSemanticDiagnostics(fileName);
     if (isDebugMode) {
       console.timeEnd(label);
+    }
+    for (const filePath of ngLs.getTemplateReferences()) {
+      this.addTemplateToContainingProjectRootFiles(filePath);
+    }
+  }
+
+  /**
+   * Adds the template file to each of the projects which contain it if the project also contains
+   * the component file that references the template. This is necessary to keep the projects open
+   * when navigating away from HTML files. Since a `tsconfig` cannot express including non-TS files,
+   * we need another way to indicate the template files are considered part of the project.
+   *
+   * Note that this does not ensure that the project in question _directly_ contains the component
+   * file. That is, the project might just include the component file through the program rather
+   * than directly in the `include` glob of the `tsconfig`. This distinction is somewhat important
+   * because the TypeScript language service/server prefers projects which _directly_ contain the TS
+   * file (see `projectContainsInfoDirectly` in the TS codebase). What this means it that there can
+   * possibly be a different project used between the TS and HTML files.
+   *
+   * For example, in Nx projects, the referenced configs are `tsconfig.app.json` and
+   * `tsconfig.editor.json`. `tsconfig.app.json` comes first in the base `tsconfig.json` and
+   * contains the entry point of the app. `tsconfig.editor.json` contains the `**.ts` glob of all TS
+   * files. This means that `tsconfig.editor.json` will be preferred by the TS server for TS files
+   * but the `tsconfig.app.json` will be used for HTML files since it comes first and we cannot
+   * effectively express `projectContainsInfoDirectly` for HTML files.
+   *
+   * We could consider referencing the internal `project.projectContainsInfoDirectly` to only add
+   * the template to the rootFiles for when the project _directly_ contains the TS. Or as a
+   * workaround, just check `project.isRoot(componentTsFile)`. In addition, we would need to update
+   * our `getDefaultProjectForScriptInfo` implementation to ensure the template file is a root of
+   * the project since the `projectService` implementation again is not capable of making this
+   * distinction and will simply choose the first containing project for the HTML's
+   * `ts.server.scriptInfo`.
+   *
+   * Finally, keeping the projects open is hugely important in the solution style config case like
+   * Nx. When a TS file is opened, TypeScript will only retain `tsconfig.editor.json` and not
+   * `tsconfig.app.json`. However, if our extension does not also know to select
+   * `tsconfig.editor.json`, it will automatically select `tsconfig.app.json` since it is defined
+   * first in the `tsconfig.json` file. So we need to teach TS server that we are (1) interested in
+   * keeping projects open when there is an HTML file open and (2) optionally attempt to do this
+   * _only_ for projects that we know the TS language service will prioritize in TS files (i.e.,
+   * attempt to only keep `tsconfig.editor.json` open and allow `tsconfig.app.json` to close)
+   * and prioritize that project for all requests.
+   */
+  private addTemplateToContainingProjectRootFiles(templatePath: string): void {
+    const scriptInfo = this.projectService.getScriptInfo(templatePath);
+    if (!scriptInfo) {
+      return;
+    }
+    for (const project of scriptInfo.containingProjects ?? []) {
+      if (!isConfiguredProject(project) || !project.languageServiceEnabled) {
+        continue;
+      }
+      const ngLs = project.getLanguageService() as NgLanguageService;
+      const templateComponents = ngLs.getComponentLocationsForTemplate(templatePath);
+      const projectContainsComponentTs = templateComponents.some(
+          c => project.containsFile(ts.server.toNormalizedPath(c.fileName)));
+      if (projectContainsComponentTs && !project.isRoot(scriptInfo)) {
+        project.addRoot(scriptInfo);
+      }
     }
   }
 
@@ -473,11 +533,10 @@ export class Session {
         const {project} = event.data;
         const angularCore = this.findAngularCore(project);
         if (angularCore) {
+          this.enableLanguageServiceForProject(project);
           if (this.ivy && isExternalAngularCore(angularCore) && !this.disableAutomaticNgcc) {
             // Do not wait on this promise otherwise we'll be blocking other requests
             this.runNgcc(project);
-          } else {
-            this.enableLanguageServiceForProject(project);
           }
         } else {
           this.disableLanguageServiceForProject(
@@ -620,8 +679,16 @@ export class Session {
       scriptInfo.detachAllProjects();
       scriptInfo.attachToProject(project);
     }
-    this.createExternalProject(project);
 
+    // If the template file is not a root file of the project, it must have become part of the
+    // compilation after the template file was added and opened. Since we only add template files to
+    // projects that contain the corresponding component, if the templateUrl wasn't set up correctly
+    // right away, this may result in an orphaned template file. We should correct that here.
+    if (scriptInfo.scriptKind === ts.ScriptKind.Unknown && !project.isRoot(scriptInfo)) {
+      this.addTemplateToContainingProjectRootFiles(scriptInfo.fileName);
+    }
+
+    this.logger.info(`Using project ${project.projectName} for request.`);
     return project;
   }
 
@@ -685,26 +752,30 @@ export class Session {
         // configFileErrors is an empty array even if there's no error, so check length.
         this.error(configFileErrors.map(e => e.messageText).join('\n'));
       }
-      const project = configFileName ?
-          this.projectService.findProject(configFileName) :
-          this.projectService.getScriptInfo(filePath)?.containingProjects.find(isConfiguredProject);
-      if (!project) {
+      let project: ts.server.Project|undefined;
+      if (configFileName) {
+        project = this.projectService.findProject(configFileName);
+      } else {
+        this.addTemplateToContainingProjectRootFiles(filePath);
+        const scriptInfo = this.projectService.getScriptInfo(filePath);
+        project = scriptInfo?.containingProjects.find(
+            project => isConfiguredProject(project) && project.isRoot(scriptInfo));
+      }
+      if (project === undefined || !project.languageServiceEnabled) {
         return;
       }
-      if (project.languageServiceEnabled) {
-        // The act of opening a file can cause the text storage to switchToScriptVersionCache for
-        // version tracking, which results in an identity change for the source file. This isn't
-        // typically an issue but the identity can change during an update operation for template
-        // type-checking, when we _only_ expect the typecheck files to change. This _is_ an issue
-        // because the because template type-checking should not modify the identity of any other
-        // source files (other than the generated typecheck files). We need to ensure that the
-        // compiler is aware of this change that shouldn't have happened and recompiles the file
-        // because we store references to some string expressions (inline templates, style/template
-        // urls).
-        project.markAsDirty();
-        // Show initial diagnostics
-        this.requestDiagnosticsOnOpenOrChangeFile(filePath, `Opening ${filePath}`);
-      }
+      // The act of opening a file can cause the text storage to switchToScriptVersionCache for
+      // version tracking, which results in an identity change for the source file. This isn't
+      // typically an issue but the identity can change during an update operation for template
+      // type-checking, when we _only_ expect the typecheck files to change. This _is_ an issue
+      // because the because template type-checking should not modify the identity of any other
+      // source files (other than the generated typecheck files). We need to ensure that the
+      // compiler is aware of this change that shouldn't have happened and recompiles the file
+      // because we store references to some string expressions (inline templates, style/template
+      // urls).
+      project.markAsDirty();
+      // Show initial diagnostics
+      this.requestDiagnosticsOnOpenOrChangeFile(filePath, `Opening ${filePath}`);
     } catch (error) {
       if (this.isProjectLoading) {
         this.isProjectLoading = false;
@@ -714,24 +785,6 @@ export class Session {
         this.error(error.stack);
       }
       throw error;
-    }
-    this.closeOrphanedExternalProjects();
-  }
-
-  /**
-   * Creates an external project with the same config path as `project` so that TypeScript keeps the
-   * project open when navigating away from `html` files.
-   */
-  private createExternalProject(project: ts.server.Project): void {
-    if (isConfiguredProject(project) &&
-        !this.configuredProjToExternalProj.has(project.projectName)) {
-      const extProjectName = `${project.projectName}-external`;
-      project.projectService.openExternalProject({
-        projectFileName: extProjectName,
-        rootFiles: [{fileName: project.getConfigFilePath()}],
-        options: {}
-      });
-      this.configuredProjToExternalProj.set(project.projectName, extProjectName);
     }
   }
 
@@ -743,33 +796,6 @@ export class Session {
     }
     this.openFiles.delete(filePath);
     this.projectService.closeClientFile(filePath);
-  }
-
-  /**
-   * We open external projects for files so that we can prevent TypeScript from closing a project
-   * when there is open external HTML template that still references the project. This function
-   * checks if there are no longer any open files in any external project. If there
-   * aren't, we also close the external project that was created.
-   */
-  private closeOrphanedExternalProjects(): void {
-    for (const [configuredProjName, externalProjName] of this.configuredProjToExternalProj) {
-      const configuredProj = this.projectService.findProject(configuredProjName);
-      if (!configuredProj || configuredProj.isClosed()) {
-        this.projectService.closeExternalProject(externalProjName);
-        this.configuredProjToExternalProj.delete(configuredProjName);
-        continue;
-      }
-      // See if any openFiles belong to the configured project.
-      // if not, close external project this.projectService.openFiles
-      const openFiles = toArray(this.projectService.openFiles.keys());
-      if (!openFiles.some(file => {
-            const scriptInfo = this.projectService.getScriptInfo(file);
-            return scriptInfo?.isAttached(configuredProj);
-          })) {
-        this.projectService.closeExternalProject(externalProjName);
-        this.configuredProjToExternalProj.delete(configuredProjName);
-      }
-    }
   }
 
   private onDidChangeTextDocument(params: lsp.DidChangeTextDocumentParams): void {

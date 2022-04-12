@@ -1232,15 +1232,19 @@ export class Session {
     // prioritized for that project's set of files. This will cause issues if the second project is,
     // for example, one that only includes `*.spec.ts` files and not the entire set of files needed
     // to compile the app (i.e. `*.module.ts`).
+    const enabledProjects = new Set<ts.server.Project>();
     for (let i = 0; i < this.projectNgccQueue.length && this.projectNgccQueue[i].done; i++) {
       // Re-enable language service even if ngcc fails, because users could fix
       // the problem by running ngcc themselves. If we keep language service
       // disabled, there's no way users could use the extension even after
       // resolving ngcc issues. On the client side, we will warn users about
       // potentially degraded experience.
-      this.enableLanguageServiceForProject(this.projectNgccQueue[i].project);
+      const p = this.projectNgccQueue[i].project;
+      this.enableLanguageServiceForProject(p);
+      enabledProjects.add(p);
     }
-    this.projectNgccQueue = this.projectNgccQueue.filter(({done}) => !done);
+    this.projectNgccQueue =
+        this.projectNgccQueue.filter(({project}) => !enabledProjects.has(project));
   }
 }
 

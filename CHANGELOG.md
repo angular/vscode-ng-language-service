@@ -1,3 +1,10 @@
+# v13.3.1
+
+This release upgrades `@angular/language-service` to v13.3.3.
+
+* fix(server): Ensure all projects that finish ngcc re-enable language service features (#1627) (5afc23ee4)
+* fix: Correct syntax highlighting for style.prop.% (#1622) (7d04bb667)
+
 # v13.3.0
 
 This release upgrades `@angular/language-service` to v13.3.0.

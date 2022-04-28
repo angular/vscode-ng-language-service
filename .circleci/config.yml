@@ -43,7 +43,7 @@ workflows:
             filters:
               branches:
                 only:
-                  - master
+                  - main
             # Runs monitoring jobs at 10:00AM every day.
             cron: '0 10 * * *'
-    
+

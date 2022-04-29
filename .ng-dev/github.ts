@@ -1,4 +1,4 @@
-import {GithubConfig} from '@angular/dev-infra-private/utils/config';
+import {GithubConfig} from '@angular/dev-infra-private/ng-dev';
 
 /**
  * Github configuration for the `ng-dev` toolset.
@@ -6,4 +6,5 @@ import {GithubConfig} from '@angular/dev-infra-private/utils/config';
 export const github: GithubConfig = {
   name: 'vscode-ng-language-service',
   owner: 'angular',
+  mainBranchName: 'main',
 };

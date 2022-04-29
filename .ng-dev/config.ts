@@ -1,7 +1,9 @@
+import {format} from './format';
 import {github} from './github';
-import {merge} from './merge';
+import {pullRequest} from './pullRequest';
 
 export {
+  format,
   github,
-  merge,
+  pullRequest,
 }

@@ -1,3 +1,11 @@
+# v13.3.2
+
+This release upgrades `@angular/language-service` to v13.3.5.
+
+| Commit | Type | Description |
+| -- | -- | -- |
+| [f57e46c538](https://github.com/angular/angular/commit/f57e46c53881c46e712a64e23bffb1893dfe54fc) | fix | two-way binding completion should not remove the trailing quote ([#45582](https://github.com/angular/angular/pull/45582)) |
+
 # v13.3.1
 
 This release upgrades `@angular/language-service` to v13.3.3.

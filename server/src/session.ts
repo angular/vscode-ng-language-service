@@ -31,6 +31,7 @@ export interface SessionOptions {
   logToConsole: boolean;
   includeAutomaticOptionalChainCompletions: boolean;
   includeCompletionsWithSnippetText: boolean;
+  forceStrictTemplates: boolean;
 }
 
 enum LanguageId {
@@ -158,9 +159,11 @@ export class Session {
     const pluginConfig: PluginConfig = {
       angularOnly: true,
     };
+    if (options.forceStrictTemplates) {
+      pluginConfig.forceStrictTemplates = true;
+    }
     if (options.host.isG3) {
       options.ivy = true;
-      pluginConfig.forceStrictTemplates = true;
     }
     projSvc.configurePlugin({
       pluginName: options.ngPlugin,

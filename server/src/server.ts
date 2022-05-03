@@ -47,6 +47,7 @@ function main() {
     logToConsole: options.logToConsole,
     includeAutomaticOptionalChainCompletions: options.includeAutomaticOptionalChainCompletions,
     includeCompletionsWithSnippetText: options.includeCompletionsWithSnippetText,
+    forceStrictTemplates: isG3 || options.forceStrictTemplates,
   });
 
   // Log initialization info

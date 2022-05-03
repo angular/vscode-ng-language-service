@@ -331,7 +331,8 @@ function registerNotificationHandlers(client: lsp.LanguageClient): vscode.Dispos
 
   disposables.push(client.onNotification(SuggestStrictMode, async (params: SuggestStrictModeParams) => {
     const config = vscode.workspace.getConfiguration();
-    if (config.get('angular.enable-strict-mode-prompt') === false) {
+    if (config.get('angular.enable-strict-mode-prompt') === false ||
+        config.get('angular.forceStrictTemplates')) {
       return;
     }
 
@@ -423,6 +424,11 @@ function constructArgs(ctx: vscode.ExtensionContext, viewEngine: boolean): strin
   const disableAutomaticNgcc = config.get<boolean>('angular.disableAutomaticNgcc');
   if (disableAutomaticNgcc) {
     args.push('--disableAutomaticNgcc');
+  }
+
+  const forceStrictTemplates = config.get<boolean>('angular.forceStrictTemplates');
+  if (forceStrictTemplates) {
+    args.push('--forceStrictTemplates');
   }
 
   const tsdk: string|null = config.get('typescript.tsdk', null);

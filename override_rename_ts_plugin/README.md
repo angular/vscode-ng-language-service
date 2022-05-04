@@ -3,4 +3,4 @@ This package is applied to the built-in TS extension by the config [`typescriptS
 Detail about this package is [here][2].
 
 [1]: https://code.visualstudio.com/api/references/contribution-points#contributes.typescriptServerPlugins
-[2]: https://github.com/angular/angular/blob/master/packages/language-service/README.md#override-rename-ts-plugin
+[2]: https://github.com/angular/angular/blob/main/packages/language-service/README.md#override-rename-ts-plugin

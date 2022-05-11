@@ -1,6 +1,6 @@
 # Angular Language Service
 
-![demo](https://github.com/angular/vscode-ng-language-service/raw/master/demo.gif)
+![demo](https://github.com/angular/vscode-ng-language-service/raw/main/demo.gif)
 
 ## Features
 

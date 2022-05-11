@@ -1,5 +1,13 @@
 # v13.3.2
 
+This release upgrades `@angular/language-service` to v13.3.7.
+
+| Commit | Type | Description |
+| -- | -- | -- |
+| [13fad9febe](https://github.com/angular/angular/commit/13fad9febe47c552759381c029b754b0a07c0a57) | fix | Add resource files as roots to their associated projects ([#45601](https://github.com/angular/angular/pull/45601)) |
+
+# v13.3.2
+
 This release upgrades `@angular/language-service` to v13.3.5.
 
 | Commit | Type | Description |

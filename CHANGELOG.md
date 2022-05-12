@@ -1,3 +1,11 @@
+# v13.3.4
+
+This release upgrades `@angular/language-service` to v13.3.8.
+
+| Commit | Type | Description |
+| -- | -- | -- |
+| [b4eb9ed884](https://github.com/angular/angular/commit/b4eb9ed884a82ba741abb503c974df7ec0d0048a) | fix | Prevent TSServer from removing templates from project ([#45965](https://github.com/angular/angular/pull/45965)) |
+
 # v13.3.3
 
 This release upgrades `@angular/language-service` to v13.3.7.

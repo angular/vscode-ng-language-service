@@ -1,7 +1,7 @@
 {
   "name": "@angular/language-server",
   "description": "LSP server for Angular Language Service",
-  "version": "14.0.0-next.0",
+  "version": "14.0.0-rc.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/angular/vscode-ng-language-service.git"
@@ -9,13 +9,13 @@
   "author": "Angular",
   "license": "MIT",
   "engines": {
-    "node": "^12.20.0 || ^14.15.0 || >=16.10.0"
+    "node": "^14.15.0 || >=16.10.0"
   },
   "bin": {
     "ngserver": "./bin/ngserver"
   },
   "dependencies": {
-    "@angular/language-service": "14.0.0-next.9",
+    "@angular/language-service": "14.0.0-rc.1",
     "vscode-jsonrpc": "6.0.0",
     "vscode-languageserver": "7.0.0",
     "vscode-uri": "3.0.3"

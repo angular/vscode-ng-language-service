@@ -385,6 +385,7 @@ export class Session {
     // (because language service was disabled while waiting for ngcc).
     // First, make sure the Angular project is complete.
     this.runGlobalAnalysisForNewlyLoadedProject(project);
+    project.refreshDiagnostics();
   }
 
   private disableLanguageServiceForProject(project: ts.server.Project, reason: string): void {

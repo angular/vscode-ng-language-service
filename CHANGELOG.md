@@ -1,3 +1,12 @@
+# v14.0.0-rc.0
+
+This release upgrades `@angular/language-service` to v14.0.0-rc.1
+
+* feat(extension): Add option to force strict templates (#1646) (17fdb9ec6)
+* feat: add command to run ngcc manually (#1621) (dd0e0009b)
+* Fix detection of Angular for v14+ projects ([#45998](https://github.com/angular/angular/pull/45998)) 
+* Prevent TSServer from removing templates from project ([#45965](https://github.com/angular/angular/pull/45965)) 
+
 # v14.0.0-next.0
 
 This release upgrades `@angular/language-service` to v14.0.0-next.9

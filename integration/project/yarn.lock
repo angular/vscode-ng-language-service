@@ -1296,10 +1296,10 @@ needle@^2.5.2:
     iconv-lite "^0.4.4"
     sax "^1.2.4"
 
-ng-packagr@^13.2.0:
-  version "13.2.0"
-  resolved "https://registry.yarnpkg.com/ng-packagr/-/ng-packagr-13.2.0.tgz#c057c7f87feb857a1326457b59bd007eeaa2a389"
-  integrity sha512-qfAipG1jQLjQ0+NXUTYyCmi5xSdMYY3LUWc7iXrbPfl8R2b8fLO+abW1zNMxS6TtcBUZMyfYtz2NGcFrh7QteA==
+ng-packagr@13.3.1:
+  version "13.3.1"
+  resolved "https://registry.yarnpkg.com/ng-packagr/-/ng-packagr-13.3.1.tgz#e2456f2920cf177e7dad4e9baee9adea884779db"
+  integrity sha512-RFB6+03qPlhsOZc0wPenkyCceUYU0kRymbO7fIZ4Uz3y7RltXeknfjWKVcN6o5o42Md/lbNabt4gViXNzahhjA==
   dependencies:
     "@rollup/plugin-json" "^4.1.0"
     "@rollup/plugin-node-resolve" "^13.0.0"

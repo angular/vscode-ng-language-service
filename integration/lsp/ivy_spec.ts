@@ -143,7 +143,7 @@ describe('Angular Ivy language server', () => {
     // 2 results - the NgIf class and the ngIf input
     expect(Array.isArray(response)).toBe(true);
     const {targetUri} = response[0];
-    expect(targetUri.endsWith('angular/common/common.d.ts')).toBeTrue();
+    expect(targetUri.endsWith('angular/common/index.d.ts')).toBeTrue();
     // Open the `.d.ts` file
     openTextDocument(client, URI.parse(targetUri).fsPath);
     // try a hover operation again on *ngIf

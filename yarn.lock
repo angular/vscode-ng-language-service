@@ -124,7 +124,6 @@
 
 "@angular/dev-infra-private@https://github.com/angular/dev-infra-private-builds.git#ce1d7f6c62ff0f9569791d78920c3628c56b4574":
   version "0.0.0-2a04da0754b050fb17d6cfc4a4b4fa8b5575ea86"
-  uid ce1d7f6c62ff0f9569791d78920c3628c56b4574
   resolved "https://github.com/angular/dev-infra-private-builds.git#ce1d7f6c62ff0f9569791d78920c3628c56b4574"
   dependencies:
     "@angular-devkit/build-angular" "14.0.0-rc.0"
@@ -161,10 +160,10 @@
     uuid "^8.3.2"
     yargs "^17.0.0"
 
-"@angular/language-service@14.0.0-rc.1":
-  version "14.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-14.0.0-rc.1.tgz#75efd01b7130cea29bca5f92f64b9545edfe8956"
-  integrity sha512-1aoyz3CcGqVz6xiDVhgybc+tc+pO24CFOJS255zqfA6by/9mWUAUBIGevsJ8ES+o/hCUAyCLI4j2DBp8eJtmaQ==
+"@angular/language-service@14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-14.0.0.tgz#749b52642fe0ba04f8475667d2eac0b3cf60d400"
+  integrity sha512-05P+3IJ+pT9WQdUcXVM4NGY1a8V1bGKRVEE6BFFPYG+ElrM2aR7e0j997zAPIwPLWT1Z8/oC1wJ3MCBBTbECVQ==
 
 "@angular/override-rename-ts-plugin@file:override_rename_ts_plugin":
   version "0.0.1"

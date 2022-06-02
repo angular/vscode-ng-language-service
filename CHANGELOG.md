@@ -1,3 +1,7 @@
+# v14.0.0
+
+This release upgrades `@angular/language-service` to v14.0.0
+
 # v14.0.0-rc.0
 
 This release upgrades `@angular/language-service` to v14.0.0-rc.1
@@ -13,6 +17,14 @@ This release upgrades `@angular/language-service` to v14.0.0-next.9
 
 * feat: Add option to disable ngcc (#1620)
 * feat(extension): Support renaming from TypeScript files (#1589)
+
+# v13.3.4
+
+This release upgrades `@angular/language-service` to v13.3.8.
+
+| Commit | Type | Description |
+| -- | -- | -- |
+| [b4eb9ed884](https://github.com/angular/angular/commit/b4eb9ed884a82ba741abb503c974df7ec0d0048a) | fix | Prevent TSServer from removing templates from project ([#45965](https://github.com/angular/angular/pull/45965)) |
 
 # v13.2.3
 

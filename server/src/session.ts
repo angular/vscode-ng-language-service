@@ -57,7 +57,6 @@ export class Session {
   private readonly logger: ts.server.Logger;
   private readonly ivy: boolean;
   private readonly disableAutomaticNgcc: boolean;
-  private readonly configuredProjToExternalProj = new Map<string, string>();
   private readonly logToConsole: boolean;
   private readonly openFiles = new MruTracker();
   private readonly includeAutomaticOptionalChainCompletions: boolean;
@@ -624,7 +623,6 @@ export class Session {
       scriptInfo.detachAllProjects();
       scriptInfo.attachToProject(project);
     }
-    this.createExternalProject(project);
 
     return project;
   }
@@ -719,24 +717,6 @@ export class Session {
       }
       throw error;
     }
-    this.closeOrphanedExternalProjects();
-  }
-
-  /**
-   * Creates an external project with the same config path as `project` so that TypeScript keeps the
-   * project open when navigating away from `html` files.
-   */
-  private createExternalProject(project: ts.server.Project): void {
-    if (isConfiguredProject(project) &&
-        !this.configuredProjToExternalProj.has(project.projectName)) {
-      const extProjectName = `${project.projectName}-external`;
-      project.projectService.openExternalProject({
-        projectFileName: extProjectName,
-        rootFiles: [{fileName: project.getConfigFilePath()}],
-        options: {}
-      });
-      this.configuredProjToExternalProj.set(project.projectName, extProjectName);
-    }
   }
 
   private onDidCloseTextDocument(params: lsp.DidCloseTextDocumentParams) {
@@ -747,33 +727,6 @@ export class Session {
     }
     this.openFiles.delete(filePath);
     this.projectService.closeClientFile(filePath);
-  }
-
-  /**
-   * We open external projects for files so that we can prevent TypeScript from closing a project
-   * when there is open external HTML template that still references the project. This function
-   * checks if there are no longer any open files in any external project. If there
-   * aren't, we also close the external project that was created.
-   */
-  private closeOrphanedExternalProjects(): void {
-    for (const [configuredProjName, externalProjName] of this.configuredProjToExternalProj) {
-      const configuredProj = this.projectService.findProject(configuredProjName);
-      if (!configuredProj || configuredProj.isClosed()) {
-        this.projectService.closeExternalProject(externalProjName);
-        this.configuredProjToExternalProj.delete(configuredProjName);
-        continue;
-      }
-      // See if any openFiles belong to the configured project.
-      // if not, close external project this.projectService.openFiles
-      const openFiles = toArray(this.projectService.openFiles.keys());
-      if (!openFiles.some(file => {
-            const scriptInfo = this.projectService.getScriptInfo(file);
-            return scriptInfo?.isAttached(configuredProj);
-          })) {
-        this.projectService.closeExternalProject(externalProjName);
-        this.configuredProjToExternalProj.delete(configuredProjName);
-      }
-    }
   }
 
   private onDidChangeTextDocument(params: lsp.DidChangeTextDocumentParams): void {

@@ -2,7 +2,7 @@
   "name": "ng-template",
   "displayName": "Angular Language Service",
   "description": "Editor services for Angular templates",
-  "version": "14.0.0-rc.0",
+  "version": "14.1.0-next.0",
   "publisher": "Angular",
   "icon": "angular.png",
   "license": "MIT",
@@ -210,7 +210,7 @@
   },
   "dependencies": {
     "@angular/override-rename-ts-plugin": "file:override_rename_ts_plugin",
-    "@angular/language-service": "14.0.0-rc.1",
+    "@angular/language-service": "14.0.0",
     "typescript": "4.5.4",
     "vscode-jsonrpc": "6.0.0",
     "vscode-languageclient": "7.0.0",

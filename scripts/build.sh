@@ -53,7 +53,6 @@ cp package.json angular.png CHANGELOG.md README.md dist/npm
 # Copy files to server directory
 cp -r server/package.json server/README.md server/bin dist/npm/server
 cp -r v12_language_service dist/npm/v12_language_service
-cp -r override_rename_ts_plugin dist/npm/override_rename_ts_plugin
 # Build and copy files to syntaxes directory
 yarn run build:syntaxes
 mkdir dist/npm/syntaxes

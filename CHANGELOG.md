@@ -1,3 +1,7 @@
+# v14.0.1
+
+* fix(extension): disable rename override to allow built in TS renaming (#1687)
+
 # v14.0.0
 
 This release upgrades `@angular/language-service` to v14.0.0

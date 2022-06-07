@@ -63,7 +63,16 @@ export class AngularLanguageClient implements vscode.Disposable {
         prepareRename: async (
             document: vscode.TextDocument, position: vscode.Position,
             token: vscode.CancellationToken, next: lsp.PrepareRenameSignature) => {
-          if (await this.isInAngularProject(document)) {
+          // We are able to provide renames for many types of string literals: template strings,
+          // pipe names, and hopefully in the future selectors and input/output aliases. Because
+          // TypeScript isn't able to provide renames for these, we can more or less
+          // guarantee that the Angular Language service will be called for the rename as the
+          // fallback. We specifically do not provide renames outside of string literals
+          // because we cannot ensure our extension is prioritized for renames in TS files (see
+          // https://github.com/microsoft/vscode/issues/115354) we disable renaming completely so we
+          // can provide consistent expectations.
+          if (await this.isInAngularProject(document) &&
+              isInsideStringLiteral(document, position)) {
             return next(document, position, token);
           }
         },

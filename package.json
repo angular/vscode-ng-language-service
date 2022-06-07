@@ -180,12 +180,6 @@
         "path": "./syntaxes/expression.json",
         "scopeName": "expression.ng"
       }
-    ],
-    "typescriptServerPlugins": [
-      {
-        "name": "@angular/override-rename-ts-plugin",
-        "enableForWorkspaceTypeScriptVersions": true
-      }
     ]
   },
   "activationEvents": [
@@ -209,7 +203,6 @@
     "test:syntaxes": "yarn compile:syntaxes-test && yarn build:syntaxes && jasmine dist/syntaxes/test/driver.js"
   },
   "dependencies": {
-    "@angular/override-rename-ts-plugin": "file:override_rename_ts_plugin",
     "@angular/language-service": "14.0.0",
     "typescript": "4.5.4",
     "vscode-jsonrpc": "6.0.0",

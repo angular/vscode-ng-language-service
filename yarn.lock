@@ -165,9 +165,6 @@
   resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-14.0.0.tgz#749b52642fe0ba04f8475667d2eac0b3cf60d400"
   integrity sha512-05P+3IJ+pT9WQdUcXVM4NGY1a8V1bGKRVEE6BFFPYG+ElrM2aR7e0j997zAPIwPLWT1Z8/oC1wJ3MCBBTbECVQ==
 
-"@angular/override-rename-ts-plugin@file:override_rename_ts_plugin":
-  version "0.0.1"
-
 "@assemblyscript/loader@^0.10.1":
   version "0.10.1"
   resolved "https://registry.yarnpkg.com/@assemblyscript/loader/-/loader-0.10.1.tgz#70e45678f06c72fa2e350e8553ec4a4d72b92e06"

@@ -17,6 +17,10 @@
     "untrustedWorkspaces": {
       "supported": false,
       "description": "This extension requires workspace trust because it needs to execute ngcc from the node_modules in the workspace."
+    },
+    "virtualWorkspaces": {
+      "supported": "limited",
+      "description": "The Language Server Protocol does not support remote file systems. Functionality is limited to syntax highlighting only."
     }
   },
   "categories": [
@@ -59,26 +63,34 @@
       "commandPalette": [
         {
           "command": "angular.goToComponentWithTemplateFile",
-          "when": "editorLangId == html"
+          "when": "editorLangId == html && !virtualWorkspace"
         },
         {
           "command": "angular.goToTemplateForComponent",
-          "when": "editorLangId == typescript"
+          "when": "editorLangId == typescript && !virtualWorkspace"
+        },
+        {
+          "command": "angular.runNgcc",
+          "when": "!virtualWorkspace"
+        },
+        {
+          "command": "angular.getTemplateTcb",
+          "when": "!virtualWorkspace"
         }
       ],
       "editor/context": [
         {
-          "when": "resourceLangId == html || resourceLangId == typescript",
+          "when": "(resourceLangId == html || resourceLangId == typescript) && !virtualWorkspace",
           "command": "angular.getTemplateTcb",
           "group": "angular"
         },
         {
-          "when": "resourceLangId == html",
+          "when": "resourceLangId == html && !virtualWorkspace",
           "command": "angular.goToComponentWithTemplateFile",
           "group": "angular"
         },
         {
-          "when": "resourceLangId == typescript",
+          "when": "resourceLangId == typescript && !virtualWorkspace",
           "command": "angular.goToTemplateForComponent",
           "group": "angular"
         }

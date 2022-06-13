@@ -15,8 +15,8 @@
   },
   "capabilities": {
     "untrustedWorkspaces": {
-      "supported": false,
-      "description": "This extension requires workspace trust because it needs to execute ngcc from the node_modules in the workspace."
+      "supported": "limited",
+      "description": "This extension requires workspace trust because it needs to execute ngcc from the node_modules in the workspace. Projects do not require ngcc if all library dependencies are published with partial-Ivy or Full-Ivy."
     },
     "virtualWorkspaces": {
       "supported": "limited",
@@ -71,7 +71,7 @@
         },
         {
           "command": "angular.runNgcc",
-          "when": "!virtualWorkspace"
+          "when": "!virtualWorkspace && isWorkspaceTrusted"
         },
         {
           "command": "angular.getTemplateTcb",

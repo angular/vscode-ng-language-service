@@ -32,6 +32,7 @@ export interface SessionOptions {
   includeAutomaticOptionalChainCompletions: boolean;
   includeCompletionsWithSnippetText: boolean;
   forceStrictTemplates: boolean;
+  untrustedWorkspace: boolean;
 }
 
 enum LanguageId {
@@ -61,6 +62,7 @@ export class Session {
   private readonly openFiles = new MruTracker();
   private readonly includeAutomaticOptionalChainCompletions: boolean;
   private readonly includeCompletionsWithSnippetText: boolean;
+  private readonly untrustedWorkspace: boolean;
   private snippetSupport: boolean|undefined;
   // Tracks the spawn order and status of the `ngcc` processes. This allows us to ensure we enable
   // the LS in the same order the projects were created in.
@@ -84,6 +86,7 @@ export class Session {
     this.ivy = options.ivy;
     this.disableAutomaticNgcc = options.disableAutomaticNgcc;
     this.logToConsole = options.logToConsole;
+    this.untrustedWorkspace = options.untrustedWorkspace;
     // Create a connection for the server. The connection uses Node's IPC as a transport.
     this.connection = lsp.createConnection({
       // cancelUndispatched is a "middleware" to handle all cancellation requests.
@@ -1133,6 +1136,10 @@ export class Session {
    * Disable the language service, run ngcc, then re-enable language service.
    */
   private async runNgcc(project: ts.server.Project): Promise<void> {
+    if (this.untrustedWorkspace) {
+      this.error('Cannot run ngcc in an untrusted workspace.');
+      return;
+    }
     if (!isConfiguredProject(project) || this.projectNgccQueue.some(p => p.project === project)) {
       return;
     }

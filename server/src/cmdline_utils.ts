@@ -44,6 +44,7 @@ interface CommandLineOptions {
   includeAutomaticOptionalChainCompletions: boolean;
   includeCompletionsWithSnippetText: boolean;
   forceStrictTemplates: boolean;
+  untrustedWorkspace: boolean;
 }
 
 export function parseCommandLine(argv: string[]): CommandLineOptions {
@@ -60,6 +61,7 @@ export function parseCommandLine(argv: string[]): CommandLineOptions {
         hasArgument(argv, '--includeAutomaticOptionalChainCompletions'),
     includeCompletionsWithSnippetText: hasArgument(argv, '--includeCompletionsWithSnippetText'),
     forceStrictTemplates: hasArgument(argv, '--forceStrictTemplates'),
+    untrustedWorkspace: hasArgument(argv, '--untrustedWorkspace'),
   };
 }
 

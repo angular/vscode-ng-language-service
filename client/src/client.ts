@@ -395,7 +395,8 @@ function getProbeLocations(bundled: string): string[] {
  * Construct the arguments that's used to spawn the server process.
  * @param ctx vscode extension context
  */
-function constructArgs(ctx: vscode.ExtensionContext, viewEngine: boolean): string[] {
+function constructArgs(
+    ctx: vscode.ExtensionContext, viewEngine: boolean, isTrustedWorkspace: boolean): string[] {
   const config = vscode.workspace.getConfiguration();
   const args: string[] = ['--logToConsole'];
 
@@ -440,6 +441,10 @@ function constructArgs(ctx: vscode.ExtensionContext, viewEngine: boolean): strin
     args.push('--forceStrictTemplates');
   }
 
+  if (!isTrustedWorkspace) {
+    args.push('--untrustedWorkspace');
+  }
+
   const tsdk: string|null = config.get('typescript.tsdk', null);
   const tsProbeLocations = [tsdk, ...getProbeLocations(ctx.extensionPath)];
   args.push('--tsProbeLocations', tsProbeLocations.join(','));
@@ -475,7 +480,7 @@ function getServerOptions(ctx: vscode.ExtensionContext, debug: boolean): lsp.Nod
   }
 
   // Node module for the language server
-  const args = constructArgs(ctx, viewEngine);
+  const args = constructArgs(ctx, viewEngine, vscode.workspace.isTrusted);
   const prodBundle = ctx.asAbsolutePath('server');
   const devBundle = ctx.asAbsolutePath(path.join('dist', 'server', 'server.js'));
   // VS Code Insider launches extensions in debug mode by default but users

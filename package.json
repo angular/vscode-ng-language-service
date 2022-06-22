@@ -235,7 +235,7 @@
     "tslint": "6.1.3",
     "ts-node": "^10.8.1",
     "tslint-eslint-rules": "5.4.0",
-    "vsce": "1.100.1",
+    "vsce": "2.9.2",
     "vscode-languageserver-protocol": "3.16.0",
     "vscode-languageserver-textdocument": "1.0.4",
     "vscode-test": "1.6.1",

@@ -11,10 +11,8 @@ export const pullRequest: PullRequestConfig = {
   // use the Github API merge strategy. That way we ensure that PRs show up as `Merged`.
   githubApiMerge: {
     default: 'squash',
-    labels: [
-      {pattern: 'preserve commits', method: 'rebase'},
-    ],
+    labels: [{pattern: 'preserve commits', method: 'rebase'}],
   },
   mergeReadyLabel: 'action: merge',
-  commitMessageFixupLabel: 'commit message fixup'
+  commitMessageFixupLabel: 'commit message fixup',
 };

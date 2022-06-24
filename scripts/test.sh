@@ -2,6 +2,8 @@
 
 set -ex -o pipefail
 
+pnpm install
+
 # Install test project dependencies
 if [[ -z "${CI}" ]]; then
   (cd integration/project && yarn)
@@ -10,22 +12,22 @@ if [[ -z "${CI}" ]]; then
 fi
 
 # Server unit tests
-yarn run test
+pnpm run test
 
 # Smoke test for LSP
-yarn run test:lsp
+pnpm run test:lsp
 
 # E2E test that brings up full vscode
 # TODO: Disabled for now because it cannot be run on CircleCI
-# yarn run test:e2e
+# pnpm run test:e2e
 
 # Syntaxes tests
-yarn run test:syntaxes
+pnpm run test:syntaxes
 # Check git status to see if there are modified files
 STATUS="$(git status --porcelain)"
 echo $STATUS
 # If the status contains modified files in the syntaxes folder, they are out of date
 if [[ "$STATUS" == *"syntaxes"* ]]; then
-  echo 'Syntax files are out-of-sync with source. Please run "yarn run build:syntaxes".'
+  echo 'Syntax files are out-of-sync with source. Please run "pnpm run build:syntaxes".'
   exit 1
 fi

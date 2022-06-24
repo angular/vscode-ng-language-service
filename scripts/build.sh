@@ -37,11 +37,10 @@ shopt -s extglob
 rm -rf dist
 rm -rf **/*.tsbuildinfo
 
-
-yarn install;
+pnpm install
 
 # Build the client and server
-yarn run compile
+pnpm run compile
 
 # install npm packages in the pinned v12
 pushd v12_language_service
@@ -54,7 +53,7 @@ cp package.json angular.png CHANGELOG.md README.md dist/npm
 cp -r server/package.json server/README.md server/bin dist/npm/server
 cp -r v12_language_service dist/npm/v12_language_service
 # Build and copy files to syntaxes directory
-yarn run build:syntaxes
+pnpm run build:syntaxes
 mkdir dist/npm/syntaxes
 # Copy all json files in syntaxes/ except tsconfig.json
 cp syntaxes/!(tsconfig).json dist/npm/syntaxes

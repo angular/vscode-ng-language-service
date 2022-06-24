@@ -4,7 +4,7 @@
 
 If you need to make modification, the respective files should be changed within the repository's [`syntaxes/src`](https://github.com/angular/vscode-ng-language-service/tree/main/syntaxes/src) directory.
 
-Running `yarn build:syntaxes` will then appropriately update the files in this directory.
+Running `pnpm build:syntaxes` will then appropriately update the files in this directory.
 
 # Syntaxes
 
@@ -41,7 +41,7 @@ Snapshot test cases are specified in [test/cases.json](./test/cases.json).
 Snapshot golden files can be updated by running
 
 ```bash
-yarn test:syntaxes -u
+pnpm test:syntaxes -u
 ```
 
 in the root directory of this repository. Goldens must be updated when a new

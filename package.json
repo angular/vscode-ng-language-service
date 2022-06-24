@@ -209,11 +209,11 @@
     "format": "scripts/format.sh",
     "watch": "tsc -b -w",
     "package": "rm -rf dist && node scripts/package.js",
-    "test": "yarn compile:test && jasmine --config=jasmine.json",
-    "test:inspect": "yarn compile:test && node --inspect-brk node_modules/jasmine/bin/jasmine.js --config=jasmine.json",
-    "test:lsp": "yarn compile:integration && jasmine --config=integration/lsp/jasmine.json",
-    "test:e2e": "yarn compile:integration && node dist/integration/e2e",
-    "test:syntaxes": "yarn compile:syntaxes-test && yarn build:syntaxes && jasmine dist/syntaxes/test/driver.js"
+    "test": "pnpm compile:test && jasmine --config=jasmine.json",
+    "test:inspect": "pnpm compile:test && node --inspect-brk node_modules/jasmine/bin/jasmine.js --config=jasmine.json",
+    "test:lsp": "pnpm compile:integration && jasmine --config=integration/lsp/jasmine.json",
+    "test:e2e": "pnpm compile:integration && node dist/integration/e2e",
+    "test:syntaxes": "pnpm compile:syntaxes-test && pnpm build:syntaxes && jasmine dist/syntaxes/test/driver.js"
   },
   "dependencies": {
     "@angular/language-service": "14.1.0-next.0",
@@ -232,6 +232,7 @@
     "cross-env": "^7.0.3",
     "esbuild": "0.14.39",
     "jasmine": "3.99.0",
+    "pnpm": "7.3.0",
     "prettier": "2.6.2",
     "ts-node": "^10.8.1",
     "tslint": "6.1.3",
@@ -240,7 +241,8 @@
     "vscode-languageserver-protocol": "3.16.0",
     "vscode-languageserver-textdocument": "1.0.4",
     "vscode-test": "1.6.1",
-    "vscode-tmgrammar-test": "0.0.11"
+    "vscode-tmgrammar-test": "0.0.11",
+    "yarn": "^1.22.19"
   },
   "repository": {
     "type": "git",

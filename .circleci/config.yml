@@ -13,8 +13,6 @@ jobs:
     steps:
       - checkout
       - node/install-packages:
-          pkg-manager: yarn
-      - node/install-packages:
           app-dir: integration/project
           pkg-manager: yarn
       - node/install-packages:
@@ -23,6 +21,7 @@ jobs:
       - node/install-packages:
           app-dir: integration/workspace
           pkg-manager: yarn
+      - run: sudo npm install -g pnpm@7.4.0
       - run: scripts/lint.sh
       - run: scripts/format.sh
       - run: scripts/build.sh << parameters.dependency_type >>

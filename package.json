@@ -240,7 +240,7 @@
     "vscode-languageserver-protocol": "3.16.0",
     "vscode-languageserver-textdocument": "1.0.4",
     "vscode-test": "1.6.1",
-    "vscode-tmgrammar-test": "0.0.11"
+    "vscode-tmgrammar-test": "0.1.1"
   },
   "repository": {
     "type": "git",

@@ -19,7 +19,7 @@ import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './comp
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
 import {resolveAndRunNgcc} from './ngcc';
 import {ServerHost} from './server_host';
-import {filePathToUri, getMappedDefinitionInfo, isConfiguredProject, isDebugMode, lspPositionToTsPosition, lspRangeToTsPositions, MruTracker, tsDisplayPartsToText, tsTextSpanToLspRange, uriToFilePath} from './utils';
+import {filePathToUri, getMappedDefinitionInfo, isConfiguredProject, isDebugMode, lspPositionToTsPosition, lspRangeToTsPositions, MruTracker, tsDisplayPartsToText, tsFileTextChangesToLspWorkspaceEdit, tsTextSpanToLspRange, uriToFilePath} from './utils';
 
 export interface SessionOptions {
   host: ServerHost;
@@ -47,6 +47,9 @@ const setImmediateP = promisify(setImmediate);
 enum NgccErrorMessageAction {
   showOutput,
 }
+
+const defaultFormatOptions: ts.FormatCodeSettings = {};
+const defaultPreferences: ts.UserPreferences = {};
 
 /**
  * Session is a wrapper around lsp.IConnection, with all the necessary protocol
@@ -197,6 +200,67 @@ export class Session {
     conn.onCodeLens(p => this.onCodeLens(p));
     conn.onCodeLensResolve(p => this.onCodeLensResolve(p));
     conn.onSignatureHelp(p => this.onSignatureHelp(p));
+    conn.onCodeAction(p => this.onCodeAction(p));
+    conn.onCodeActionResolve(p => this.onCodeActionResolve(p));
+  }
+
+  private onCodeAction(params: lsp.CodeActionParams): lsp.CodeAction[]|null {
+    const filePath = uriToFilePath(params.textDocument.uri);
+    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
+    if (!lsInfo) {
+      return null;
+    }
+    const start = lspPositionToTsPosition(lsInfo.scriptInfo, params.range.start);
+    const end = lspPositionToTsPosition(lsInfo.scriptInfo, params.range.end);
+    const errorCodes = params.context.diagnostics.map(diag => diag.code)
+                           .filter((code): code is number => typeof code === 'number');
+
+    const codeActions = lsInfo.languageService.getCodeFixesAtPosition(
+        filePath, start, end, errorCodes, defaultFormatOptions, defaultPreferences);
+    const individualCodeFixes = codeActions.map<lsp.CodeAction>(codeAction => {
+      return {
+        title: codeAction.description,
+        kind: lsp.CodeActionKind.QuickFix,
+        diagnostics: params.context.diagnostics,
+        edit: tsFileTextChangesToLspWorkspaceEdit(
+            codeAction.changes, (path: string) => this.projectService.getScriptInfo(path)),
+      };
+    });
+    const codeFixesAll = getCodeFixesAll(codeActions, params.textDocument);
+    return [...individualCodeFixes, ...codeFixesAll];
+  }
+
+  private onCodeActionResolve(param: lsp.CodeAction): lsp.CodeAction {
+    const codeActionResolve = param.data as unknown as CodeActionResolveData;
+    /**
+     * Now `@angular/language-service` only support quick fix, so the `onCodeAction` will return the
+     * `edit` of the `lsp.CodeAction` for the diagnostics in the range that the user selects except
+     * the fix all code actions.
+     *
+     * And the function `getCombinedCodeFix` only cares about the `fixId` and the `document`.
+     * https://github.com/microsoft/vscode/blob/8ba9963c2edb08d54f2b7221137d6f1de79ecc09/extensions/typescript-language-features/src/languageFeatures/quickFix.ts#L258
+     */
+    const isCodeFixesAll = codeActionResolve.fixId !== undefined;
+    if (!isCodeFixesAll) {
+      return param;
+    }
+    const filePath = uriToFilePath(codeActionResolve.document.uri);
+    const lsInfo = this.getLSAndScriptInfo(codeActionResolve.document);
+    if (!lsInfo) {
+      return param;
+    }
+    const fixesAllChanges = lsInfo.languageService.getCombinedCodeFix(
+        {
+          type: 'file',
+          fileName: filePath,
+        },
+        codeActionResolve.fixId as {}, defaultFormatOptions, defaultPreferences);
+
+    return {
+      title: param.title,
+      edit: tsFileTextChangesToLspWorkspaceEdit(
+          fixesAllChanges.changes, (path) => this.projectService.getScriptInfo(path)),
+    };
   }
 
   private isInAngularProject(params: IsInAngularProjectParams): boolean|null {
@@ -663,6 +727,10 @@ export class Session {
         workspace: {
           workspaceFolders: {supported: true},
         },
+        codeActionProvider: this.ivy ? {
+          resolveProvider: true,
+        } :
+                                       undefined,
       },
       serverOptions,
     };
@@ -1238,4 +1306,44 @@ function isTypeScriptFile(path: string): boolean {
 
 function isExternalTemplate(path: string): boolean {
   return !isTypeScriptFile(path);
+}
+
+interface CodeActionResolveData {
+  fixId?: string;
+  document: lsp.TextDocumentIdentifier;
+}
+
+/**
+ * Extract the fixAll action from `codeActions`
+ *
+ * When getting code fixes at the specified cursor position, the LS will return the code actions
+ * that tell the editor how to fix it. For each code action, if the document includes multi
+ * same-type errors, the `fixId` will append to it, because they are not `complete`. This function
+ * will extract them, and they will be resolved lazily in the `onCodeActionResolve` function.
+ *
+ * Now the client can only resolve the `edit` property.
+ * https://github.com/microsoft/vscode-languageserver-node/blob/f97bb73dbfb920af4bc8c13ecdcdc16359cdeda6/client/src/common/codeAction.ts#L45
+ */
+function getCodeFixesAll(
+    codeActions: readonly ts.CodeFixAction[],
+    document: lsp.TextDocumentIdentifier): lsp.CodeAction[] {
+  const seenFixId = new Set<string>();
+  const lspCodeActions: lsp.CodeAction[] = [];
+  for (const codeAction of codeActions) {
+    const fixId = codeAction.fixId as string | undefined;
+    if (fixId === undefined || codeAction.fixAllDescription === undefined || seenFixId.has(fixId)) {
+      continue;
+    }
+    seenFixId.add(fixId);
+    const codeActionResolveData: CodeActionResolveData = {
+      fixId,
+      document,
+    };
+    lspCodeActions.push({
+      title: codeAction.fixAllDescription,
+      kind: lsp.CodeActionKind.QuickFix,
+      data: codeActionResolveData,
+    });
+  }
+  return lspCodeActions;
 }

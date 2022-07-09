@@ -647,6 +647,131 @@ describe('insert snippet text', () => {
   });
 });
 
+describe('code fixes', () => {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000; /* 10 seconds */
+
+  let client: MessageConnection;
+  beforeEach(async () => {
+    client = createConnection({
+      ivy: true,
+      includeCompletionsWithSnippetText: true,
+    });
+    // If debugging, set to
+    // - lsp.Trace.Messages to inspect request/response/notification, or
+    // - lsp.Trace.Verbose to inspect payload
+    client.trace(lsp.Trace.Off, createTracer());
+    client.listen();
+    await initializeServer(client);
+  });
+
+  afterEach(() => {
+    client.dispose();
+  });
+
+  it('should fix error when property does not exist on type', async () => {
+    openTextDocument(client, FOO_TEMPLATE, `{{titl}}`);
+    const languageServiceEnabled = await waitForNgcc(client);
+    expect(languageServiceEnabled).toBeTrue();
+    const diags = await getDiagnosticsForFile(client, FOO_TEMPLATE);
+    const codeActions = await client.sendRequest(lsp.CodeActionRequest.type, {
+      textDocument: {
+        uri: FOO_TEMPLATE_URI,
+      },
+      range: lsp.Range.create(lsp.Position.create(0, 3), lsp.Position.create(0, 3)),
+      context: lsp.CodeActionContext.create(diags),
+    }) as lsp.CodeAction[];
+    const expectedCodeActionInTemplate = {
+      'edit': {
+        'changes': {
+          [FOO_TEMPLATE_URI]: [{
+            'newText': 'title',
+            'range': {'start': {'line': 0, 'character': 2}, 'end': {'line': 0, 'character': 6}}
+          }]
+        }
+      }
+    };
+    expect(codeActions).toContain(jasmine.objectContaining(expectedCodeActionInTemplate));
+  });
+
+  describe('should work', () => {
+    beforeEach(async () => {
+      openTextDocument(client, FOO_COMPONENT, `
+      import {Component, NgModule} from '@angular/core';
+      @Component({
+        template: '{{tite}}{{bannr}}',
+      })
+      export class AppComponent {
+        title = '';
+        banner = '';
+      }
+    `);
+      const languageServiceEnabled = await waitForNgcc(client);
+      expect(languageServiceEnabled).toBeTrue();
+    });
+
+    it('for "fixSpelling"', async () => {
+      const fixSpellingCodeAction = await client.sendRequest(lsp.CodeActionResolveRequest.type, {
+        title: '',
+        data: {
+          fixId: 'fixSpelling',
+          document: lsp.TextDocumentIdentifier.create(FOO_COMPONENT_URI),
+        },
+      });
+      const expectedFixSpellingInTemplate = {
+        'edit': {
+          'changes': {
+            [FOO_COMPONENT_URI]: [
+              {
+                'newText': 'title',
+                'range': {
+                  'start': {'line': 3, 'character': 21},
+                  'end': {'line': 3, 'character': 25},
+                },
+              },
+              {
+                'newText': 'banner',
+                'range':
+                    {'start': {'line': 3, 'character': 29}, 'end': {'line': 3, 'character': 34}}
+              }
+            ]
+          }
+        }
+      };
+      expect(fixSpellingCodeAction)
+          .toEqual(jasmine.objectContaining(expectedFixSpellingInTemplate));
+    });
+
+    it('for "fixMissingMember"', async () => {
+      const fixMissingMemberCodeAction =
+          await client.sendRequest(lsp.CodeActionResolveRequest.type, {
+            title: '',
+            data: {
+              fixId: 'fixMissingMember',
+              document: lsp.TextDocumentIdentifier.create(FOO_COMPONENT_URI),
+            },
+          });
+      const expectedFixMissingMemberInComponent = {
+        'edit': {
+          'changes': {
+            [FOO_COMPONENT_URI]: [
+              {
+                'newText': 'tite: any;\n',
+                'range': {'start': {'line': 8, 'character': 0}, 'end': {'line': 8, 'character': 0}}
+              },
+              {
+                'newText': 'bannr: any;\n',
+                'range': {'start': {'line': 8, 'character': 0}, 'end': {'line': 8, 'character': 0}}
+              }
+            ]
+          }
+        }
+      };
+      expect(fixMissingMemberCodeAction)
+          .toEqual(jasmine.objectContaining(expectedFixMissingMemberInComponent));
+    });
+  });
+});
+
 function onNgccProgress(client: MessageConnection): Promise<string> {
   return new Promise(resolve => {
     client.onNotification(NgccProgressEnd, (params) => {

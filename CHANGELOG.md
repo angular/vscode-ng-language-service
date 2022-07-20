@@ -1,3 +1,10 @@
+# v14.1.0
+
+This release upgrades `@angular/language-service` to v14.1.0
+
+* feat(extension): Update untrusted workspace support from 'false' to 'limited' (#1695) (7d904ca20)
+* feat(extension): Update virtualWorkspace support to allow syntax highlighting (#1694) (f8b0db869)
+
 # v14.0.1
 
 * fix(extension): disable rename override to allow built in TS renaming (#1687)

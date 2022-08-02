@@ -1,7 +1,7 @@
 {
   "name": "@angular/language-server",
   "description": "LSP server for Angular Language Service",
-  "version": "14.1.0",
+  "version": "14.2.0-next.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/angular/vscode-ng-language-service.git"
@@ -15,7 +15,7 @@
     "ngserver": "./bin/ngserver"
   },
   "dependencies": {
-    "@angular/language-service": "14.1.0",
+    "@angular/language-service": "14.2.0-next.0",
     "vscode-jsonrpc": "6.0.0",
     "vscode-languageserver": "7.0.0",
     "vscode-uri": "3.0.3"

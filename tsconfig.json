@@ -5,7 +5,8 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "strict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "declaration": true
   },
   "files": [],
   "references": [

@@ -1,0 +1,33 @@
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    visibility = [
+        "//client:__subpackages__",
+        "//common:__subpackages__",
+        "//server:__subpackages__",
+        "//integration:__subpackages__",
+    ],
+    deps = ["//:tsconfig"],
+)
+
+ts_project(
+    name = "common",
+    srcs = glob(["*.ts"]),
+    composite = True,
+    declaration = True,
+    source_map = True,
+    tsconfig = ":tsconfig",
+    visibility = [
+        "//client:__subpackages__",
+        "//common:__subpackages__",
+        "//server:__subpackages__",
+        "//integration:__subpackages__",
+    ],
+    deps = [
+        "//:node_modules/@types/node",
+        "//:node_modules/vscode-jsonrpc",
+        "//:node_modules/vscode-languageserver-protocol",
+    ],
+)

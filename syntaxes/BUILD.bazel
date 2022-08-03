@@ -1,0 +1,15 @@
+load("@aspect_rules_js//js:defs.bzl", "js_library")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
+
+js_library(
+    name = "json",
+    srcs = glob(["*.json"]),
+    visibility = ["//syntaxes:__subpackages__"]
+)
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    deps = ["//:tsconfig"],
+    visibility = ["//syntaxes:__subpackages__"]
+)

@@ -41,10 +41,12 @@ async function snapshotTest({scopeName, grammarFiles, testFile}: TestCase): Prom
   grammarFiles.push(...DUMMY_GRAMMARS);
   const grammarOptions = grammarFiles.reduce((acc, file) => [...acc, '-g', file], [] as string[]);
   const extraArgs = process.argv.slice(3);
-  const options =
-      ['vscode-tmgrammar-snap', '-s', scopeName, ...grammarOptions, '-t', testFile, ...extraArgs];
+  const options = [
+    'node_modules/vscode-tmgrammar-test/dist/src/snapshot.js', '-s', scopeName, ...grammarOptions,
+    '-t', testFile, ...extraArgs
+  ];
 
-  return spawn('yarn', options, {stdio: 'inherit' /* use parent process IO */}).catch(code => code);
+  return spawn('node', options, {stdio: 'inherit' /* use parent process IO */}).catch(code => code);
 }
 
 describe('snapshot tests', () => {

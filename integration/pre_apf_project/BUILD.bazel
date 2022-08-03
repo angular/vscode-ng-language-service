@@ -1,0 +1,10 @@
+load("@npm_integration_pre_apf_project//:defs.bzl", "npm_link_all_packages")
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+
+npm_link_all_packages(name = "node_modules")
+
+copy_to_bin(
+    name = "pre_apf_project",
+    srcs = glob(["**"]),
+    visibility = ["//server/src/tests:__pkg__"],
+)

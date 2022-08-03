@@ -1,0 +1,19 @@
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+
+ts_project(
+    name = "e2e",
+    srcs = glob(["*.ts"]),
+    declaration = True,
+    source_map = True,
+    tsconfig = "//integration:tsconfig",
+    deps = [
+        "//:node_modules/@types/jasmine",
+        "//:node_modules/@types/node",
+        "//:node_modules/@types/vscode",
+        "//:node_modules/vscode-test",
+        "//integration",
+    ],
+    visibility = [
+        "//integration:__subpackages__",
+    ],
+)

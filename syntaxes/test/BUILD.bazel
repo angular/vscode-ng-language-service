@@ -1,0 +1,49 @@
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load("@aspect_rules_jasmine//jasmine:defs.bzl", "jasmine_test")
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    visibility = ["//syntaxes:__subpackages__"],
+    deps = ["//:tsconfig"],
+)
+
+ts_project(
+    name = "tests",
+    srcs = glob(["*.ts"]),
+    declaration = True,
+    resolve_json_module = True,
+    source_map = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        "//:node_modules/@types/jasmine",
+        "//:node_modules/@types/node",
+    ],
+)
+
+filegroup(
+    name = "dummy",
+    srcs = glob(["dummy/**"]),
+)
+
+filegroup(
+    name = "data",
+    srcs = glob(["data/**"]),
+)
+
+jasmine_test(
+    name = "test",
+    data = [
+        "//:package_json",
+        ":tests",
+        ":data",
+        ":dummy",
+        "//syntaxes:json",
+        "//:node_modules/vscode-tmgrammar-test",
+        # Depend on //:node_modules/jasmine as a temporary work-around for jasmine escaping its
+        # runfiles likely due to esm import issue in rules_js https://github.com/aspect-build/rules_js/issues/362
+        "//:node_modules/jasmine",
+    ],
+    args = ["syntaxes/test/driver.js"],
+    tags = ["unit_test"],
+)

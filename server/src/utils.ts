@@ -40,6 +40,35 @@ export function filePathToUri(filePath: string): lsp.DocumentUri {
 }
 
 /**
+ * Converts ts.FileTextChanges to lsp.WorkspaceEdit.
+ */
+export function tsFileTextChangesToLspWorkspaceEdit(
+    changes: readonly ts.FileTextChanges[],
+    getScriptInfo: (path: string) => ts.server.ScriptInfo | undefined): lsp.WorkspaceEdit {
+  const workspaceChanges: {[uri: string]: lsp.TextEdit[]} = {};
+  for (const change of changes) {
+    const scriptInfo = getScriptInfo(change.fileName);
+    const uri = filePathToUri(change.fileName);
+    if (scriptInfo === undefined) {
+      continue;
+    }
+    if (!workspaceChanges[uri]) {
+      workspaceChanges[uri] = [];
+    }
+    for (const textChange of change.textChanges) {
+      const textEdit: lsp.TextEdit = {
+        newText: textChange.newText,
+        range: tsTextSpanToLspRange(scriptInfo, textChange.span),
+      };
+      workspaceChanges[uri].push(textEdit);
+    }
+  }
+  return {
+    changes: workspaceChanges,
+  };
+}
+
+/**
  * Convert ts.TextSpan to lsp.TextSpan. TypeScript keeps track of offset using
  * 1-based index whereas LSP uses 0-based index.
  * @param scriptInfo Used to determine the offsets.

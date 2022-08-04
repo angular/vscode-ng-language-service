@@ -12,7 +12,7 @@ const defaultOptions = {
 /** @type esbuild.BuildOptions */
 const clientConfig = {
   ...defaultOptions,
-  entryPoints: ['dist/client/extension.js'],
+  entryPoints: ['dist/client/src/extension.js'],
   outfile: 'dist/npm/index.js',
   external: [
     'fs',
@@ -29,8 +29,8 @@ const clientConfig = {
 /** @type esbuild.BuildOptions */
 const bannerConfig = {
   ...defaultOptions,
-  entryPoints: ['dist/banner/banner.js'],
-  outfile: 'dist/banner/banner.esbuild.js',
+  entryPoints: ['dist/server/src/banner.js'],
+  outfile: 'dist/server/src/banner.esbuild.js',
   external: [
     'path',
   ],
@@ -43,7 +43,7 @@ const bannerConfig = {
 /** @type esbuild.BuildOptions */
 const serverConfig = {
   ...defaultOptions,
-  entryPoints: ['dist/server/server.js'],
+  entryPoints: ['dist/server/src/server.js'],
   outfile: 'dist/npm/server/index.js',
   external: [
     'fs',
@@ -61,7 +61,7 @@ async function build() {
     await esbuild.build(bannerConfig);
     await esbuild.build({
       ...serverConfig,
-      banner: {js: fs.readFileSync('dist/banner/banner.esbuild.js', 'utf8')},
+      banner: {js: fs.readFileSync('dist/server/src/banner.esbuild.js', 'utf8')},
     });
   } catch (e) {
     console.error(e);

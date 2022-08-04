@@ -8,7 +8,7 @@
 
 import * as vscode from 'vscode';
 
-import {ServerOptions} from '../common/initialize';
+import {ServerOptions} from '../../common/initialize';
 
 import {AngularLanguageClient} from './client';
 import {ANGULAR_SCHEME, TcbContentProvider} from './providers';

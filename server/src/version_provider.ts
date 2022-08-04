@@ -10,7 +10,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import url from 'url';
 
-import {NodeModule, resolve, Version} from '../common/resolver';
+import {NodeModule, resolve, Version} from '../../common/resolver';
 
 const MIN_TS_VERSION = '4.3';
 const MIN_NG_VERSION = '13.0';

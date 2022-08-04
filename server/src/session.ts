@@ -11,9 +11,9 @@ import * as ts from 'typescript/lib/tsserverlibrary';
 import {promisify} from 'util';
 import * as lsp from 'vscode-languageserver/node';
 
-import {ServerOptions} from '../common/initialize';
-import {NgccProgressEnd, OpenOutputChannel, ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode} from '../common/notifications';
-import {GetComponentsWithTemplateFile, GetTcbParams, GetTcbRequest, GetTcbResponse, GetTemplateLocationForComponent, GetTemplateLocationForComponentParams, IsInAngularProject, IsInAngularProjectParams, RunNgccParams, RunNgccRequest} from '../common/requests';
+import {ServerOptions} from '../../common/initialize';
+import {NgccProgressEnd, OpenOutputChannel, ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode} from '../../common/notifications';
+import {GetComponentsWithTemplateFile, GetTcbParams, GetTcbRequest, GetTcbResponse, GetTemplateLocationForComponent, GetTemplateLocationForComponentParams, IsInAngularProject, IsInAngularProjectParams, RunNgccParams, RunNgccRequest} from '../../common/requests';
 
 import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './completion';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';

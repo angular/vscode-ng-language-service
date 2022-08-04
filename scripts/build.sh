@@ -68,7 +68,7 @@ pushd dist/npm
 # on peer dependency conflicts (like `tslint@6` not being supported by `tslint-eslint-rules`).
 npm install --production --ignore-scripts --force
 
-sed -i -e 's#./dist/client/extension#./index#' package.json
+sed -i -e 's#./dist/client/src/extension#./index#' package.json
 ../../node_modules/.bin/vsce package
 
 popd

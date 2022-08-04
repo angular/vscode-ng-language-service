@@ -2,7 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "outDir": "../dist/server",
+    "outDir": "../dist/server/src",
     "rootDir": "src",
     "rootDirs": [
       ".",
@@ -19,7 +19,6 @@
     "src/*.ts"
   ],
   "exclude": [
-    "src/banner.ts",
     "node_modules"
   ]
 }

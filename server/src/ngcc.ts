@@ -9,7 +9,7 @@
 import {fork} from 'child_process';
 import {dirname, resolve} from 'path';
 
-import {Version} from '../common/resolver';
+import {Version} from '../../common/resolver';
 
 import {resolveNgcc} from './version_provider';
 

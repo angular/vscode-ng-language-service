@@ -2,7 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "outDir": "../dist/client",
+    "outDir": "../dist/client/src",
     "rootDir": "src",
     "rootDirs": [
       ".",

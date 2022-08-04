@@ -11,7 +11,7 @@
     "multi-root ready"
   ],
   "engines": {
-    "vscode": "^1.67.0"
+    "vscode": "^1.69.1"
   },
   "capabilities": {
     "untrustedWorkspaces": {

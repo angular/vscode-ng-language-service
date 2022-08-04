@@ -1,7 +1,7 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../../dist/client/tests"
+    "outDir": "../../../dist/client/src/tests"
   },
   "references": [
     {

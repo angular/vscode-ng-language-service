@@ -43,7 +43,7 @@ export const RunNgccRequest =
 export interface GetTcbResponse {
   uri: lsp.DocumentUri;
   content: string;
-  selections: lsp.Range[]
+  selections: lsp.Range[];
 }
 
 export const IsInAngularProject =

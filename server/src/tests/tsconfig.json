@@ -1,7 +1,7 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../../dist/server/tests",
+    "outDir": "../../../dist/server/src/tests",
     "esModuleInterop": false
   },
   "references": [

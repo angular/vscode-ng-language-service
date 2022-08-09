@@ -27,6 +27,9 @@ build --nobuild_runfile_links
 
 build --enable_runfiles
 
+# Keep tests tagged "exclusive" in the sandbox
+test --incompatible_exclusive_test_sandboxed
+
 ###############################
 # Output                      #
 ###############################

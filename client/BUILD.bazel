@@ -1,4 +1,5 @@
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
+load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 
 ts_config(
     name = "tsconfig",
@@ -8,4 +9,28 @@ ts_config(
         "//common:tsconfig",
     ],
     visibility = ["//client:__subpackages__"]
+)
+
+esbuild(
+    name = "index",
+    entry_point = "//client/src:extension.js",
+    data = ["//client/src"],
+    platform = "node",
+    format = "cjs",
+    sourcemap = "external",
+    config = {
+        # Workaround for https://github.com/aspect-build/rules_esbuild/issues/58
+        "resolveExtensions": [".js"],
+    },
+    external = [
+        "fs",
+        "path",
+        "vscode",
+        "vscode-languageclient/node",
+        "vscode-languageserver-protocol",
+        "vscode-jsonrpc",
+    ],
+    # Do not enable minification. It seems to break the extension on Windows (with WSL). See #1198.
+    minify = False,
+    visibility = ["//:__pkg__"],
 )

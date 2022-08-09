@@ -12,12 +12,11 @@ ts_config(
 
 ts_project(
     name = "integration",
+    # NB: there is an import cycle between integration/lsp/*.ts and integration/test_constants.ts so
+    # they cannot be broken up into separate ts_project targets
     srcs = glob([
       "*.ts",
-      # NB: there is an import cycle between lsp/*.ts and test_constants.ts so they cannot be
-      # broken up into separate ts_project targets
-      "lsp/*.ts",
-    ]),
+    ]) + ["//integration/lsp:srcs"],
     declaration = True,
     source_map = True,
     tsconfig = ":tsconfig",

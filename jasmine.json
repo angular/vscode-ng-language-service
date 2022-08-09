@@ -1,8 +1,8 @@
 {
   "spec_dir": "dist",
   "spec_files": [
-    "client/tests/*_spec.js",
+    "client/src/tests/*_spec.js",
     "common/tests/*_spec.js",
-    "server/tests/*_spec.js"
+    "server/src/tests/*_spec.js"
   ]
 }

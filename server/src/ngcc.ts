@@ -27,7 +27,7 @@ export async function resolveAndRunNgcc(tsconfig: string, progress: Progress): P
   if (!ngcc) {
     throw new Error(`Failed to resolve ngcc from ${directory}`);
   }
-  const index = ngcc.resolvedPath.lastIndexOf('node_modules');
+  const index = ngcc.resolvedPath.indexOf('node_modules');
   // By default, ngcc assumes the node_modules directory that it needs to process
   // is in the cwd. In our case, we should set cwd to the directory where ngcc
   // is resolved to, not the directory where tsconfig.json is located. See

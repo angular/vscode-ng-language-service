@@ -1,0 +1,40 @@
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load("@aspect_rules_jasmine//jasmine:defs.bzl", "jasmine_test")
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    deps = [
+        "//:tsconfig",
+        "//server:tsconfig",
+    ],
+)
+
+ts_project(
+    name = "tests",
+    srcs = glob(["*.ts"]),
+    declaration = True,
+    source_map = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        "//server/src",
+        "//:node_modules/@types/jasmine",
+        "//:node_modules/rxjs",
+    ],
+)
+
+jasmine_test(
+    name = "test",
+    data = [
+        ":tests",
+        "//integration/pre_apf_project",
+        "//integration/pre_apf_project:node_modules/@angular/compiler",
+        "//integration/pre_apf_project:node_modules/@angular/compiler-cli",
+        "//integration/workspace",
+        "//integration/workspace:node_modules/@angular/compiler",
+        "//integration/workspace:node_modules/@angular/compiler-cli",
+    ],
+    args = ["*_spec.js"],
+    chdir = package_name(),
+    tags = ["unit_test"],
+)

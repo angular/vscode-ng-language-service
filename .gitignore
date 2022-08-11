@@ -17,3 +17,6 @@ dist/
 *.log
 .ng-dev.user*
 .husky/_
+
+# bazel
+bazel-*

@@ -1,0 +1,21 @@
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+
+
+ts_project(
+    name = "src",
+    srcs = glob(["*.ts"]),
+    composite = True,
+    declaration = True,
+    source_map = True,
+    tsconfig = "//client:tsconfig",
+    deps = [
+        "//:node_modules/@types/node",
+        "//:node_modules/@types/vscode",
+        "//:node_modules/typescript",
+        "//:node_modules/vscode-languageclient",
+        "//common",
+    ],
+    visibility = [
+        "//client:__subpackages__",
+    ],
+)

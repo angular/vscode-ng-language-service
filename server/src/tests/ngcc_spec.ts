@@ -14,7 +14,10 @@ import {takeUntil} from 'rxjs/operators';
 
 import {resolveAndRunNgcc} from '../ngcc';
 
-const PACKAGE_ROOT = resolve(__dirname, '../../../..');
+const IS_BAZEL = !!process.env['TEST_TARGET'];
+
+// Outside of bazel there is an additional `dist/` path segment
+const PACKAGE_ROOT = IS_BAZEL ? resolve(__dirname, '../../..') : resolve(__dirname, '../../../..');
 const WORKSPACE_ROOT = join(PACKAGE_ROOT, 'integration', 'workspace');
 const PROJECT = join(WORKSPACE_ROOT, 'projects', 'demo');
 const PRE_APF_PROJECT = join(PACKAGE_ROOT, 'integration', 'pre_apf_project');

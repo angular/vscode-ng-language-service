@@ -1,0 +1,22 @@
+load("@aspect_rules_jasmine//jasmine:defs.bzl", "jasmine_test")
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+
+jasmine_test(
+    name = "test",
+    data = [
+        "//integration",
+        "//integration/project",
+        "//server:index",
+    ],
+    args = ["*_spec.js"],
+    chdir = package_name(),
+    tags = ["e2e"],
+)
+
+copy_to_bin(
+    name = "srcs",
+    srcs = glob(["*.ts"]),
+    # NB: there is an import cycle between integration/lsp/*.ts and integration/test_constants.ts so
+    # they cannot be broken up into separate ts_project targets
+    visibility = ["//integration:__subpackages__"]
+)

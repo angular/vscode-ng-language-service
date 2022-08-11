@@ -34,7 +34,7 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: yarn
-      - run: yarn test:bazel
+      - run: yarn bazel test //...
 workflows:
     build-and-test:
       jobs:

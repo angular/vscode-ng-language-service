@@ -6,5 +6,7 @@ npm_link_all_packages(name = "node_modules")
 copy_to_bin(
     name = "workspace",
     srcs = glob(["**"]),
-    visibility = ["//server/src/tests:__pkg__"],
+    visibility = [
+        "//server/src/tests:__pkg__",
+    ],
 )

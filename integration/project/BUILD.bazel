@@ -1,0 +1,29 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@npm_integration_project//:defs.bzl", "npm_link_all_packages")
+load("@npm_integration_project//integration/project:ng-packagr/package_json.bzl", ng_packagr_bin = "bin")
+
+npm_link_all_packages(name = "node_modules")
+
+copy_to_bin(
+    name = "project_srcs",
+    srcs = glob(["**"]),
+)
+
+ng_packagr_bin.ng_packagr(
+    name = "dist",
+    srcs = [":project_srcs", ":node_modules"],
+    out_dirs = ["dist"],
+    chdir = package_name(),
+    args = [
+        "-p",
+        "libs/post/ng-package.json",
+        "-c",
+        "libs/post/tsconfig.json",
+    ],
+)
+
+filegroup(
+    name = "project",
+    srcs = [":project_srcs", ":dist"],
+    visibility = ["//integration:__subpackages__"],
+)

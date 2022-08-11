@@ -14,7 +14,7 @@ import {URI} from 'vscode-uri';
 
 import {NgccProgressEnd, ProjectLanguageService, ProjectLanguageServiceParams, SuggestStrictMode, SuggestStrictModeParams} from '../../common/notifications';
 import {GetComponentsWithTemplateFile, GetTcbRequest, GetTemplateLocationForComponent, IsInAngularProject} from '../../common/requests';
-import {APP_COMPONENT, APP_COMPONENT_URI, FOO_COMPONENT, FOO_COMPONENT_URI, FOO_TEMPLATE, FOO_TEMPLATE_URI, PROJECT_PATH, TSCONFIG} from '../test_constants';
+import {APP_COMPONENT, APP_COMPONENT_URI, FOO_COMPONENT, FOO_COMPONENT_URI, FOO_TEMPLATE, FOO_TEMPLATE_URI, IS_BAZEL, PROJECT_PATH, TSCONFIG} from '../test_constants';
 
 import {convertPathToFileUrl, createConnection, createTracer, initializeServer, openTextDocument} from './test_utils';
 
@@ -403,6 +403,13 @@ describe('Angular Ivy language server', () => {
 
   describe('compiler options', () => {
     const originalConfig = fs.readFileSync(TSCONFIG, 'utf-8');
+    if (IS_BAZEL) {
+      // Under Bazel, the tsconfig.json file in the output tree is write protected.
+      // We change the file permissions here so that the fs.writeFileSync(TSCONFIG, ...)
+      // calls below don't fail under Bazel. This should be fixed in the future by
+      // use an in-memory FS harness for the server.
+      fs.chmodSync(TSCONFIG, 0o644);
+    }
 
     afterEach(() => {
       // TODO(kyliau): Use an in-memory FS harness for the server

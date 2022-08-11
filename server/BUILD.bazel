@@ -1,4 +1,5 @@
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
+load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 
 ts_config(
     name = "tsconfig",
@@ -11,4 +12,63 @@ ts_config(
         "//server:__subpackages__",
         "//integration:__subpackages__",
     ]
+)
+
+esbuild(
+    name = "banner",
+    entry_point = "//server/src:banner.js",
+    data = ["//server/src"],
+    platform = "node",
+    format = "cjs",
+    sourcemap = "external",
+    external = [
+        "path",
+    ],
+    config = {
+        # This is described in more detail in the `server/banner.ts` but this line actually overrides
+        # the built-in `require` function by adding a line at the bottom of the generated banner code
+        # to assign the override function to the `require` name.
+        "footer": { "js": "require = requireOverride;" },
+        # Workaround for https://github.com/aspect-build/rules_esbuild/issues/58
+        "resolveExtensions": [".js"],
+    },
+    # Do not enable minification. It seems to break the extension on Windows (with WSL). See #1198.
+    minify = False,
+)
+
+esbuild(
+    name = "index",
+    entry_point = "//server/src:server.js",
+    srcs = [
+        "//server/src",
+        ":banner.js",
+    ],
+    platform = "node",
+    format = "cjs",
+    sourcemap = "external",
+    external = [
+        "fs",
+        "path",
+        "typescript/lib/tsserverlibrary",
+        "vscode-languageserver",
+        "vscode-uri",
+        "vscode-jsonrpc",
+    ],
+    config = "esbuild.mjs",
+    # Do not enable minification. It seems to break the extension on Windows (with WSL). See #1198.
+    minify = False,
+    visibility = [
+        "//integration:__subpackages__",
+    ]
+)
+
+filegroup(
+    name = "npm_files",
+    srcs = [
+        "package.json",
+        "README.md",
+        "index.js",
+        "bin/ngserver",
+    ],
+    visibility = ["//:__pkg__"],
 )

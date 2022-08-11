@@ -1,0 +1,8 @@
+filegroup(
+    name = "npm_files",
+    srcs = [
+        "package.json",
+        "yarn.lock",
+    ],
+    visibility = ["//:__pkg__"],
+)

@@ -13,3 +13,9 @@ ts_config(
     deps = ["//:tsconfig"],
     visibility = ["//syntaxes:__subpackages__"]
 )
+
+filegroup(
+    name = "npm_files",
+    srcs = glob(["*.json"], exclude = ["tsconfig.json"]),
+    visibility = ["//:__pkg__"]
+)

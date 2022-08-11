@@ -33,11 +33,29 @@ load("@aspect_rules_jasmine//jasmine:dependencies.bzl", "rules_jasmine_dependenc
 
 rules_jasmine_dependencies()
 
+http_archive(
+    name = "aspect_rules_esbuild",
+    sha256 = "6446a784e72b04c33bc48debd84c5a54db4727f0a4a61a0da9faa64bededd7c2",
+    strip_prefix = "rules_esbuild-0909898c1344569f59fa83f70a1db7548563c274",
+    url = "https://github.com/aspect-build/rules_esbuild/archive/0909898c1344569f59fa83f70a1db7548563c274.tar.gz",
+)
+
+load("@aspect_rules_esbuild//esbuild:dependencies.bzl", "rules_esbuild_dependencies")
+
+rules_esbuild_dependencies()
+
 load("@aspect_rules_jasmine//jasmine:repositories.bzl", "rules_jasmine_repositories", JASMINE_LATEST_VERSION = "LATEST_VERSION")
 
 rules_jasmine_repositories(
     name = "jasmine",
     jasmine_version = JASMINE_LATEST_VERSION,
+)
+
+load("@aspect_rules_esbuild//esbuild:repositories.bzl", "esbuild_register_toolchains", ESBUILD_LATEST_VERSION = "LATEST_VERSION")
+
+esbuild_register_toolchains(
+    name = "esbuild",
+    esbuild_version = ESBUILD_LATEST_VERSION,
 )
 
 load("@rules_nodejs//nodejs:repositories.bzl", "DEFAULT_NODE_VERSION", "nodejs_register_toolchains")
@@ -54,6 +72,20 @@ npm_translate_lock(
     yarn_lock = "//:yarn.lock",
     package_json = "//:package.json",
     verify_node_modules_ignored = "//:.bazelignore",
+    public_hoist_packages = {
+        # Hoist transitive closure of npm deps needed for vsce; this set was determined manually by
+        # running `bazel build //:vsix` and burning down missing packages. We do this so that we
+        # don't have to run an additional `npm install` action to create a node_modules within the
+        # //:npm npm_package where the vsce build takes place.
+        "semver@7.3.7": [""],
+        "lru-cache@6.0.0": [""],
+        "yallist@4.0.0": [""],
+        "minimatch@3.1.2": [""],
+        "brace-expansion@1.1.11": [""],
+        "vscode-languageserver-types@3.16.0": [""],
+        "concat-map@0.0.1": [""],
+        "balanced-match@1.0.0": [""],
+    },
 )
 
 load("@npm//:repositories.bzl", "npm_repositories")
@@ -81,3 +113,14 @@ npm_translate_lock(
 load("@npm_integration_pre_apf_project//:repositories.bzl", npm_integration_pre_apf_project_repositories = "npm_repositories")
 
 npm_integration_pre_apf_project_repositories()
+
+npm_translate_lock(
+    name = "npm_integration_project",
+    yarn_lock = "//integration/project:yarn.lock",
+    package_json = "//integration/project:package.json",
+    verify_node_modules_ignored = "//:.bazelignore",
+)
+
+load("@npm_integration_project//:repositories.bzl", npm_integration_project_repositories = "npm_repositories")
+
+npm_integration_project_repositories()

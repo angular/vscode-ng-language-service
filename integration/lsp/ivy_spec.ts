@@ -700,6 +700,33 @@ describe('code fixes', () => {
     expect(codeActions).toContain(jasmine.objectContaining(expectedCodeActionInTemplate));
   });
 
+  it('should fix error when the range the user selects is larger than the diagnostic', async () => {
+    const template = `<span>{{titl}}</span>`;
+    openTextDocument(client, FOO_TEMPLATE, template);
+    const languageServiceEnabled = await waitForNgcc(client);
+    expect(languageServiceEnabled).toBeTrue();
+    const diags = await getDiagnosticsForFile(client, FOO_TEMPLATE);
+    const codeActions = await client.sendRequest(lsp.CodeActionRequest.type, {
+      textDocument: {
+        uri: FOO_TEMPLATE_URI,
+      },
+      range:
+          lsp.Range.create(lsp.Position.create(0, 0), lsp.Position.create(0, template.length - 1)),
+      context: lsp.CodeActionContext.create(diags),
+    }) as lsp.CodeAction[];
+    const expectedCodeActionInTemplate = {
+      'edit': {
+        'changes': {
+          [FOO_TEMPLATE_URI]: [{
+            'newText': 'title',
+            'range': {'start': {'line': 0, 'character': 8}, 'end': {'line': 0, 'character': 12}}
+          }]
+        }
+      }
+    };
+    expect(codeActions).toContain(jasmine.objectContaining(expectedCodeActionInTemplate));
+  });
+
   describe('should work', () => {
     beforeEach(async () => {
       openTextDocument(client, FOO_COMPONENT, `

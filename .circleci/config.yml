@@ -34,7 +34,8 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: yarn
-      - run: yarn bazel test //...
+      # Disable bazel build & test temporarily
+      - run: yarn bazel info
 workflows:
     build-and-test:
       jobs:

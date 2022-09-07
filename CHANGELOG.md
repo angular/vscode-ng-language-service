@@ -1,3 +1,11 @@
+# v14.2.0
+
+This release upgrades `@angular/language-service` to v14.2.0.
+
+* feat: support fix the component missing member (#46764)
+* fix: support deeply nested pnpm virtual store node_modules paths in resolveAndRunNgcc (#1742) (511218f10)
+* feat: support code action (#1723) (a5ecf2df6)
+
 # v14.1.0
 
 This release upgrades `@angular/language-service` to v14.1.0

@@ -210,13 +210,20 @@ export class Session {
     if (!lsInfo) {
       return null;
     }
-    const start = lspPositionToTsPosition(lsInfo.scriptInfo, params.range.start);
-    const end = lspPositionToTsPosition(lsInfo.scriptInfo, params.range.end);
-    const errorCodes = params.context.diagnostics.map(diag => diag.code)
-                           .filter((code): code is number => typeof code === 'number');
 
-    const codeActions = lsInfo.languageService.getCodeFixesAtPosition(
-        filePath, start, end, errorCodes, defaultFormatOptions, defaultPreferences);
+    const codeActions: ts.CodeFixAction[] = [];
+    for (const diagnostic of params.context.diagnostics) {
+      const errorCode = diagnostic.code;
+      if (typeof errorCode !== 'number') {
+        continue;
+      }
+      const start = lspPositionToTsPosition(lsInfo.scriptInfo, diagnostic.range.start);
+      const end = lspPositionToTsPosition(lsInfo.scriptInfo, diagnostic.range.end);
+      const codeActionsForDiagnostic = lsInfo.languageService.getCodeFixesAtPosition(
+          filePath, start, end, [errorCode], defaultFormatOptions, defaultPreferences);
+      codeActions.push(...codeActionsForDiagnostic);
+    }
+
     const individualCodeFixes = codeActions.map<lsp.CodeAction>(codeAction => {
       return {
         title: codeAction.description,

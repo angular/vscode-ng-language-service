@@ -1,8 +1,10 @@
 load("@aspect_rules_js//js:defs.bzl", "js_library")
+load("@aspect_rules_js//js/private:expand_template.bzl", "expand_template")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:vsce/package_json.bzl", vsce_bin = "bin")
+load(":version.bzl", "VERSION")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -18,10 +20,20 @@ ts_config(
     visibility = ["//visibility:public"]
 )
 
+expand_template(
+    name = "package_json_expanded",
+    template = "package.json",
+    out = "package_expanded.json",
+    substitutions = {
+        "0.0.0-PLACEHOLDER": VERSION,
+        "./dist/client/src/extension": "./index",
+    }
+)
+
 npm_package(
-    name = "npm",
+    name = "vsix_sandbox",
     srcs = [
-        "package.json",
+        "package_expanded.json",
         "angular.png",
         "CHANGELOG.md",
         "README.md",
@@ -57,22 +69,37 @@ npm_package(
         "**/*.map",
     ],
     replace_prefixes = {
+        "package_expanded.json": "package.json",
         "client/": "",
         "syntaxes/src/": "syntaxes/",
     },
-    visibility = ["//integration:__subpackages__"],
 )
 
 vsce_bin.vsce(
     name = "vsix",
     srcs = [
-        ":npm",
+        ":vsix_sandbox",
     ],
-    outs = ["ng-template.vsix"],
-    chdir = "npm",
+    outs = ["ng-template-{}.vsix".format(VERSION)],
+    chdir = "vsix_sandbox",
     args = [
         "package",
         "-o",
-        "../ng-template.vsix"
+        "../ng-template-{}.vsix".format(VERSION)
     ],
+    # vsce requires npm on the PATH; we can get this from the Bazel rules_nodejs but it is not
+    # included by default in rules_js binary rules so we include it here explicitly
+    include_npm = True,
+)
+
+npm_package(
+    name = "npm",
+    srcs = [
+        ":vsix_sandbox",
+        ":vsix",
+    ],
+    root_paths = [
+        "vsix_sandbox"
+    ],
+    visibility = ["//integration:__subpackages__"],
 )

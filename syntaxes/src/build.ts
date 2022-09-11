@@ -38,6 +38,12 @@ function build(grammar: GrammarDefinition, filename: string): void {
   const processedGrammar: JsonObject = processGrammar(grammar);
   const grammarContent: string = JSON.stringify(processedGrammar, null, '  ') + '\n';
 
+  if (!!process.env['JS_BINARY__TARGET']) {
+    // Add `_` prefix when running under Bazel so the output filename is different than
+    // the source tree to allow for write_source_files targets to refer to both by labels
+    filename = `_${filename}`;
+  }
+
   fs.writeFile(`syntaxes/${filename}.json`, grammarContent, (error) => {
     if (error) throw error;
   });

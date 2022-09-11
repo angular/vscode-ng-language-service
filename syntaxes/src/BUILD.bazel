@@ -1,3 +1,4 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 
 ts_project(
@@ -9,4 +10,11 @@ ts_project(
     deps = [
         "//:node_modules/@types/node",
     ],
+)
+
+js_binary(
+    name = "build",
+    entry_point = ":build.js",
+    data = [":src"],
+    visibility = ["//syntaxes:__pkg__"],
 )

@@ -33,6 +33,8 @@ export async function run(): Promise<void> {
 
   console.log(`Expecting to run ${jasmine.specFiles.length} specs.`);
 
+  console.log(JSON.stringify(jasmine.specFiles, null, 2))
+
   if (jasmine.specFiles.length === 0) {
     throw new Error('No specs found');
   }

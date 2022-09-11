@@ -1,4 +1,3 @@
-
 import * as vscode from 'vscode';
 
 import {activate, COMPLETION_COMMAND, FOO_TEMPLATE_URI} from './helper';

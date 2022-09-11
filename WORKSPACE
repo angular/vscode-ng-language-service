@@ -2,9 +2,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "aspect_rules_js",
-    sha256 = "538049993bec3ee1ae9b1c3cd669156bca04eb67027b222883e47b0a2aed2e67",
-    strip_prefix = "rules_js-1.0.0",
-    url = "https://github.com/aspect-build/rules_js/archive/refs/tags/v1.0.0.tar.gz",
+    sha256 = "b9fde0f20de6324ad443500ae738bda00facbd73900a12b417ce794856e01407",
+    strip_prefix = "rules_js-1.5.0",
+    url = "https://github.com/aspect-build/rules_js/archive/refs/tags/v1.5.0.tar.gz",
 )
 
 load("@aspect_rules_js//js:repositories.bzl", "rules_js_dependencies")
@@ -13,9 +13,9 @@ rules_js_dependencies()
 
 http_archive(
     name = "aspect_rules_ts",
-    sha256 = "1945d5a356d0ec85359dea411467dec0f98502503a53798ead7f54aef849598b",
-    strip_prefix = "rules_ts-1.0.0-rc1",
-    url = "https://github.com/aspect-build/rules_ts/archive/refs/tags/v1.0.0-rc1.tar.gz",
+    sha256 = "743f0e988e4e3f1e25e52c79f9dc3da1ddd77507ae88787ae95b4e70c537872b",
+    strip_prefix = "rules_ts-1.0.0-rc4",
+    url = "https://github.com/aspect-build/rules_ts/archive/refs/tags/v1.0.0-rc4.tar.gz",
 )
 
 load("@aspect_rules_ts//ts:repositories.bzl", "rules_ts_dependencies")
@@ -24,9 +24,9 @@ rules_ts_dependencies(ts_version_from = "//:package.json",)
 
 http_archive(
     name = "aspect_rules_jasmine",
-    sha256 = "741d3376fdbf0c0c742e3bac0f854b1d49dbe1998d3530ef6f22f467675ca177",
-    strip_prefix = "rules_jasmine-0.0.1",
-    url = "https://github.com/aspect-build/rules_jasmine/archive/refs/tags/v0.0.1.tar.gz",
+    sha256 = "938a2818100fd89e7600a45b7ba4fcd4114c11c5b5741db30ff7c6e0dcb2ea4b",
+    strip_prefix = "rules_jasmine-0.1.0",
+    url = "https://github.com/aspect-build/rules_jasmine/archive/refs/tags/v0.1.0.tar.gz",
 )
 
 load("@aspect_rules_jasmine//jasmine:dependencies.bzl", "rules_jasmine_dependencies")
@@ -35,9 +35,9 @@ rules_jasmine_dependencies()
 
 http_archive(
     name = "aspect_rules_esbuild",
-    sha256 = "6446a784e72b04c33bc48debd84c5a54db4727f0a4a61a0da9faa64bededd7c2",
-    strip_prefix = "rules_esbuild-0909898c1344569f59fa83f70a1db7548563c274",
-    url = "https://github.com/aspect-build/rules_esbuild/archive/0909898c1344569f59fa83f70a1db7548563c274.tar.gz",
+    sha256 = "1e365451341ffb2490193292dfd9953f2ca009586c2381cb4dc08d01e48866b7",
+    strip_prefix = "rules_esbuild-0.12.0",
+    url = "https://github.com/aspect-build/rules_esbuild/archive/refs/tags/v0.12.0.tar.gz",
 )
 
 load("@aspect_rules_esbuild//esbuild:dependencies.bzl", "rules_esbuild_dependencies")
@@ -58,11 +58,11 @@ esbuild_register_toolchains(
     esbuild_version = ESBUILD_LATEST_VERSION,
 )
 
-load("@rules_nodejs//nodejs:repositories.bzl", "DEFAULT_NODE_VERSION", "nodejs_register_toolchains")
+load("@rules_nodejs//nodejs:repositories.bzl", "nodejs_register_toolchains")
 
 nodejs_register_toolchains(
     name = "nodejs",
-    node_version = DEFAULT_NODE_VERSION,
+    node_version = "14.20.0",
 )
 
 load("@aspect_rules_js//npm:npm_import.bzl", "npm_translate_lock")
@@ -71,6 +71,7 @@ npm_translate_lock(
     name = "npm",
     yarn_lock = "//:yarn.lock",
     package_json = "//:package.json",
+    npmrc = "//:.npmrc",
     verify_node_modules_ignored = "//:.bazelignore",
     public_hoist_packages = {
         # Hoist transitive closure of npm deps needed for vsce; this set was determined manually by
@@ -96,6 +97,7 @@ npm_translate_lock(
     name = "npm_integration_workspace",
     yarn_lock = "//integration/workspace:yarn.lock",
     package_json = "//integration/workspace:package.json",
+    npmrc = "//:.npmrc",
     verify_node_modules_ignored = "//:.bazelignore",
 )
 
@@ -107,6 +109,7 @@ npm_translate_lock(
     name = "npm_integration_pre_apf_project",
     yarn_lock = "//integration/pre_apf_project:yarn.lock",
     package_json = "//integration/pre_apf_project:package.json",
+    npmrc = "//:.npmrc",
     verify_node_modules_ignored = "//:.bazelignore",
 )
 
@@ -118,6 +121,7 @@ npm_translate_lock(
     name = "npm_integration_project",
     yarn_lock = "//integration/project:yarn.lock",
     package_json = "//integration/project:package.json",
+    npmrc = "//:.npmrc",
     verify_node_modules_ignored = "//:.bazelignore",
 )
 

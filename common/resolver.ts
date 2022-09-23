@@ -7,6 +7,7 @@
  */
 
 import * as fs from 'fs';
+import * as path from 'path';
 
 /**
  * Represents a valid node module that has been successfully resolved.
@@ -17,19 +18,23 @@ export interface NodeModule {
   version: Version;
 }
 
-export function resolve(packageName: string, location: string, rootPackage?: string): NodeModule|
-    undefined {
+export function resolve(packageName: string, location: string, rootPackage?: string): NodeModule |
+  undefined {
+  const isYarnModule = location.startsWith('.yarn/sdks');
+  location = isYarnModule ? '.yarn/sdks' : location;
   rootPackage = rootPackage || packageName;
   try {
-    const packageJsonPath = require.resolve(`${rootPackage}/package.json`, {
-      paths: [location],
-    });
+    const packageJsonPath = isYarnModule ? path.resolve(`${location}/${rootPackage}/package.json`) :
+      require.resolve(`${rootPackage}/package.json`, {
+        paths: [location],
+      });
     // Do not use require() to read JSON files since it's a potential security
     // vulnerability.
     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-    const resolvedPath = require.resolve(packageName, {
-      paths: [location],
-    });
+    const resolvedPath =
+      isYarnModule ? path.resolve(`${location}/${packageName}`) : require.resolve(packageName, {
+        paths: [location],
+      });
     return {
       name: packageName,
       resolvedPath,

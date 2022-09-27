@@ -50,7 +50,7 @@ function resolveWithMinVersion(
 export function resolveTsServer(probeLocations: string[]): NodeModule {
   if (probeLocations.length > 0) {
     // The first probe location is `typescript.tsdk` if it is specified.
-    const resolvedFromTsdk = resolveTsServerFromTsdk(probeLocations[0]);
+    const resolvedFromTsdk = resolveTsServerFromTsdk(probeLocations[0], probeLocations.slice(1));
     if (resolvedFromTsdk !== undefined) {
       return resolvedFromTsdk;
     }
@@ -58,31 +58,38 @@ export function resolveTsServer(probeLocations: string[]): NodeModule {
   return resolveWithMinVersion(TSSERVERLIB, MIN_TS_VERSION, probeLocations, 'typescript');
 }
 
-function resolveTsServerFromTsdk(tsdk: string): NodeModule|undefined {
+function resolveTsServerFromTsdk(tsdk: string, probeLocations: string[]): NodeModule|undefined {
   // `tsdk` is the folder path to the tsserver and lib*.d.ts files under a
   // TypeScript install, for example
   // - /google/src/head/depot/google3/third_party/javascript/node_modules/typescript/stable/lib
-  if (!path.isAbsolute(tsdk)) {
-    return undefined;
+  // When the `tsdk` is an absolute path, we only look there for TS Server.
+  // When it is a relative path, we look for that tsdk relative to the rest of the probe locations.
+  if (path.isAbsolute(tsdk)) {
+    probeLocations = [tsdk];
+  } else {
+    probeLocations = probeLocations.map(location => path.join(location, tsdk));
   }
-  const tsserverlib = path.join(tsdk, 'tsserverlibrary.js');
-  if (!fs.existsSync(tsserverlib)) {
-    return undefined;
+  for (const location of probeLocations) {
+    const tsserverlib = path.join(location, 'tsserverlibrary.js');
+    if (!fs.existsSync(tsserverlib)) {
+      continue;
+    }
+    const packageJson = path.resolve(tsserverlib, '../../package.json');
+    if (!fs.existsSync(packageJson)) {
+      continue;
+    }
+    try {
+      const json = JSON.parse(fs.readFileSync(packageJson, 'utf8'));
+      return {
+        name: TSSERVERLIB,
+        resolvedPath: tsserverlib,
+        version: new Version(json.version),
+      };
+    } catch {
+      continue;
+    }
   }
-  const packageJson = path.resolve(tsserverlib, '../../package.json');
-  if (!fs.existsSync(packageJson)) {
-    return undefined;
-  }
-  try {
-    const json = JSON.parse(fs.readFileSync(packageJson, 'utf8'));
-    return {
-      name: TSSERVERLIB,
-      resolvedPath: tsserverlib,
-      version: new Version(json.version),
-    };
-  } catch {
-    return undefined;
-  }
+  return undefined;
 }
 
 /**

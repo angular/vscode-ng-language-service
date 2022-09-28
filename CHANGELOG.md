@@ -1,3 +1,11 @@
+# v14.2.4
+
+This release upgrades `@angular/language-service` to v14.2.4.
+
+* feat: support to fix invalid banana in box (#47393)
+* fix(server): resolve tsdk correctly when settings specify a relative location
+* fix(server): send diagnostic range to the Angular language service when fixing code errors
+
 # v14.2.0
 
 This release upgrades `@angular/language-service` to v14.2.0.

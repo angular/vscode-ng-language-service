@@ -35,9 +35,9 @@ rules_jasmine_dependencies()
 
 http_archive(
     name = "aspect_rules_esbuild",
-    sha256 = "6446a784e72b04c33bc48debd84c5a54db4727f0a4a61a0da9faa64bededd7c2",
-    strip_prefix = "rules_esbuild-0909898c1344569f59fa83f70a1db7548563c274",
-    url = "https://github.com/aspect-build/rules_esbuild/archive/0909898c1344569f59fa83f70a1db7548563c274.tar.gz",
+    sha256 = "6fdec78dd65916dd69d3f6f439ae030f51cbecec0ec32e5af05e879b7eceb517",
+    strip_prefix = "rules_esbuild-4ca5cdab4dd0f1c7190d06b4b0c617eb5dffb4b8",
+    url = "https://github.com/aspect-build/rules_esbuild/archive/4ca5cdab4dd0f1c7190d06b4b0c617eb5dffb4b8.tar.gz",
 )
 
 load("@aspect_rules_esbuild//esbuild:dependencies.bzl", "rules_esbuild_dependencies")

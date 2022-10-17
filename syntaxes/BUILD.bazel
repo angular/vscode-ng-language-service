@@ -1,5 +1,30 @@
-load("@aspect_rules_js//js:defs.bzl", "js_library")
+load("@aspect_rules_js//js:defs.bzl", "js_run_binary", "js_library")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+
+js_run_binary(
+    name = "build",
+    tool = "//syntaxes/src:build",
+    outs = [
+        # bazel output files names in the output tree are prefixed with `_` so
+        # we can refer to both the source files & output files by label in the
+        # write_source_files target below.
+        "_expression.json",
+        "_inline-styles.json",
+        "_inline-template.json",
+        "_template.json",
+    ]
+)
+
+write_source_files(
+    name = "syntaxes",
+    files = {
+        "expression.json": "_expression.json",
+        "inline-styles.json": "_inline-styles.json",
+        "inline-template.json": "_inline-template.json",
+        "template.json": "_template.json",
+    }
+)
 
 js_library(
     name = "json",

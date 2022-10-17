@@ -27,25 +27,12 @@ jobs:
       - run: scripts/format.sh
       - run: scripts/build.sh << parameters.dependency_type >>
       - run: scripts/test.sh
-  bazel-build-and-test:
-    docker:
-      - image: cimg/node:14.18.3@sha256:30583ce79b08d318b1fc5e17a613d21ef960091e5442b06eb49c56fa180a3b30
-    steps:
-      - checkout
-      - node/install-packages:
-          pkg-manager: yarn
-      # Disable bazel build & test temporarily
-      - run: yarn bazel info
 workflows:
     build-and-test:
       jobs:
         - build-and-test:
             name: build-and-test
             dependency_type: "package.json"
-    bazel-build-and-test:
-      jobs:
-        - bazel-build-and-test:
-            name: bazel-build-and-test
     buid-and-test-against-builds:
       jobs:
         - build-and-test:

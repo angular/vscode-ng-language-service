@@ -1,5 +1,27 @@
-# Enable debugging tests with --config=debug
-test:debug --test_arg=--node_options=--inspect-brk --test_output=streamed --test_strategy=exclusive --test_timeout=9999 --nocache_test_results
+# ======================================================================================================================
+# Support for debugging Node.js tests
+# Use `--config=debug` to enable these settings
+
+# Use bazel run with `--config=debug` to turn on the NodeJS inspector agent.
+# The node process will break before user code starts and wait for the debugger to connect.
+# Pass the --inspect-brk option to all tests which enables the node inspector agent.
+# See https://nodejs.org/de/docs/guides/debugging-getting-started/#command-line-options for more details.
+run:debug -- --node_options=--inspect-brk
+
+# Stream stdout/stderr output from each test in real-time.
+# See https://docs.bazel.build/versions/master/user-manual.html#flag--test_output for more details.
+test:debug --test_output=streamed
+
+# Run one test at a time.
+test:debug --test_strategy=exclusive
+
+# Prevent long running tests from timing out.
+# See https://docs.bazel.build/versions/master/user-manual.html#flag--test_timeout for more details.
+test:debug --test_timeout=9999
+
+# Always run tests even if they have cached results.
+test:debug --nocache_test_results
+# ======================================================================================================================
 
 ###############################
 # Filesystem interactions     #

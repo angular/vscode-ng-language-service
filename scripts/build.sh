@@ -40,51 +40,7 @@ yarn install
 # Build the npm package with bazel
 yarn bazel build //:npm
 
-# Copy the bazel built package to dist/npm_bazel
-# TODO: copy to dist/npm when ready to cut-over
-mkdir -p dist/npm_bazel
-cp -r bazel-bin/npm/ dist/npm_bazel
-chmod -R +w dist/npm_bazel
-
-################################################################################
-#### LEGACY PRE-BAZEL BUILD --- can be removed after cut-over
-################################################################################
-
-# Enable extended pattern matching features
-shopt -s extglob
-
-# Clean up from last build
-rm -rf **/*.tsbuildinfo
-
-# Build the client and server
-yarn run compile
-
-# install npm packages in the pinned v12
-pushd v12_language_service
-yarn install
-popd
-
-# Copy files to package root
-cp package.json angular.png CHANGELOG.md README.md dist/npm
-# Copy files to server directory
-cp -r server/package.json server/README.md server/bin dist/npm/server
-cp -r v12_language_service dist/npm/v12_language_service
-# Build and copy files to syntaxes directory
-yarn run build:syntaxes
-mkdir dist/npm/syntaxes
-# Copy all json files in syntaxes/ except tsconfig.json
-cp syntaxes/!(tsconfig).json dist/npm/syntaxes
-
-pushd dist/npm
-# TODO(kyliau): vsce does not bundle nested node_modules due to bug
-# https://github.com/microsoft/vscode-vsce/issues/432 so install using NPM for now.
-# Note: We also use `--force` as NPM incorrectly checks the dev dependencies even
-# though we have limited the install to production-only dependencies. We know that
-# our versions are compatible from the Yarn install, so it's acceptable to force proceed
-# on peer dependency conflicts (like `tslint@6` not being supported by `tslint-eslint-rules`).
-npm install --production --ignore-scripts --force
-
-sed -i -e 's#./dist/client/src/extension#./index#' package.json
-../../node_modules/.bin/vsce package
-
-popd
+# Copy the bazel built package to dist/npm
+mkdir -p dist/npm
+cp -r bazel-bin/npm/ dist/npm
+chmod -R +w dist/npm

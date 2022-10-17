@@ -26,7 +26,6 @@ js_test(
         "//:npm",
         "//integration",
         "//integration/project",
-        "//server:index",
         # Depend on //:node_modules/jasmine as a temporary work-around for jasmine escaping its
         # runfiles likely due to esm import issue in rules_js https://github.com/aspect-build/rules_js/issues/362
         "//:node_modules/jasmine",

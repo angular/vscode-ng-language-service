@@ -30,15 +30,31 @@ fi
 
 set -ex -o pipefail
 
+# Clean up from last build
+rm -rf dist
+
+# Run legacy yarn install to update the lock file since we may have modified the package.json above
+# and so that we can call bazel via yarn bazel
+yarn install
+
+# Build the npm package with bazel
+yarn bazel build //:npm
+
+# Copy the bazel built package to dist/npm_bazel
+# TODO: copy to dist/npm when ready to cut-over
+mkdir -p dist/npm_bazel
+cp -r bazel-bin/npm/ dist/npm_bazel
+chmod -R +w dist/npm_bazel
+
+################################################################################
+#### LEGACY PRE-BAZEL BUILD --- can be removed after cut-over
+################################################################################
+
 # Enable extended pattern matching features
 shopt -s extglob
 
 # Clean up from last build
-rm -rf dist
 rm -rf **/*.tsbuildinfo
-
-
-yarn install;
 
 # Build the client and server
 yarn run compile

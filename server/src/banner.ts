@@ -18,9 +18,9 @@ const originalRequire = require;
  * compile the server and add this banner to the top of the compilation so any place
  * in the server code that uses `require` will get routed through this override.
  *
- * Refer also to `esbuild` rules in the server package, the `bannerConfig` which overrides the `require` using
- * the `footer` option, and the `serverConfig` which provides the banner code at the top
- * of the server output using the `banner` option.
+ * Refer also to `esbuild` rules in the server package, the `bannerConfig` which overrides the
+ * `require` using the `footer` option, and the `serverConfig` which provides the banner code at the
+ * top of the server output using the `banner` option.
  *
  * @param moduleName The module to resolve
  * @returns

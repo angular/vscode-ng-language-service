@@ -868,7 +868,7 @@ export class Session {
 
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
-      return;
+      return null;
     }
     const {scriptInfo} = lsInfo;
     const docText = scriptInfo.getSnapshot().getText(0, scriptInfo.getSnapshot().getLength());

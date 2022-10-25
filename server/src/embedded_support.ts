@@ -33,10 +33,11 @@ export function getHTMLVirtualContent(documentText: string): string {
                     .join('\n');
 
   // add back all the inline template regions in-place
-  inlineTemplateNodes.forEach(r => {
-    content = content.slice(0, r.getStart(sf) + 1) +
-        documentText.slice(r.getStart(sf) + 1, r.getEnd() - 1) + content.slice(r.getEnd() - 1);
-  });
+  for (const region of inlineTemplateNodes) {
+    content = content.slice(0, region.getStart(sf) + 1) +
+        documentText.slice(region.getStart(sf) + 1, region.getEnd() - 1) +
+        content.slice(region.getEnd() - 1);
+  }
   return content;
 }
 

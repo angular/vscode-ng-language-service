@@ -871,8 +871,11 @@ export class Session {
       return null;
     }
     const {scriptInfo} = lsInfo;
-    const docText = scriptInfo.getSnapshot().getText(0, scriptInfo.getSnapshot().getLength());
-    const virtualHtmlDocContents = getHTMLVirtualContent(docText);
+    const sf = this.getDefaultProjectForScriptInfo(scriptInfo)?.getSourceFile(scriptInfo.path);
+    if (sf === undefined) {
+      return null;
+    }
+    const virtualHtmlDocContents = getHTMLVirtualContent(sf);
     const virtualHtmlDoc =
         TextDocument.create(params.textDocument.uri.toString(), 'html', 0, virtualHtmlDocContents);
     return htmlLS.getFoldingRanges(virtualHtmlDoc);

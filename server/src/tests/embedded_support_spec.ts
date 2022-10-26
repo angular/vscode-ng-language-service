@@ -6,10 +6,13 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import * as ts from 'typescript';
+
 import {getHTMLVirtualContent} from '../embedded_support';
 
 function assertEmbeddedHTMLContent(value: string, expectedContent: string): void {
-  const virtualContent = getHTMLVirtualContent(value);
+  const sf = ts.createSourceFile('temp', value, ts.ScriptTarget.ESNext, true /* setParentNodes */);
+  const virtualContent = getHTMLVirtualContent(sf);
 
   expect(virtualContent).toEqual(expectedContent);
 }

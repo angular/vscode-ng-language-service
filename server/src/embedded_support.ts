@@ -20,10 +20,9 @@ import * as ts from 'typescript';
  * @see https://github.com/microsoft/vscode-extension-samples/blob/fdd3bb95ce8e38ffe58fc9158797239fdf5017f1/lsp-embedded-request-forwarding/client/src/embeddedSupport.ts#L131-L141
  * @see https://code.visualstudio.com/api/language-extensions/embedded-languages
  */
-export function getHTMLVirtualContent(documentText: string): string {
-  const sf =
-      ts.createSourceFile('temp', documentText, ts.ScriptTarget.ESNext, true /* setParentNodes */);
+export function getHTMLVirtualContent(sf: ts.SourceFile): string {
   const inlineTemplateNodes: ts.Node[] = findAllMatchingNodes(sf, isInlineTemplateNode);
+  const documentText = sf.text;
 
   // Create a blank document with same text length
   let content = documentText.split('\n')

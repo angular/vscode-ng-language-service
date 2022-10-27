@@ -16,8 +16,10 @@
   },
   "dependencies": {
     "@angular/language-service": "15.0.0-next.0",
+    "vscode-html-languageservice": "^5.0.2",
     "vscode-jsonrpc": "6.0.0",
     "vscode-languageserver": "7.0.0",
+    "vscode-languageserver-textdocument": "^1.0.7",
     "vscode-uri": "3.0.3"
   },
   "publishConfig": {

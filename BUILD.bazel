@@ -54,6 +54,7 @@ npm_package(
         ":node_modules/semver",
         ":node_modules/typescript",
         ":node_modules/vscode-jsonrpc",
+        ":node_modules/vscode-html-languageservice",
         ":node_modules/vscode-languageclient",
         ":node_modules/vscode-languageserver-protocol",
         ":node_modules/vscode-languageserver-types",

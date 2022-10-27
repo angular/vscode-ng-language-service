@@ -53,6 +53,8 @@ esbuild(
         "vscode-languageserver",
         "vscode-uri",
         "vscode-jsonrpc",
+        "vscode-languageserver-textdocument",
+        "vscode-html-languageservice",
     ],
     config = "esbuild.mjs",
     # Do not enable minification. It seems to break the extension on Windows (with WSL). See #1198.

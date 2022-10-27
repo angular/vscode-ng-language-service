@@ -181,6 +181,38 @@ describe('Angular Ivy language server', () => {
     expect(targetUri).toContain('libs/post/src/lib/post.component.ts');
   });
 
+  it('provides folding ranges for inline templates', async () => {
+    openTextDocument(client, APP_COMPONENT, `
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+
+@Component({
+  selector: 'my-app',
+  template: \`
+  <div>
+    <span>
+      Hello {{name}}
+    </span>
+  </div>\`,
+})
+export class AppComponent {
+  name = 'Angular';
+  @Input() appInput = '';
+  @Output() appOutput = new EventEmitter<string>();
+}`);
+    const languageServiceEnabled = await waitForNgcc(client);
+    expect(languageServiceEnabled).toBeTrue();
+    const response = await client.sendRequest(lsp.FoldingRangeRequest.type, {
+      textDocument: {
+        uri: APP_COMPONENT_URI,
+      },
+    }) as lsp.FoldingRange[];
+    expect(Array.isArray(response)).toBe(true);
+    // 1 folding range for the div, 1 for the span
+    expect(response.length).toEqual(2);
+    expect(response).toContain({startLine: 6, endLine: 9});
+    expect(response).toContain({startLine: 7, endLine: 8});
+  });
+
   describe('signature help', () => {
     it('should show signature help for an empty call', async () => {
       client.sendNotification(lsp.DidOpenTextDocumentNotification.type, {

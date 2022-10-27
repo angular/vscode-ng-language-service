@@ -151,7 +151,15 @@ export class AngularLanguageClient implements vscode.Disposable {
           }
 
           return angularCompletionsPromise;
-        }
+        },
+        provideFoldingRanges: async (
+            document: vscode.TextDocument, context: vscode.FoldingContext,
+            token: vscode.CancellationToken, next) => {
+          if (!(await this.isInAngularProject(document)) || document.languageId !== 'typescript') {
+            return null;
+          }
+          return next(document, context, token);
+        },
       }
     };
   }

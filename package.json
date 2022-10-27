@@ -201,7 +201,7 @@
   "main": "./dist/client/src/extension",
   "scripts": {
     "ng-dev": "cross-env TS_NODE_PROJECT=$PWD/.ng-dev/tsconfig.json TS_NODE_TRANSPILE_ONLY=1 node --no-warnings --loader ts-node/esm node_modules/@angular/dev-infra-private/ng-dev/bundles/cli.mjs",
-    "compile": "tsc -b && node esbuild.js",
+    "compile": "tsc -b && yarn bazel build :npm",
     "compile:test": "tsc -b test.tsconfig.json",
     "compile:integration": "tsc -b integration && yarn --cwd integration/project build",
     "compile:syntaxes-test": "tsc -b syntaxes/test",
@@ -248,6 +248,7 @@
     "tslint": "6.1.3",
     "tslint-eslint-rules": "5.4.0",
     "vsce": "1.100.1",
+    "vscode-html-languageservice": "^5.0.2",
     "vscode-languageserver-protocol": "3.16.0",
     "vscode-languageserver-textdocument": "1.0.7",
     "vscode-test": "1.6.1",

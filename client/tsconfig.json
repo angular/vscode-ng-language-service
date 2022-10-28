@@ -6,7 +6,8 @@
     "rootDir": "src",
     "rootDirs": [
       ".",
-      "../dist"
+      "../dist",
+      "../bazel-bin"
     ]
   },
   "references": [

@@ -12,7 +12,7 @@
         "--extensionDevelopmentPath=${workspaceFolder}"
       ],
       "outFiles": [
-        "${workspaceFolder}/dist/client/src/*.js"
+        "${workspaceFolder}/bazel-bin/client/src/*.js"
       ],
       "preLaunchTask": {
         "type": "npm",
@@ -25,7 +25,7 @@
       "name": "Launch Prod Client",
       "runtimeExecutable": "${execPath}",
       "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}/dist/npm"
+        "--extensionDevelopmentPath=${workspaceFolder}/bazel-bin/npm"
       ],
       "sourceMaps": false,
       "preLaunchTask": "build vsix"
@@ -37,7 +37,7 @@
       "port": 6009,
       "restart": true,
       "outFiles": [
-        "${workspaceFolder}/dist/server/src/*.js"
+        "${workspaceFolder}/bazel-bin/server/src/*.js"
       ]
     },
     {
@@ -47,7 +47,7 @@
       "port": 9229,
       "restart": true,
       "outFiles": [
-        "${workspaceFolder}/dist/**/*.js"
+        "${workspaceFolder}/bazel-bin/**/*.js"
       ],
     },
     {
@@ -58,7 +58,7 @@
         "<node_internals>/**"
       ],
       "outFiles": [
-        "${workspaceFolder}/dist/integration/lsp/*.js"
+        "${workspaceFolder}/bazel-bin/integration/lsp/*.js"
       ],
       "type": "node"
     },
@@ -69,12 +69,12 @@
       "runtimeExecutable": "${execPath}",
       "args": [
         "--disable-extensions",
-        "--extensionDevelopmentPath=${workspaceFolder}/dist/npm",
-        "--extensionTestsPath=${workspaceFolder}/dist/integration/e2e/jasmine",
+        "--extensionDevelopmentPath=${workspaceFolder}/bazel-bin/npm",
+        "--extensionTestsPath=${workspaceFolder}/bazel-bin/integration/e2e/jasmine",
         "${workspaceFolder}/integration/project"
       ],
       "outFiles": [
-        "${workspaceFolder}/dist/integration/e2e/*.js"
+        "${workspaceFolder}/bazel-bin/integration/e2e/*.js"
       ],
       "preLaunchTask": {
         "type": "npm",

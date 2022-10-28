@@ -71,6 +71,7 @@ npm_package(
     ],
     replace_prefixes = {
         "package_expanded.json": "package.json",
+        "server/package_expanded.json": "server/package.json",
         "client/": "",
         "syntaxes/src/": "syntaxes/",
     },

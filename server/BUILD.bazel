@@ -1,5 +1,7 @@
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
+load("@aspect_rules_js//js/private:expand_template.bzl", "expand_template")
+load("//:version.bzl", "VERSION")
 
 ts_config(
     name = "tsconfig",
@@ -64,10 +66,19 @@ esbuild(
     ]
 )
 
+expand_template(
+    name = "package_json_expanded",
+    template = "package.json",
+    out = "package_expanded.json",
+    substitutions = {
+        "0.0.0-PLACEHOLDER": VERSION,
+    }
+)
+
 filegroup(
     name = "npm_files",
     srcs = [
-        "package.json",
+        "package_expanded.json",
         "README.md",
         "index.js",
         "bin/ngserver",

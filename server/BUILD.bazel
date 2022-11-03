@@ -1,53 +1,50 @@
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//js/private:expand_template.bzl", "expand_template")
-load("//:version.bzl", "VERSION")
 
 ts_config(
     name = "tsconfig",
     src = "tsconfig.json",
+    visibility = [
+        "//integration:__subpackages__",
+        "//server:__subpackages__",
+    ],
     deps = [
         "//:tsconfig",
         "//common:tsconfig",
     ],
-    visibility = [
-        "//server:__subpackages__",
-        "//integration:__subpackages__",
-    ]
 )
 
 esbuild(
     name = "banner",
-    entry_point = "//server/src:banner.js",
-    data = ["//server/src"],
-    platform = "node",
-    format = "cjs",
-    sourcemap = "external",
-    external = [
-        "path",
-    ],
     config = {
         # This is described in more detail in the `server/banner.ts` but this line actually overrides
         # the built-in `require` function by adding a line at the bottom of the generated banner code
         # to assign the override function to the `require` name.
-        "footer": { "js": "require = requireOverride;" },
+        "footer": {"js": "require = requireOverride;"},
         # Workaround for https://github.com/aspect-build/rules_esbuild/issues/58
         "resolveExtensions": [".js"],
     },
+    data = ["//server/src"],
+    entry_point = "//server/src:banner.js",
+    external = [
+        "path",
+    ],
+    format = "cjs",
     # Do not enable minification. It seems to break the extension on Windows (with WSL). See #1198.
     minify = False,
+    platform = "node",
+    sourcemap = "external",
 )
 
 esbuild(
     name = "index",
-    entry_point = "//server/src:server.js",
     srcs = [
-        "//server/src",
         ":banner.js",
+        "//server/src",
     ],
-    platform = "node",
-    format = "cjs",
-    sourcemap = "external",
+    config = "esbuild.mjs",
+    entry_point = "//server/src:server.js",
     external = [
         "fs",
         "path",
@@ -58,30 +55,32 @@ esbuild(
         "vscode-languageserver-textdocument",
         "vscode-html-languageservice",
     ],
-    config = "esbuild.mjs",
+    format = "cjs",
     # Do not enable minification. It seems to break the extension on Windows (with WSL). See #1198.
     minify = False,
+    platform = "node",
+    sourcemap = "external",
     visibility = [
         "//integration:__subpackages__",
-    ]
+    ],
 )
 
 expand_template(
     name = "package_json_expanded",
-    template = "package.json",
     out = "package_expanded.json",
-    substitutions = {
-        "0.0.0-PLACEHOLDER": VERSION,
-    }
+    stamp_substitutions = {
+        "0.0.0-PLACEHOLDER": "{{BUILD_SCM_VERSION}}",
+    },
+    template = "package.json",
 )
 
 filegroup(
     name = "npm_files",
     srcs = [
-        "package_expanded.json",
         "README.md",
-        "index.js",
         "bin/ngserver",
+        "index.js",
+        "package_expanded.json",
     ],
     visibility = ["//:__pkg__"],
 )

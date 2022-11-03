@@ -38,7 +38,7 @@ rm -rf dist
 yarn install
 
 # Build the npm package with bazel
-yarn bazel build //:npm
+yarn bazel build //:npm --config=release
 
 # Copy the bazel built package to dist/npm
 mkdir -p dist/npm

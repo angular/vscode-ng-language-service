@@ -1,3 +1,7 @@
+# Release configuration
+build:release --workspace_status_command="yarn -s ng-dev release build-env-stamp --mode=release"
+build:release --stamp
+
 # ======================================================================================================================
 # Support for debugging Node.js tests
 # Use `--config=debug` to enable these settings

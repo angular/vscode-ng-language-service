@@ -490,7 +490,7 @@ function getServerOptions(ctx: vscode.ExtensionContext, debug: boolean): lsp.Nod
   // Node module for the language server
   const args = constructArgs(ctx, viewEngine, vscode.workspace.isTrusted);
   const prodBundle = ctx.asAbsolutePath('server');
-  const devBundle = ctx.asAbsolutePath(path.join('dist', 'server', 'src', 'server.js'));
+  const devBundle = ctx.asAbsolutePath(path.join('bazel-bin', 'server', 'src', 'server.js'));
   // VS Code Insider launches extensions in debug mode by default but users
   // install prod bundle so we have to check whether dev bundle exists.
   const latestServerModule = debug && fs.existsSync(devBundle) ? devBundle : prodBundle;

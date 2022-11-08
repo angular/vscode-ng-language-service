@@ -25,9 +25,14 @@
         "panel": "dedicated",
         "reveal": "never"
       },
-      "problemMatcher": [
-        "$tsc-watch"
-      ]
+      "problemMatcher": {
+        "base": "$tsc-watch",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^iBazel \\[\\d{1,2}:\\d{1,2}(?:AM|PM)\\]: Querying for files to watch.*",
+          "endsPattern": "^INFO: Build completed successfully, \\d total action(s)?"
+        }
+      }
     },
     {
       "type": "shell",

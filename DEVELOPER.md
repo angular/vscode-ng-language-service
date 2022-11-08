@@ -1,6 +1,6 @@
 # Monorepo setup
 
-This repository is a monorepo. All build outputs are created in the `dist` directory.
+This repository is a monorepo. All build outputs are created in the `bazel-bin` directory.
 
 The `dependencies` in root [`package.json`](package.json) must include all production dependencies
 of the client **and** and the server.
@@ -96,6 +96,8 @@ As a shortcut, there's also a task setup to automatically launch the client and
 attach the debugger in a single step. To do so,
 
 1. Go to Run on the sidebar, select `Client + Server` from the task list
+
+Note: Because we are building with bazel, any breakpoints need to be set on the files in `bazel-bin/...` or by adding a `debugger;` statement before compilation.
 
 ### Install Local `@angular/language-service`
 

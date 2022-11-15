@@ -12,7 +12,7 @@ import url from 'url';
 
 import {NodeModule, resolve, Version} from '../../common/resolver';
 
-const MIN_TS_VERSION = '4.3';
+const MIN_TS_VERSION = '4.8';
 const MIN_NG_VERSION = '13.0';
 const TSSERVERLIB = 'typescript/lib/tsserverlibrary';
 

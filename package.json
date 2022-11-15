@@ -235,7 +235,7 @@
     "vscode-uri": "3.0.4"
   },
   "devDependencies": {
-    "@angular/dev-infra-private": "https://github.com/angular/dev-infra-private-builds.git#262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2",
+    "@angular/dev-infra-private": "https://github.com/angular/dev-infra-private-builds.git#6d9c069f7ba8bedd07d376444d65472154026ce8",
     "@bazel/bazelisk": "1.12.0",
     "@bazel/ibazel": "0.16.2",
     "@types/jasmine": "3.10.6",

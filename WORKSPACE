@@ -2,9 +2,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "aspect_rules_js",
-    sha256 = "b9fde0f20de6324ad443500ae738bda00facbd73900a12b417ce794856e01407",
-    strip_prefix = "rules_js-1.5.0",
-    url = "https://github.com/aspect-build/rules_js/archive/refs/tags/v1.5.0.tar.gz",
+    sha256 = "dda5fee3926e62c483660b35b25d1577d23f88f11a2775e3555b57289f4edb12",
+    strip_prefix = "rules_js-1.6.9",
+    url = "https://github.com/aspect-build/rules_js/archive/refs/tags/v1.6.9.tar.gz",
 )
 
 load("@aspect_rules_js//js:repositories.bzl", "rules_js_dependencies")
@@ -13,9 +13,9 @@ rules_js_dependencies()
 
 http_archive(
     name = "aspect_rules_ts",
-    sha256 = "743f0e988e4e3f1e25e52c79f9dc3da1ddd77507ae88787ae95b4e70c537872b",
-    strip_prefix = "rules_ts-1.0.0-rc4",
-    url = "https://github.com/aspect-build/rules_ts/archive/refs/tags/v1.0.0-rc4.tar.gz",
+    sha256 = "555f408bf664e553eb148f22dc2da9e82177413bd08d2d19180340962cf3ff86",
+    strip_prefix = "rules_ts-1.0.0-rc7",
+    url = "https://github.com/aspect-build/rules_ts/archive/refs/tags/v1.0.0-rc7.tar.gz",
 )
 
 load("@aspect_rules_ts//ts:repositories.bzl", "rules_ts_dependencies")
@@ -24,9 +24,9 @@ rules_ts_dependencies(ts_version_from = "//:package.json",)
 
 http_archive(
     name = "aspect_rules_jasmine",
-    sha256 = "938a2818100fd89e7600a45b7ba4fcd4114c11c5b5741db30ff7c6e0dcb2ea4b",
-    strip_prefix = "rules_jasmine-0.1.0",
-    url = "https://github.com/aspect-build/rules_jasmine/archive/refs/tags/v0.1.0.tar.gz",
+    sha256 = "0357d45b5dba77004931db83ced43c6c432eee658a51d1876a9f2b57838e4080",
+    strip_prefix = "rules_jasmine-0.2.1",
+    url = "https://github.com/aspect-build/rules_jasmine/archive/refs/tags/v0.2.1.tar.gz",
 )
 
 load("@aspect_rules_jasmine//jasmine:dependencies.bzl", "rules_jasmine_dependencies")
@@ -35,21 +35,22 @@ rules_jasmine_dependencies()
 
 http_archive(
     name = "aspect_rules_esbuild",
-    sha256 = "1e365451341ffb2490193292dfd9953f2ca009586c2381cb4dc08d01e48866b7",
-    strip_prefix = "rules_esbuild-0.12.0",
-    url = "https://github.com/aspect-build/rules_esbuild/archive/refs/tags/v0.12.0.tar.gz",
+    sha256 = "dccab34d457faf9968ec83e2900d65cf5b846f036822b675d988deee0113dba9",
+    strip_prefix = "rules_esbuild-0.13.1",
+    url = "https://github.com/aspect-build/rules_esbuild/archive/refs/tags/v0.13.1.tar.gz",
 )
 
 load("@aspect_rules_esbuild//esbuild:dependencies.bzl", "rules_esbuild_dependencies")
 
 rules_esbuild_dependencies()
 
-load("@aspect_rules_jasmine//jasmine:repositories.bzl", "rules_jasmine_repositories", JASMINE_LATEST_VERSION = "LATEST_VERSION")
+load("@aspect_rules_jasmine//jasmine:repositories.bzl", "jasmine_repositories")
 
-rules_jasmine_repositories(
-    name = "jasmine",
-    jasmine_version = JASMINE_LATEST_VERSION,
-)
+jasmine_repositories(name = "jasmine")
+
+load("@jasmine//:npm_repositories.bzl", jasmine_npm_repositories = "npm_repositories")
+
+jasmine_npm_repositories()
 
 load("@aspect_rules_esbuild//esbuild:repositories.bzl", "esbuild_register_toolchains", ESBUILD_LATEST_VERSION = "LATEST_VERSION")
 

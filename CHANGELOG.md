@@ -1,3 +1,15 @@
+# 15.0.0
+
+This release upgrades `@angular/language-service` to v15.0.0.
+
+* feat(server): provide folding ranges for inline templates (#1779)
+* fix(server): resolve tsdk correctly when settings specify a relative location (#1765)
+* fix(server): send diagnostic range to the Angular language service when fixing code errors (#1747)
+* fix: support deeply nested pnpm virtual store node_modules paths in resolveAndRunNgcc (#1742)
+* feat(server): support code actions (#1723)
+* feat(language-service):	Quick fix to import a component when its selector is used ([#47088](https://github.com/angular/angular/pull/47088))
+* feat(language-service):	support to fix invalid banana in box ([#47393](https://github.com/angular/angular/pull/47393))
+
 # v14.2.0
 
 This release upgrades `@angular/language-service` to v14.2.0.

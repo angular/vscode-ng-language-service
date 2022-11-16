@@ -1,3 +1,7 @@
+# 15.0.1
+
+This release fixes an incorrectly bundled `vsix` in the v15.0.0 release.
+
 # 15.0.0
 
 This release upgrades `@angular/language-service` to v15.0.0.

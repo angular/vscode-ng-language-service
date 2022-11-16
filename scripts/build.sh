@@ -34,5 +34,11 @@ set -ex -o pipefail
 # and so that we can call bazel via yarn bazel
 yarn install
 
+# Clear previous "npm_package" outputs. This is workaround used in
+# all release scripts of Angular. We need to do this to ensure that
+# the version placeholders are properly populated. See:
+# https://github.com/bazelbuild/rules_nodejs/issues/1219..
+rm -Rf bazel-bin/npm
+
 # Build the npm package with bazel
 yarn bazel build //:npm --config=release

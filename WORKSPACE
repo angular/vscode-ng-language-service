@@ -13,9 +13,9 @@ rules_js_dependencies()
 
 http_archive(
     name = "aspect_rules_ts",
-    sha256 = "555f408bf664e553eb148f22dc2da9e82177413bd08d2d19180340962cf3ff86",
-    strip_prefix = "rules_ts-1.0.0-rc7",
-    url = "https://github.com/aspect-build/rules_ts/archive/refs/tags/v1.0.0-rc7.tar.gz",
+    sha256 = "f3f0d0a92b0069f8d1bf6a0e26408bd591a8626166db3f88e8d971ffed8f59ba",
+    strip_prefix = "rules_ts-1.0.0",
+    url = "https://github.com/aspect-build/rules_ts/archive/refs/tags/v1.0.0.tar.gz",
 )
 
 load("@aspect_rules_ts//ts:repositories.bzl", "rules_ts_dependencies")

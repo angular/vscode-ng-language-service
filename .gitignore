@@ -19,3 +19,4 @@ dist/
 
 # bazel
 bazel-*
+.angular_packages

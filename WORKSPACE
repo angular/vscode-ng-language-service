@@ -88,6 +88,7 @@ npm_translate_lock(
         "concat-map@0.0.1": [""],
         "balanced-match@1.0.0": [""],
     },
+    # PLACE_HOLDER_FOR_packages/language-service/build.sh_IN_angular_REPO
 )
 
 load("@npm//:repositories.bzl", "npm_repositories")

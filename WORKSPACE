@@ -79,14 +79,15 @@ npm_translate_lock(
         # running `bazel build //:vsix` and burning down missing packages. We do this so that we
         # don't have to run an additional `npm install` action to create a node_modules within the
         # //:npm npm_package where the vsce build takes place.
-        "semver@7.3.7": [""],
-        "lru-cache@6.0.0": [""],
-        "yallist@4.0.0": [""],
-        "minimatch@3.1.2": [""],
-        "brace-expansion@1.1.11": [""],
-        "vscode-languageserver-types@3.16.0": [""],
-        "concat-map@0.0.1": [""],
         "balanced-match@1.0.0": [""],
+        "brace-expansion@1.1.11": [""],
+        "concat-map@0.0.1": [""],
+        "lru-cache@6.0.0": [""],
+        "minimatch@3.1.2": [""],
+        "semver@7.3.7": [""],
+        "vscode-languageserver-types@3.16.0": [""],
+        "vscode-nls@5.2.0": [""],
+        "yallist@4.0.0": [""],
     },
     # PLACE_HOLDER_FOR_packages/language-service/build.sh_IN_angular_REPO
 )

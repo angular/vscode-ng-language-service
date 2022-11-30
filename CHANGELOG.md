@@ -1,3 +1,9 @@
+# 15.0.2
+
+This release upgrades `@angular/language-service` to v15.0.2.
+
+* fix(extension): Ensure older projects that require View Engine can function (#1826)
+
 # 15.0.1
 
 This release fixes an incorrectly bundled `vsix` in the v15.0.0 release.

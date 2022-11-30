@@ -56,7 +56,7 @@ build --enable_runfiles
 # Keep tests tagged "exclusive" in the sandbox
 test --incompatible_exclusive_test_sandboxed
 
-build --build_tests_only
+test --build_tests_only
 
 ###############################
 # Output                      #

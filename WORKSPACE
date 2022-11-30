@@ -73,6 +73,10 @@ npm_translate_lock(
     yarn_lock = "//:yarn.lock",
     package_json = "//:package.json",
     npmrc = "//:.npmrc",
+    data = [
+        "//:pnpm-workspace.yaml",
+        "//v12_language_service:package.json",
+    ],
     verify_node_modules_ignored = "//:.bazelignore",
     public_hoist_packages = {
         # Hoist transitive closure of npm deps needed for vsce; this set was determined manually by

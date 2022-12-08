@@ -743,6 +743,14 @@ export class Session {
         },
         codeActionProvider: this.ivy ? {
           resolveProvider: true,
+          // Now the Angular code action provider only supports `QuickFix`. If leave the
+          // `codeActionKinds` empty, all action requests will be sent to the Angular language
+          // service, especially for the action before saving the file, the Angular code action
+          // provider will try to fix all errors in the whole file, it's expensive.
+          //
+          // Find more info
+          // [here](https://github.com/angular/vscode-ng-language-service/issues/1828)
+          codeActionKinds: [lsp.CodeActionKind.QuickFix],
         } :
                                        undefined,
       },

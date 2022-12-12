@@ -1,3 +1,10 @@
+# 15.0.3
+
+This release upgrades `@angular/language-service` to v15.0.3.
+
+* fix(server): filter unsupported code action to improve performance on save (#1834)
+* fix(compiler-cli): Produce diagnostic rather than crash when using invalid hostDirective ([#48314](https://github.com/angular/angular/pull/48314))
+
 # 15.0.2
 
 This release upgrades `@angular/language-service` to v15.0.2.

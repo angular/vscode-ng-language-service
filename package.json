@@ -232,7 +232,7 @@
     "vscode-languageclient": "7.0.0",
     "vscode-languageserver": "7.0.0",
     "vscode-languageserver-textdocument": "^1.0.7",
-    "vscode-uri": "3.0.4"
+    "vscode-uri": "3.0.7"
   },
   "devDependencies": {
     "@angular/dev-infra-private": "https://github.com/angular/dev-infra-private-builds.git#262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2",

@@ -60,6 +60,15 @@ export class AngularLanguageClient implements vscode.Disposable {
       revealOutputChannelOn: lsp.RevealOutputChannelOn.Never,
       outputChannel: this.outputChannel,
       middleware: {
+        provideCodeActions: async (
+            document: vscode.TextDocument, range: vscode.Range, context: vscode.CodeActionContext,
+            token: vscode.CancellationToken, next: lsp.ProvideCodeActionsSignature) => {
+          if (await this.isInAngularProject(document) &&
+              isInsideInlineTemplateRegion(document, range.start) &&
+              isInsideInlineTemplateRegion(document, range.end)) {
+            return next(document, range, context, token);
+          }
+        },
         prepareRename: async (
             document: vscode.TextDocument, position: vscode.Position,
             token: vscode.CancellationToken, next: lsp.PrepareRenameSignature) => {

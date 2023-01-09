@@ -76,6 +76,7 @@ npm_translate_lock(
     data = [
         "//:pnpm-workspace.yaml",
         "//v12_language_service:package.json",
+        # PLACE_HOLDER_FOR_angular/angular_packages/language-service/build.sh
     ],
     verify_node_modules_ignored = "//:.bazelignore",
     public_hoist_packages = {

@@ -146,6 +146,11 @@
           "default": false,
           "markdownDescription": "Disable the step to automatically run ngcc. [ngcc](https://github.com/angular/angular/blob/main/packages/compiler/design/architecture.md#high-level-proposal) is required to run and gather metadata from libraries not published with Ivy instructions. This can be run outside of VSCode instead (for example, as part of the build/rebuild in the CLI). Note that ngcc needs to run not only at startup, but also whenever the dependencies change. Failing to run ngcc when required can result in incomplete information and spurious errors reported by the language service."
         },
+        "angular.disableCodeActions": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Disable code actions in Angular contexts, including quick fixes in template files which add missing imports. Some code actions require global project analysis, so it may be desirable to disable them for performance reasons."
+        },
         "angular.forceStrictTemplates": {
           "type": "boolean",
           "default": false,

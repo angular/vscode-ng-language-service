@@ -44,6 +44,7 @@ function main() {
     resolvedNgLsPath: ng.resolvedPath,
     ivy: isG3 ? true : options.ivy,
     disableAutomaticNgcc: options.disableAutomaticNgcc || options.untrustedWorkspace,
+    disableCodeActions: options.disableCodeActions,
     logToConsole: options.logToConsole,
     includeAutomaticOptionalChainCompletions: options.includeAutomaticOptionalChainCompletions,
     includeCompletionsWithSnippetText: options.includeCompletionsWithSnippetText,

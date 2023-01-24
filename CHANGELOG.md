@@ -1,3 +1,9 @@
+# 15.2.0-next.0
+
+This release upgrades `@angular/language-service` to v15.2.0-next.1.
+
+* feat: Add option to disable code actions ([#1849](https://github.com/angular/vscode-ng-language-service/pull/1849))
+
 # 15.1.0
 
 This release upgrades `@angular/language-service` to v15.1.0.

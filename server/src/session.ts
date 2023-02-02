@@ -31,7 +31,6 @@ export interface SessionOptions {
   resolvedNgLsPath: string;
   ivy: boolean;
   disableAutomaticNgcc: boolean;
-  disableCodeActions: boolean;
   logToConsole: boolean;
   includeAutomaticOptionalChainCompletions: boolean;
   includeCompletionsWithSnippetText: boolean;
@@ -116,7 +115,7 @@ export class Session {
       }
     });
 
-    this.addProtocolHandlers(this.connection, options);
+    this.addProtocolHandlers(this.connection);
     this.projectService = this.createProjectService(options);
   }
 
@@ -184,8 +183,8 @@ export class Session {
     return projSvc;
   }
 
-  private addProtocolHandlers(conn: lsp.Connection, options: SessionOptions) {
-    conn.onInitialize(p => this.onInitialize(p, options));
+  private addProtocolHandlers(conn: lsp.Connection) {
+    conn.onInitialize(p => this.onInitialize(p));
     conn.onDidOpenTextDocument(p => this.onDidOpenTextDocument(p));
     conn.onDidCloseTextDocument(p => this.onDidCloseTextDocument(p));
     conn.onDidChangeTextDocument(p => this.onDidChangeTextDocument(p));
@@ -207,10 +206,8 @@ export class Session {
     conn.onCodeLens(p => this.onCodeLens(p));
     conn.onCodeLensResolve(p => this.onCodeLensResolve(p));
     conn.onSignatureHelp(p => this.onSignatureHelp(p));
-    if (!options.disableCodeActions) {
-      conn.onCodeAction(p => this.onCodeAction(p));
-      conn.onCodeActionResolve(p => this.onCodeActionResolve(p));
-    }
+    conn.onCodeAction(p => this.onCodeAction(p));
+    conn.onCodeActionResolve(p => this.onCodeActionResolve(p));
   }
 
   private onCodeAction(params: lsp.CodeActionParams): lsp.CodeAction[]|null {
@@ -710,8 +707,7 @@ export class Session {
     return project;
   }
 
-  private onInitialize(params: lsp.InitializeParams, options: SessionOptions):
-      lsp.InitializeResult {
+  private onInitialize(params: lsp.InitializeParams): lsp.InitializeResult {
     this.snippetSupport =
         params.capabilities.textDocument?.completion?.completionItem?.snippetSupport;
     const serverOptions: ServerOptions = {
@@ -745,7 +741,7 @@ export class Session {
         workspace: {
           workspaceFolders: {supported: true},
         },
-        codeActionProvider: (this.ivy && !options.disableCodeActions) ? {
+        codeActionProvider: this.ivy ? {
           resolveProvider: true,
           // Now the Angular code action provider only supports `QuickFix`. If leave the
           // `codeActionKinds` empty, all action requests will be sent to the Angular language
@@ -756,7 +752,7 @@ export class Session {
           // [here](https://github.com/angular/vscode-ng-language-service/issues/1828)
           codeActionKinds: [lsp.CodeActionKind.QuickFix],
         } :
-                                                                        undefined,
+                                       undefined,
       },
       serverOptions,
     };

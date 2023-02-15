@@ -30,15 +30,8 @@ export interface GetTcbParams {
   position: lsp.Position;
 }
 
-export interface RunNgccParams {
-  textDocument: lsp.TextDocumentIdentifier;
-}
-
 export const GetTcbRequest =
     new lsp.RequestType<GetTcbParams, GetTcbResponse|null, /* error */ void>('angular/getTcb');
-
-export const RunNgccRequest =
-    new lsp.RequestType<RunNgccParams, void, /* error */ void>('angular/runNgcc');
 
 export interface GetTcbResponse {
   uri: lsp.DocumentUri;

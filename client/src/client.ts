@@ -12,7 +12,7 @@ import * as vscode from 'vscode';
 import * as lsp from 'vscode-languageclient/node';
 
 import {OpenOutputChannel, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode, SuggestStrictModeParams} from '../../common/notifications';
-import {GetComponentsWithTemplateFile, GetTcbRequest, GetTemplateLocationForComponent, IsInAngularProject, RunNgccRequest} from '../../common/requests';
+import {GetComponentsWithTemplateFile, GetTcbRequest, GetTemplateLocationForComponent, IsInAngularProject} from '../../common/requests';
 import {resolve, Version} from '../../common/resolver';
 
 import {isInsideComponentDecorator, isInsideInlineTemplateRegion, isInsideStringLiteral} from './embedded_support';
@@ -281,16 +281,6 @@ export class AngularLanguageClient implements vscode.Disposable {
     };
   }
 
-  runNgcc(textEditor: vscode.TextEditor): void {
-    if (this.client === null) {
-      return;
-    }
-    this.client.sendRequest(RunNgccRequest, {
-      textDocument:
-          this.client.code2ProtocolConverter.asTextDocumentIdentifier(textEditor.document),
-    });
-  }
-
   get initializeResult(): lsp.InitializeResult|undefined {
     return this.client?.initializeResult;
   }
@@ -448,18 +438,9 @@ function constructArgs(
     args.push('--includeCompletionsWithSnippetText');
   }
 
-  const disableAutomaticNgcc = config.get<boolean>('angular.disableAutomaticNgcc');
-  if (disableAutomaticNgcc) {
-    args.push('--disableAutomaticNgcc');
-  }
-
   const forceStrictTemplates = config.get<boolean>('angular.forceStrictTemplates');
   if (forceStrictTemplates) {
     args.push('--forceStrictTemplates');
-  }
-
-  if (!isTrustedWorkspace) {
-    args.push('--untrustedWorkspace');
   }
 
   const tsdk: string|null = config.get('typescript.tsdk', null);

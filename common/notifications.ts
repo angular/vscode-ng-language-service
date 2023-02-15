@@ -27,8 +27,4 @@ export interface SuggestStrictModeParams {
 export const SuggestStrictMode =
     new NotificationType<SuggestStrictModeParams>('angular/suggestStrictMode');
 
-// Report the end of `NGCC` progress and Only used by the `ivy_spec.ts`.
-export const NgccProgressEnd =
-    new NotificationType<{configFilePath: string}>('angular/NgccProgressEnd');
-
 export const OpenOutputChannel = new NotificationType('angular/OpenOutputChannel');

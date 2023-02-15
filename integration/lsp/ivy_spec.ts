@@ -12,7 +12,7 @@ import {MessageConnection} from 'vscode-jsonrpc';
 import * as lsp from 'vscode-languageserver-protocol';
 import {URI} from 'vscode-uri';
 
-import {NgccProgressEnd, ProjectLanguageService, ProjectLanguageServiceParams, SuggestStrictMode, SuggestStrictModeParams} from '../../common/notifications';
+import {ProjectLanguageService, ProjectLanguageServiceParams, SuggestStrictMode, SuggestStrictModeParams} from '../../common/notifications';
 import {GetComponentsWithTemplateFile, GetTcbRequest, GetTemplateLocationForComponent, IsInAngularProject} from '../../common/requests';
 import {APP_COMPONENT, APP_COMPONENT_URI, FOO_COMPONENT, FOO_COMPONENT_URI, FOO_TEMPLATE, FOO_TEMPLATE_URI, IS_BAZEL, PROJECT_PATH, TSCONFIG} from '../test_constants';
 
@@ -41,28 +41,8 @@ describe('Angular Ivy language server', () => {
     client.dispose();
   });
 
-  it('should send ngcc progress after a project has finished loading', async () => {
-    openTextDocument(client, APP_COMPONENT);
-    const configFilePath = await onNgccProgress(client);
-    expect(configFilePath.endsWith('integration/project/tsconfig.json')).toBeTrue();
-  });
-
-  it('should disable language service until ngcc has completed', async () => {
-    openTextDocument(client, APP_COMPONENT);
-    const languageServiceEnabled = await onLanguageServiceStateNotification(client);
-    expect(languageServiceEnabled).toBeFalse();
-  });
-
-  it('should re-enable language service once ngcc has completed', async () => {
-    openTextDocument(client, APP_COMPONENT);
-    const languageServiceEnabled = await waitForNgcc(client);
-    expect(languageServiceEnabled).toBeTrue();
-  });
-
   it('should handle hover on inline template', async () => {
     openTextDocument(client, APP_COMPONENT);
-    const languageServiceEnabled = await waitForNgcc(client);
-    expect(languageServiceEnabled).toBeTrue();
     const response = await client.sendRequest(lsp.HoverRequest.type, {
       textDocument: {
         uri: APP_COMPONENT_URI,
@@ -77,8 +57,6 @@ describe('Angular Ivy language server', () => {
 
   it('should show diagnostics for inline template on open', async () => {
     openTextDocument(client, APP_COMPONENT);
-    const languageServiceEnabled = await waitForNgcc(client);
-    expect(languageServiceEnabled).toBeTrue();
     const diagnostics = await getDiagnosticsForFile(client, APP_COMPONENT);
     expect(diagnostics.length).toBe(0);
   });
@@ -92,8 +70,6 @@ describe('Angular Ivy language server', () => {
         text: `{{ doesnotexist }}`,
       },
     });
-    const languageServiceEnabled = await waitForNgcc(client);
-    expect(languageServiceEnabled).toBeTrue();
     const diagnostics = await getDiagnosticsForFile(client, FOO_TEMPLATE);
     expect(diagnostics.length).toBe(1);
     expect(diagnostics[0].message)
@@ -107,8 +83,6 @@ describe('Angular Ivy language server', () => {
 
   it('should support request cancellation', async () => {
     openTextDocument(client, APP_COMPONENT);
-    const languageServiceEnabled = await waitForNgcc(client);
-    expect(languageServiceEnabled).toBeTrue();
     // Send a request and immediately cancel it
     const promise = client.sendRequest(lsp.HoverRequest.type, {
       textDocument: {
@@ -132,8 +106,6 @@ describe('Angular Ivy language server', () => {
         text: `<div *ngIf="false"></div>`,
       },
     });
-    const languageServiceEnabled = await waitForNgcc(client);
-    expect(languageServiceEnabled).toBeTrue();
     const response = await client.sendRequest(lsp.DefinitionRequest.type, {
       textDocument: {
         uri: FOO_TEMPLATE_URI,
@@ -168,8 +140,6 @@ describe('Angular Ivy language server', () => {
         text: `<lib-post></lib-post>`,
       },
     });
-    const languageServiceEnabled = await waitForNgcc(client);
-    expect(languageServiceEnabled).toBeTrue();
     const response = await client.sendRequest(lsp.DefinitionRequest.type, {
       textDocument: {
         uri: FOO_TEMPLATE_URI,
@@ -199,8 +169,6 @@ export class AppComponent {
   @Input() appInput = '';
   @Output() appOutput = new EventEmitter<string>();
 }`);
-    const languageServiceEnabled = await waitForNgcc(client);
-    expect(languageServiceEnabled).toBeTrue();
     const response = await client.sendRequest(lsp.FoldingRangeRequest.type, {
       textDocument: {
         uri: APP_COMPONENT_URI,
@@ -223,8 +191,6 @@ export class AppComponent {
           text: `{{ title.toString() }}`,
         },
       });
-      const languageServiceEnabled = await waitForNgcc(client);
-      expect(languageServiceEnabled).toBeTrue();
       const response = (await client.sendRequest(lsp.SignatureHelpRequest.type, {
         textDocument: {
           uri: FOO_TEMPLATE_URI,
@@ -245,8 +211,6 @@ export class AppComponent {
           text: `{{ title.substr(0, ) }}`,
         },
       });
-      const languageServiceEnabled = await waitForNgcc(client);
-      expect(languageServiceEnabled).toBeTrue();
       const response = (await client.sendRequest(lsp.SignatureHelpRequest.type, {
         textDocument: {
           uri: FOO_TEMPLATE_URI,
@@ -278,8 +242,6 @@ export class AppComponent {
 
     it('should retain typecheck files', async () => {
       openTextDocument(client, APP_COMPONENT);
-      const languageServiceEnabled = await waitForNgcc(client);
-      expect(languageServiceEnabled).toBeTrue();
       // Create a file in node_modules, this will trigger a project reload via
       // the directory watcher
       fs.writeFileSync(dummy, '');
@@ -296,8 +258,6 @@ export class AppComponent {
   describe('completions', () => {
     it('for events', async () => {
       openTextDocument(client, FOO_TEMPLATE, `<my-app ()></my-app>`);
-      const languageServiceEnabled = await waitForNgcc(client);
-      expect(languageServiceEnabled).toBeTrue();
       const response = await client.sendRequest(lsp.CompletionRequest.type, {
         textDocument: {
           uri: FOO_TEMPLATE_URI,
@@ -316,8 +276,6 @@ export class AppComponent {
     describe('from template files', () => {
       beforeEach(async () => {
         openTextDocument(client, FOO_TEMPLATE);
-        const languageServiceEnabled = await waitForNgcc(client);
-        expect(languageServiceEnabled).toBeTrue();
       });
 
       it('should handle prepare rename request for property read', async () => {
@@ -368,8 +326,6 @@ export class AppComponent {
     describe('from typescript files', () => {
       beforeEach(async () => {
         openTextDocument(client, APP_COMPONENT);
-        const languageServiceEnabled = await waitForNgcc(client);
-        expect(languageServiceEnabled).toBeTrue();
       });
 
       it('should handle prepare rename request for inline template property read', async () => {
@@ -455,8 +411,6 @@ export class AppComponent {
         fs.writeFileSync(TSCONFIG, JSON.stringify(config, null, 2));
 
         openTextDocument(client, APP_COMPONENT);
-        const languageServiceEnabled = await waitForNgcc(client);
-        expect(languageServiceEnabled).toBeTrue();
       });
 
       it('should suggest strict mode', async () => {
@@ -489,7 +443,6 @@ export class AppComponent {
 
   it('should handle getTcb request', async () => {
     openTextDocument(client, FOO_TEMPLATE);
-    await waitForNgcc(client);
     const response = await client.sendRequest(GetTcbRequest, {
       textDocument: {
         uri: FOO_TEMPLATE_URI,
@@ -501,7 +454,6 @@ export class AppComponent {
 
   it('should handle goToComponent request', async () => {
     openTextDocument(client, FOO_TEMPLATE);
-    await waitForNgcc(client);
     const response = await client.sendRequest(GetComponentsWithTemplateFile, {
       textDocument: {
         uri: FOO_TEMPLATE_URI,
@@ -512,7 +464,6 @@ export class AppComponent {
 
   it('should handle GetTemplateLocationForComponent request', async () => {
     openTextDocument(client, FOO_TEMPLATE);
-    await waitForNgcc(client);
     const response = await client.sendRequest(GetTemplateLocationForComponent, {
       textDocument: {
         uri: FOO_COMPONENT_URI,
@@ -525,7 +476,6 @@ export class AppComponent {
 
   it('should handle GetTemplateLocationForComponent request when not in component', async () => {
     openTextDocument(client, FOO_TEMPLATE);
-    await waitForNgcc(client);
     const response = await client.sendRequest(GetTemplateLocationForComponent, {
       textDocument: {
         uri: FOO_COMPONENT_URI,
@@ -537,7 +487,6 @@ export class AppComponent {
 
   it('should provide a "go to component" codelens', async () => {
     openTextDocument(client, FOO_TEMPLATE);
-    await waitForNgcc(client);
     const codeLensResponse = await client.sendRequest(lsp.CodeLensRequest.type, {
       textDocument: {
         uri: FOO_TEMPLATE_URI,
@@ -555,7 +504,6 @@ export class AppComponent {
 
   it('detects an Angular project', async () => {
     openTextDocument(client, FOO_TEMPLATE);
-    await waitForNgcc(client);
     const templateResponse = await client.sendRequest(IsInAngularProject, {
       textDocument: {
         uri: FOO_TEMPLATE_URI,
@@ -603,8 +551,6 @@ describe('auto-apply optional chaining', () => {
     }
     `);
     openTextDocument(client, FOO_TEMPLATE, `{{ person.n }}`);
-    const languageServiceEnabled = await waitForNgcc(client);
-    expect(languageServiceEnabled).toBeTrue();
     const response = await client.sendRequest(lsp.CompletionRequest.type, {
       textDocument: {
         uri: FOO_TEMPLATE_URI,
@@ -618,8 +564,6 @@ describe('auto-apply optional chaining', () => {
 
   it('should work on NonNullable symbol', async () => {
     openTextDocument(client, FOO_TEMPLATE, `{{ title.substr }}`);
-    const languageServiceEnabled = await waitForNgcc(client);
-    expect(languageServiceEnabled).toBeTrue();
     const response = await client.sendRequest(lsp.CompletionRequest.type, {
       textDocument: {
         uri: FOO_TEMPLATE_URI,
@@ -655,8 +599,6 @@ describe('insert snippet text', () => {
 
   it('should be able to complete for an attribute with the value is empty', async () => {
     openTextDocument(client, FOO_TEMPLATE, `<my-app appOut></my-app>`);
-    const languageServiceEnabled = await waitForNgcc(client);
-    expect(languageServiceEnabled).toBeTrue();
     const response = await client.sendRequest(lsp.CompletionRequest.type, {
       textDocument: {
         uri: FOO_TEMPLATE_URI,
@@ -671,8 +613,6 @@ describe('insert snippet text', () => {
 
   it('should not be included in the completion for an attribute with a value', async () => {
     openTextDocument(client, FOO_TEMPLATE, `<my-app [appInput]="1"></my-app>`);
-    const languageServiceEnabled = await waitForNgcc(client);
-    expect(languageServiceEnabled).toBeTrue();
     const response = await client.sendRequest(lsp.CompletionRequest.type, {
       textDocument: {
         uri: FOO_TEMPLATE_URI,
@@ -709,8 +649,6 @@ describe('code fixes', () => {
 
   it('should fix error when property does not exist on type', async () => {
     openTextDocument(client, FOO_TEMPLATE, `{{titl}}`);
-    const languageServiceEnabled = await waitForNgcc(client);
-    expect(languageServiceEnabled).toBeTrue();
     const diags = await getDiagnosticsForFile(client, FOO_TEMPLATE);
     const codeActions = await client.sendRequest(lsp.CodeActionRequest.type, {
       textDocument: {
@@ -735,8 +673,6 @@ describe('code fixes', () => {
   it('should fix error when the range the user selects is larger than the diagnostic', async () => {
     const template = `<span>{{titl}}</span>`;
     openTextDocument(client, FOO_TEMPLATE, template);
-    const languageServiceEnabled = await waitForNgcc(client);
-    expect(languageServiceEnabled).toBeTrue();
     const diags = await getDiagnosticsForFile(client, FOO_TEMPLATE);
     const codeActions = await client.sendRequest(lsp.CodeActionRequest.type, {
       textDocument: {
@@ -771,8 +707,6 @@ describe('code fixes', () => {
         banner = '';
       }
     `);
-      const languageServiceEnabled = await waitForNgcc(client);
-      expect(languageServiceEnabled).toBeTrue();
     });
 
     it('for "fixSpelling"', async () => {
@@ -838,14 +772,6 @@ describe('code fixes', () => {
   });
 });
 
-function onNgccProgress(client: MessageConnection): Promise<string> {
-  return new Promise(resolve => {
-    client.onNotification(NgccProgressEnd, (params) => {
-      resolve(params.configFilePath);
-    });
-  });
-}
-
 function onSuggestStrictMode(client: MessageConnection): Promise<string> {
   return new Promise(resolve => {
     client.onNotification(SuggestStrictMode, (params: SuggestStrictModeParams) => {
@@ -872,9 +798,4 @@ function getDiagnosticsForFile(
           }
         });
   });
-}
-
-async function waitForNgcc(client: MessageConnection): Promise<boolean> {
-  await onNgccProgress(client);
-  return onLanguageServiceStateNotification(client);
 }

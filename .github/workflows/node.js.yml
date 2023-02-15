@@ -23,7 +23,7 @@ jobs:
         node-version: 14.x
     - run: yarn install
     - run: yarn install --cwd integration/project
-    - run: cd integration/project && yarn ngcc
+    - run: cd integration/project
     - run: scripts/build.sh package.json
     - run: xvfb-run -a yarn run test:e2e
       if: runner.os == 'Linux'

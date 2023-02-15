@@ -43,12 +43,10 @@ function main() {
     ngPlugin: '@angular/language-service',
     resolvedNgLsPath: ng.resolvedPath,
     ivy: isG3 ? true : options.ivy,
-    disableAutomaticNgcc: options.disableAutomaticNgcc || options.untrustedWorkspace,
     logToConsole: options.logToConsole,
     includeAutomaticOptionalChainCompletions: options.includeAutomaticOptionalChainCompletions,
     includeCompletionsWithSnippetText: options.includeCompletionsWithSnippetText,
     forceStrictTemplates: isG3 || options.forceStrictTemplates,
-    untrustedWorkspace: options.untrustedWorkspace,
   });
 
   // Log initialization info

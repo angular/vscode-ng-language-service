@@ -32,10 +32,6 @@ interface CommandLineOptions {
    * If true, use Ivy LS, otherwise use legacy View Engine LS.
    */
   ivy: boolean;
-  /**
-   * If true, skips the running ngcc when using Ivy LS.
-   */
-  disableAutomaticNgcc: boolean;
   logFile?: string;
   logVerbosity?: string;
   logToConsole: boolean;
@@ -44,14 +40,12 @@ interface CommandLineOptions {
   includeAutomaticOptionalChainCompletions: boolean;
   includeCompletionsWithSnippetText: boolean;
   forceStrictTemplates: boolean;
-  untrustedWorkspace: boolean;
 }
 
 export function parseCommandLine(argv: string[]): CommandLineOptions {
   return {
     help: hasArgument(argv, '--help'),
     ivy: !hasArgument(argv, '--viewEngine'),
-    disableAutomaticNgcc: hasArgument(argv, '--disableAutomaticNgcc'),
     logFile: findArgument(argv, '--logFile'),
     logVerbosity: findArgument(argv, '--logVerbosity'),
     logToConsole: hasArgument(argv, '--logToConsole'),
@@ -61,7 +55,6 @@ export function parseCommandLine(argv: string[]): CommandLineOptions {
         hasArgument(argv, '--includeAutomaticOptionalChainCompletions'),
     includeCompletionsWithSnippetText: hasArgument(argv, '--includeCompletionsWithSnippetText'),
     forceStrictTemplates: hasArgument(argv, '--forceStrictTemplates'),
-    untrustedWorkspace: hasArgument(argv, '--untrustedWorkspace'),
   };
 }
 

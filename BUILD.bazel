@@ -41,7 +41,6 @@ npm_package(
         "//client:index.js",
         "//server:npm_files",
         "//syntaxes:npm_files",
-        "//v12_language_service:npm_files",
         # Transitive closure of npm deps needed for vsce; this set was determined manually by
         # running `bazel build //:vsix` and burning down missing packages. We do this so that we
         # don't have to run an additional `npm install` action to create a node_modules within the

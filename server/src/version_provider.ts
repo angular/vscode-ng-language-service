@@ -51,8 +51,16 @@ export function resolveTsServer(probeLocations: string[]): NodeModule {
   if (probeLocations.length > 0) {
     // The first probe location is `typescript.tsdk` if it is specified.
     const resolvedFromTsdk = resolveTsServerFromTsdk(probeLocations[0], probeLocations.slice(1));
+    const minVersion = new Version(MIN_TS_VERSION);
     if (resolvedFromTsdk !== undefined) {
-      return resolvedFromTsdk;
+      if (resolvedFromTsdk.version.greaterThanOrEqual(minVersion)) {
+        return resolvedFromTsdk;
+      } else {
+        console.warn(`Ignoring TSDK version specified in the TypeScript extension options ${
+            resolvedFromTsdk
+                .version} because it is lower than the required TS version for the language service (${
+            MIN_TS_VERSION}).`);
+      }
     }
   }
   return resolveWithMinVersion(TSSERVERLIB, MIN_TS_VERSION, probeLocations, 'typescript');

@@ -1,3 +1,9 @@
+# 15.2.0
+
+This release upgrades `@angular/language-service` to v15.2.0.
+
+* fix(server): Fall back to bundled TS version if specified TSDK is too old ([#1863](https://github.com/angular/vscode-ng-language-service/pull/1863))
+
 # 15.2.0-next.0
 
 This release upgrades `@angular/language-service` to v15.2.0-next.1.

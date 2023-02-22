@@ -15,7 +15,7 @@
     "ngserver": "./bin/ngserver"
   },
   "dependencies": {
-    "@angular/language-service": "15.2.0-next.1",
+    "@angular/language-service": "16.0.0-next.0",
     "vscode-html-languageservice": "^4.2.5",
     "vscode-jsonrpc": "6.0.0",
     "vscode-languageserver": "7.0.0",

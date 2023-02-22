@@ -63,7 +63,7 @@ load("@rules_nodejs//nodejs:repositories.bzl", "nodejs_register_toolchains")
 
 nodejs_register_toolchains(
     name = "nodejs",
-    node_version = "14.20.0",
+    node_version = "16.13.0",
 )
 
 load("@aspect_rules_js//npm:npm_import.bzl", "npm_translate_lock")

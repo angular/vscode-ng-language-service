@@ -19,6 +19,7 @@ ts_project(
     ]) + ["//integration/lsp:srcs"],
     declaration = True,
     source_map = True,
+    supports_workers = False,
     tsconfig = ":tsconfig",
     deps = [
         "//:node_modules/@types/jasmine",

@@ -6,6 +6,7 @@ ts_project(
     srcs = glob(["*.ts"]),
     declaration = True,
     source_map = True,
+    supports_workers = False,
     tsconfig = "//integration:tsconfig",
     deps = [
         "//:node_modules/@types/jasmine",

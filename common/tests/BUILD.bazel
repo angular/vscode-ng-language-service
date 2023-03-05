@@ -17,15 +17,15 @@ ts_project(
     source_map = True,
     tsconfig = ":tsconfig",
     deps = [
-        "//common",
         "//:node_modules/@types/jasmine",
+        "//common",
     ],
 )
 
 jasmine_test(
     name = "test",
-    data = [":tests"],
     args = ["*_spec.js"],
     chdir = package_name(),
+    data = [":tests"],
     tags = ["unit_test"],
 )

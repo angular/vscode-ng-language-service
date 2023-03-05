@@ -6,8 +6,8 @@ ts_config(
     visibility = [
         "//client:__subpackages__",
         "//common:__subpackages__",
-        "//server:__subpackages__",
         "//integration:__subpackages__",
+        "//server:__subpackages__",
     ],
     deps = ["//:tsconfig"],
 )
@@ -22,8 +22,8 @@ ts_project(
     visibility = [
         "//client:__subpackages__",
         "//common:__subpackages__",
-        "//server:__subpackages__",
         "//integration:__subpackages__",
+        "//server:__subpackages__",
     ],
     deps = [
         "//:node_modules/@types/node",

@@ -7,6 +7,9 @@ ts_project(
     declaration = True,
     source_map = True,
     tsconfig = "//server:tsconfig",
+    visibility = [
+        "//server:__subpackages__",
+    ],
     deps = [
         "//:node_modules/@angular/language-service",
         "//:node_modules/@types/node",
@@ -16,8 +19,5 @@ ts_project(
         "//:node_modules/vscode-languageserver-textdocument",
         "//:node_modules/vscode-uri",
         "//common",
-    ],
-    visibility = [
-        "//server:__subpackages__",
     ],
 )

@@ -3,11 +3,11 @@ load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 ts_config(
     name = "tsconfig",
     src = "tsconfig.json",
+    visibility = ["//integration:__subpackages__"],
     deps = [
         "//:tsconfig",
         "//server:tsconfig",
     ],
-    visibility = ["//integration:__subpackages__"]
 )
 
 ts_project(
@@ -15,11 +15,14 @@ ts_project(
     # NB: there is an import cycle between integration/lsp/*.ts and integration/test_constants.ts so
     # they cannot be broken up into separate ts_project targets
     srcs = glob([
-      "*.ts",
+        "*.ts",
     ]) + ["//integration/lsp:srcs"],
     declaration = True,
     source_map = True,
     tsconfig = ":tsconfig",
+    visibility = [
+        "//integration:__subpackages__",
+    ],
     deps = [
         "//:node_modules/@types/jasmine",
         "//:node_modules/@types/node",
@@ -27,8 +30,5 @@ ts_project(
         "//:node_modules/vscode-languageserver-protocol",
         "//:node_modules/vscode-uri",
         "//common",
-    ],
-    visibility = [
-        "//integration:__subpackages__",
     ],
 )

@@ -33,6 +33,7 @@ filegroup(
 
 jasmine_test(
     name = "test",
+    args = ["syntaxes/test/driver.js"],
     data = [
         "//:package_json",
         ":tests",
@@ -44,6 +45,5 @@ jasmine_test(
         # runfiles likely due to esm import issue in rules_js https://github.com/aspect-build/rules_js/issues/362
         "//:node_modules/jasmine",
     ],
-    args = ["syntaxes/test/driver.js"],
     tags = ["unit_test"],
 )

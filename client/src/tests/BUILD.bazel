@@ -17,17 +17,17 @@ ts_project(
     source_map = True,
     tsconfig = ":tsconfig",
     deps = [
-        "//client/src",
-        "//:node_modules/@types/vscode",
         "//:node_modules/@types/jasmine",
+        "//:node_modules/@types/vscode",
         "//:node_modules/vscode-languageserver-textdocument",
+        "//client/src",
     ],
 )
 
 jasmine_test(
     name = "test",
-    data = [":tests"],
     args = ["*_spec.js"],
     chdir = package_name(),
+    data = [":tests"],
     tags = ["unit_test"],
 )

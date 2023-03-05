@@ -7,15 +7,15 @@ ts_project(
     declaration = True,
     source_map = True,
     tsconfig = "//integration:tsconfig",
+    visibility = [
+        "//integration:__subpackages__",
+    ],
     deps = [
         "//:node_modules/@types/jasmine",
         "//:node_modules/@types/node",
         "//:node_modules/@types/vscode",
         "//:node_modules/vscode-test",
         "//integration",
-    ],
-    visibility = [
-        "//integration:__subpackages__",
     ],
 )
 
@@ -35,5 +35,9 @@ js_test(
     # due to file system protection. It is tagged local so it runs outside of
     # the sandbox. It would need some redesign to allow for sandbox execution.
     # Tagged manual so that `bazel test //...` doesn't run it automatically.
-    tags = ["e2e", "local", "manual"],
+    tags = [
+        "e2e",
+        "local",
+        "manual",
+    ],
 )

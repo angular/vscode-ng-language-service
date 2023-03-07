@@ -6,7 +6,6 @@ ts_project(
     composite = True,
     declaration = True,
     source_map = True,
-    supports_workers = False,
     tsconfig = "//server:tsconfig",
     deps = [
         "//:node_modules/@angular/language-service",

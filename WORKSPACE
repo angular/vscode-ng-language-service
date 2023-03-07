@@ -2,9 +2,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "aspect_rules_js",
-    sha256 = "1aa0ab76d1f9520bb8993e2d84f82da2a9c87da1e6e8d121dbb4c857a292c2cd",
-    strip_prefix = "rules_js-1.20.1",
-    url = "https://github.com/aspect-build/rules_js/releases/download/v1.20.1/rules_js-v1.20.1.tar.gz",
+    sha256 = "eb176c20422cd994d409ea2c4727335e04afee5b09f5f333a52187b09b91d02e",
+    strip_prefix = "rules_js-1.20.3",
+    url = "https://github.com/aspect-build/rules_js/releases/download/v1.20.3/rules_js-v1.20.3.tar.gz",
 )
 
 load("@aspect_rules_js//js:repositories.bzl", "rules_js_dependencies")
@@ -13,9 +13,9 @@ rules_js_dependencies()
 
 http_archive(
     name = "aspect_rules_ts",
-    sha256 = "02480b6a1cd12516edf364e678412e9da10445fe3f1070c014ac75e922c969ea",
-    strip_prefix = "rules_ts-1.3.1",
-    url = "https://github.com/aspect-build/rules_ts/releases/download/v1.3.1/rules_ts-v1.3.1.tar.gz",
+    sha256 = "58b6c0ad158fc42883dafa157f1a25cddd65bcd788a772620192ac9ceefa0d78",
+    strip_prefix = "rules_ts-1.3.2",
+    url = "https://github.com/aspect-build/rules_ts/releases/download/v1.3.2/rules_ts-v1.3.2.tar.gz",
 )
 
 load("@aspect_rules_ts//ts:repositories.bzl", "rules_ts_dependencies")
@@ -75,7 +75,6 @@ npm_translate_lock(
     npmrc = "//:.npmrc",
     data = [
         "//:package.json",
-        "//:pnpm-workspace.yaml",
         # PLACE_HOLDER_FOR_angular/angular_packages/language-service/build.sh
     ],
     verify_node_modules_ignored = "//:.bazelignore",

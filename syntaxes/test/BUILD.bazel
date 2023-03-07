@@ -14,7 +14,6 @@ ts_project(
     declaration = True,
     resolve_json_module = True,
     source_map = True,
-    supports_workers = False,
     tsconfig = ":tsconfig",
     deps = [
         "//:node_modules/@types/jasmine",

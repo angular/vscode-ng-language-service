@@ -18,7 +18,6 @@ ts_project(
     composite = True,
     declaration = True,
     source_map = True,
-    supports_workers = False,
     tsconfig = ":tsconfig",
     visibility = [
         "//client:__subpackages__",

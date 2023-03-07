@@ -158,10 +158,10 @@
     uuid "^8.3.2"
     yargs "^17.0.0"
 
-"@angular/language-service@15.0.0":
-  version "15.0.0"
-  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-15.0.0.tgz#74b2b50a1370ed1e403156ca9dd4b81372a4ec2b"
-  integrity sha512-/NUoY2KCLLxqfoDnYf2NK1Vtllp5DCejCs0yjF50uEz1Ad0FOMsTa0oCwKM6Gs+emOjUvzpKeTVoJ6IVf8UwVQ==
+"@angular/language-service@16.0.0-next.0":
+  version "16.0.0-next.0"
+  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-16.0.0-next.0.tgz#0edb515f78edd9d38bee4994e3c8076f6c5f6c31"
+  integrity sha512-Jblgsp/dBl6iEndgqYT8cLCJGEOXw8tm6+TwJ0V8G2jOqnl9qjVqg8FFH/jDyvuMFUnzVhMlrxyLXYFfQJwM2g==
 
 "@assemblyscript/loader@^0.10.1":
   version "0.10.1"
@@ -1799,10 +1799,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/jasmine@3.10.6":
-  version "3.10.6"
-  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.10.6.tgz#8c8fe733d89813bf3dc3f9282d347fa1dbc90567"
-  integrity sha512-twY9adK/vz72oWxCWxzXaxoDtF9TpfEEsxvbc1ibjF3gMD/RThSuSud/GKUTR3aJnfbivAbC/vLqhY+gdWCHfA==
+"@types/jasmine@3.10.7":
+  version "3.10.7"
+  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.10.7.tgz#57b8c6892fa2f4696fbb56851cd99649c781376c"
+  integrity sha512-brLuHhITMz4YV2IxLstAJtyRJgtWfLqFKiqiJFvFWMSmydpAmn42CE4wfw7ywkSk02UrufhtzipTcehk8FctoQ==
 
 "@types/json-schema@*", "@types/json-schema@^7.0.5", "@types/json-schema@^7.0.8", "@types/json-schema@^7.0.9":
   version "7.0.11"
@@ -7664,10 +7664,10 @@ vscode-tmgrammar-test@0.0.11:
     vscode-oniguruma "^1.5.1"
     vscode-textmate "^5.4.0"
 
-vscode-uri@3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/vscode-uri/-/vscode-uri-3.0.4.tgz#703c6dd7c0b727ee1c34a1287434138fb52d054f"
-  integrity sha512-aEmKD6H8Sg8gaQAUrnadG0BMeWXtiWhRsj1a94n2FYsMkDpgnK7BRVzZjOUYIvkv2B+bp5Bmt4ImZCpYbnJwkg==
+vscode-uri@3.0.7:
+  version "3.0.7"
+  resolved "https://registry.yarnpkg.com/vscode-uri/-/vscode-uri-3.0.7.tgz#6d19fef387ee6b46c479e5fb00870e15e58c1eb8"
+  integrity sha512-eOpPHogvorZRobNqJGhapa0JdwaxpjVvyBp0QIUMRMSf8ZAlqOdEquKuRmw9Qwu0qXtJIWqFtMkmvJjUZmMjVA==
 
 vscode-uri@^3.0.3:
   version "3.0.6"

@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@angular/language-service": "12.2.16",
-    "@angular/language-server": "12.2.3"
-  }
-}

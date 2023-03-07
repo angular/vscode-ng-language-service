@@ -63,7 +63,7 @@ load("@rules_nodejs//nodejs:repositories.bzl", "nodejs_register_toolchains")
 
 nodejs_register_toolchains(
     name = "nodejs",
-    node_version = "14.20.0",
+    node_version = "16.13.0",
 )
 
 load("@aspect_rules_js//npm:npm_import.bzl", "npm_translate_lock")
@@ -76,7 +76,7 @@ npm_translate_lock(
     data = [
         "//:package.json",
         "//:pnpm-workspace.yaml",
-        "//v12_language_service:package.json",
+        # PLACE_HOLDER_FOR_angular/angular_packages/language-service/build.sh
     ],
     verify_node_modules_ignored = "//:.bazelignore",
     public_hoist_packages = {

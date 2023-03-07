@@ -13,7 +13,7 @@ import url from 'url';
 import {NodeModule, resolve, Version} from '../../common/resolver';
 
 const MIN_TS_VERSION = '4.8';
-const MIN_NG_VERSION = '13.0';
+const MIN_NG_VERSION = '15.0';
 const TSSERVERLIB = 'typescript/lib/tsserverlibrary';
 
 /**
@@ -51,8 +51,16 @@ export function resolveTsServer(probeLocations: string[]): NodeModule {
   if (probeLocations.length > 0) {
     // The first probe location is `typescript.tsdk` if it is specified.
     const resolvedFromTsdk = resolveTsServerFromTsdk(probeLocations[0], probeLocations.slice(1));
+    const minVersion = new Version(MIN_TS_VERSION);
     if (resolvedFromTsdk !== undefined) {
-      return resolvedFromTsdk;
+      if (resolvedFromTsdk.version.greaterThanOrEqual(minVersion)) {
+        return resolvedFromTsdk;
+      } else {
+        console.warn(`Ignoring TSDK version specified in the TypeScript extension options ${
+            resolvedFromTsdk
+                .version} because it is lower than the required TS version for the language service (${
+            MIN_TS_VERSION}).`);
+      }
     }
   }
   return resolveWithMinVersion(TSSERVERLIB, MIN_TS_VERSION, probeLocations, 'typescript');
@@ -115,30 +123,4 @@ export function loadEsmModule<T>(modulePath: string|URL): Promise<T> {
 export function resolveNgLangSvc(probeLocations: string[]): NodeModule {
   const ngls = '@angular/language-service';
   return resolveWithMinVersion(ngls, MIN_NG_VERSION, probeLocations, ngls);
-}
-
-export async function resolveNgcc(directory: string): Promise<NodeModule|undefined> {
-  // Try to resolve ngcc from the new package format since the v13 release
-  try {
-    const ngcc = resolve('@angular/compiler-cli/ngcc', directory, '@angular/compiler-cli');
-    if (ngcc === undefined) {
-      throw new Error('Could not resolve ngcc');
-    }
-
-    // The Angular compiler-CLI package is strict ESM as of v13.
-    const ngccModule = await loadEsmModule<{ngccMainFilePath: string | undefined}>(
-        url.pathToFileURL(ngcc.resolvedPath));
-    const resolvedPath = ngccModule.ngccMainFilePath;
-    if (resolvedPath === undefined) {
-      throw new Error('could not resolve ngcc path.');
-    }
-
-    return {
-      ...ngcc,
-      resolvedPath,
-    };
-  } catch (e) {
-    // Try to resolve ngcc through with pre-v13 package format
-    return resolve('@angular/compiler-cli/ngcc/main-ngcc.js', directory, '@angular/compiler-cli');
-  }
 }

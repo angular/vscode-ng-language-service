@@ -2,7 +2,7 @@
   "name": "ng-template",
   "displayName": "Angular Language Service",
   "description": "Editor services for Angular templates",
-  "version": "15.1.0-next.0",
+  "version": "16.0.0-next.0",
   "publisher": "Angular",
   "icon": "angular.png",
   "license": "MIT",
@@ -15,8 +15,7 @@
   },
   "capabilities": {
     "untrustedWorkspaces": {
-      "supported": "limited",
-      "description": "This extension requires workspace trust because it needs to execute ngcc from the node_modules in the workspace. Projects do not require ngcc if all library dependencies are published with partial-Ivy or Full-Ivy."
+      "supported": true
     },
     "virtualWorkspaces": {
       "supported": "limited",
@@ -52,11 +51,6 @@
         "command": "angular.goToTemplateForComponent",
         "title": "Go to template",
         "category": "Angular"
-      },
-      {
-        "command": "angular.runNgcc",
-        "title": "Run ngcc",
-        "category": "Angular"
       }
     ],
     "menus": {
@@ -68,10 +62,6 @@
         {
           "command": "angular.goToTemplateForComponent",
           "when": "editorLangId == typescript && !virtualWorkspace"
-        },
-        {
-          "command": "angular.runNgcc",
-          "when": "!virtualWorkspace && isWorkspaceTrusted"
         },
         {
           "command": "angular.getTemplateTcb",
@@ -140,11 +130,6 @@
           "type": "boolean",
           "default": true,
           "markdownDescription": "Enable/disable snippet completions from Angular language server. Requires using TypeScript 4.3+ in the workspace and the `legacy View Engine` option to be disabled."
-        },
-        "angular.disableAutomaticNgcc": {
-          "type": "boolean",
-          "default": false,
-          "markdownDescription": "Disable the step to automatically run ngcc. [ngcc](https://github.com/angular/angular/blob/main/packages/compiler/design/architecture.md#high-level-proposal) is required to run and gather metadata from libraries not published with Ivy instructions. This can be run outside of VSCode instead (for example, as part of the build/rebuild in the CLI). Note that ngcc needs to run not only at startup, but also whenever the dependencies change. Failing to run ngcc when required can result in incomplete information and spurious errors reported by the language service."
         },
         "angular.forceStrictTemplates": {
           "type": "boolean",
@@ -225,20 +210,20 @@
     "test:legacy-syntaxes": "yarn compile:syntaxes-test && yarn build:syntaxes && jasmine dist/syntaxes/test/driver.js"
   },
   "dependencies": {
-    "@angular/language-service": "15.0.0",
+    "@angular/language-service": "16.0.0-next.0",
     "typescript": "4.8.2",
     "vscode-html-languageservice": "^4.2.5",
     "vscode-jsonrpc": "6.0.0",
     "vscode-languageclient": "7.0.0",
     "vscode-languageserver": "7.0.0",
     "vscode-languageserver-textdocument": "^1.0.7",
-    "vscode-uri": "3.0.4"
+    "vscode-uri": "3.0.7"
   },
   "devDependencies": {
     "@angular/dev-infra-private": "https://github.com/angular/dev-infra-private-builds.git#262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2",
     "@bazel/bazelisk": "1.12.0",
     "@bazel/ibazel": "0.16.2",
-    "@types/jasmine": "3.10.6",
+    "@types/jasmine": "3.10.7",
     "@types/node": "14.18.33",
     "@types/vscode": "1.67.0",
     "clang-format": "1.8.0",

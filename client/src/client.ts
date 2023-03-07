@@ -12,7 +12,7 @@ import * as vscode from 'vscode';
 import * as lsp from 'vscode-languageclient/node';
 
 import {OpenOutputChannel, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode, SuggestStrictModeParams} from '../../common/notifications';
-import {GetComponentsWithTemplateFile, GetTcbRequest, GetTemplateLocationForComponent, IsInAngularProject, RunNgccRequest} from '../../common/requests';
+import {GetComponentsWithTemplateFile, GetTcbRequest, GetTemplateLocationForComponent, IsInAngularProject} from '../../common/requests';
 import {resolve, Version} from '../../common/resolver';
 
 import {isInsideComponentDecorator, isInsideInlineTemplateRegion, isInsideStringLiteral} from './embedded_support';
@@ -281,16 +281,6 @@ export class AngularLanguageClient implements vscode.Disposable {
     };
   }
 
-  runNgcc(textEditor: vscode.TextEditor): void {
-    if (this.client === null) {
-      return;
-    }
-    this.client.sendRequest(RunNgccRequest, {
-      textDocument:
-          this.client.code2ProtocolConverter.asTextDocumentIdentifier(textEditor.document),
-    });
-  }
-
   get initializeResult(): lsp.InitializeResult|undefined {
     return this.client?.initializeResult;
   }
@@ -412,8 +402,7 @@ function getProbeLocations(bundled: string): string[] {
  * Construct the arguments that's used to spawn the server process.
  * @param ctx vscode extension context
  */
-function constructArgs(
-    ctx: vscode.ExtensionContext, viewEngine: boolean, isTrustedWorkspace: boolean): string[] {
+function constructArgs(ctx: vscode.ExtensionContext, isTrustedWorkspace: boolean): string[] {
   const config = vscode.workspace.getConfiguration();
   const args: string[] = ['--logToConsole'];
 
@@ -426,15 +415,7 @@ function constructArgs(
   }
 
   const ngProbeLocations = getProbeLocations(ctx.extensionPath);
-  if (viewEngine) {
-    args.push('--viewEngine');
-    args.push('--ngProbeLocations', [
-      path.join(ctx.extensionPath, 'v12_language_service'),
-      ...ngProbeLocations,
-    ].join(','));
-  } else {
-    args.push('--ngProbeLocations', ngProbeLocations.join(','));
-  }
+  args.push('--ngProbeLocations', ngProbeLocations.join(','));
 
   const includeAutomaticOptionalChainCompletions =
       config.get<boolean>('angular.suggest.includeAutomaticOptionalChainCompletions');
@@ -448,18 +429,9 @@ function constructArgs(
     args.push('--includeCompletionsWithSnippetText');
   }
 
-  const disableAutomaticNgcc = config.get<boolean>('angular.disableAutomaticNgcc');
-  if (disableAutomaticNgcc) {
-    args.push('--disableAutomaticNgcc');
-  }
-
   const forceStrictTemplates = config.get<boolean>('angular.forceStrictTemplates');
   if (forceStrictTemplates) {
     args.push('--forceStrictTemplates');
-  }
-
-  if (!isTrustedWorkspace) {
-    args.push('--untrustedWorkspace');
   }
 
   const tsdk: string|null = config.get('typescript.tsdk', null);
@@ -481,31 +453,14 @@ function getServerOptions(ctx: vscode.ExtensionContext, debug: boolean): lsp.Nod
   // will return false even when the value is not set. If value is false, then
   // we need to check if all projects support Ivy language service.
   const config = vscode.workspace.getConfiguration();
-  let viewEngine: boolean = config.get('angular.view-engine') || !allProjectsSupportIvy();
-  if (viewEngine && !allProjectsSupportVE()) {
-    viewEngine = false;
-    if (config.get('angular.view-engine')) {
-      vscode.window.showErrorMessage(
-          `The legacy View Engine option is enabled but the workspace contains a version 13 Angular project.` +
-              ` Legacy View Engine will be disabled since support for it was dropped in v13.`,
-      );
-    } else if (!allProjectsSupportIvy() && !allProjectsSupportVE()) {
-      vscode.window.showErrorMessage(
-          `The workspace contains a project that does not support legacy View Engine (Angular v13+) and a project that does not support the new current runtime (v8 and below).` +
-          `The extension will not work for the legacy project in this workspace.`);
-    }
-  }
 
   // Node module for the language server
-  const args = constructArgs(ctx, viewEngine, vscode.workspace.isTrusted);
+  const args = constructArgs(ctx, vscode.workspace.isTrusted);
   const prodBundle = ctx.asAbsolutePath('server');
   const devBundle = ctx.asAbsolutePath(path.join('bazel-bin', 'server', 'src', 'server.js'));
   // VS Code Insider launches extensions in debug mode by default but users
   // install prod bundle so we have to check whether dev bundle exists.
   const latestServerModule = debug && fs.existsSync(devBundle) ? devBundle : prodBundle;
-  const v12ServerModule = ctx.asAbsolutePath(
-      path.join('v12_language_service', 'node_modules', '@angular', 'language-server'));
-  const module = viewEngine ? v12ServerModule : latestServerModule;
 
   // Argv options for Node.js
   const prodExecArgv: string[] = [];
@@ -517,7 +472,7 @@ function getServerOptions(ctx: vscode.ExtensionContext, debug: boolean): lsp.Nod
   ];
 
   return {
-    module,
+    module: latestServerModule,
     transport: lsp.TransportKind.ipc,
     args,
     options: {
@@ -525,30 +480,4 @@ function getServerOptions(ctx: vscode.ExtensionContext, debug: boolean): lsp.Nod
       execArgv: debug ? devExecArgv : prodExecArgv,
     },
   };
-}
-
-/**
- * Returns true if all projects in the workspace support Ivy LS, otherwise
- * return false.
- */
-function allProjectsSupportIvy() {
-  const workspaceFolders = vscode.workspace.workspaceFolders || [];
-  for (const workspaceFolder of workspaceFolders) {
-    const angularCore = resolve('@angular/core', workspaceFolder.uri.fsPath);
-    if (angularCore?.version.greaterThanOrEqual(new Version('9')) === false) {
-      return false;
-    }
-  }
-  return true;
-}
-
-function allProjectsSupportVE() {
-  const workspaceFolders = vscode.workspace.workspaceFolders || [];
-  for (const workspaceFolder of workspaceFolders) {
-    const angularCore = resolve('@angular/core', workspaceFolder.uri.fsPath);
-    if (angularCore?.version.greaterThanOrEqual(new Version('13')) === true) {
-      return false;
-    }
-  }
-  return true;
 }

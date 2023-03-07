@@ -1,3 +1,27 @@
+# 15.2.0
+
+This release upgrades `@angular/language-service` to v15.2.0.
+
+* fix(server): Fall back to bundled TS version if specified TSDK is too old ([#1863](https://github.com/angular/vscode-ng-language-service/pull/1863))
+
+# 15.2.0-next.0
+
+This release upgrades `@angular/language-service` to v15.2.0-next.1.
+
+* feat: Add option to disable code actions ([#1849](https://github.com/angular/vscode-ng-language-service/pull/1849))
+
+# 15.1.0
+
+This release upgrades `@angular/language-service` to v15.1.0.
+
+* feat: Allow auto-imports to suggest multiple possible imports. ([#47955](https://github.com/angular/angular/pull/47955))
+
+# 15.0.4
+
+This release upgrades `@angular/language-service` to v15.0.4.
+
+* perf(extension): Ensure Angular code actions are only retrieved in Angular contexts (#1842)
+
 # 15.0.3
 
 This release upgrades `@angular/language-service` to v15.0.3.

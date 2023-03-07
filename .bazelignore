@@ -1,5 +1,4 @@
 node_modules/
-v12_language_service/node_modules
 dist/
 integration/pre_apf_project/node_modules/
 integration/project/node_modules/

@@ -14,13 +14,12 @@ import {TextDocument} from 'vscode-languageserver-textdocument';
 import * as lsp from 'vscode-languageserver/node';
 
 import {ServerOptions} from '../../common/initialize';
-import {NgccProgressEnd, OpenOutputChannel, ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode} from '../../common/notifications';
-import {GetComponentsWithTemplateFile, GetTcbParams, GetTcbRequest, GetTcbResponse, GetTemplateLocationForComponent, GetTemplateLocationForComponentParams, IsInAngularProject, IsInAngularProjectParams, RunNgccParams, RunNgccRequest} from '../../common/requests';
+import {OpenOutputChannel, ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode} from '../../common/notifications';
+import {GetComponentsWithTemplateFile, GetTcbParams, GetTcbRequest, GetTcbResponse, GetTemplateLocationForComponent, GetTemplateLocationForComponentParams, IsInAngularProject, IsInAngularProjectParams} from '../../common/requests';
 
 import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './completion';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
 import {getHTMLVirtualContent} from './embedded_support';
-import {resolveAndRunNgcc} from './ngcc';
 import {ServerHost} from './server_host';
 import {filePathToUri, getMappedDefinitionInfo, isConfiguredProject, isDebugMode, lspPositionToTsPosition, lspRangeToTsPositions, MruTracker, tsDisplayPartsToText, tsFileTextChangesToLspWorkspaceEdit, tsTextSpanToLspRange, uriToFilePath} from './utils';
 
@@ -30,12 +29,10 @@ export interface SessionOptions {
   ngPlugin: string;
   resolvedNgLsPath: string;
   ivy: boolean;
-  disableAutomaticNgcc: boolean;
   logToConsole: boolean;
   includeAutomaticOptionalChainCompletions: boolean;
   includeCompletionsWithSnippetText: boolean;
   forceStrictTemplates: boolean;
-  untrustedWorkspace: boolean;
 }
 
 enum LanguageId {
@@ -46,10 +43,6 @@ enum LanguageId {
 // Empty definition range for files without `scriptInfo`
 const EMPTY_RANGE = lsp.Range.create(0, 0, 0, 0);
 const setImmediateP = promisify(setImmediate);
-
-enum NgccErrorMessageAction {
-  showOutput,
-}
 
 const defaultFormatOptions: ts.FormatCodeSettings = {};
 const defaultPreferences: ts.UserPreferences = {};
@@ -65,16 +58,11 @@ export class Session {
   private readonly projectService: ts.server.ProjectService;
   private readonly logger: ts.server.Logger;
   private readonly ivy: boolean;
-  private readonly disableAutomaticNgcc: boolean;
   private readonly logToConsole: boolean;
   private readonly openFiles = new MruTracker();
   private readonly includeAutomaticOptionalChainCompletions: boolean;
   private readonly includeCompletionsWithSnippetText: boolean;
-  private readonly untrustedWorkspace: boolean;
   private snippetSupport: boolean|undefined;
-  // Tracks the spawn order and status of the `ngcc` processes. This allows us to ensure we enable
-  // the LS in the same order the projects were created in.
-  private projectNgccQueue: Array<{project: ts.server.Project, done: boolean}> = [];
   private diagnosticsTimeout: NodeJS.Timeout|null = null;
   private isProjectLoading = false;
   /**
@@ -92,9 +80,7 @@ export class Session {
     this.includeCompletionsWithSnippetText = options.includeCompletionsWithSnippetText;
     this.logger = options.logger;
     this.ivy = options.ivy;
-    this.disableAutomaticNgcc = options.disableAutomaticNgcc;
     this.logToConsole = options.logToConsole;
-    this.untrustedWorkspace = options.untrustedWorkspace;
     // Create a connection for the server. The connection uses Node's IPC as a transport.
     this.connection = lsp.createConnection({
       // cancelUndispatched is a "middleware" to handle all cancellation requests.
@@ -201,7 +187,6 @@ export class Session {
     conn.onRequest(GetComponentsWithTemplateFile, p => this.onGetComponentsWithTemplateFile(p));
     conn.onRequest(GetTemplateLocationForComponent, p => this.onGetTemplateLocationForComponent(p));
     conn.onRequest(GetTcbRequest, p => this.onGetTcb(p));
-    conn.onRequest(RunNgccRequest, p => this.onRunNgcc(p));
     conn.onRequest(IsInAngularProject, p => this.isInAngularProject(p));
     conn.onCodeLens(p => this.onCodeLens(p));
     conn.onCodeLensResolve(p => this.onCodeLensResolve(p));
@@ -318,18 +303,6 @@ export class Session {
       content: response.content,
       selections: response.selections.map((span => tsTextSpanToLspRange(tcfScriptInfo, span))),
     };
-  }
-
-  private onRunNgcc(params: RunNgccParams): void {
-    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
-    if (lsInfo === null) {
-      return;
-    }
-    const project = this.getDefaultProjectForScriptInfo(lsInfo.scriptInfo);
-    if (!project) {
-      return;
-    }
-    this.runNgcc(project);
   }
 
   private onGetTemplateLocationForComponent(params: GetTemplateLocationForComponentParams):
@@ -479,8 +452,7 @@ export class Session {
     }
     this.info(`Enabling Ivy language service for ${projectName}.`);
     this.handleCompilerOptionsDiagnostics(project);
-    // Send diagnostics since we skipped this step when opening the file
-    // (because language service was disabled while waiting for ngcc).
+    // Send diagnostics since we skipped this step when opening the file.
     // First, make sure the Angular project is complete.
     this.runGlobalAnalysisForNewlyLoadedProject(project);
     project.refreshDiagnostics();
@@ -556,12 +528,7 @@ export class Session {
         const {project} = event.data;
         const angularCore = this.findAngularCore(project);
         if (angularCore) {
-          if (this.ivy && isExternalAngularCore(angularCore) && !this.disableAutomaticNgcc) {
-            // Do not wait on this promise otherwise we'll be blocking other requests
-            this.runNgcc(project);
-          } else {
-            this.enableLanguageServiceForProject(project);
-          }
+          this.enableLanguageServiceForProject(project);
         } else {
           this.disableLanguageServiceForProject(
               project, `project is not an Angular project ('@angular/core' could not be found)`);
@@ -1240,85 +1207,6 @@ export class Session {
           `Please check your tsconfig.json to make sure 'node_modules' directory is not excluded.`);
     }
     return angularCore ?? null;
-  }
-
-  /**
-   * Disable the language service, run ngcc, then re-enable language service.
-   */
-  private async runNgcc(project: ts.server.Project): Promise<void> {
-    if (this.untrustedWorkspace) {
-      this.error('Cannot run ngcc in an untrusted workspace.');
-      return;
-    }
-    if (!isConfiguredProject(project) || this.projectNgccQueue.some(p => p.project === project)) {
-      return;
-    }
-    // Disable language service until ngcc is completed.
-    this.disableLanguageServiceForProject(project, 'ngcc is running');
-    const configFilePath = project.getConfigFilePath();
-
-    const progressReporter = await this.connection.window.createWorkDoneProgress();
-
-    progressReporter.begin('Angular', undefined, `Running ngcc for ${configFilePath}`);
-
-    try {
-      this.projectNgccQueue.push({project, done: false});
-      await resolveAndRunNgcc(configFilePath, {
-        report: (msg: string) => {
-          progressReporter.report(msg);
-        },
-      });
-    } catch (e) {
-      this.error(
-          `Failed to run ngcc for ${
-              configFilePath}, language service may not operate correctly:\n` +
-          `    ${e.message}`);
-
-      this.connection.window
-          .showErrorMessage<{
-            action: NgccErrorMessageAction,
-            title: string,
-          }>(`Angular extension might not work correctly because ngcc operation failed. ` +
-                 `Try to invoke ngcc manually by running 'npm/yarn run ngcc'. ` +
-                 `Please see the extension output for more information.`,
-             {title: 'Show output', action: NgccErrorMessageAction.showOutput})
-          .then((selection) => {
-            if (selection?.action === NgccErrorMessageAction.showOutput) {
-              this.connection.sendNotification(OpenOutputChannel, {});
-            }
-          });
-    } finally {
-      const loadingStatus = this.projectNgccQueue.find(p => p.project === project);
-      if (loadingStatus !== undefined) {
-        loadingStatus.done = true;
-      }
-      this.connection.sendNotification(NgccProgressEnd, {
-        configFilePath,
-      });
-      progressReporter.done();
-    }
-
-    // ngcc processes might finish out of order, but we need to re-enable the language service for
-    // the projects in the same order that the ngcc processes were spawned in. With solution-style
-    // configs, we need to ensure that the language service enabling respects the order that the
-    // projects were defined in the references list. If we enable the language service out of order,
-    // the second project in the list will request diagnostics first and then be the project that's
-    // prioritized for that project's set of files. This will cause issues if the second project is,
-    // for example, one that only includes `*.spec.ts` files and not the entire set of files needed
-    // to compile the app (i.e. `*.module.ts`).
-    const enabledProjects = new Set<ts.server.Project>();
-    for (let i = 0; i < this.projectNgccQueue.length && this.projectNgccQueue[i].done; i++) {
-      // Re-enable language service even if ngcc fails, because users could fix
-      // the problem by running ngcc themselves. If we keep language service
-      // disabled, there's no way users could use the extension even after
-      // resolving ngcc issues. On the client side, we will warn users about
-      // potentially degraded experience.
-      const p = this.projectNgccQueue[i].project;
-      this.enableLanguageServiceForProject(p);
-      enabledProjects.add(p);
-    }
-    this.projectNgccQueue =
-        this.projectNgccQueue.filter(({project}) => !enabledProjects.has(project));
   }
 }
 

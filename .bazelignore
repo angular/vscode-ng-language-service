@@ -2,5 +2,9 @@ node_modules/
 dist/
 integration/pre_apf_project/node_modules/
 integration/project/node_modules/
+integration/project/libs/post/node_modules
 integration/project/dist/
 integration/workspace/node_modules/
+
+override_rename_ts_plugin/node_modules
+server/node_modules

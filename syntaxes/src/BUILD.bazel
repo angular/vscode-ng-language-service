@@ -14,7 +14,7 @@ ts_project(
 
 js_binary(
     name = "build",
-    entry_point = ":build.js",
     data = [":src"],
+    entry_point = ":build.js",
     visibility = ["//syntaxes:__pkg__"],
 )

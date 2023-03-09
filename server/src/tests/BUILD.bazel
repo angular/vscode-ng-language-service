@@ -17,14 +17,16 @@ ts_project(
     source_map = True,
     tsconfig = ":tsconfig",
     deps = [
-        "//server/src",
         "//:node_modules/@types/jasmine",
         "//:node_modules/rxjs",
+        "//server/src",
     ],
 )
 
 jasmine_test(
     name = "test",
+    args = ["*_spec.js"],
+    chdir = package_name(),
     data = [
         ":tests",
         "//integration/pre_apf_project",
@@ -34,7 +36,5 @@ jasmine_test(
         "//integration/workspace:node_modules/@angular/compiler",
         "//integration/workspace:node_modules/@angular/compiler-cli",
     ],
-    args = ["*_spec.js"],
-    chdir = package_name(),
     tags = ["unit_test"],
 )

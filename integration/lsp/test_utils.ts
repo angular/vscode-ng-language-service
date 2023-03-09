@@ -73,6 +73,8 @@ export function initializeServer(client: MessageConnection): Promise<lsp.Initial
           }
         },
         moniker: {},
+        definition: {linkSupport: true},
+        typeDefinition: {linkSupport: true}
       }
     },
     /**

@@ -856,7 +856,8 @@ export class Session {
     return htmlLS.getFoldingRanges(virtualHtmlDoc);
   }
 
-  private onDefinition(params: lsp.TextDocumentPositionParams): lsp.LocationLink[]|null {
+  private onDefinition(params: lsp.TextDocumentPositionParams):
+      lsp.Location[]|lsp.LocationLink[]|null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
@@ -867,11 +868,20 @@ export class Session {
     if (!definition || !definition.definitions) {
       return null;
     }
+
+    const clientSupportsLocationLinks =
+        this.clientCapabilities.textDocument?.definition?.linkSupport ?? false;
+
+    if (!clientSupportsLocationLinks) {
+      return this.tsDefinitionsToLspLocations(definition.definitions);
+    }
+
     const originSelectionRange = tsTextSpanToLspRange(scriptInfo, definition.textSpan);
     return this.tsDefinitionsToLspLocationLinks(definition.definitions, originSelectionRange);
   }
 
-  private onTypeDefinition(params: lsp.TextDocumentPositionParams): lsp.LocationLink[]|null {
+  private onTypeDefinition(params: lsp.TextDocumentPositionParams):
+      lsp.Location[]|lsp.LocationLink[]|null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
@@ -882,6 +892,14 @@ export class Session {
     if (!definitions) {
       return null;
     }
+
+    const clientSupportsLocationLinks =
+        this.clientCapabilities.textDocument?.typeDefinition?.linkSupport ?? false;
+
+    if (!clientSupportsLocationLinks) {
+      return this.tsDefinitionsToLspLocations(definitions);
+    }
+
     return this.tsDefinitionsToLspLocationLinks(definitions);
   }
 
@@ -963,6 +981,40 @@ export class Session {
       const uri = filePathToUri(ref.fileName);
       return {uri, range};
     });
+  }
+
+  private tsDefinitionsToLspLocations(definitions: readonly ts.DefinitionInfo[]): lsp.Location[] {
+    const results: lsp.Location[] = [];
+    for (const d of definitions) {
+      const scriptInfo = this.projectService.getScriptInfo(d.fileName);
+
+      // Some definitions, like definitions of CSS files, may not be recorded files with a
+      // `scriptInfo` but are still valid definitions because they are files that exist. In this
+      // case, check to make sure that the text span of the definition is zero so that the file
+      // doesn't have to be read; if the span is non-zero, we can't do anything with this
+      // definition.
+      if (!scriptInfo && d.textSpan.length > 0) {
+        continue;
+      }
+
+      let mappedInfo = d;
+      let range = EMPTY_RANGE;
+      if (scriptInfo) {
+        const project = this.getDefaultProjectForScriptInfo(scriptInfo);
+        mappedInfo = project ? getMappedDefinitionInfo(d, project) : mappedInfo;
+        // After the DTS file maps to original source file, the `scriptInfo` should be updated.
+        const originalScriptInfo =
+            this.projectService.getScriptInfo(mappedInfo.fileName) ?? scriptInfo;
+        range = tsTextSpanToLspRange(originalScriptInfo, mappedInfo.textSpan);
+      }
+
+      const uri = filePathToUri(mappedInfo.fileName);
+      results.push({
+        uri,
+        range,
+      });
+    }
+    return results;
   }
 
   private tsDefinitionsToLspLocationLinks(

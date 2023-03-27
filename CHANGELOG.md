@@ -1,3 +1,9 @@
+# 16.0.0-next.0
+This release upgrades `@angular/language-service` to v16.0.0-next.4.
+
+* fix(server): Respect the client capabilities "textDocument.{declaration,typeDefinition}.linkSupport."
+https://github.com/angular/vscode-ng-language-service/commit/8751840d6be1ddb1900be8713eabf0c7796e5ca8
+
 # 15.2.0
 
 This release upgrades `@angular/language-service` to v15.2.0.

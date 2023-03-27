@@ -5,7 +5,7 @@ importers:
   .:
     specifiers:
       '@angular/dev-infra-private': https://github.com/angular/dev-infra-private-builds.git#262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2
-      '@angular/language-service': 16.0.0-next.0
+      '@angular/language-service': 16.0.0-next.4
       '@bazel/bazelisk': 1.12.0
       '@bazel/ibazel': 0.16.2
       '@types/jasmine': 3.10.7
@@ -33,7 +33,7 @@ importers:
       vscode-tmgrammar-test: 0.0.11
       vscode-uri: 3.0.7
     dependencies:
-      '@angular/language-service': registry.npmjs.org/@angular/language-service/16.0.0-next.0
+      '@angular/language-service': registry.npmjs.org/@angular/language-service/16.0.0-next.4
       typescript: registry.npmjs.org/typescript/4.8.2
       vscode-html-languageservice: registry.npmjs.org/vscode-html-languageservice/4.2.5
       vscode-jsonrpc: registry.npmjs.org/vscode-jsonrpc/6.0.0
@@ -330,11 +330,11 @@ packages:
       tslib: registry.npmjs.org/tslib/2.4.0
     dev: true
 
-  registry.npmjs.org/@angular/language-service/16.0.0-next.0:
-    resolution: {integrity: sha512-Jblgsp/dBl6iEndgqYT8cLCJGEOXw8tm6+TwJ0V8G2jOqnl9qjVqg8FFH/jDyvuMFUnzVhMlrxyLXYFfQJwM2g==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-16.0.0-next.0.tgz}
+  registry.npmjs.org/@angular/language-service/16.0.0-next.4:
+    resolution: {integrity: sha512-0AoiDP/ZJQZsdhkrYo27S4BiGStHK2/gHaY1M1JJsNNAquKjeQJhtkvAVkZjp+miygwwxD9+Y+Q7orlEN1YnWw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-16.0.0-next.4.tgz}
     name: '@angular/language-service'
-    version: 16.0.0-next.0
-    engines: {node: ^14.20.0 || ^16.13.0 || >=18.10.0}
+    version: 16.0.0-next.4
+    engines: {node: ^16.13.0 || >=18.10.0}
     dev: false
 
   registry.npmjs.org/@assemblyscript/loader/0.10.1:
@@ -1847,7 +1847,6 @@ packages:
     id: registry.npmjs.org/@bazel/typescript/5.5.0
     name: '@bazel/typescript'
     version: 5.5.0
-    deprecated: This package is no longer maintained, see https://github.com/aspect-build/rules_ts for replacement
     hasBin: true
     requiresBuild: true
     peerDependencies:
@@ -10015,7 +10014,6 @@ packages:
     name: vsce
     version: 1.100.1
     engines: {node: '>= 10'}
-    deprecated: vsce has been renamed to @vscode/vsce. Install using @vscode/vsce instead.
     hasBin: true
     dependencies:
       azure-devops-node-api: registry.npmjs.org/azure-devops-node-api/11.0.1

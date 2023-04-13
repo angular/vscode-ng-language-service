@@ -158,10 +158,10 @@
     uuid "^8.3.2"
     yargs "^17.0.0"
 
-"@angular/language-service@15.2.0":
-  version "15.2.0"
-  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-15.2.0.tgz#5256d7269c2755b30bd918d8cf555789c5a4517a"
-  integrity sha512-Gwg/IWPiBZ+LE0hHxtQGvQuJ+A7YehL6p0k26ClP0HS7Wy0ERRD9+ITGh5SnhKTKVMRwOb4HYcLp0N5W3yTajw==
+"@angular/language-service@15.2.7":
+  version "15.2.7"
+  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-15.2.7.tgz#a201ed232797edd62c0e33eacf747da27c9da98d"
+  integrity sha512-uQ5ZACxDgP7pvakdqzN+W2CMls8svwBN8gygLwxvf+b4B+jllcmO45W/O9MPXfB/qfBRuuBmClm/29L1RmMHUA==
 
 "@assemblyscript/loader@^0.10.1":
   version "0.10.1"

@@ -1,3 +1,10 @@
+# 15.2.1
+
+This release upgrades `@angular/language-service` to v15.2.7.
+
+* fix(compiler-cli): Catch FatalDiagnosticError during template type checking ([#49792](https://github.com/angular/angular/pull/49792))
+* fix(server): Respect the client capabilities "textDocument.{declaration,typeDefinition}.linkSupport." ([#1875](https://github.com/angular/vscode-ng-language-service/pull/1875))
+
 # 15.2.0
 
 This release upgrades `@angular/language-service` to v15.2.0.

@@ -36,7 +36,7 @@ export const Template: GrammarDefinition = {
     },
 
     propertyBinding: {
-      begin: /(\[\s*@?[-_a-zA-Z0-9.$]*%?\s*])(=)(["'])/,
+      begin: /(?<!\>)(\[\s*@?[-_a-zA-Z0-9.$]*%?\s*])(=)(["'])/,
       beginCaptures: {
         1: {
           name: 'entity.other.attribute-name.html entity.other.ng-binding-name.property.html',

@@ -149,6 +149,8 @@
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
 ><div [invalidProperty)="val"></div>
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+><div>[my-property]="val"</div>
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
 >
 ><!-- Event binding test -->
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng

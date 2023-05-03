@@ -1,3 +1,8 @@
+# 16.0.0
+This release upgrades `@angular/language-service` to v16.0.0.
+
+* Catch FatalDiagnosticError during template type checking ([#49527](https://github.com/angular/angular/pull/49527)) |
+
 # 16.0.0-next.0
 This release upgrades `@angular/language-service` to v16.0.0-next.4.
 

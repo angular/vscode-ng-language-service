@@ -9,7 +9,7 @@ jobs:
         type: enum
         enum: ['package.json', 'builds-repo']
     docker:
-      - image: cimg/node:16.13.0@sha256:05245e5a0f7aa7c45d61c21ba47c13082bdc07efe555a6786087261b28adaa2b
+      - image: cimg/node:16.14.0
     environment:
       # TODO: Remove when pnpm is exclusively used.
       ASPECT_RULES_JS_FROZEN_PNPM_LOCK: '1'

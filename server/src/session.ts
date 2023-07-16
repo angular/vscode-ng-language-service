@@ -21,6 +21,7 @@ import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './comp
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
 import {getHTMLVirtualContent} from './embedded_support';
 import {ServerHost} from './server_host';
+import {documentationToMarkdown} from './text_render';
 import {filePathToUri, getMappedDefinitionInfo, isConfiguredProject, isDebugMode, lspPositionToTsPosition, lspRangeToTsPositions, MruTracker, tsDisplayPartsToText, tsFileTextChangesToLspWorkspaceEdit, tsTextSpanToLspRange, uriToFilePath} from './utils';
 
 export interface SessionOptions {
@@ -1096,7 +1097,7 @@ export class Session {
     if (!info) {
       return null;
     }
-    const {kind, kindModifiers, textSpan, displayParts, documentation} = info;
+    const {kind, kindModifiers, textSpan, displayParts, documentation, tags} = info;
     let desc = kindModifiers ? kindModifiers + ' ' : '';
     if (displayParts && displayParts.length > 0) {
       // displayParts does not contain info about kindModifiers
@@ -1109,11 +1110,9 @@ export class Session {
       language: 'typescript',
       value: desc,
     }];
-    if (documentation) {
-      for (const d of documentation) {
-        contents.push(d.text);
-      }
-    }
+    const mds = documentationToMarkdown(
+        documentation, tags, (fileName: string) => this.getLSAndScriptInfo(fileName)?.scriptInfo);
+    contents.push(mds.join('\n'));
     return {
       contents,
       range: tsTextSpanToLspRange(scriptInfo, textSpan),
@@ -1176,7 +1175,7 @@ export class Session {
       return item;
     }
 
-    const {kind, kindModifiers, displayParts, documentation} = details;
+    const {kind, kindModifiers, displayParts, documentation, tags} = details;
     let desc = kindModifiers ? kindModifiers + ' ' : '';
     if (displayParts && displayParts.length > 0) {
       // displayParts does not contain info about kindModifiers
@@ -1186,7 +1185,12 @@ export class Session {
       desc += kind;
     }
     item.detail = desc;
-    item.documentation = documentation?.map(d => d.text).join('');
+    item.documentation = {
+      kind: lsp.MarkupKind.Markdown,
+      value: documentationToMarkdown(
+                 documentation, tags, (fileName) => this.getLSAndScriptInfo(fileName)?.scriptInfo)
+                 .join('\n'),
+    };
     return item;
   }
 

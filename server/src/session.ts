@@ -432,7 +432,7 @@ export class Session {
   }
 
   private enableLanguageServiceForProject(project: ts.server.Project): void {
-    const {projectName} = project;
+    const projectName = project.getProjectName();
     if (project.isClosed()) {
       this.info(`Cannot enable language service for closed project ${projectName}.`);
       return;
@@ -463,7 +463,7 @@ export class Session {
       return;
     }
     project.disableLanguageService(
-        `Disabling language service for ${project.projectName} because ${reason}.`);
+        `Disabling language service for ${project.getProjectName()} because ${reason}.`);
   }
 
 
@@ -1072,7 +1072,8 @@ export class Session {
     }
     if (project.isClosed()) {
       scriptInfo.detachFromProject(project);
-      this.logger.info(`Failed to get language service for closed project ${project.projectName}.`);
+      this.logger.info(
+          `Failed to get language service for closed project ${project.getProjectName()}.`);
       return null;
     }
     const languageService = project.getLanguageService();
@@ -1241,7 +1242,7 @@ export class Session {
    * @returns main declaration file in `@angular/core`.
    */
   private findAngularCore(project: ts.server.Project): string|null {
-    const {projectName} = project;
+    const projectName = project.getProjectName();
     if (!project.languageServiceEnabled) {
       this.info(
           `Language service is already disabled for ${projectName}. ` +
@@ -1260,14 +1261,6 @@ export class Session {
     }
     return angularCore ?? null;
   }
-}
-
-function toArray<T>(it: ts.Iterator<T>): T[] {
-  const results: T[] = [];
-  for (let itResult = it.next(); !itResult.done; itResult = it.next()) {
-    results.push(itResult.value);
-  }
-  return results;
 }
 
 function isAngularCore(path: string): boolean {

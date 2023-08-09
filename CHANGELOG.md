@@ -1,7 +1,10 @@
-# 16.0.0
-This release upgrades `@angular/language-service` to v16.0.0.
+# 16.1.8
+This release upgrades `@angular/language-service` to v16.1.8.
 
-* Catch FatalDiagnosticError during template type checking ([#49527](https://github.com/angular/angular/pull/49527)) |
+* Update the bundled version of TypeScript to 5.1.3
+
+# 16.1.4
+This release upgrades `@angular/language-service` to v16.1.4.
 
 # 16.0.0-next.0
 This release upgrades `@angular/language-service` to v16.0.0-next.4.

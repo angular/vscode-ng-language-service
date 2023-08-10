@@ -8,7 +8,6 @@
 
 // Parse command line arguments
 const options = parseCommandLine(process.argv);
-
 if (options.help) {
   console.error(generateHelpMessage(process.argv));
   process.exit(0);
@@ -42,7 +41,6 @@ function main() {
     // TypeScript allows only package names as plugin names.
     ngPlugin: '@angular/language-service',
     resolvedNgLsPath: ng.resolvedPath,
-    ivy: isG3 ? true : options.ivy,
     logToConsole: options.logToConsole,
     includeAutomaticOptionalChainCompletions: options.includeAutomaticOptionalChainCompletions,
     includeCompletionsWithSnippetText: options.includeCompletionsWithSnippetText,

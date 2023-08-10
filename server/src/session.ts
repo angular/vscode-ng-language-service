@@ -28,7 +28,6 @@ export interface SessionOptions {
   logger: ts.server.Logger;
   ngPlugin: string;
   resolvedNgLsPath: string;
-  ivy: boolean;
   logToConsole: boolean;
   includeAutomaticOptionalChainCompletions: boolean;
   includeCompletionsWithSnippetText: boolean;
@@ -57,7 +56,6 @@ export class Session {
   private readonly connection: lsp.Connection;
   private readonly projectService: ts.server.ProjectService;
   private readonly logger: ts.server.Logger;
-  private readonly ivy: boolean;
   private readonly logToConsole: boolean;
   private readonly openFiles = new MruTracker();
   private readonly includeAutomaticOptionalChainCompletions: boolean;
@@ -79,7 +77,6 @@ export class Session {
         options.includeAutomaticOptionalChainCompletions;
     this.includeCompletionsWithSnippetText = options.includeCompletionsWithSnippetText;
     this.logger = options.logger;
-    this.ivy = options.ivy;
     this.logToConsole = options.logToConsole;
     // Create a connection for the server. The connection uses Node's IPC as a transport.
     this.connection = lsp.createConnection({
@@ -157,9 +154,6 @@ export class Session {
     };
     if (options.forceStrictTemplates) {
       pluginConfig.forceStrictTemplates = true;
-    }
-    if (options.host.isG3) {
-      options.ivy = true;
     }
     projSvc.configurePlugin({
       pluginName: options.ngPlugin,
@@ -445,12 +439,7 @@ export class Session {
       // project as dirty to force update the graph.
       project.markAsDirty();
     }
-    if (!this.ivy) {
-      // Immediately enable Legacy / View Engine language service
-      this.info(`Enabling View Engine language service for ${projectName}.`);
-      return;
-    }
-    this.info(`Enabling Ivy language service for ${projectName}.`);
+    this.info(`Enabling language service for ${projectName}.`);
     this.handleCompilerOptionsDiagnostics(project);
     // Send diagnostics since we skipped this step when opening the file.
     // First, make sure the Angular project is complete.
@@ -684,31 +673,26 @@ export class Session {
     return {
       capabilities: {
         foldingRangeProvider: true,
-        codeLensProvider: this.ivy ? {resolveProvider: true} : undefined,
+        codeLensProvider: {resolveProvider: true},
         textDocumentSync: lsp.TextDocumentSyncKind.Incremental,
-        completionProvider: {
-          // Only the Ivy LS provides support for additional completion resolution.
-          resolveProvider: this.ivy,
-          triggerCharacters: ['<', '.', '*', '[', '(', '$', '|']
-        },
+        completionProvider:
+            {resolveProvider: true, triggerCharacters: ['<', '.', '*', '[', '(', '$', '|']},
         definitionProvider: true,
-        typeDefinitionProvider: this.ivy,
-        referencesProvider: this.ivy,
-        renameProvider: this.ivy ? {
+        typeDefinitionProvider: true,
+        referencesProvider: true,
+        renameProvider: {
           // Renames should be checked and tested before being executed.
           prepareProvider: true,
-        } :
-                                   false,
+        },
         hoverProvider: true,
-        signatureHelpProvider: this.ivy ? {
+        signatureHelpProvider: {
           triggerCharacters: ['(', ','],
           retriggerCharacters: [','],
-        } :
-                                          undefined,
+        },
         workspace: {
           workspaceFolders: {supported: true},
         },
-        codeActionProvider: this.ivy ? {
+        codeActionProvider: {
           resolveProvider: true,
           // Now the Angular code action provider only supports `QuickFix`. If leave the
           // `codeActionKinds` empty, all action requests will be sent to the Angular language
@@ -718,8 +702,7 @@ export class Session {
           // Find more info
           // [here](https://github.com/angular/vscode-ng-language-service/issues/1828)
           codeActionKinds: [lsp.CodeActionKind.QuickFix],
-        } :
-                                       undefined,
+        },
       },
       serverOptions,
     };
@@ -1151,7 +1134,7 @@ export class Session {
         false;
     return completions.entries.map(
         (e) => tsCompletionEntryToLspCompletionItem(
-            e, params.position, scriptInfo, clientSupportsInsertReplaceCompletion, this.ivy));
+            e, params.position, scriptInfo, clientSupportsInsertReplaceCompletion));
   }
 
   private onCompletionResolve(item: lsp.CompletionItem): lsp.CompletionItem {

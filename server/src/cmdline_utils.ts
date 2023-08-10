@@ -28,10 +28,6 @@ function hasArgument(argv: string[], argName: string): boolean {
 
 interface CommandLineOptions {
   help: boolean;
-  /**
-   * If true, use Ivy LS, otherwise use legacy View Engine LS.
-   */
-  ivy: boolean;
   logFile?: string;
   logVerbosity?: string;
   logToConsole: boolean;
@@ -45,7 +41,6 @@ interface CommandLineOptions {
 export function parseCommandLine(argv: string[]): CommandLineOptions {
   return {
     help: hasArgument(argv, '--help'),
-    ivy: !hasArgument(argv, '--viewEngine'),
     logFile: findArgument(argv, '--logFile'),
     logVerbosity: findArgument(argv, '--logVerbosity'),
     logToConsole: hasArgument(argv, '--logToConsole'),
@@ -65,12 +60,14 @@ export function generateHelpMessage(argv: string[]) {
 
   Options:
     --help: Prints help message.
-    --viewEngine: Use legacy View Engine language service. Defaults to false.
     --logFile: Location to log messages. Logging to file is disabled if not provided.
     --logVerbosity: terse|normal|verbose|requestTime. See ts.server.LogLevel.
     --logToConsole: Enables logging to console via 'window/logMessage'. Defaults to false.
     --ngProbeLocations: Path of @angular/language-service. Required.
     --tsProbeLocations: Path of typescript. Required.
+    --includeAutomaticOptionalChainCompletions: Shows completions on potentially undefined values that insert an optional chain call. Requires TS 3.7+ and strict null checks to be enabled.
+    --includeCompletionsWithSnippetText: Enables snippet completions from Angular language server;
+    --forceStrictTemplates: Forces the language service to use strictTemplates and ignore the user settings in the 'tsconfig.json'.
 
   Additional options supported by vscode-languageserver:
     --clientProcessId=<number>: Automatically kills the server if the client process dies.

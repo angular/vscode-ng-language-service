@@ -6,6 +6,14 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+// Parse command line arguments
+const options = parseCommandLine(process.argv);
+
+if (options.help) {
+  console.error(generateHelpMessage(process.argv));
+  process.exit(0);
+}
+
 import {generateHelpMessage, parseCommandLine} from './cmdline_utils';
 import {createLogger} from './logger';
 import {ServerHost} from './server_host';
@@ -13,14 +21,6 @@ import {Session} from './session';
 import {resolveNgLangSvc, resolveTsServer} from './version_provider';
 
 function main() {
-  // Parse command line arguments
-  const options = parseCommandLine(process.argv);
-
-  if (options.help) {
-    console.error(generateHelpMessage(process.argv));
-    process.exit(0);
-  }
-
   // Create a logger that logs to file. OK to emit verbose entries.
   const logger = createLogger({
     logFile: options.logFile,

@@ -6,6 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import {generateHelpMessage, parseCommandLine} from './cmdline_utils';
+
 // Parse command line arguments
 const options = parseCommandLine(process.argv);
 if (options.help) {
@@ -13,7 +15,6 @@ if (options.help) {
   process.exit(0);
 }
 
-import {generateHelpMessage, parseCommandLine} from './cmdline_utils';
 import {createLogger} from './logger';
 import {ServerHost} from './server_host';
 import {Session} from './session';

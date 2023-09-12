@@ -41,7 +41,7 @@ Snapshot test cases are specified in [test/cases.json](./test/cases.json).
 Snapshot golden files can be updated by running
 
 ```bash
-yarn test:syntaxes -u
+yarn test:legacy-syntaxes -u
 ```
 
 in the root directory of this repository. Goldens must be updated when a new

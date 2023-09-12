@@ -17,5 +17,10 @@
 
 //// Parenthesization tests
   styles: ( (( [ ( '.example { width: 100px; }' ) ] )) ),
+//// styles string
+  styles: ( ((  ( '.example { width: 100px; }' )  )) ),
+  styles:  `.example { width: 100px; }` ,
+  styles:  ".example { width: 100px; }" ,
+  styles:  '.example { width: 100px; }' ,
 })
 export class TMComponent{}

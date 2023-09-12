@@ -20,7 +20,8 @@ export const InlineStyles: GrammarDefinition = {
         2: {name: 'meta.object-literal.key.ts punctuation.separator.key-value.ts'}
       },
       end: /(?=,|})/,
-      patterns: [{include: '#tsParenExpression'}, {include: '#tsBracketExpression'}]
+      patterns:
+          [{include: '#tsParenExpression'}, {include: '#tsBracketExpression'}, {include: '#style'}]
     },
 
     tsParenExpression: {
@@ -28,7 +29,7 @@ export const InlineStyles: GrammarDefinition = {
       beginCaptures: {1: {name: 'meta.brace.round.ts'}},
       end: /\)/,
       endCaptures: {0: {name: 'meta.brace.round.ts'}},
-      patterns: [{include: '$self'}, {include: '#tsBracketExpression'}]
+      patterns: [{include: '$self'}, {include: '#tsBracketExpression'}, {include: '#style'}]
     },
 
     'tsBracketExpression': {

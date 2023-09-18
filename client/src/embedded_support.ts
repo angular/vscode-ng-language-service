@@ -25,7 +25,8 @@ export function isInsideComponentDecorator(
     return true;
   }
   return isPropertyAssignmentToStringOrStringInArray(
-      document.getText(), document.offsetAt(position), ['template', 'templateUrl', 'styleUrls']);
+      document.getText(), document.offsetAt(position),
+      ['template', 'templateUrl', 'styleUrls', 'styleUrl']);
 }
 
 /**

@@ -24,6 +24,9 @@
         },
         {
           "include": "#tsBracketExpression"
+        },
+        {
+          "include": "#style"
         }
       ]
     },
@@ -46,6 +49,9 @@
         },
         {
           "include": "#tsBracketExpression"
+        },
+        {
+          "include": "#style"
         }
       ]
     },

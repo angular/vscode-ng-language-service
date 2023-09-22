@@ -78,8 +78,23 @@ function isPropertyAssignmentToStringOrStringInArray(
   let lastTokenText: string|undefined;
   let unclosedBraces = 0;
   let unclosedBrackets = 0;
+  let unclosedTaggedTemplates = 0;
   let propertyAssignmentContext = false;
+
+  function isTemplateStartOfTaggedTemplate() {
+    return token === ts.SyntaxKind.NoSubstitutionTemplateLiteral ||
+        token === ts.SyntaxKind.TemplateHead;
+  }
+
   while (token !== ts.SyntaxKind.EndOfFileToken && scanner.getStartPos() < offset) {
+    if (isTemplateStartOfTaggedTemplate()) {
+      unclosedTaggedTemplates++;
+    }
+    if (token === ts.SyntaxKind.CloseBraceToken && unclosedTaggedTemplates > 0) {
+      // https://github.com/Microsoft/TypeScript/issues/20055
+      token = scanner.reScanTemplateToken(/*isTaggedTemplate*/ true);
+      unclosedTaggedTemplates--;
+    }
     if (lastToken === ts.SyntaxKind.Identifier && lastTokenText !== undefined &&
         propertyAssignmentNames.includes(lastTokenText) && token === ts.SyntaxKind.ColonToken) {
       propertyAssignmentContext = true;

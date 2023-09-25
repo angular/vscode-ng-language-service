@@ -1,0 +1,143 @@
+>@defer (doSomething({111})) {
+#^ template.ng keyword.control.ng.transition
+# ^^^^^^ template.ng keyword.control.block.ng
+#       ^ template.ng meta.brace.round.ts
+#        ^^^^^^^^^^^^^^^^^^ template.ng
+#                          ^ template.ng meta.brace.round.ts
+#                           ^ template.ng
+#                            ^ template.ng punctuation.definition.block.ts
+>    <a></a>
+#^^^^^^^^^^^^ template.ng text.html
+>}
+#^ template.ng punctuation.definition.block.ts
+>
+>@defer {
+#^ template.ng keyword.control.ng.transition
+# ^^^^^^ template.ng keyword.control.block.ng
+#       ^ template.ng punctuation.definition.block.ts
+>    <a></a>
+#^^^^^^^^^^^^ template.ng text.html
+>}
+#^ template.ng punctuation.definition.block.ts
+>
+>@switch (a) {
+#^ template.ng keyword.control.ng.transition
+# ^^^^^^^ template.ng keyword.control.block.ng
+#        ^ template.ng meta.brace.round.ts
+#         ^ template.ng
+#          ^ template.ng meta.brace.round.ts
+#           ^ template.ng
+#            ^ template.ng punctuation.definition.block.ts
+>    @case (1) {
+#^^^^ template.ng text.html
+#    ^ template.ng text.html keyword.control.ng.transition
+#     ^^^^^ template.ng text.html keyword.control.block.ng
+#          ^ template.ng text.html meta.brace.round.ts
+#           ^ template.ng text.html
+#            ^ template.ng text.html meta.brace.round.ts
+#             ^ template.ng text.html
+#              ^ template.ng text.html punctuation.definition.block.ts
+>        {{getCase1()}}
+#^^^^^^^^ template.ng text.html text.html
+#        ^^ template.ng text.html text.html punctuation.definition.block.ts
+#          ^^^^^^^^ template.ng text.html text.html expression.ng entity.name.function.ts
+#                  ^ template.ng text.html text.html expression.ng meta.brace.round.ts
+#                   ^ template.ng text.html text.html expression.ng meta.brace.round.ts
+#                    ^^ template.ng text.html text.html punctuation.definition.block.ts
+>    }
+#^^^^ template.ng text.html text.html
+#    ^ template.ng text.html punctuation.definition.block.ts
+>    @case (2) {
+#^^^^ template.ng text.html
+#    ^ template.ng text.html keyword.control.ng.transition
+#     ^^^^^ template.ng text.html keyword.control.block.ng
+#          ^ template.ng text.html meta.brace.round.ts
+#           ^ template.ng text.html
+#            ^ template.ng text.html meta.brace.round.ts
+#             ^ template.ng text.html
+#              ^ template.ng text.html punctuation.definition.block.ts
+>        {{a.b.c}}
+#^^^^^^^^ template.ng text.html text.html
+#        ^^ template.ng text.html text.html punctuation.definition.block.ts
+#          ^ template.ng text.html text.html expression.ng variable.other.object.ts
+#           ^ template.ng text.html text.html expression.ng punctuation.accessor.ts
+#            ^ template.ng text.html text.html expression.ng variable.other.object.property.ts
+#             ^ template.ng text.html text.html expression.ng punctuation.accessor.ts
+#              ^ template.ng text.html text.html expression.ng variable.other.property.ts
+#               ^^ template.ng text.html text.html punctuation.definition.block.ts
+>    }
+#^^^^ template.ng text.html text.html
+#    ^ template.ng text.html punctuation.definition.block.ts
+>    @default {
+#^^^^ template.ng text.html
+#    ^ template.ng text.html keyword.control.ng.transition
+#     ^^^^^^^^ template.ng text.html keyword.control.block.ng
+#             ^ template.ng text.html punctuation.definition.block.ts
+>        default case
+#^^^^^^^^^^^^^^^^^^^^^ template.ng text.html text.html
+>    }
+#^^^^ template.ng text.html text.html
+#    ^ template.ng text.html punctuation.definition.block.ts
+>}
+#^ template.ng punctuation.definition.block.ts
+>
+>@if (a==b) { hello } @else  { goodbye }
+#^ template.ng keyword.control.ng.transition
+# ^^^ template.ng keyword.control.block.ng
+#    ^ template.ng meta.brace.round.ts
+#     ^^^^ template.ng
+#         ^ template.ng meta.brace.round.ts
+#          ^ template.ng
+#           ^ template.ng punctuation.definition.block.ts
+#            ^^^^^^^ template.ng text.html
+#                   ^ template.ng punctuation.definition.block.ts
+#                    ^ template.ng
+#                     ^ template.ng keyword.control.ng.transition
+#                      ^^^^^^ template.ng keyword.control.block.ng
+#                            ^ template.ng punctuation.definition.block.ts
+#                             ^^^^^^^^^ template.ng text.html
+#                                      ^ template.ng punctuation.definition.block.ts
+>
+>@if (a==b) { 
+#^ template.ng keyword.control.ng.transition
+# ^^^ template.ng keyword.control.block.ng
+#    ^ template.ng meta.brace.round.ts
+#     ^^^^ template.ng
+#         ^ template.ng meta.brace.round.ts
+#          ^ template.ng
+#           ^ template.ng punctuation.definition.block.ts
+#            ^^ template.ng text.html
+>    hello 
+#^^^^^^^^^^^ template.ng text.html
+>} @else if (b==a) { 
+#^ template.ng punctuation.definition.block.ts
+# ^ template.ng
+#  ^ template.ng keyword.control.ng.transition
+#   ^^^^^^^^ template.ng keyword.control.block.ng
+#           ^ template.ng meta.brace.round.ts
+#            ^^^^ template.ng
+#                ^ template.ng meta.brace.round.ts
+#                 ^ template.ng
+#                  ^ template.ng punctuation.definition.block.ts
+#                   ^^ template.ng text.html
+>    goodbye 
+#^^^^^^^^^^^^^ template.ng text.html
+>}
+#^ template.ng punctuation.definition.block.ts
+>
+>@for (let item of items; trackBy $index) {
+#^ template.ng keyword.control.ng.transition
+# ^^^^ template.ng keyword.control.block.ng
+#     ^ template.ng meta.brace.round.ts
+#      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+#                                       ^ template.ng meta.brace.round.ts
+#                                        ^ template.ng
+#                                         ^ template.ng punctuation.definition.block.ts
+>    {{item}}
+#^^^^ template.ng text.html
+#    ^^ template.ng text.html punctuation.definition.block.ts
+#      ^^^^ template.ng text.html expression.ng variable.other.readwrite.ts
+#          ^^ template.ng text.html punctuation.definition.block.ts
+>}
+#^ template.ng punctuation.definition.block.ts
+>

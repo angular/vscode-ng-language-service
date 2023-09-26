@@ -17,7 +17,6 @@ export const Template: GrammarDefinition = {
     {include: '#eventBinding'},
     {include: '#twoWayBinding'},
     {include: '#templateBinding'},
-    {include: '#blockStatement'},
   ],
   repository: {
 
@@ -34,40 +33,6 @@ export const Template: GrammarDefinition = {
       patterns: [
         {include: 'expression.ng'},
       ],
-    },
-
-    transition: {
-      match: '@',
-      name: 'keyword.control.ng.transition',
-    },
-
-    blockStatement: {
-      begin: /(@)((?:\w+\s*)+)((\()(.*)(\)))?\s*(\{)/,
-      beginCaptures: {
-        1: {
-          patterns: [
-            {include: '#transition'},
-          ]
-        },
-        2: {name: 'keyword.control.block.ng'},
-        4: {name: 'meta.brace.round.ts'},
-        5: {
-          patterns: [
-            {include: 'source.js'},
-          ]
-        },
-        6: {name: 'meta.brace.round.ts'},
-        7: {name: 'punctuation.definition.block.ts'},
-      },
-      end: '(\\})',
-      endCaptures: {
-        1: {name: 'punctuation.definition.block.ts'},
-      },
-      contentName: 'text.html',
-      patterns: [
-        {include: 'text.html.derivative'},
-        {include: 'template.ng'},
-      ]
     },
 
     propertyBinding: {

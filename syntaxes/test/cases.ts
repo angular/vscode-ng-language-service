@@ -20,8 +20,8 @@ export const cases = [
   },
   {
     'name': 'block syntax',
-    'scopeName': 'template.ng',
-    'grammarFiles': ['syntaxes/template.json', 'syntaxes/expression.json'],
+    'scopeName': 'template.blocks.ng',
+    'grammarFiles': ['syntaxes/template-blocks.json'],
     'testFile': 'syntaxes/test/data/template-blocks.html'
   },
   {

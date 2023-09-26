@@ -170,7 +170,18 @@
         ],
         "embeddedLanguages": {
           "text.html": "html",
-          "source.css": "css",
+          "source.css": "css"
+        }
+      },
+      {
+        "path": "./syntaxes/template-blocks.json",
+        "scopeName": "template.blocks.ng",
+        "injectTo": [
+          "text.html.derivative",
+          "source.ts"
+        ],
+        "embeddedLanguages": {
+          "text.html": "html",
           "source.js": "javascript"
         }
       },

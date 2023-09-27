@@ -12,6 +12,7 @@ import {Expression} from './expression';
 import {InlineStyles} from './inline-styles';
 import {InlineTemplate} from './inline-template';
 import {Template} from './template';
+import {TemplateBlocks} from './template-blocks';
 import {GrammarDefinition, JsonObject} from './types';
 
 // Recursively transforms a TypeScript grammar definition into an object which can be processed by
@@ -53,3 +54,4 @@ build(Expression, 'expression');
 build(Template, 'template');
 build(InlineTemplate, 'inline-template');
 build(InlineStyles, 'inline-styles');
+build(TemplateBlocks, 'template-blocks');

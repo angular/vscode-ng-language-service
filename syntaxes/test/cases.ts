@@ -19,6 +19,12 @@ export const cases = [
     'testFile': 'syntaxes/test/data/template.html'
   },
   {
+    'name': 'block syntax',
+    'scopeName': 'template.blocks.ng',
+    'grammarFiles': ['syntaxes/template-blocks.json'],
+    'testFile': 'syntaxes/test/data/template-blocks.html'
+  },
+  {
     'name': 'expression syntax',
     'scopeName': 'template.ng',
     'grammarFiles': ['syntaxes/template.json', 'syntaxes/expression.json'],

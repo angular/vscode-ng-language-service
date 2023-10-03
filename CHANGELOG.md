@@ -1,3 +1,9 @@
+# 17.0.0-next.0
+This release upgrades `@angular/language-service` to v17.0.0-next.6.
+
+* feat(syntaxes): Add support for block syntaxes
+* fix(client): fix detection of Angular context after string interpolation
+
 # 16.1.8
 This release upgrades `@angular/language-service` to v16.1.8.
 

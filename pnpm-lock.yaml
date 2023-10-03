@@ -5,7 +5,7 @@ importers:
   .:
     specifiers:
       '@angular/dev-infra-private': https://github.com/angular/dev-infra-private-builds.git#262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2
-      '@angular/language-service': 17.0.0-next.4
+      '@angular/language-service': 17.0.0-next.6
       '@bazel/bazelisk': 1.12.0
       '@bazel/ibazel': 0.16.2
       '@types/jasmine': 3.10.7
@@ -33,7 +33,7 @@ importers:
       vscode-tmgrammar-test: 0.0.11
       vscode-uri: 3.0.7
     dependencies:
-      '@angular/language-service': registry.npmjs.org/@angular/language-service/17.0.0-next.4
+      '@angular/language-service': registry.npmjs.org/@angular/language-service/17.0.0-next.6
       typescript: registry.npmjs.org/typescript/5.1.3
       vscode-html-languageservice: registry.npmjs.org/vscode-html-languageservice/4.2.5
       vscode-jsonrpc: registry.npmjs.org/vscode-jsonrpc/6.0.0
@@ -330,11 +330,11 @@ packages:
       tslib: registry.npmjs.org/tslib/2.4.0
     dev: true
 
-  registry.npmjs.org/@angular/language-service/17.0.0-next.4:
-    resolution: {integrity: sha512-pP5chqfD9bdIOsWwPyKF6N+lWd0yD0yBCLdANYevV6VftDqmi3gY/jncKSejYgb3rmiV54kcB2KUk9FE0Ss4ow==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-17.0.0-next.4.tgz}
+  registry.npmjs.org/@angular/language-service/17.0.0-next.6:
+    resolution: {integrity: sha512-9vJGprjWlBVfFIbNAABKLnYrPqOPZThi7cU93wYL/RzEkzfwWRfLm912vvUdbBzWgnDpMBlzNlc4vsLrt2Nv2w==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-17.0.0-next.6.tgz}
     name: '@angular/language-service'
-    version: 17.0.0-next.4
-    engines: {node: ^16.14.0 || >=18.10.0}
+    version: 17.0.0-next.6
+    engines: {node: '>=18.13.0'}
     dev: false
 
   registry.npmjs.org/@assemblyscript/loader/0.10.1:

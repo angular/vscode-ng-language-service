@@ -1,3 +1,6 @@
+# 17.0.0-next.1
+This release upgrades `@angular/language-service` to v17.0.0-next.7.
+
 # 17.0.0-next.0
 This release upgrades `@angular/language-service` to v17.0.0-next.6.
 

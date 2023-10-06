@@ -2,16 +2,16 @@
   "name": "angular-ls-integration-test-project",
   "private": true,
   "dependencies": {
-    "@angular/common": "16.0.0-next.0",
-    "@angular/compiler": "16.0.0-next.0",
-    "@angular/compiler-cli": "16.0.0-next.0",
-    "@angular/core": "16.0.0-next.0",
+    "@angular/common": "17.0.0-next.7",
+    "@angular/compiler": "17.0.0-next.7",
+    "@angular/compiler-cli": "17.0.0-next.7",
+    "@angular/core": "17.0.0-next.7",
     "rxjs": "6.6.7",
     "zone.js": "0.11.5"
   },
   "devDependencies": {
-    "ng-packagr": "^16.0.0-next.0",
-    "typescript": "~4.8.0"
+    "ng-packagr": "^17.0.0-next.2",
+    "typescript": "~5.2.2"
   },
   "scripts": {
     "build": "ng-packagr -p libs/post/ng-package.json -c libs/post/tsconfig.json"

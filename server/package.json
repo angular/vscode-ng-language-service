@@ -20,7 +20,9 @@
     "vscode-jsonrpc": "6.0.0",
     "vscode-languageserver": "7.0.0",
     "vscode-languageserver-textdocument": "^1.0.7",
-    "vscode-uri": "3.0.7",
+    "vscode-uri": "3.0.7"
+  },
+  "devDependencies": {
     "test": "3.3.0"
   },
   "publishConfig": {

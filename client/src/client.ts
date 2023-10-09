@@ -59,6 +59,9 @@ export class AngularLanguageClient implements vscode.Disposable {
       // Don't let our output console pop open
       revealOutputChannelOn: lsp.RevealOutputChannelOn.Never,
       outputChannel: this.outputChannel,
+      markdown: {
+        isTrusted: true,
+      },
       middleware: {
         provideCodeActions: async (
             document: vscode.TextDocument, range: vscode.Range, context: vscode.CodeActionContext,

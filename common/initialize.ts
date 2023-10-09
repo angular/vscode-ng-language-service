@@ -9,3 +9,13 @@
 export interface ServerOptions {
   logFile?: string;
 }
+
+export interface OpenJsDocLinkCommand_Args {
+  readonly file: string;
+  readonly position?: {
+    start: {character: number; line: number;},
+    end: {character: number; line: number;},
+  };
+}
+
+export const OpenJsDocLinkCommandId = 'angular.openJsDocLink';

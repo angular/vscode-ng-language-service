@@ -8,7 +8,7 @@
 
 import * as vscode from 'vscode';
 
-import {ServerOptions} from '../../common/initialize';
+import {OpenJsDocLinkCommand_Args, OpenJsDocLinkCommandId, ServerOptions} from '../../common/initialize';
 
 import {AngularLanguageClient} from './client';
 import {ANGULAR_SCHEME, TcbContentProvider} from './providers';
@@ -16,10 +16,10 @@ import {ANGULAR_SCHEME, TcbContentProvider} from './providers';
 /**
  * Represent a vscode command with an ID and an impl function `execute`.
  */
-type Command = {
+type Command<T = any> = {
   id: string,
   isTextEditorCommand: false,
-  execute(): Promise<unknown>,
+  execute(_: T): Promise<unknown>,
 }|{
   id: string,
   isTextEditorCommand: true,
@@ -170,6 +170,28 @@ function goToTemplateForComponent(ngClient: AngularLanguageClient): Command {
 }
 
 /**
+ * Proxy command for opening links in jsdoc comments.
+ *
+ * This is needed to avoid incorrectly rewriting uris.
+ */
+function openJsDocLinkCommand(): Command<OpenJsDocLinkCommand_Args> {
+  return {
+    id: OpenJsDocLinkCommandId,
+    isTextEditorCommand: false,
+    async execute(args) {
+      return await vscode.commands.executeCommand(
+          'vscode.open', vscode.Uri.parse(args.file), <vscode.TextDocumentShowOptions>{
+            selection: new vscode.Range(
+                new vscode.Position(
+                    args.position?.start.line ?? 0, args.position?.start.character ?? 0),
+                new vscode.Position(
+                    args.position?.end.line ?? 0, args.position?.end.character ?? 0)),
+          });
+    },
+  };
+}
+
+/**
  * Register all supported vscode commands for the Angular extension.
  * @param client language client
  * @param context extension context for adding disposables
@@ -182,6 +204,7 @@ export function registerCommands(
     getTemplateTcb(client, context),
     goToComponentWithTemplateFile(client),
     goToTemplateForComponent(client),
+    openJsDocLinkCommand(),
   ];
 
   for (const command of commands) {

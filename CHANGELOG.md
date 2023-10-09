@@ -7,6 +7,13 @@ This release upgrades `@angular/language-service` to v17.0.0-next.6.
 * feat(syntaxes): Add support for block syntaxes
 * fix(client): fix detection of Angular context after string interpolation
 
+# 16.2.0
+This release upgrades the `@angular/language-service` to v16.2.8
+
+* fix: Retain correct language service when ts.Project reloads ([#51912](https://github.com/angular/angular/commit/08482f2c7dcbcd100981dfb266a6e63f64432328))
+* fix(server): support to show the tag info in the jsDoc (#1904) 
+* fix(client): fix detection of Angular context after string interpolation (#1922)
+
 # 16.1.8
 This release upgrades `@angular/language-service` to v16.1.8.
 

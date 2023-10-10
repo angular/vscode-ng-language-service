@@ -14,6 +14,7 @@ import {lspPositionToTsPosition, tsTextSpanToLspRange} from './utils';
 // TODO: Move this to `@angular/language-service`.
 enum CompletionKind {
   attribute = 'attribute',
+  block = 'block',
   htmlAttribute = 'html attribute',
   property = 'property',
   component = 'component',
@@ -90,6 +91,8 @@ function ngCompletionKindToLspCompletionItemKind(kind: CompletionKind): lsp.Comp
     case CompletionKind.reference:
     case CompletionKind.variable:
       return lsp.CompletionItemKind.Variable;
+    case CompletionKind.block:
+      return lsp.CompletionItemKind.Keyword;
     case CompletionKind.entity:
     default:
       return lsp.CompletionItemKind.Text;

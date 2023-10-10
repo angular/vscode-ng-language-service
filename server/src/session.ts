@@ -677,7 +677,7 @@ export class Session {
         codeLensProvider: {resolveProvider: true},
         textDocumentSync: lsp.TextDocumentSyncKind.Incremental,
         completionProvider:
-            {resolveProvider: true, triggerCharacters: ['<', '.', '*', '[', '(', '$', '|']},
+            {resolveProvider: true, triggerCharacters: ['<', '.', '*', '[', '(', '$', '|', '@']},
         definitionProvider: true,
         typeDefinitionProvider: true,
         referencesProvider: true,

@@ -181,6 +181,69 @@ export class AppComponent {
     expect(response).toContain({startLine: 7, endLine: 8});
   });
 
+  it('provides folding ranges for control flow', async () => {
+    openTextDocument(client, APP_COMPONENT, `
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+
+@Component({
+  selector: 'my-app',
+  template: \`
+  @if (1) {
+    1
+  } @else {
+    2
+  }
+
+  @switch (name) {
+    @case ('') {
+      3
+    } @default {
+      4
+    }
+  }5
+
+  @defer {
+    6
+  } @placeholder {
+    7
+  } @error {
+    8
+  } @loading {
+    9
+  }
+
+  @for (item of items; track $index) {
+    10
+  } @empty {
+    11
+  }
+  \`,
+})
+export class AppComponent {
+  name = 'Angular';
+  items = [];
+}`);
+    const response = await client.sendRequest(lsp.FoldingRangeRequest.type, {
+      textDocument: {
+        uri: APP_COMPONENT_URI,
+      },
+    }) as lsp.FoldingRange[];
+    expect(Array.isArray(response)).toBe(true);
+    // 2 folding ranges for the if/else, 3 for the switch, 4 for defer, 2 for repeater
+    expect(response.length).toEqual(11);
+    expect(response).toContain({startLine: 6, endLine: 7});    // if
+    expect(response).toContain({startLine: 8, endLine: 9});    // else
+    expect(response).toContain({startLine: 12, endLine: 17});  // switch
+    expect(response).toContain({startLine: 13, endLine: 14});  // case
+    expect(response).toContain({startLine: 15, endLine: 16});  // default
+    expect(response).toContain({startLine: 20, endLine: 21});  // defer
+    expect(response).toContain({startLine: 22, endLine: 23});  // placeholder
+    expect(response).toContain({startLine: 24, endLine: 25});  // error
+    expect(response).toContain({startLine: 26, endLine: 27});  // loading
+    expect(response).toContain({startLine: 30, endLine: 31});  // for
+    expect(response).toContain({startLine: 32, endLine: 33});  // empty
+  });
+
   describe('signature help', () => {
     it('should show signature help for an empty call', async () => {
       client.sendNotification(lsp.DidOpenTextDocumentNotification.type, {

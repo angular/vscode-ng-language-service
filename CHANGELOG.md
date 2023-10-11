@@ -1,3 +1,9 @@
+# 17.0.0-next.2
+This release upgrades `@angular/language-service` to v17.0.0-next.8.
+
+* feat(server): Add folding range support for Angular template syntax (#1938)
+* feat: support block completions (#1937)
+
 # 17.0.0-next.1
 This release upgrades `@angular/language-service` to v17.0.0-next.7.
 

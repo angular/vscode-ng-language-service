@@ -2,7 +2,7 @@
   "name": "ng-template",
   "displayName": "Angular Language Service",
   "description": "Editor services for Angular templates",
-  "version": "17.0.0-next.1",
+  "version": "17.0.0-next.2",
   "publisher": "Angular",
   "icon": "angular.png",
   "license": "MIT",
@@ -124,12 +124,12 @@
         "angular.suggest.includeAutomaticOptionalChainCompletions": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Enable/disable showing completions on potentially undefined values that insert an optional chain call. Requires TS 3.7+ and strict null checks to be enabled."
+          "markdownDescription": "Enable showing completions on potentially undefined values that insert an optional chain call. Requires TS 3.7+ and strict null checks to be enabled."
         },
         "angular.suggest.includeCompletionsWithSnippetText": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Enable/disable snippet completions from Angular language server. Requires using TypeScript 4.3+ in the workspace."
+          "markdownDescription": "Enable snippet completions from Angular language server. Requires using TypeScript 4.3+ in the workspace."
         },
         "angular.forceStrictTemplates": {
           "type": "boolean",

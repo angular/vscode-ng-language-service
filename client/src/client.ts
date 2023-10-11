@@ -166,7 +166,7 @@ export class AngularLanguageClient implements vscode.Disposable {
         provideFoldingRanges: async (
             document: vscode.TextDocument, context: vscode.FoldingContext,
             token: vscode.CancellationToken, next) => {
-          if (!(await this.isInAngularProject(document)) || document.languageId !== 'typescript') {
+          if (!await this.isInAngularProject(document)) {
             return null;
           }
           return next(document, context, token);

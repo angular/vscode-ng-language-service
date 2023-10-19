@@ -13,7 +13,7 @@ import * as lsp from 'vscode-languageclient/node';
 
 import {OpenOutputChannel, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode, SuggestStrictModeParams} from '../../common/notifications';
 import {GetComponentsWithTemplateFile, GetTcbRequest, GetTemplateLocationForComponent, IsInAngularProject} from '../../common/requests';
-import {resolve, Version} from '../../common/resolver';
+import {resolve} from '../../common/resolver';
 
 import {isInsideComponentDecorator, isInsideInlineTemplateRegion, isInsideStringLiteral} from './embedded_support';
 
@@ -405,7 +405,7 @@ function getProbeLocations(bundled: string): string[] {
  * Construct the arguments that's used to spawn the server process.
  * @param ctx vscode extension context
  */
-function constructArgs(ctx: vscode.ExtensionContext, isTrustedWorkspace: boolean): string[] {
+function constructArgs(ctx: vscode.ExtensionContext): string[] {
   const config = vscode.workspace.getConfiguration();
   const args: string[] = ['--logToConsole'];
 
@@ -452,18 +452,19 @@ function getServerOptions(ctx: vscode.ExtensionContext, debug: boolean): lsp.Nod
     NG_DEBUG: true,
   };
 
-  // Because the configuration is typed as "boolean" in package.json, vscode
-  // will return false even when the value is not set. If value is false, then
-  // we need to check if all projects support Ivy language service.
-  const config = vscode.workspace.getConfiguration();
-
   // Node module for the language server
-  const args = constructArgs(ctx, vscode.workspace.isTrusted);
+  const args = constructArgs(ctx);
   const prodBundle = ctx.asAbsolutePath('server');
   const devBundle = ctx.asAbsolutePath(path.join('bazel-bin', 'server', 'src', 'server.js'));
   // VS Code Insider launches extensions in debug mode by default but users
   // install prod bundle so we have to check whether dev bundle exists.
   const latestServerModule = debug && fs.existsSync(devBundle) ? devBundle : prodBundle;
+
+  if (!extensionVersionCompatibleWithAllProjects(latestServerModule)) {
+    vscode.window.showWarningMessage(
+        `A project in the workspace is using a newer version of Angular than the language service extension. ` +
+        `This may cause the extension to show incorrect diagnostics.`);
+  }
 
   // Argv options for Node.js
   const prodExecArgv: string[] = [];
@@ -483,4 +484,24 @@ function getServerOptions(ctx: vscode.ExtensionContext, debug: boolean): lsp.Nod
       execArgv: debug ? devExecArgv : prodExecArgv,
     },
   };
+}
+
+function extensionVersionCompatibleWithAllProjects(serverModuleLocation: string): boolean {
+  const languageServiceVersion =
+      resolve('@angular/language-service', serverModuleLocation)?.version;
+  if (languageServiceVersion === undefined) {
+    return true;
+  }
+
+  const workspaceFolders = vscode.workspace.workspaceFolders || [];
+  for (const workspaceFolder of workspaceFolders) {
+    const angularCore = resolve('@angular/core', workspaceFolder.uri.fsPath);
+    if (angularCore === undefined) {
+      continue;
+    }
+    if (!languageServiceVersion.greaterThanOrEqual(angularCore.version, 'minor')) {
+      return false;
+    }
+  }
+  return true;
 }

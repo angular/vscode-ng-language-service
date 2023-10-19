@@ -51,17 +51,17 @@ export class Version {
     this.patch = patch;
   }
 
-  greaterThanOrEqual(other: Version): boolean {
+  greaterThanOrEqual(other: Version, compare: 'patch'|'minor'|'major' = 'patch'): boolean {
     if (this.major < other.major) {
       return false;
     }
-    if (this.major > other.major) {
+    if (this.major > other.major || (this.major === other.major && compare === 'major')) {
       return true;
     }
     if (this.minor < other.minor) {
       return false;
     }
-    if (this.minor > other.minor) {
+    if (this.minor > other.minor || (this.minor === other.minor && compare === 'minor')) {
       return true;
     }
     return this.patch >= other.patch;

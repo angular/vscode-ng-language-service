@@ -26,6 +26,13 @@
     goodbye 
 }
 
-@for (let item of items; as thing; trackBy: $index) {
-    {{item}}
+@for (let item of items; as thing; track: $index) {
+    bla
+}
+
+@if (
+    items;
+    track $index
+) {
+    bla
 }

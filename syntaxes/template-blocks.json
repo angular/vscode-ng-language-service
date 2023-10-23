@@ -28,35 +28,33 @@
       "patterns": [
         {
           "include": "#blockExpression"
-        }
-      ],
-      "end": "(?<=\\})",
-      "contentName": "control.block.ng"
-    },
-    "blockExpression": {
-      "begin": "(?:(\\()(.*)(\\)))?\\s*",
-      "beginCaptures": {
-        "1": {
-          "name": "meta.brace.round.ts"
         },
-        "2": {
-          "name": "control.block.expression.ng",
-          "patterns": [
-            {
-              "include": "source.js"
-            }
-          ]
-        },
-        "3": {
-          "name": "meta.brace.round.ts"
-        }
-      },
-      "end": "(?<=\\})",
-      "patterns": [
         {
           "include": "#blockBody"
         }
-      ]
+      ],
+      "contentName": "control.block.ng",
+      "end": "(?<=\\})"
+    },
+    "blockExpression": {
+      "begin": "\\(",
+      "beginCaptures": {
+        "0": {
+          "name": "meta.brace.round.ts"
+        }
+      },
+      "contentName": "control.block.expression.ng",
+      "patterns": [
+        {
+          "include": "source.js"
+        }
+      ],
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "meta.brace.round.ts"
+        }
+      }
     },
     "blockBody": {
       "begin": "\\{",

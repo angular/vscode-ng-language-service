@@ -2,9 +2,9 @@
 #^ template.blocks.ng keyword.control.block.transition.ng
 # ^^^^^^ template.blocks.ng keyword.control.block.kind.ng
 #       ^ template.blocks.ng control.block.ng meta.brace.round.ts
-#        ^^^^^^^^^^^^^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng
-#                          ^ template.blocks.ng control.block.ng meta.brace.round.ts
-#                           ^ template.blocks.ng control.block.ng
+#        ^^^^^^^^^^^^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng
+#                         ^ template.blocks.ng control.block.ng meta.brace.round.ts
+#                          ^^ template.blocks.ng control.block.ng
 #                            ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
 >    <a></a>
 #^^^^^^^^^^^^ template.blocks.ng control.block.ng control.block.body.ng
@@ -108,18 +108,33 @@
 >}
 #^ template.blocks.ng control.block.ng punctuation.definition.block.ts
 >
->@for (let item of items; as thing; trackBy: $index) {
+>@for (let item of items; as thing; track: $index) {
 #^ template.blocks.ng keyword.control.block.transition.ng
 # ^^^^ template.blocks.ng keyword.control.block.kind.ng
 #     ^ template.blocks.ng control.block.ng meta.brace.round.ts
-#      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng
-#                                                  ^ template.blocks.ng control.block.ng meta.brace.round.ts
-#                                                   ^ template.blocks.ng control.block.ng
-#                                                    ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
->    {{item}}
-#^^^^^^^^^^ template.blocks.ng control.block.ng control.block.body.ng
-#          ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
-#           ^^ template.blocks.ng
+#      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng
+#                                                ^ template.blocks.ng control.block.ng meta.brace.round.ts
+#                                                 ^ template.blocks.ng control.block.ng
+#                                                  ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
+>    bla
+#^^^^^^^^ template.blocks.ng control.block.ng control.block.body.ng
 >}
-#^^ template.blocks.ng
+#^ template.blocks.ng control.block.ng punctuation.definition.block.ts
+>
+>@if (
+#^ template.blocks.ng keyword.control.block.transition.ng
+# ^^^ template.blocks.ng keyword.control.block.kind.ng
+#    ^ template.blocks.ng control.block.ng meta.brace.round.ts
+>    items;
+#^^^^^^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng
+>    track $index
+#^^^^^^^^^^^^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng
+>) {
+#^ template.blocks.ng control.block.ng meta.brace.round.ts
+# ^ template.blocks.ng control.block.ng
+#  ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
+>    bla
+#^^^^^^^^ template.blocks.ng control.block.ng control.block.body.ng
+>}
+#^ template.blocks.ng control.block.ng punctuation.definition.block.ts
 >

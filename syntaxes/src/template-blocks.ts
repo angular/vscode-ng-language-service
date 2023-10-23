@@ -31,25 +31,24 @@ export const TemplateBlocks: GrammarDefinition = {
         },
         2: {name: 'keyword.control.block.kind.ng'},
       },
-      patterns: [{include: '#blockExpression'}],
-      end: '(?<=\\})',
+      patterns: [{include: '#blockExpression'}, {include: '#blockBody'}],
       contentName: 'control.block.ng',
+      // The block ends at the close `}` but we don't capture it here because. It's captured instead
+      // by the #blockBody.
+      end: /(?<=\})/,
     },
 
     blockExpression: {
-      begin: /(?:(\()(.*)(\)))?\s*/,
+      begin: /\(/,
       beginCaptures: {
-        1: {name: 'meta.brace.round.ts'},
-        2: {
-          name: 'control.block.expression.ng',
-          patterns: [
-            {include: 'source.js'},
-          ]
-        },
-        3: {name: 'meta.brace.round.ts'},
+        0: {name: 'meta.brace.round.ts'},
       },
-      end: '(?<=\\})',
-      patterns: [{include: '#blockBody'}]
+      contentName: 'control.block.expression.ng',
+      patterns: [{include: 'source.js'}],
+      end: /\)/,
+      endCaptures: {
+        0: {name: 'meta.brace.round.ts'},
+      },
     },
 
     blockBody: {

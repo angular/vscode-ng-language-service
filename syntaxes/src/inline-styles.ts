@@ -45,8 +45,8 @@ export const InlineStyles: GrammarDefinition = {
       beginCaptures: {1: {name: 'string'}},
       end: /\1/,
       endCaptures: {0: {name: 'string'}},
-      contentName: 'source.css',
-      patterns: [{include: 'source.css'}]
+      contentName: 'source.css.scss',
+      patterns: [{include: 'source.css.scss'}]
     }
   }
 };

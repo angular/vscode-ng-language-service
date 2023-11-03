@@ -158,7 +158,7 @@
           "source.ts"
         ],
         "embeddedLanguages": {
-          "source.css": "css"
+          "source.css.scss": "scss"
         }
       },
       {

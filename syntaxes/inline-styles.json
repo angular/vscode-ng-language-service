@@ -87,10 +87,10 @@
           "name": "string"
         }
       },
-      "contentName": "source.css",
+      "contentName": "source.css.scss",
       "patterns": [
         {
-          "include": "source.css"
+          "include": "source.css.scss"
         }
       ]
     }

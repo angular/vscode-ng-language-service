@@ -167,11 +167,7 @@
         "injectTo": [
           "text.html.derivative",
           "source.ts"
-        ],
-        "embeddedLanguages": {
-          "text.html": "html",
-          "source.css": "css"
-        }
+        ]
       },
       {
         "path": "./syntaxes/template-blocks.json",
@@ -179,11 +175,7 @@
         "injectTo": [
           "text.html.derivative",
           "source.ts"
-        ],
-        "embeddedLanguages": {
-          "text.html": "html",
-          "expression.ng": "javascript"
-        }
+        ]
       },
       {
         "path": "./syntaxes/let-declaration.json",

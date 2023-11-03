@@ -13,7 +13,7 @@
 #          ^ inline-styles.ng meta.array.literal.ts meta.brace.square.ts
 #           ^ inline-styles.ng
 #            ^ inline-styles.ng string
-#             ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css
+#             ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css.scss
 #                                       ^ inline-styles.ng string
 #                                        ^ inline-styles.ng
 #                                         ^ inline-styles.ng meta.array.literal.ts meta.brace.square.ts
@@ -30,13 +30,13 @@
 >    '.example { width: 100px; }',
 #^^^^ inline-styles.ng
 #    ^ inline-styles.ng string
-#     ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css
+#     ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css.scss
 #                               ^ inline-styles.ng string
 #                                ^^ inline-styles.ng
 >    '.example { height: 100px; }',
 #^^^^ inline-styles.ng
 #    ^ inline-styles.ng string
-#     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css
+#     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css.scss
 #                                ^ inline-styles.ng string
 #                                 ^^ inline-styles.ng
 >  ],
@@ -54,7 +54,7 @@
 #          ^ inline-styles.ng meta.array.literal.ts meta.brace.square.ts
 #           ^ inline-styles.ng
 #            ^ inline-styles.ng string
-#             ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css
+#             ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css.scss
 #                                       ^ inline-styles.ng string
 #                                        ^ inline-styles.ng
 #                                         ^ inline-styles.ng meta.array.literal.ts meta.brace.square.ts
@@ -67,7 +67,7 @@
 #          ^ inline-styles.ng meta.array.literal.ts meta.brace.square.ts
 #           ^ inline-styles.ng
 #            ^ inline-styles.ng string
-#             ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css
+#             ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css.scss
 #                                       ^ inline-styles.ng string
 #                                        ^ inline-styles.ng
 #                                         ^ inline-styles.ng meta.array.literal.ts meta.brace.square.ts
@@ -80,7 +80,7 @@
 #          ^ inline-styles.ng meta.array.literal.ts meta.brace.square.ts
 #           ^ inline-styles.ng
 #            ^ inline-styles.ng string
-#             ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css
+#             ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css.scss
 #                                       ^ inline-styles.ng string
 #                                        ^ inline-styles.ng
 #                                         ^ inline-styles.ng meta.array.literal.ts meta.brace.square.ts
@@ -97,7 +97,7 @@
 #           ^^^^^^^ inline-styles.ng
 #                  ^ inline-styles.ng
 #                   ^ inline-styles.ng string
-#                    ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css
+#                    ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css.scss
 #                                              ^ inline-styles.ng string
 #                                               ^ inline-styles.ng
 #                                                ^ inline-styles.ng meta.brace.round.ts
@@ -114,7 +114,7 @@
 #           ^^^^^^ inline-styles.ng
 #                 ^ inline-styles.ng
 #                  ^ inline-styles.ng string
-#                   ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css
+#                   ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css.scss
 #                                             ^ inline-styles.ng string
 #                                              ^ inline-styles.ng
 #                                               ^ inline-styles.ng meta.brace.round.ts
@@ -126,7 +126,7 @@
 #        ^ inline-styles.ng meta.object-literal.key.ts punctuation.separator.key-value.ts
 #         ^^ inline-styles.ng
 #           ^ inline-styles.ng string
-#            ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css
+#            ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css.scss
 #                                      ^ inline-styles.ng string
 #                                       ^ inline-styles.ng
 #                                        ^^ inline-styles.ng
@@ -136,7 +136,7 @@
 #        ^ inline-styles.ng meta.object-literal.key.ts punctuation.separator.key-value.ts
 #         ^^ inline-styles.ng
 #           ^ inline-styles.ng string
-#            ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css
+#            ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css.scss
 #                                      ^ inline-styles.ng string
 #                                       ^ inline-styles.ng
 #                                        ^^ inline-styles.ng
@@ -146,7 +146,7 @@
 #        ^ inline-styles.ng meta.object-literal.key.ts punctuation.separator.key-value.ts
 #         ^^ inline-styles.ng
 #           ^ inline-styles.ng string
-#            ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css
+#            ^^^^^^^^^^^^^^^^^^^^^^^^^^ inline-styles.ng source.css.scss
 #                                      ^ inline-styles.ng string
 #                                       ^ inline-styles.ng
 #                                        ^^ inline-styles.ng

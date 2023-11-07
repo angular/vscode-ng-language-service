@@ -147,7 +147,7 @@ export const Expression: GrammarDefinition = {
               name: 'storage.type.as.ts',
             },
           },
-          end: /(?=$|"|[;,:})\]])/,
+          end: /(?=$|"|'|[;,:})\]])/,
           patterns: [
             {
               include: '#type',

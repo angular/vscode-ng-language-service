@@ -1,3 +1,12 @@
+# 17.0.0
+This release upgrades `@angular/language-service` to v17.0.0-rc.3.
+
+* fix(syntaxes): Support scss for inline styles (#1951)
+* fix(syntaxes): Support multiline block expressions
+* feat:	Complete inside @switch (https://github.com/angular/angular/pull/52153)
+* fix: correct incomplete escaping (https://github.com/angular/angular/pull/51557)
+* fix: fix	Autocomplete block keywords in more cases (https://github.com/angular/angular/pull/52198)
+
 # 17.0.0-next.2
 This release upgrades `@angular/language-service` to v17.0.0-next.8.
 
@@ -12,6 +21,7 @@ This release upgrades `@angular/language-service` to v17.0.0-next.6.
 
 * feat(syntaxes): Add support for block syntaxes
 * fix(client): fix detection of Angular context after string interpolation
+* feat:	Enable go to definition of styleUrl (https://github.com/angular/angular/pull/51746)
 
 # 16.2.0
 This release upgrades the `@angular/language-service` to v16.2.8

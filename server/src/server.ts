@@ -46,6 +46,7 @@ function main() {
     includeAutomaticOptionalChainCompletions: options.includeAutomaticOptionalChainCompletions,
     includeCompletionsWithSnippetText: options.includeCompletionsWithSnippetText,
     forceStrictTemplates: isG3 || options.forceStrictTemplates,
+    disableBlockSyntax: options.disableBlockSyntax,
   });
 
   // Log initialization info

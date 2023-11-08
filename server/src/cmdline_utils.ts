@@ -36,6 +36,7 @@ interface CommandLineOptions {
   includeAutomaticOptionalChainCompletions: boolean;
   includeCompletionsWithSnippetText: boolean;
   forceStrictTemplates: boolean;
+  disableBlockSyntax: boolean;
 }
 
 export function parseCommandLine(argv: string[]): CommandLineOptions {
@@ -50,6 +51,7 @@ export function parseCommandLine(argv: string[]): CommandLineOptions {
         hasArgument(argv, '--includeAutomaticOptionalChainCompletions'),
     includeCompletionsWithSnippetText: hasArgument(argv, '--includeCompletionsWithSnippetText'),
     forceStrictTemplates: hasArgument(argv, '--forceStrictTemplates'),
+    disableBlockSyntax: hasArgument(argv, '--disableBlockSyntax'),
   };
 }
 

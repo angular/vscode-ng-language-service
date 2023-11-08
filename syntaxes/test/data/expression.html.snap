@@ -1025,6 +1025,19 @@
 #                                           ^ template.ng meta.ng-binding.template.html expression.ng entity.name.type.ts
 #                                            ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.end.html
 #                                             ^^^^^^^^ template.ng
+><div *ngIf='x as y'></div>
+#^^^^^ template.ng
+#     ^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html punctuation.definition.ng-binding-name.begin.html
+#      ^^^^ template.ng meta.ng-binding.template.html entity.other.attribute-name.html entity.other.ng-binding-name.template.html entity.other.ng-binding-name.ngIf.html
+#          ^ template.ng meta.ng-binding.template.html punctuation.separator.key-value.html
+#           ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.begin.html
+#            ^ template.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
+#             ^ template.ng meta.ng-binding.template.html expression.ng
+#              ^^ template.ng meta.ng-binding.template.html expression.ng storage.type.as.ts
+#                ^ template.ng meta.ng-binding.template.html expression.ng
+#                 ^ template.ng meta.ng-binding.template.html expression.ng entity.name.type.ts
+#                  ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.end.html
+#                   ^^^^^^^^ template.ng
 ><!-- Mixed -->
 #^^^^^^^^^^^^^^^ template.ng
 ><div *ngFor="let param of params; let i = index; let last = last"></div>
@@ -1454,3 +1467,4 @@
 #                          ^ template.ng meta.ng-binding.template.html expression.ng entity.name.type.ts
 #                           ^ template.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.end.html
 #                            ^^^^^^^^ template.ng
+>

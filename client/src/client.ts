@@ -13,7 +13,7 @@ import * as lsp from 'vscode-languageclient/node';
 
 import {OpenOutputChannel, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode, SuggestStrictModeParams} from '../../common/notifications';
 import {GetComponentsWithTemplateFile, GetTcbRequest, GetTemplateLocationForComponent, IsInAngularProject} from '../../common/requests';
-import {resolve} from '../../common/resolver';
+import {NodeModule, resolve} from '../../common/resolver';
 
 import {isInsideComponentDecorator, isInsideInlineTemplateRegion, isInsideStringLiteral} from './embedded_support';
 
@@ -432,6 +432,13 @@ function constructArgs(ctx: vscode.ExtensionContext): string[] {
     args.push('--includeCompletionsWithSnippetText');
   }
 
+  const angularVersions = getAngularVersionsInWorkspace();
+  // Only disable block syntax if we find angular/core and every one we find does not support block
+  // syntax
+  if (angularVersions.size > 0 && Array.from(angularVersions).every(v => v.version.major < 17)) {
+    args.push('--disableBlockSyntax');
+  }
+
   const forceStrictTemplates = config.get<boolean>('angular.forceStrictTemplates');
   if (forceStrictTemplates) {
     args.push('--forceStrictTemplates');
@@ -504,4 +511,20 @@ function extensionVersionCompatibleWithAllProjects(serverModuleLocation: string)
     }
   }
   return true;
+}
+
+/**
+ * Returns true if any project in the workspace supports block syntax (v17+).
+ */
+function getAngularVersionsInWorkspace(): Set<NodeModule> {
+  const angularCoreModules = new Set<NodeModule>();
+  const workspaceFolders = vscode.workspace.workspaceFolders || [];
+  for (const workspaceFolder of workspaceFolders) {
+    const angularCore = resolve('@angular/core', workspaceFolder.uri.fsPath);
+    if (angularCore === undefined) {
+      continue;
+    }
+    angularCoreModules.add(angularCore);
+  }
+  return angularCoreModules;
 }

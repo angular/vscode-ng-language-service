@@ -5,7 +5,7 @@ importers:
   .:
     specifiers:
       '@angular/dev-infra-private': https://github.com/angular/dev-infra-private-builds.git#262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2
-      '@angular/language-service': 17.0.0-rc.3
+      '@angular/language-service': 17.0.1
       '@bazel/bazelisk': 1.18.0
       '@bazel/ibazel': 0.16.2
       '@types/jasmine': 3.10.7
@@ -33,7 +33,7 @@ importers:
       vscode-tmgrammar-test: 0.0.11
       vscode-uri: 3.0.7
     dependencies:
-      '@angular/language-service': 17.0.0-rc.3
+      '@angular/language-service': 17.0.1
       typescript: 5.2.2
       vscode-html-languageservice: 4.2.5
       vscode-jsonrpc: 6.0.0
@@ -243,8 +243,8 @@ packages:
       tslib: 2.4.0
     dev: true
 
-  /@angular/language-service/17.0.0-rc.3:
-    resolution: {integrity: sha512-F2LZUr9Kpeuz8Lqnm/KHxJMWX51+f2DzIPBNOVkNdgcTyQGXlQdJJBznpQ2QwaRaNP30Oz6/hOyAy95SKaVKSg==}
+  /@angular/language-service/17.0.1:
+    resolution: {integrity: sha512-kDKmtMj410We8Rbph4e2xSuIs+MlzE7+QvIR07tofcoAR6Qpe2hr6WdsfExGBNIk5LNMYI3zdbEkAofG/JuRDA==}
     engines: {node: ^18.13.0 || >=20.9.0}
     dev: false
 

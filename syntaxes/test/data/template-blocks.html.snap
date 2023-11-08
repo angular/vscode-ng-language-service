@@ -129,7 +129,7 @@
 >}
 #^ template.blocks.ng control.block.ng punctuation.definition.block.ts
 >
->@for (let item of items; as thing; track: $index) {
+>@for (let item of items; track $index) {
 #^ template.blocks.ng keyword.control.block.transition.ng
 # ^^^^ template.blocks.ng keyword.control.block.kind.ng
 #     ^ template.blocks.ng control.block.ng meta.brace.round.ts
@@ -141,16 +141,12 @@
 #                 ^ template.blocks.ng control.block.ng control.block.expression.ng
 #                  ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
 #                       ^^ template.blocks.ng control.block.ng control.block.expression.ng
-#                         ^^ template.blocks.ng control.block.ng control.block.expression.ng storage.type.as.ts
-#                           ^ template.blocks.ng control.block.ng control.block.expression.ng
-#                            ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng entity.name.type.ts
-#                                 ^^ template.blocks.ng control.block.ng control.block.expression.ng
-#                                   ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
-#                                        ^^ template.blocks.ng control.block.ng control.block.expression.ng
-#                                          ^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
-#                                                ^ template.blocks.ng control.block.ng meta.brace.round.ts
-#                                                 ^ template.blocks.ng control.block.ng
-#                                                  ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
+#                         ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#                              ^ template.blocks.ng control.block.ng control.block.expression.ng
+#                               ^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#                                     ^ template.blocks.ng control.block.ng meta.brace.round.ts
+#                                      ^ template.blocks.ng control.block.ng
+#                                       ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
 >    bla
 #^^^^^^^^ template.blocks.ng control.block.ng control.block.body.ng
 >}
@@ -190,4 +186,19 @@
 #       ^^ template.blocks.ng control.block.ng control.block.body.ng punctuation.definition.block.ts
 >}
 #^ template.blocks.ng control.block.ng punctuation.definition.block.ts
+>
+><!-- Should not highlight -->
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.blocks.ng
+>@if 
+#^^^^^ template.blocks.ng
+>(items) {}
+#^^^^^^^^^^^ template.blocks.ng
+>
+>some.email@google.com ({}) {}
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.blocks.ng
+>
+>@for 
+#^^^^^^ template.blocks.ng
+>(let item of items; track $index) { }
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.blocks.ng
 >

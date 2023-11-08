@@ -22,7 +22,12 @@ export const TemplateBlocks: GrammarDefinition = {
     },
 
     block: {
-      begin: /(@)((?:\w+\s*)+)/,
+      // @ followed by words and spaces. Also require a { or ( on the same line but don't capture
+      // it.
+      // The parser doesn't require this but we do for syntax highlighting to be more exclusive
+      // since
+      // the extension can be used for older versions of Angular.
+      begin: /(@)((?:\w+\s*)+)(?=\(|\{)/,
       beginCaptures: {
         1: {
           patterns: [

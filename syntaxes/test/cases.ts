@@ -21,7 +21,8 @@ export const cases = [
   {
     'name': 'block syntax',
     'scopeName': 'template.blocks.ng',
-    'grammarFiles': ['syntaxes/template-blocks.json'],
+    'grammarFiles':
+        ['syntaxes/template-blocks.json', 'syntaxes/expression.json', 'syntaxes/template.json'],
     'testFile': 'syntaxes/test/data/template-blocks.html'
   },
   {

@@ -44,7 +44,7 @@ export const TemplateBlocks: GrammarDefinition = {
         0: {name: 'meta.brace.round.ts'},
       },
       contentName: 'control.block.expression.ng',
-      patterns: [{include: 'source.js'}],
+      patterns: [{include: 'expression.ng'}],
       end: /\)/,
       endCaptures: {
         0: {name: 'meta.brace.round.ts'},

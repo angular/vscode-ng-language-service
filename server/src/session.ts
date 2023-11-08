@@ -33,6 +33,7 @@ export interface SessionOptions {
   includeAutomaticOptionalChainCompletions: boolean;
   includeCompletionsWithSnippetText: boolean;
   forceStrictTemplates: boolean;
+  disableBlockSyntax: boolean;
 }
 
 enum LanguageId {
@@ -155,6 +156,9 @@ export class Session {
     };
     if (options.forceStrictTemplates) {
       pluginConfig.forceStrictTemplates = true;
+    }
+    if (options.disableBlockSyntax) {
+      pluginConfig.enableBlockSyntax = false;
     }
     projSvc.configurePlugin({
       pluginName: options.ngPlugin,

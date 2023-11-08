@@ -2,9 +2,14 @@
 #^ template.blocks.ng keyword.control.block.transition.ng
 # ^^^^^^ template.blocks.ng keyword.control.block.kind.ng
 #       ^ template.blocks.ng control.block.ng meta.brace.round.ts
-#        ^^^^^^^^^^^^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng
-#                         ^ template.blocks.ng control.block.ng meta.brace.round.ts
-#                          ^^ template.blocks.ng control.block.ng
+#        ^^^^^^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng entity.name.function.ts
+#                   ^ template.blocks.ng control.block.ng control.block.expression.ng meta.brace.round.ts
+#                    ^ template.blocks.ng control.block.ng control.block.expression.ng
+#                     ^^^ template.blocks.ng control.block.ng control.block.expression.ng constant.numeric.decimal.ts
+#                        ^ template.blocks.ng control.block.ng control.block.expression.ng
+#                         ^ template.blocks.ng control.block.ng control.block.expression.ng meta.brace.round.ts
+#                          ^ template.blocks.ng control.block.ng meta.brace.round.ts
+#                           ^ template.blocks.ng control.block.ng
 #                            ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
 >    <a></a>
 #^^^^^^^^^^^^ template.blocks.ng control.block.ng control.block.body.ng
@@ -24,33 +29,43 @@
 #^ template.blocks.ng keyword.control.block.transition.ng
 # ^^^^^^^ template.blocks.ng keyword.control.block.kind.ng
 #        ^ template.blocks.ng control.block.ng meta.brace.round.ts
-#         ^ template.blocks.ng control.block.ng control.block.expression.ng
+#         ^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
 #          ^ template.blocks.ng control.block.ng meta.brace.round.ts
 #           ^ template.blocks.ng control.block.ng
 #            ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
 >    @case (1) {
 #^^^^^^^^^^^^^^^^ template.blocks.ng control.block.ng control.block.body.ng
 >        {{getCase1()}}
-#^^^^^^^^^^^^^^^^^^^^ template.blocks.ng control.block.ng control.block.body.ng
-#                    ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
-#                     ^^ template.blocks.ng
+#^^^^^^^^ template.blocks.ng control.block.ng control.block.body.ng
+#        ^^ template.blocks.ng control.block.ng control.block.body.ng punctuation.definition.block.ts
+#          ^^^^^^^^ template.blocks.ng control.block.ng control.block.body.ng expression.ng entity.name.function.ts
+#                  ^ template.blocks.ng control.block.ng control.block.body.ng expression.ng meta.brace.round.ts
+#                   ^ template.blocks.ng control.block.ng control.block.body.ng expression.ng meta.brace.round.ts
+#                    ^^ template.blocks.ng control.block.ng control.block.body.ng punctuation.definition.block.ts
 >    }
-#^^^^^^ template.blocks.ng
+#^^^^ template.blocks.ng control.block.ng control.block.body.ng
+#    ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
 >    @case (2) {
 #^^^^ template.blocks.ng
 #    ^ template.blocks.ng keyword.control.block.transition.ng
 #     ^^^^^ template.blocks.ng keyword.control.block.kind.ng
 #          ^ template.blocks.ng control.block.ng meta.brace.round.ts
-#           ^ template.blocks.ng control.block.ng control.block.expression.ng
+#           ^ template.blocks.ng control.block.ng control.block.expression.ng constant.numeric.decimal.ts
 #            ^ template.blocks.ng control.block.ng meta.brace.round.ts
 #             ^ template.blocks.ng control.block.ng
 #              ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
 >        {{a.b.c}}
-#^^^^^^^^^^^^^^^ template.blocks.ng control.block.ng control.block.body.ng
-#               ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
-#                ^^ template.blocks.ng
+#^^^^^^^^ template.blocks.ng control.block.ng control.block.body.ng
+#        ^^ template.blocks.ng control.block.ng control.block.body.ng punctuation.definition.block.ts
+#          ^ template.blocks.ng control.block.ng control.block.body.ng expression.ng variable.other.object.ts
+#           ^ template.blocks.ng control.block.ng control.block.body.ng expression.ng punctuation.accessor.ts
+#            ^ template.blocks.ng control.block.ng control.block.body.ng expression.ng variable.other.object.property.ts
+#             ^ template.blocks.ng control.block.ng control.block.body.ng expression.ng punctuation.accessor.ts
+#              ^ template.blocks.ng control.block.ng control.block.body.ng expression.ng variable.other.property.ts
+#               ^^ template.blocks.ng control.block.ng control.block.body.ng punctuation.definition.block.ts
 >    }
-#^^^^^^ template.blocks.ng
+#^^^^ template.blocks.ng control.block.ng control.block.body.ng
+#    ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
 >    @default {
 #^^^^ template.blocks.ng
 #    ^ template.blocks.ng keyword.control.block.transition.ng
@@ -68,7 +83,9 @@
 #^ template.blocks.ng keyword.control.block.transition.ng
 # ^^^ template.blocks.ng keyword.control.block.kind.ng
 #    ^ template.blocks.ng control.block.ng meta.brace.round.ts
-#     ^^^^ template.blocks.ng control.block.ng control.block.expression.ng
+#     ^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#      ^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.operator.comparison.ts
+#        ^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
 #         ^ template.blocks.ng control.block.ng meta.brace.round.ts
 #          ^ template.blocks.ng control.block.ng
 #           ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
@@ -85,7 +102,9 @@
 #^ template.blocks.ng keyword.control.block.transition.ng
 # ^^^ template.blocks.ng keyword.control.block.kind.ng
 #    ^ template.blocks.ng control.block.ng meta.brace.round.ts
-#     ^^^^ template.blocks.ng control.block.ng control.block.expression.ng
+#     ^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#      ^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.operator.comparison.ts
+#        ^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
 #         ^ template.blocks.ng control.block.ng meta.brace.round.ts
 #          ^ template.blocks.ng control.block.ng
 #           ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
@@ -98,7 +117,9 @@
 #  ^ template.blocks.ng keyword.control.block.transition.ng
 #   ^^^^^^^^ template.blocks.ng keyword.control.block.kind.ng
 #           ^ template.blocks.ng control.block.ng meta.brace.round.ts
-#            ^^^^ template.blocks.ng control.block.ng control.block.expression.ng
+#            ^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#             ^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.operator.comparison.ts
+#               ^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
 #                ^ template.blocks.ng control.block.ng meta.brace.round.ts
 #                 ^ template.blocks.ng control.block.ng
 #                  ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
@@ -112,7 +133,21 @@
 #^ template.blocks.ng keyword.control.block.transition.ng
 # ^^^^ template.blocks.ng keyword.control.block.kind.ng
 #     ^ template.blocks.ng control.block.ng meta.brace.round.ts
-#      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng
+#      ^^^ template.blocks.ng control.block.ng control.block.expression.ng storage.type.ts
+#         ^ template.blocks.ng control.block.ng control.block.expression.ng
+#          ^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#              ^ template.blocks.ng control.block.ng control.block.expression.ng
+#               ^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.operator.expression.of.ts
+#                 ^ template.blocks.ng control.block.ng control.block.expression.ng
+#                  ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#                       ^^ template.blocks.ng control.block.ng control.block.expression.ng
+#                         ^^ template.blocks.ng control.block.ng control.block.expression.ng storage.type.as.ts
+#                           ^ template.blocks.ng control.block.ng control.block.expression.ng
+#                            ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng entity.name.type.ts
+#                                 ^^ template.blocks.ng control.block.ng control.block.expression.ng
+#                                   ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#                                        ^^ template.blocks.ng control.block.ng control.block.expression.ng
+#                                          ^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
 #                                                ^ template.blocks.ng control.block.ng meta.brace.round.ts
 #                                                 ^ template.blocks.ng control.block.ng
 #                                                  ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
@@ -126,15 +161,33 @@
 # ^^^ template.blocks.ng keyword.control.block.kind.ng
 #    ^ template.blocks.ng control.block.ng meta.brace.round.ts
 >    items;
-#^^^^^^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng
->    track $index
-#^^^^^^^^^^^^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng
+#^^^^ template.blocks.ng control.block.ng control.block.expression.ng
+#    ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#         ^^ template.blocks.ng control.block.ng control.block.expression.ng
+>    track $index;
+#^^^^ template.blocks.ng control.block.ng control.block.expression.ng
+#    ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#         ^ template.blocks.ng control.block.ng control.block.expression.ng
+#          ^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#                ^^ template.blocks.ng control.block.ng control.block.expression.ng
+>    let o = $odd
+#^^^^ template.blocks.ng control.block.ng control.block.expression.ng
+#    ^^^ template.blocks.ng control.block.ng control.block.expression.ng storage.type.ts
+#       ^ template.blocks.ng control.block.ng control.block.expression.ng
+#        ^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#         ^ template.blocks.ng control.block.ng control.block.expression.ng
+#          ^ template.blocks.ng control.block.ng control.block.expression.ng keyword.operator.assignment.ts
+#           ^ template.blocks.ng control.block.ng control.block.expression.ng
+#            ^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
 >) {
 #^ template.blocks.ng control.block.ng meta.brace.round.ts
 # ^ template.blocks.ng control.block.ng
 #  ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
->    bla
-#^^^^^^^^ template.blocks.ng control.block.ng control.block.body.ng
+>    {{o}}
+#^^^^ template.blocks.ng control.block.ng control.block.body.ng
+#    ^^ template.blocks.ng control.block.ng control.block.body.ng punctuation.definition.block.ts
+#      ^ template.blocks.ng control.block.ng control.block.body.ng expression.ng variable.other.readwrite.ts
+#       ^^ template.blocks.ng control.block.ng control.block.body.ng punctuation.definition.block.ts
 >}
 #^ template.blocks.ng control.block.ng punctuation.definition.block.ts
 >

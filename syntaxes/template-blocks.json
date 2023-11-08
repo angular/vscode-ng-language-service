@@ -46,7 +46,7 @@
       "contentName": "control.block.expression.ng",
       "patterns": [
         {
-          "include": "source.js"
+          "include": "expression.ng"
         }
       ],
       "end": "\\)",

@@ -182,7 +182,7 @@
         ],
         "embeddedLanguages": {
           "text.html": "html",
-          "source.js": "javascript"
+          "expression.ng": "javascript"
         }
       },
       {

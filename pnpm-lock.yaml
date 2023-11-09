@@ -28,7 +28,7 @@ importers:
         version: 7.0.0
       vscode-languageserver-textdocument:
         specifier: ^1.0.7
-        version: 1.0.7
+        version: 1.0.11
       vscode-uri:
         specifier: 3.0.7
         version: 3.0.7
@@ -3745,8 +3745,8 @@ packages:
       '@socket.io/base64-arraybuffer': 1.0.2
     dev: true
 
-  /engine.io-parser@5.2.2:
-    resolution: {integrity: sha512-RcyUFKA93/CXH20l4SoVvzZfrSDMOTUS3bWVpTt2FuFP+XYrL8i8oonHP7WInRyVHXh0n/ORtoeiE1os+8qkSw==}
+  /engine.io-parser@5.2.3:
+    resolution: {integrity: sha512-HqD3yTBfnBxIrbnM1DoD6Pcq8NECnh8d4As1Qgh0z5Gg3jRRIqijury0CL3ghu/edArpUYiYqQiDUQBIs4np3Q==}
     engines: {node: '>=10.0.0'}
     dev: true
 
@@ -3782,7 +3782,7 @@ packages:
       cookie: 0.4.2
       cors: 2.8.5
       debug: 4.3.4
-      engine.io-parser: 5.2.2
+      engine.io-parser: 5.2.3
       ws: 8.17.1
     transitivePeerDependencies:
       - bufferutil
@@ -8262,7 +8262,7 @@ packages:
   /vscode-html-languageservice@4.2.5:
     resolution: {integrity: sha512-dbr10KHabB9EaK8lI0XZW7SqOsTfrNyT3Nuj0GoPi4LjGKUmMiLtsqzfedIzRTzqY+w0FiLdh0/kQrnQ0tLxrw==}
     dependencies:
-      vscode-languageserver-textdocument: 1.0.7
+      vscode-languageserver-textdocument: 1.0.11
       vscode-languageserver-types: 3.17.2
       vscode-nls: 5.2.0
       vscode-uri: 3.0.7
@@ -8287,8 +8287,8 @@ packages:
       vscode-jsonrpc: 6.0.0
       vscode-languageserver-types: 3.16.0
 
-  /vscode-languageserver-textdocument@1.0.7:
-    resolution: {integrity: sha512-bFJH7UQxlXT8kKeyiyu41r22jCZXG8kuuVVA33OEJn1diWOZK5n8zBSPZFHVBOu8kXZ6h0LIRhf5UnCo61J4Hg==}
+  /vscode-languageserver-textdocument@1.0.11:
+    resolution: {integrity: sha512-X+8T3GoiwTVlJbicx/sIAF+yuJAqz8VvwJyoMVhwEMoEKE/fkDmrqUgDMyBECcM2A2frVZIUj5HI/ErRXCfOeA==}
     dev: false
 
   /vscode-languageserver-types@3.16.0:

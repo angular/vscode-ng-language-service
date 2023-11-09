@@ -164,12 +164,22 @@
       {
         "path": "./syntaxes/template.json",
         "scopeName": "template.ng",
-        "injectTo": ["text.html.derivative", "source.ts"]
+        "injectTo": ["text.html.derivative", "source.ts"],
+        "embeddedLanguages": {
+          "text.html": "html",
+          "source.css": "css",
+          "expression.ng": "javascript"
+        }
       },
       {
         "path": "./syntaxes/template-blocks.json",
         "scopeName": "template.blocks.ng",
-        "injectTo": ["text.html.derivative", "source.ts"]
+        "injectTo": ["text.html.derivative", "source.ts"],
+        "embeddedLanguages": {
+          "text.html": "html",
+          "control.block.expression.ng": "javascript",
+          "control.block.body.ng": "html"
+        }
       },
       {
         "path": "./syntaxes/let-declaration.json",

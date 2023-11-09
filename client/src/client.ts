@@ -217,12 +217,46 @@ export class AngularLanguageClient implements vscode.Disposable {
       throw new Error(`An existing client is running. Call stop() first.`);
     }
 
+    // Node module for the language server
+    const args = this.constructArgs();
+    const prodBundle = this.context.asAbsolutePath('server');
+    const devBundle =
+        this.context.asAbsolutePath(path.join('bazel-bin', 'server', 'src', 'server.js'));
+
     // If the extension is launched in debug mode then the debug server options are used
     // Otherwise the run options are used
     const serverOptions: lsp.ServerOptions = {
-      run: this.getServerOptions(false /* debug */),
-      debug: this.getServerOptions(true /* debug */),
+      run: {
+        module: this.context.asAbsolutePath('server'),
+        transport: lsp.TransportKind.ipc,
+        args,
+      },
+      debug: {
+        // VS Code Insider launches extensions in debug mode by default but users
+        // install prod bundle so we have to check whether dev bundle exists.
+        module: fs.existsSync(devBundle) ? devBundle : prodBundle,
+        transport: lsp.TransportKind.ipc,
+        options: {
+          // Argv options for Node.js
+          execArgv: [
+            // do not lazily evaluate the code so all breakpoints are respected
+            '--nolazy',
+            // If debugging port is changed, update .vscode/launch.json as well
+            '--inspect=6009',
+          ],
+          env: {
+            NG_DEBUG: true,
+          }
+        },
+        args
+      },
     };
+
+    if (!extensionVersionCompatibleWithAllProjects(serverOptions.run.module)) {
+      vscode.window.showWarningMessage(
+          `A project in the workspace is using a newer version of Angular than the language service extension. ` +
+          `This may cause the extension to show incorrect diagnostics.`);
+    }
 
     // Create the language client and start the client.
     const forceDebug = process.env['NG_DEBUG'] === 'true';
@@ -240,49 +274,6 @@ export class AngularLanguageClient implements vscode.Disposable {
     // Must wait for the client to be ready before registering notification
     // handlers.
     this.disposables.push(registerNotificationHandlers(this.client));
-  }
-
-  private getServerOptions(debug: boolean): lsp.NodeModule {
-    // Environment variables for server process
-    const prodEnv = {};
-    const devEnv = {
-      ...prodEnv,
-      NG_DEBUG: true,
-    };
-
-    // Node module for the language server
-    const args = this.constructArgs();
-    const prodBundle = this.context.asAbsolutePath('server');
-    const devBundle =
-        this.context.asAbsolutePath(path.join('bazel-bin', 'server', 'src', 'server.js'));
-    // VS Code Insider launches extensions in debug mode by default but users
-    // install prod bundle so we have to check whether dev bundle exists.
-    const latestServerModule = debug && fs.existsSync(devBundle) ? devBundle : prodBundle;
-
-    if (!extensionVersionCompatibleWithAllProjects(latestServerModule)) {
-      vscode.window.showWarningMessage(
-          `A project in the workspace is using a newer version of Angular than the language service extension. ` +
-          `This may cause the extension to show incorrect diagnostics.`);
-    }
-
-    // Argv options for Node.js
-    const prodExecArgv: string[] = [];
-    const devExecArgv: string[] = [
-      // do not lazily evaluate the code so all breakpoints are respected
-      '--nolazy',
-      // If debugging port is changed, update .vscode/launch.json as well
-      '--inspect=6009',
-    ];
-
-    return {
-      module: latestServerModule,
-      transport: lsp.TransportKind.ipc,
-      args,
-      options: {
-        env: debug ? devEnv : prodEnv,
-        execArgv: debug ? devExecArgv : prodExecArgv,
-      },
-    };
   }
 
   /**

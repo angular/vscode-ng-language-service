@@ -253,7 +253,8 @@ export class AngularLanguageClient implements vscode.Disposable {
     // Node module for the language server
     const args = this.constructArgs();
     const prodBundle = this.context.asAbsolutePath('server');
-    const devBundle = this.context.asAbsolutePath(path.join('bazel-bin', 'server', 'src', 'server.js'));
+    const devBundle =
+        this.context.asAbsolutePath(path.join('bazel-bin', 'server', 'src', 'server.js'));
     // VS Code Insider launches extensions in debug mode by default but users
     // install prod bundle so we have to check whether dev bundle exists.
     const latestServerModule = debug && fs.existsSync(devBundle) ? devBundle : prodBundle;
@@ -320,6 +321,9 @@ export class AngularLanguageClient implements vscode.Disposable {
     // block syntax
     if (angularVersions.size > 0 && Array.from(angularVersions).every(v => v.version.major < 17)) {
       args.push('--disableBlockSyntax');
+      this.outputChannel.appendLine(
+          `All workspace roots are using versions of Angular that do not support control flow block syntax.` +
+          ` Block syntax parsing in templates will be disabled.`);
     }
 
     const forceStrictTemplates = config.get<boolean>('angular.forceStrictTemplates');

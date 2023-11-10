@@ -6,6 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import {version as tsServerVersion} from 'typescript/lib/tsserverlibrary';
+
 import {generateHelpMessage, parseCommandLine} from './cmdline_utils';
 
 // Parse command line arguments
@@ -51,7 +53,7 @@ function main() {
 
   // Log initialization info
   session.info(`Angular language server process ID: ${process.pid}`);
-  session.info(`Using ${ts.name} v${ts.version} from ${ts.resolvedPath}`);
+  session.info(`Imported typescript/lib/tsserverlibrary is version ${tsServerVersion}.`);
   session.info(`Using ${ng.name} v${ng.version} from ${ng.resolvedPath}`);
   if (logger.loggingEnabled()) {
     session.info(`Log file: ${logger.getLogFileName()}`);

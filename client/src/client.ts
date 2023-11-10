@@ -322,8 +322,11 @@ export class AngularLanguageClient implements vscode.Disposable {
       args.push('--forceStrictTemplates');
     }
 
-    const tsdk: string|null = config.get('typescript.tsdk', null);
-    const tsProbeLocations = [tsdk, ...getProbeLocations(this.context.extensionPath)];
+    const tsdk = config.get('typescript.tsdk', '');
+    if (tsdk.trim().length > 0) {
+      args.push('--tsdk', tsdk);
+    }
+    const tsProbeLocations = [...getProbeLocations(this.context.extensionPath)];
     args.push('--tsProbeLocations', tsProbeLocations.join(','));
 
     return args;

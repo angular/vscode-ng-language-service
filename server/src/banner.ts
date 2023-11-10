@@ -31,8 +31,8 @@ export function requireOverride(moduleName: string) {
     throw new Error(`Import '${TSSERVER}' instead of 'typescript'`);
   }
   if (moduleName === TSSERVER) {
-    const {tsProbeLocations} = parseCommandLine(process.argv);
-    moduleName = resolveTsServer(tsProbeLocations).resolvedPath;
+    const {tsProbeLocations, tsdk} = parseCommandLine(process.argv);
+    moduleName = resolveTsServer(tsProbeLocations, tsdk).resolvedPath;
   }
   return originalRequire(moduleName);
 }

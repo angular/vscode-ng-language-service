@@ -27,7 +27,7 @@ function main() {
     logVerbosity: options.logVerbosity,
   });
 
-  const ts = resolveTsServer(options.tsProbeLocations);
+  const ts = resolveTsServer(options.tsProbeLocations, options.tsdk);
   const ng = resolveNgLangSvc(options.ngProbeLocations);
 
   const isG3 = ts.resolvedPath.includes('/google3/');

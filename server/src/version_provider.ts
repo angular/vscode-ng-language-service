@@ -47,10 +47,9 @@ function resolveWithMinVersion(
  * Resolve `typescript/lib/tsserverlibrary` from the given locations.
  * @param probeLocations
  */
-export function resolveTsServer(probeLocations: string[]): NodeModule {
-  if (probeLocations.length > 0) {
-    // The first probe location is `typescript.tsdk` if it is specified.
-    const resolvedFromTsdk = resolveTsServerFromTsdk(probeLocations[0], probeLocations.slice(1));
+export function resolveTsServer(probeLocations: string[], tsdk: string|null): NodeModule {
+  if (tsdk !== null) {
+    const resolvedFromTsdk = resolveTsServerFromTsdk(tsdk, probeLocations);
     const minVersion = new Version(MIN_TS_VERSION);
     if (resolvedFromTsdk !== undefined) {
       if (resolvedFromTsdk.version.greaterThanOrEqual(minVersion)) {

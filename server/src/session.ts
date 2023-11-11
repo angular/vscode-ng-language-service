@@ -456,8 +456,8 @@ export class Session {
     if (!project.languageServiceEnabled) {
       return;
     }
-    project.disableLanguageService(
-        `Disabling language service for ${project.getProjectName()} because ${reason}.`);
+    this.info(`Disabling language service for ${project.getProjectName()} because ${reason}.`);
+    project.disableLanguageService();
   }
 
 
@@ -523,6 +523,18 @@ export class Session {
         const angularCore = this.findAngularCore(project);
         if (angularCore) {
           this.enableLanguageServiceForProject(project);
+        } else if (project.getProjectReferences()?.length) {
+          // Do not disable language service for project if it has project references. Even though
+          // we couldn't find angular/core for this parent tsconfig, it might exist in the
+          // referenced projects. Disabling the language service for this root project will clean up
+          // the program for the project.
+          // https://github.com/microsoft/TypeScript/commit/3c4c060dff2b0292d3a4d88ba0627b7657d67e7f#diff-fad6af6557c1406192e30af30e0113a5eb327d60f9e2588bdce6667d619ebd04R973-R983
+          // We need to keep this language service and program enabled because referenced projects
+          // don't load until we open a client file for that project.
+          this.info(
+              `@angular/core could not be found for project ${
+                  project.getProjectName()} but it has references that might.` +
+              ` The Angular language service will remain enabled for this project.`);
         } else {
           this.disableLanguageServiceForProject(
               project, `project is not an Angular project ('@angular/core' could not be found)`);

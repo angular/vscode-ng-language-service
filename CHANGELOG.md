@@ -1,3 +1,18 @@
+# 17.0.2
+This release upgrades `@angular/language-service` to v17.0.2.
+
+* fix(client,server): Correctly use bundled version unless tsdk is specified (#1970) (46b9a56a2)
+* fix(server): Do not disable language service for solution style root tsconfig (#1972) (d8689bee4)
+* fix(language-service): incorrect inferred type of for loop implicit variables (https://github.com/angular/angular/pull/52732)
+
+# 17.0.1
+This release upgrades `@angular/language-service` to v17.0.1.
+
+* fix: Disable block syntax parsing when no project in workspace supports it (#1962) (#1964) (e276a57d4)
+* fix(syntaxes): Single quote should end `as` alias match (#1956) (d7dab5264)
+* fix(syntaxes): Adjust block syntax highlighting to require `(` or `{` on same line (#1961) (075047ae3)
+* fix(syntaxes): Use expression.ng instead of JS for block expressions (#1960) (e17fc5c35)
+
 # 17.0.0
 This release upgrades `@angular/language-service` to v17.0.0-rc.3.
 

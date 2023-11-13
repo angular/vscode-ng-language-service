@@ -33,6 +33,7 @@ interface CommandLineOptions {
   logToConsole: boolean;
   ngProbeLocations: string[];
   tsProbeLocations: string[];
+  tsdk: string|null;
   includeAutomaticOptionalChainCompletions: boolean;
   includeCompletionsWithSnippetText: boolean;
   forceStrictTemplates: boolean;
@@ -47,6 +48,7 @@ export function parseCommandLine(argv: string[]): CommandLineOptions {
     logToConsole: hasArgument(argv, '--logToConsole'),
     ngProbeLocations: parseStringArray(argv, '--ngProbeLocations'),
     tsProbeLocations: parseStringArray(argv, '--tsProbeLocations'),
+    tsdk: findArgument(argv, '--tsdk') ?? null,
     includeAutomaticOptionalChainCompletions:
         hasArgument(argv, '--includeAutomaticOptionalChainCompletions'),
     includeCompletionsWithSnippetText: hasArgument(argv, '--includeCompletionsWithSnippetText'),

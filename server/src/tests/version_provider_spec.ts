@@ -14,7 +14,7 @@ describe('Node Module Resolver', () => {
   const probeLocations = [__dirname];
 
   it('should be able to resolve tsserver', () => {
-    const result = resolveTsServer(probeLocations);
+    const result = resolveTsServer(probeLocations, null);
     expect(result).toBeDefined();
     expect(result.resolvedPath).toMatch(/typescript\/lib\/tsserverlibrary.js$/);
   });
@@ -23,7 +23,7 @@ describe('Node Module Resolver', () => {
     // Resolve relative to cwd.
     const absPath = resolve('node_modules/typescript/lib');
     expect(isAbsolute(absPath)).toBeTrue();
-    const result = resolveTsServer([absPath]);
+    const result = resolveTsServer(probeLocations, absPath);
     expect(result.resolvedPath.endsWith('typescript/lib/tsserverlibrary.js')).toBeTrue();
   });
 

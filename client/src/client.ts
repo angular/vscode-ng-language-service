@@ -217,12 +217,46 @@ export class AngularLanguageClient implements vscode.Disposable {
       throw new Error(`An existing client is running. Call stop() first.`);
     }
 
+    // Node module for the language server
+    const args = this.constructArgs();
+    const prodBundle = this.context.asAbsolutePath('server');
+    const devBundle =
+        this.context.asAbsolutePath(path.join('bazel-bin', 'server', 'src', 'server.js'));
+
     // If the extension is launched in debug mode then the debug server options are used
     // Otherwise the run options are used
     const serverOptions: lsp.ServerOptions = {
-      run: getServerOptions(this.context, false /* debug */),
-      debug: getServerOptions(this.context, true /* debug */),
+      run: {
+        module: this.context.asAbsolutePath('server'),
+        transport: lsp.TransportKind.ipc,
+        args,
+      },
+      debug: {
+        // VS Code Insider launches extensions in debug mode by default but users
+        // install prod bundle so we have to check whether dev bundle exists.
+        module: fs.existsSync(devBundle) ? devBundle : prodBundle,
+        transport: lsp.TransportKind.ipc,
+        options: {
+          // Argv options for Node.js
+          execArgv: [
+            // do not lazily evaluate the code so all breakpoints are respected
+            '--nolazy',
+            // If debugging port is changed, update .vscode/launch.json as well
+            '--inspect=6009',
+          ],
+          env: {
+            NG_DEBUG: true,
+          }
+        },
+        args
+      },
     };
+
+    if (!extensionVersionCompatibleWithAllProjects(serverOptions.run.module)) {
+      vscode.window.showWarningMessage(
+          `A project in the workspace is using a newer version of Angular than the language service extension. ` +
+          `This may cause the extension to show incorrect diagnostics.`);
+    }
 
     // Create the language client and start the client.
     const forceDebug = process.env['NG_DEBUG'] === 'true';
@@ -240,6 +274,62 @@ export class AngularLanguageClient implements vscode.Disposable {
     // Must wait for the client to be ready before registering notification
     // handlers.
     this.disposables.push(registerNotificationHandlers(this.client));
+  }
+
+  /**
+   * Construct the arguments that's used to spawn the server process.
+   * @param ctx vscode extension context
+   */
+  private constructArgs(): string[] {
+    const config = vscode.workspace.getConfiguration();
+    const args: string[] = ['--logToConsole'];
+
+    const ngLog: string = config.get('angular.log', 'off');
+    if (ngLog !== 'off') {
+      // Log file does not yet exist on disk. It is up to the server to create the file.
+      const logFile = path.join(this.context.logUri.fsPath, 'nglangsvc.log');
+      args.push('--logFile', logFile);
+      args.push('--logVerbosity', ngLog);
+    }
+
+    const ngProbeLocations = getProbeLocations(this.context.extensionPath);
+    args.push('--ngProbeLocations', ngProbeLocations.join(','));
+
+    const includeAutomaticOptionalChainCompletions =
+        config.get<boolean>('angular.suggest.includeAutomaticOptionalChainCompletions');
+    if (includeAutomaticOptionalChainCompletions) {
+      args.push('--includeAutomaticOptionalChainCompletions');
+    }
+
+    const includeCompletionsWithSnippetText =
+        config.get<boolean>('angular.suggest.includeCompletionsWithSnippetText');
+    if (includeCompletionsWithSnippetText) {
+      args.push('--includeCompletionsWithSnippetText');
+    }
+
+    const angularVersions = getAngularVersionsInWorkspace();
+    // Only disable block syntax if we find angular/core and every one we find does not support
+    // block syntax
+    if (angularVersions.size > 0 && Array.from(angularVersions).every(v => v.version.major < 17)) {
+      args.push('--disableBlockSyntax');
+      this.outputChannel.appendLine(
+          `All workspace roots are using versions of Angular that do not support control flow block syntax.` +
+          ` Block syntax parsing in templates will be disabled.`);
+    }
+
+    const forceStrictTemplates = config.get<boolean>('angular.forceStrictTemplates');
+    if (forceStrictTemplates) {
+      args.push('--forceStrictTemplates');
+    }
+
+    const tsdk = config.get('typescript.tsdk', '');
+    if (tsdk.trim().length > 0) {
+      args.push('--tsdk', tsdk);
+    }
+    const tsProbeLocations = [...getProbeLocations(this.context.extensionPath)];
+    args.push('--tsProbeLocations', tsProbeLocations.join(','));
+
+    return args;
   }
 
   /**
@@ -401,97 +491,6 @@ function getProbeLocations(bundled: string): string[] {
   return locations;
 }
 
-/**
- * Construct the arguments that's used to spawn the server process.
- * @param ctx vscode extension context
- */
-function constructArgs(ctx: vscode.ExtensionContext): string[] {
-  const config = vscode.workspace.getConfiguration();
-  const args: string[] = ['--logToConsole'];
-
-  const ngLog: string = config.get('angular.log', 'off');
-  if (ngLog !== 'off') {
-    // Log file does not yet exist on disk. It is up to the server to create the file.
-    const logFile = path.join(ctx.logUri.fsPath, 'nglangsvc.log');
-    args.push('--logFile', logFile);
-    args.push('--logVerbosity', ngLog);
-  }
-
-  const ngProbeLocations = getProbeLocations(ctx.extensionPath);
-  args.push('--ngProbeLocations', ngProbeLocations.join(','));
-
-  const includeAutomaticOptionalChainCompletions =
-      config.get<boolean>('angular.suggest.includeAutomaticOptionalChainCompletions');
-  if (includeAutomaticOptionalChainCompletions) {
-    args.push('--includeAutomaticOptionalChainCompletions');
-  }
-
-  const includeCompletionsWithSnippetText =
-      config.get<boolean>('angular.suggest.includeCompletionsWithSnippetText');
-  if (includeCompletionsWithSnippetText) {
-    args.push('--includeCompletionsWithSnippetText');
-  }
-
-  const angularVersions = getAngularVersionsInWorkspace();
-  // Only disable block syntax if we find angular/core and every one we find does not support block
-  // syntax
-  if (angularVersions.size > 0 && Array.from(angularVersions).every(v => v.version.major < 17)) {
-    args.push('--disableBlockSyntax');
-  }
-
-  const forceStrictTemplates = config.get<boolean>('angular.forceStrictTemplates');
-  if (forceStrictTemplates) {
-    args.push('--forceStrictTemplates');
-  }
-
-  const tsdk: string|null = config.get('typescript.tsdk', null);
-  const tsProbeLocations = [tsdk, ...getProbeLocations(ctx.extensionPath)];
-  args.push('--tsProbeLocations', tsProbeLocations.join(','));
-
-  return args;
-}
-
-function getServerOptions(ctx: vscode.ExtensionContext, debug: boolean): lsp.NodeModule {
-  // Environment variables for server process
-  const prodEnv = {};
-  const devEnv = {
-    ...prodEnv,
-    NG_DEBUG: true,
-  };
-
-  // Node module for the language server
-  const args = constructArgs(ctx);
-  const prodBundle = ctx.asAbsolutePath('server');
-  const devBundle = ctx.asAbsolutePath(path.join('bazel-bin', 'server', 'src', 'server.js'));
-  // VS Code Insider launches extensions in debug mode by default but users
-  // install prod bundle so we have to check whether dev bundle exists.
-  const latestServerModule = debug && fs.existsSync(devBundle) ? devBundle : prodBundle;
-
-  if (!extensionVersionCompatibleWithAllProjects(latestServerModule)) {
-    vscode.window.showWarningMessage(
-        `A project in the workspace is using a newer version of Angular than the language service extension. ` +
-        `This may cause the extension to show incorrect diagnostics.`);
-  }
-
-  // Argv options for Node.js
-  const prodExecArgv: string[] = [];
-  const devExecArgv: string[] = [
-    // do not lazily evaluate the code so all breakpoints are respected
-    '--nolazy',
-    // If debugging port is changed, update .vscode/launch.json as well
-    '--inspect=6009',
-  ];
-
-  return {
-    module: latestServerModule,
-    transport: lsp.TransportKind.ipc,
-    args,
-    options: {
-      env: debug ? devEnv : prodEnv,
-      execArgv: debug ? devExecArgv : prodExecArgv,
-    },
-  };
-}
 
 function extensionVersionCompatibleWithAllProjects(serverModuleLocation: string): boolean {
   const languageServiceVersion =

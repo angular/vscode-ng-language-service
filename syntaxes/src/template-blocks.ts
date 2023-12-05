@@ -10,7 +10,7 @@ import {GrammarDefinition} from './types';
 
 export const TemplateBlocks: GrammarDefinition = {
   scopeName: 'template.blocks.ng',
-  injectionSelector: 'L:text.html -comment -expression.ng -meta.tag',
+  injectionSelector: 'L:text.html -comment -expression.ng -meta.tag -source.css -source.js',
   patterns: [
     {include: '#block'},
   ],

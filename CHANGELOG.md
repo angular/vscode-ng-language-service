@@ -1,3 +1,8 @@
+# 17.0.3
+This release upgrades `@angular/language-service` to v17.0.6.
+
+* fix(syntaxes): Do not apply block syntax highlighting to JS and CSS in templates (#1952)
+
 # 17.0.2
 This release upgrades `@angular/language-service` to v17.0.2.
 

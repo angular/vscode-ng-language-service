@@ -1,3 +1,13 @@
+# 17.1.0
+This release upgrades `@angular/language-service` to v17.1.0. It is based on the final RC of `@angular/compiler`.
+
+feat: Complete inside @switch ([#52153](https://github.com/angular/angular/pull/52153))
+feat: Enable go to definition of styleUrl ([#51746](https://github.com/angular/angular/pull/51746))
+feat: Implement outlining spans for control flow blocks ([#52062](https://github.com/angular/angular/pull/52062))
+feat: Support autocompletion for blocks ([#52121](https://github.com/angular/angular/pull/52121))
+fix: Autocomplete block keywords in more cases ([#52198](https://github.com/angular/angular/pull/52198))
+fix(syntaxes): Do not apply block syntax highlighting to JS and CSS in templates (#1952)
+
 # 17.0.2
 This release upgrades `@angular/language-service` to v17.0.2.
 

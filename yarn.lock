@@ -158,10 +158,10 @@
     uuid "^8.3.2"
     yargs "^17.0.0"
 
-"@angular/language-service@17.0.1":
-  version "17.0.1"
-  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-17.0.1.tgz#3e08a65a1f02f5fe39e454819729f5ec20259d35"
-  integrity sha512-kDKmtMj410We8Rbph4e2xSuIs+MlzE7+QvIR07tofcoAR6Qpe2hr6WdsfExGBNIk5LNMYI3zdbEkAofG/JuRDA==
+"@angular/language-service@17.1.0-rc.0":
+  version "17.1.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-17.1.0-rc.0.tgz#b44c36134623170f2ef29141ef9b13aee038f819"
+  integrity sha512-0ZQD5FcdsU8deqkeNJmkgI7tfBnEBKhgSdZ8pWhgojsQIekzsnm8uHjwpWq8AaFKLcdOEsmKpERjIAHLcSf3hg==
 
 "@assemblyscript/loader@^0.10.1":
   version "0.10.1"
@@ -7396,10 +7396,10 @@ typed-rest-client@^1.8.4:
     tunnel "0.0.6"
     underscore "^1.12.1"
 
-typescript@5.2.2:
-  version "5.2.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.2.2.tgz#5ebb5e5a5b75f085f22bc3f8460fba308310fa78"
-  integrity sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==
+typescript@5.3.2:
+  version "5.3.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.3.2.tgz#00d1c7c1c46928c5845c1ee8d0cc2791031d4c43"
+  integrity sha512-6l+RyNy7oAHDfxC4FzSJcz9vnjTKxrLpDG5M2Vu4SHRVNg6xzqZp6LYSR9zjqQTu8DU/f5xwxUdADOkbrIX2gQ==
 
 typescript@~4.6.3:
   version "4.6.4"

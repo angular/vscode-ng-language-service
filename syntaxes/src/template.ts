@@ -13,8 +13,6 @@ export const Template: GrammarDefinition = {
   injectionSelector: 'L:text.html -comment',
   patterns: [
     {include: '#interpolation'},
-    {include: '#propertyBinding'},
-    {include: '#eventBinding'},
     {include: '#twoWayBinding'},
     {include: '#templateBinding'},
   ],
@@ -29,52 +27,6 @@ export const Template: GrammarDefinition = {
       endCaptures: {
         0: {name: 'punctuation.definition.block.ts'},
       },
-      contentName: 'expression.ng',
-      patterns: [
-        {include: 'expression.ng'},
-      ],
-    },
-
-    propertyBinding: {
-      begin: /(\[\s*@?[-_a-zA-Z0-9.$]*%?\s*])(=)(["'])/,
-      beginCaptures: {
-        1: {
-          name: 'entity.other.attribute-name.html entity.other.ng-binding-name.property.html',
-          patterns: [
-            {include: '#bindingKey'},
-          ],
-        },
-        2: {name: 'punctuation.separator.key-value.html'},
-        3: {name: 'string.quoted.html punctuation.definition.string.begin.html'},
-      },
-      end: /\3/,
-      endCaptures: {
-        0: {name: 'string.quoted.html punctuation.definition.string.end.html'},
-      },
-      name: 'meta.ng-binding.property.html',
-      contentName: 'expression.ng',
-      patterns: [
-        {include: 'expression.ng'},
-      ],
-    },
-
-    eventBinding: {
-      begin: /(\(\s*@?[-_a-zA-Z0-9.$]*\s*\))(=)(["'])/,
-      beginCaptures: {
-        1: {
-          name: 'entity.other.attribute-name.html entity.other.ng-binding-name.event.html',
-          patterns: [
-            {include: '#bindingKey'},
-          ],
-        },
-        2: {name: 'punctuation.separator.key-value.html'},
-        3: {name: 'string.quoted.html punctuation.definition.string.begin.html'},
-      },
-      end: /\3/,
-      endCaptures: {
-        0: {name: 'string.quoted.html punctuation.definition.string.end.html'},
-      },
-      name: 'meta.ng-binding.event.html',
       contentName: 'expression.ng',
       patterns: [
         {include: 'expression.ng'},

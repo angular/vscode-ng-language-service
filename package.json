@@ -186,6 +186,16 @@
         }
       },
       {
+        "path": "./syntaxes/template-tag.json",
+        "scopeName": "template.tag.ng",
+        "injectTo": [
+          "text.html.derivative"
+        ],
+        "embeddedLanguages": {
+          "text.html": "html"
+        }
+      },
+      {
         "path": "./syntaxes/expression.json",
         "scopeName": "expression.ng"
       }

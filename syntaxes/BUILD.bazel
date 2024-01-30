@@ -14,6 +14,7 @@ js_run_binary(
         "_inline-template.json",
         "_template.json",
         "_template-blocks.json",
+        "_template-tag.json",
     ]
 )
 
@@ -25,6 +26,7 @@ write_source_files(
         "inline-template.json": "_inline-template.json",
         "template.json": "_template.json",
         "template-blocks.json": "_template-blocks.json",
+        "template-tag.json": "_template-tag.json",
     }
 )
 

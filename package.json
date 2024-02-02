@@ -186,6 +186,14 @@
         }
       },
       {
+        "path": "./syntaxes/template-tag.json",
+        "scopeName": "template.tag.ng",
+        "injectTo": [
+          "text.html.derivative",
+          "source.ts"
+        ]
+      },
+      {
         "path": "./syntaxes/expression.json",
         "scopeName": "expression.ng"
       }

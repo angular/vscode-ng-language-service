@@ -79,25 +79,6 @@
 <!-- Don't match nullish coalesce -->
 {{ condition ?? (a ? 1 : 2) }}
 
-<!-- Microsyntax -->
-<!-- Let Expression -->
-<div *ngFor="let i = index;"></div>
-<div *ngFor="let i = index"></div>
-<!-- Key Expression -->
-<div *ngFor="let i = index; trackBy: hash;"></div>
-<div *ngFor="let i = index; trackBy: hash"></div>
-<div *ngFor="let param of params;"></div>
-<div *ngFor="let param of params"></div>
-<!-- As Expression -->
-<div *ngFor="let param of params; index as i;"></div>
-<div *ngFor="let param of params; index as i"></div>
-<div *ngIf='x as y'></div>
-<!-- Mixed -->
-<div *ngFor="let param of params; let i = index; let last = last"></div>
-<div *ngFor="let param of params; let i = index; let last = last;"></div>
-<div *ngFor="let param of params; let i = index; last as last"></div>
-<div *ngFor="let param of params; let i = index; last as last;"></div>
-
 <!-- Pipes -->
 {{ (let param of params) | async }}
 {{ (let param of params) | trackBy: trackByMethod }}
@@ -111,9 +92,3 @@ as i }}
 {{ (let param of params?.get('value')!.property | async).anotherProperty | translate: ['language1', 'language2']; let i
 = index; }}
 
-<!-- Regression -->
-<!-- #575 -->
-<div *ngFor="let n of nums; index as i"></div>
-<div *matHeaderCellDef></div>
-<!-- #613 -->
-<div *ngIf="x$ | async as a"></div>

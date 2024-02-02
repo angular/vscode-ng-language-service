@@ -1,4 +1,9 @@
 # 17.1.0
+This release upgrades `@angular/language-service` to v17.1.2.
+
+fix: types for control blocks should now display correctly (https://github.com/angular/angular/pull/53980)
+
+# 17.1.0
 This release upgrades `@angular/language-service` to v17.1.0. It is based on the final RC of `@angular/compiler`.
 
 feat: Complete inside @switch ([#52153](https://github.com/angular/angular/pull/52153))

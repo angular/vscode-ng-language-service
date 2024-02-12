@@ -1,3 +1,9 @@
+# 17.2.0-rc.1
+This release upgrades `@angular/language-service` to v17.2.0-rc.1.
+
+fix(syntaxes): Do not highlight bindings outside element tags (#1725) (28739e4)
+
+
 # 17.1.0
 This release upgrades `@angular/language-service` to v17.1.0. It is based on the final RC of `@angular/compiler`.
 

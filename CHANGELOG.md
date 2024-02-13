@@ -1,4 +1,8 @@
-# 17.2.0-rc.1
+# 17.2.1
+This release rolls back the `@angular/language-service` version to v17.2.0-next.0 to resolve an issue reported in ticket [#2001](https://github.com/angular/vscode-ng-language-service/issues/2001).
+
+
+# 17.2.0
 This release upgrades `@angular/language-service` to v17.2.0-rc.1.
 
 fix(syntaxes): Do not highlight bindings outside element tags (#1725) (28739e4)

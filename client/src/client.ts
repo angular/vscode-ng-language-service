@@ -307,14 +307,24 @@ export class AngularLanguageClient implements vscode.Disposable {
       args.push('--includeCompletionsWithSnippetText');
     }
 
-    const angularVersions = getAngularVersionsInWorkspace();
+    // Sort the versions from oldest to newest.
+    const angularVersions = getAngularVersionsInWorkspace().sort(
+        (a, b) => a.version.greaterThanOrEqual(b.version) ? 1 : -1);
+
     // Only disable block syntax if we find angular/core and every one we find does not support
     // block syntax
-    if (angularVersions.size > 0 && Array.from(angularVersions).every(v => v.version.major < 17)) {
+    if (angularVersions.length > 0 && angularVersions.every(v => v.version.major < 17)) {
       args.push('--disableBlockSyntax');
       this.outputChannel.appendLine(
           `All workspace roots are using versions of Angular that do not support control flow block syntax.` +
           ` Block syntax parsing in templates will be disabled.`);
+    }
+
+    // Pass the earliest Angular version along to the compiler for maximum compatibility.
+    if (angularVersions.length > 0) {
+      args.push('--angularCoreVersion', angularVersions[0].version.toString());
+      this.outputChannel.appendLine(
+          `Using Angular version ${angularVersions[0].version.toString()}.`);
     }
 
     const forceStrictTemplates = config.get<boolean>('angular.forceStrictTemplates');
@@ -515,7 +525,7 @@ function extensionVersionCompatibleWithAllProjects(serverModuleLocation: string)
 /**
  * Returns true if any project in the workspace supports block syntax (v17+).
  */
-function getAngularVersionsInWorkspace(): Set<NodeModule> {
+function getAngularVersionsInWorkspace(): NodeModule[] {
   const angularCoreModules = new Set<NodeModule>();
   const workspaceFolders = vscode.workspace.workspaceFolders || [];
   for (const workspaceFolder of workspaceFolders) {
@@ -525,5 +535,5 @@ function getAngularVersionsInWorkspace(): Set<NodeModule> {
     }
     angularCoreModules.add(angularCore);
   }
-  return angularCoreModules;
+  return Array.from(angularCoreModules);
 }

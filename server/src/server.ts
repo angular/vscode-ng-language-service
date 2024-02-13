@@ -49,6 +49,7 @@ function main() {
     includeCompletionsWithSnippetText: options.includeCompletionsWithSnippetText,
     forceStrictTemplates: isG3 || options.forceStrictTemplates,
     disableBlockSyntax: options.disableBlockSyntax,
+    angularCoreVersion: options.angularCoreVersion ?? null,
   });
 
   // Log initialization info

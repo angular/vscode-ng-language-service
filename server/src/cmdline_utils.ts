@@ -38,6 +38,7 @@ interface CommandLineOptions {
   includeCompletionsWithSnippetText: boolean;
   forceStrictTemplates: boolean;
   disableBlockSyntax: boolean;
+  angularCoreVersion?: string;
 }
 
 export function parseCommandLine(argv: string[]): CommandLineOptions {
@@ -54,6 +55,7 @@ export function parseCommandLine(argv: string[]): CommandLineOptions {
     includeCompletionsWithSnippetText: hasArgument(argv, '--includeCompletionsWithSnippetText'),
     forceStrictTemplates: hasArgument(argv, '--forceStrictTemplates'),
     disableBlockSyntax: hasArgument(argv, '--disableBlockSyntax'),
+    angularCoreVersion: findArgument(argv, '--angularCoreVersion'),
   };
 }
 

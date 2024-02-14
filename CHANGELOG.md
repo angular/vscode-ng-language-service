@@ -1,3 +1,9 @@
+# 17.2.2
+This release upgrades `@angular/language-service` to v17.2.1.
+
+fix: pass oldest Angular version in the workspace to the compiler (#2003)
+
+
 # 17.2.1
 This release rolls back the `@angular/language-service` version to v17.2.0-next.0 to resolve an issue reported in ticket [#2001](https://github.com/angular/vscode-ng-language-service/issues/2001).
 

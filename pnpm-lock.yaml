@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@angular/language-service':
-        specifier: 17.2.0-next.0
-        version: registry.npmjs.org/@angular/language-service@17.2.0-next.0
+        specifier: 17.2.1
+        version: registry.npmjs.org/@angular/language-service@17.2.1
       typescript:
         specifier: 5.3.2
         version: registry.npmjs.org/typescript@5.3.2
@@ -405,10 +405,10 @@ packages:
       zone.js: registry.npmjs.org/zone.js@0.11.8
     dev: true
 
-  registry.npmjs.org/@angular/language-service@17.2.0-next.0:
-    resolution: {integrity: sha512-WONrNJ6nsgd6TIj6bq1CLjnUPGex9G0uZW8fqO7XmpvcsJaAOaucVX6IcrRYh5SSSI3gUZD5PO+uVGL/SE6Hnw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-17.2.0-next.0.tgz}
+  registry.npmjs.org/@angular/language-service@17.2.1:
+    resolution: {integrity: sha512-Nj+T5NQ99QszTlgJM5xjzf5Bqzi2tFJ3VBCOjCcX9A7K+m2trZAbq0i2nMSPoxkQexZnaQvHMnsMhqPBShDUnA==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-17.2.1.tgz}
     name: '@angular/language-service'
-    version: 17.2.0-next.0
+    version: 17.2.1
     engines: {node: ^18.13.0 || >=20.9.0}
     dev: false
 

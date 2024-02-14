@@ -34,6 +34,7 @@ export interface SessionOptions {
   includeCompletionsWithSnippetText: boolean;
   forceStrictTemplates: boolean;
   disableBlockSyntax: boolean;
+  angularCoreVersion: string|null;
 }
 
 enum LanguageId {
@@ -159,6 +160,10 @@ export class Session {
     }
     if (options.disableBlockSyntax) {
       pluginConfig.enableBlockSyntax = false;
+    }
+    if (options.angularCoreVersion !== null) {
+      // TODO(crisbeto): temporarily cast to `any` until 17.2 is released.
+      (pluginConfig as any).angularCoreVersion = options.angularCoreVersion;
     }
     projSvc.configurePlugin({
       pluginName: options.ngPlugin,

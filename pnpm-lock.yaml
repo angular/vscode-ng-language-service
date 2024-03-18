@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@angular/language-service':
-        specifier: 17.2.1
-        version: registry.npmjs.org/@angular/language-service@17.2.1
+        specifier: 17.3.0
+        version: registry.npmjs.org/@angular/language-service@17.3.0
       typescript:
         specifier: 5.3.2
         version: registry.npmjs.org/typescript@5.3.2
@@ -35,7 +35,7 @@ importers:
     devDependencies:
       '@angular/dev-infra-private':
         specifier: https://github.com/angular/dev-infra-private-builds.git#262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2
-        version: github.com/angular/dev-infra-private-builds/262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2(@angular/compiler-cli@14.3.0)(karma-chrome-launcher@3.2.0)(karma-firefox-launcher@2.1.2)(karma-jasmine@5.1.0)(karma-junit-reporter@2.0.1)(karma-requirejs@1.1.0)(karma-sourcemap-loader@0.4.0)(karma@6.4.2)(rxjs@6.6.7)(terser@5.8.0)(zone.js@0.11.8)
+        version: github.com/angular/dev-infra-private-builds/262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2(@angular/compiler-cli@14.3.0)(karma-chrome-launcher@3.2.0)(karma-firefox-launcher@2.1.3)(karma-jasmine@5.1.0)(karma-junit-reporter@2.0.1)(karma-requirejs@1.1.0)(karma-sourcemap-loader@0.4.0)(karma@6.4.3)(rxjs@6.6.7)(terser@5.8.0)(zone.js@0.11.8)
       '@bazel/bazelisk':
         specifier: 1.18.0
         version: registry.npmjs.org/@bazel/bazelisk@1.18.0
@@ -96,18 +96,18 @@ importers:
 
 packages:
 
-  github.com/angular/dev-infra-private-builds/262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2(@angular/compiler-cli@14.3.0)(karma-chrome-launcher@3.2.0)(karma-firefox-launcher@2.1.2)(karma-jasmine@5.1.0)(karma-junit-reporter@2.0.1)(karma-requirejs@1.1.0)(karma-sourcemap-loader@0.4.0)(karma@6.4.2)(rxjs@6.6.7)(terser@5.8.0)(zone.js@0.11.8):
+  github.com/angular/dev-infra-private-builds/262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2(@angular/compiler-cli@14.3.0)(karma-chrome-launcher@3.2.0)(karma-firefox-launcher@2.1.3)(karma-jasmine@5.1.0)(karma-junit-reporter@2.0.1)(karma-requirejs@1.1.0)(karma-sourcemap-loader@0.4.0)(karma@6.4.3)(rxjs@6.6.7)(terser@5.8.0)(zone.js@0.11.8):
     resolution: {tarball: https://codeload.github.com/angular/dev-infra-private-builds/tar.gz/262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2}
     id: github.com/angular/dev-infra-private-builds/262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2
     name: '@angular/dev-infra-private'
     version: 0.0.0-860ebf16b8617ce999394c2c70a8af307bb0ddc2
     hasBin: true
     dependencies:
-      '@angular-devkit/build-angular': registry.npmjs.org/@angular-devkit/build-angular@14.1.0-next.1(@angular/compiler-cli@14.3.0)(karma@6.4.2)(protractor@7.0.0)(typescript@4.7.4)
+      '@angular-devkit/build-angular': registry.npmjs.org/@angular-devkit/build-angular@14.1.0-next.1(@angular/compiler-cli@14.3.0)(karma@6.4.3)(protractor@7.0.0)(typescript@4.7.4)
       '@angular/benchpress': registry.npmjs.org/@angular/benchpress@0.3.0(rxjs@6.6.7)(zone.js@0.11.8)
       '@babel/core': registry.npmjs.org/@babel/core@7.18.2
       '@bazel/buildifier': registry.npmjs.org/@bazel/buildifier@5.1.0
-      '@bazel/concatjs': registry.npmjs.org/@bazel/concatjs@5.5.0(karma-chrome-launcher@3.2.0)(karma-firefox-launcher@2.1.2)(karma-jasmine@5.1.0)(karma-junit-reporter@2.0.1)(karma-requirejs@1.1.0)(karma-sourcemap-loader@0.4.0)(karma@6.4.2)(typescript@4.7.4)
+      '@bazel/concatjs': registry.npmjs.org/@bazel/concatjs@5.5.0(karma-chrome-launcher@3.2.0)(karma-firefox-launcher@2.1.3)(karma-jasmine@5.1.0)(karma-junit-reporter@2.0.1)(karma-requirejs@1.1.0)(karma-sourcemap-loader@0.4.0)(karma@6.4.3)(typescript@4.7.4)
       '@bazel/esbuild': registry.npmjs.org/@bazel/esbuild@5.5.0
       '@bazel/protractor': registry.npmjs.org/@bazel/protractor@5.5.0(protractor@7.0.0)
       '@bazel/runfiles': registry.npmjs.org/@bazel/runfiles@5.5.0
@@ -187,7 +187,7 @@ packages:
       - chokidar
     dev: true
 
-  registry.npmjs.org/@angular-devkit/build-angular@14.1.0-next.1(@angular/compiler-cli@14.3.0)(karma@6.4.2)(protractor@7.0.0)(typescript@4.7.4):
+  registry.npmjs.org/@angular-devkit/build-angular@14.1.0-next.1(@angular/compiler-cli@14.3.0)(karma@6.4.3)(protractor@7.0.0)(typescript@4.7.4):
     resolution: {integrity: sha512-T9lNIR0E1w+VnKeiFJOa34Ru72RCH8Qe113hzzLw8AFz798fP/jv55ujA7GOHCluph4PeqJC9Ed3JSNqRpoAJw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular-devkit/build-angular/-/build-angular-14.1.0-next.1.tgz}
     id: registry.npmjs.org/@angular-devkit/build-angular/14.1.0-next.1
     name: '@angular-devkit/build-angular'
@@ -245,7 +245,7 @@ packages:
       https-proxy-agent: registry.npmjs.org/https-proxy-agent@5.0.1
       inquirer: registry.npmjs.org/inquirer@8.2.4
       jsonc-parser: registry.npmjs.org/jsonc-parser@3.0.0
-      karma: registry.npmjs.org/karma@6.4.2
+      karma: registry.npmjs.org/karma@6.4.3
       karma-source-map-support: registry.npmjs.org/karma-source-map-support@1.4.0
       less: registry.npmjs.org/less@4.1.2
       less-loader: registry.npmjs.org/less-loader@11.0.0(less@4.1.2)(webpack@5.73.0)
@@ -405,10 +405,10 @@ packages:
       zone.js: registry.npmjs.org/zone.js@0.11.8
     dev: true
 
-  registry.npmjs.org/@angular/language-service@17.2.1:
-    resolution: {integrity: sha512-Nj+T5NQ99QszTlgJM5xjzf5Bqzi2tFJ3VBCOjCcX9A7K+m2trZAbq0i2nMSPoxkQexZnaQvHMnsMhqPBShDUnA==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-17.2.1.tgz}
+  registry.npmjs.org/@angular/language-service@17.3.0:
+    resolution: {integrity: sha512-h4bwuyeAmZkoeCM/KvhWW+p2xjKiVt4GfSWZsIuW5ilfJt7hmkUFGyu0ABCjt6fiNQRrS2tvBZdXxk+A+zX8KQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-17.3.0.tgz}
     name: '@angular/language-service'
-    version: 17.2.1
+    version: 17.3.0
     engines: {node: ^18.13.0 || >=20.9.0}
     dev: false
 
@@ -1867,7 +1867,7 @@ packages:
     hasBin: true
     dev: true
 
-  registry.npmjs.org/@bazel/concatjs@5.5.0(karma-chrome-launcher@3.2.0)(karma-firefox-launcher@2.1.2)(karma-jasmine@5.1.0)(karma-junit-reporter@2.0.1)(karma-requirejs@1.1.0)(karma-sourcemap-loader@0.4.0)(karma@6.4.2)(typescript@4.7.4):
+  registry.npmjs.org/@bazel/concatjs@5.5.0(karma-chrome-launcher@3.2.0)(karma-firefox-launcher@2.1.3)(karma-jasmine@5.1.0)(karma-junit-reporter@2.0.1)(karma-requirejs@1.1.0)(karma-sourcemap-loader@0.4.0)(karma@6.4.3)(typescript@4.7.4):
     resolution: {integrity: sha512-hwG+ahivR20Z3iTOlkUz3OdwnW/PUaZyyz8BIX+GNUTg6U3rPHK51CavUirMupOU/LRJ5GyCwBNAAtjCyquo2g==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@bazel/concatjs/-/concatjs-5.5.0.tgz}
     id: registry.npmjs.org/@bazel/concatjs/5.5.0
     name: '@bazel/concatjs'
@@ -1883,12 +1883,12 @@ packages:
       karma-requirejs: '>=1.0.0'
       karma-sourcemap-loader: '>=0.3.0'
     dependencies:
-      karma: registry.npmjs.org/karma@6.4.2
+      karma: registry.npmjs.org/karma@6.4.3
       karma-chrome-launcher: registry.npmjs.org/karma-chrome-launcher@3.2.0
-      karma-firefox-launcher: registry.npmjs.org/karma-firefox-launcher@2.1.2
-      karma-jasmine: registry.npmjs.org/karma-jasmine@5.1.0(karma@6.4.2)
-      karma-junit-reporter: registry.npmjs.org/karma-junit-reporter@2.0.1(karma@6.4.2)
-      karma-requirejs: registry.npmjs.org/karma-requirejs@1.1.0(karma@6.4.2)(requirejs@2.3.6)
+      karma-firefox-launcher: registry.npmjs.org/karma-firefox-launcher@2.1.3
+      karma-jasmine: registry.npmjs.org/karma-jasmine@5.1.0(karma@6.4.3)
+      karma-junit-reporter: registry.npmjs.org/karma-junit-reporter@2.0.1(karma@6.4.3)
+      karma-requirejs: registry.npmjs.org/karma-requirejs@1.1.0(karma@6.4.3)(requirejs@2.3.6)
       karma-sourcemap-loader: registry.npmjs.org/karma-sourcemap-loader@0.4.0
       protobufjs: registry.npmjs.org/protobufjs@6.8.8
       source-map-support: registry.npmjs.org/source-map-support@0.5.9
@@ -4783,6 +4783,13 @@ packages:
       '@socket.io/base64-arraybuffer': registry.npmjs.org/@socket.io/base64-arraybuffer@1.0.2
     dev: true
 
+  registry.npmjs.org/engine.io-parser@5.2.2:
+    resolution: {integrity: sha512-RcyUFKA93/CXH20l4SoVvzZfrSDMOTUS3bWVpTt2FuFP+XYrL8i8oonHP7WInRyVHXh0n/ORtoeiE1os+8qkSw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/engine.io-parser/-/engine.io-parser-5.2.2.tgz}
+    name: engine.io-parser
+    version: 5.2.2
+    engines: {node: '>=10.0.0'}
+    dev: true
+
   registry.npmjs.org/engine.io@6.2.0:
     resolution: {integrity: sha512-4KzwW3F3bk+KlzSOY57fj/Jx6LyRQ1nbcyIadehl+AnXjKT7gDO0ORdRi/84ixvMKTym6ZKuxvbzN62HDDU1Lg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/engine.io/-/engine.io-6.2.0.tgz}
     name: engine.io
@@ -4799,6 +4806,28 @@ packages:
       debug: registry.npmjs.org/debug@4.3.4
       engine.io-parser: registry.npmjs.org/engine.io-parser@5.0.3
       ws: registry.npmjs.org/ws@8.2.3
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+    dev: true
+
+  registry.npmjs.org/engine.io@6.5.4:
+    resolution: {integrity: sha512-KdVSDKhVKyOi+r5uEabrDLZw2qXStVvCsEB/LN3mw4WFi6Gx50jTyuxYVCwAAC0U46FdnzP/ScKRBTXb/NiEOg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/engine.io/-/engine.io-6.5.4.tgz}
+    name: engine.io
+    version: 6.5.4
+    engines: {node: '>=10.2.0'}
+    dependencies:
+      '@types/cookie': registry.npmjs.org/@types/cookie@0.4.1
+      '@types/cors': registry.npmjs.org/@types/cors@2.8.12
+      '@types/node': registry.npmjs.org/@types/node@17.0.30
+      accepts: registry.npmjs.org/accepts@1.3.8
+      base64id: registry.npmjs.org/base64id@2.0.0
+      cookie: registry.npmjs.org/cookie@0.4.2
+      cors: registry.npmjs.org/cors@2.8.5
+      debug: registry.npmjs.org/debug@4.3.4
+      engine.io-parser: registry.npmjs.org/engine.io-parser@5.2.2
+      ws: registry.npmjs.org/ws@8.11.0
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -5718,10 +5747,10 @@ packages:
       path-exists: registry.npmjs.org/path-exists@4.0.0
     dev: true
 
-  registry.npmjs.org/flatted@3.2.9:
-    resolution: {integrity: sha512-36yxDn5H7OFZQla0/jFJmbIKTdZAQHngCedGxiMmpNfEZM0sdEeT+WczLQrjK6D7o2aiyLYDnkw0R3JK0Qv1RQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/flatted/-/flatted-3.2.9.tgz}
+  registry.npmjs.org/flatted@3.3.1:
+    resolution: {integrity: sha512-X8cqMLLie7KsNUDSdzeN8FYK9rEt4Dt67OsG/DNGnYTSDBG4uFAJFBnUeiV+zCVAvwFy56IjM9sH51jVaEhNxw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/flatted/-/flatted-3.3.1.tgz}
     name: flatted
-    version: 3.2.9
+    version: 3.3.1
     dev: true
 
   registry.npmjs.org/follow-redirects@1.14.9(debug@4.3.2):
@@ -6833,16 +6862,16 @@ packages:
       which: registry.npmjs.org/which@1.3.1
     dev: true
 
-  registry.npmjs.org/karma-firefox-launcher@2.1.2:
-    resolution: {integrity: sha512-VV9xDQU1QIboTrjtGVD4NCfzIH7n01ZXqy/qpBhnOeGVOkG5JYPEm8kuSd7psHE6WouZaQ9Ool92g8LFweSNMA==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/karma-firefox-launcher/-/karma-firefox-launcher-2.1.2.tgz}
+  registry.npmjs.org/karma-firefox-launcher@2.1.3:
+    resolution: {integrity: sha512-LMM2bseebLbYjODBOVt7TCPP9OI2vZIXCavIXhkO9m+10Uj5l7u/SKoeRmYx8FYHTVGZSpk6peX+3BMHC1WwNw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/karma-firefox-launcher/-/karma-firefox-launcher-2.1.3.tgz}
     name: karma-firefox-launcher
-    version: 2.1.2
+    version: 2.1.3
     dependencies:
       is-wsl: registry.npmjs.org/is-wsl@2.2.0
-      which: registry.npmjs.org/which@2.0.2
+      which: registry.npmjs.org/which@3.0.1
     dev: true
 
-  registry.npmjs.org/karma-jasmine@5.1.0(karma@6.4.2):
+  registry.npmjs.org/karma-jasmine@5.1.0(karma@6.4.3):
     resolution: {integrity: sha512-i/zQLFrfEpRyQoJF9fsCdTMOF5c2dK7C7OmsuKg2D0YSsuZSfQDiLuaiktbuio6F2wiCsZSnSnieIQ0ant/uzQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/karma-jasmine/-/karma-jasmine-5.1.0.tgz}
     id: registry.npmjs.org/karma-jasmine/5.1.0
     name: karma-jasmine
@@ -6852,10 +6881,10 @@ packages:
       karma: ^6.0.0
     dependencies:
       jasmine-core: registry.npmjs.org/jasmine-core@4.6.0
-      karma: registry.npmjs.org/karma@6.4.2
+      karma: registry.npmjs.org/karma@6.4.3
     dev: true
 
-  registry.npmjs.org/karma-junit-reporter@2.0.1(karma@6.4.2):
+  registry.npmjs.org/karma-junit-reporter@2.0.1(karma@6.4.3):
     resolution: {integrity: sha512-VtcGfE0JE4OE1wn0LK8xxDKaTP7slN8DO3I+4xg6gAi1IoAHAXOJ1V9G/y45Xg6sxdxPOR3THCFtDlAfBo9Afw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/karma-junit-reporter/-/karma-junit-reporter-2.0.1.tgz}
     id: registry.npmjs.org/karma-junit-reporter/2.0.1
     name: karma-junit-reporter
@@ -6864,12 +6893,12 @@ packages:
     peerDependencies:
       karma: '>=0.9'
     dependencies:
-      karma: registry.npmjs.org/karma@6.4.2
+      karma: registry.npmjs.org/karma@6.4.3
       path-is-absolute: registry.npmjs.org/path-is-absolute@1.0.1
       xmlbuilder: registry.npmjs.org/xmlbuilder@12.0.0
     dev: true
 
-  registry.npmjs.org/karma-requirejs@1.1.0(karma@6.4.2)(requirejs@2.3.6):
+  registry.npmjs.org/karma-requirejs@1.1.0(karma@6.4.3)(requirejs@2.3.6):
     resolution: {integrity: sha512-MHTOYKdwwJBkvYid0TaYvBzOnFH3TDtzo6ie5E4o9SaUSXXsfMRLa/whUz6efVIgTxj1xnKYasNn/XwEgJeB/Q==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/karma-requirejs/-/karma-requirejs-1.1.0.tgz}
     id: registry.npmjs.org/karma-requirejs/1.1.0
     name: karma-requirejs
@@ -6878,7 +6907,7 @@ packages:
       karma: '>=0.9'
       requirejs: ^2.1.0
     dependencies:
-      karma: registry.npmjs.org/karma@6.4.2
+      karma: registry.npmjs.org/karma@6.4.3
       requirejs: registry.npmjs.org/requirejs@2.3.6
     dev: true
 
@@ -6898,10 +6927,10 @@ packages:
       graceful-fs: registry.npmjs.org/graceful-fs@4.2.10
     dev: true
 
-  registry.npmjs.org/karma@6.4.2:
-    resolution: {integrity: sha512-C6SU/53LB31BEgRg+omznBEMY4SjHU3ricV6zBcAe1EeILKkeScr+fZXtaI5WyDbkVowJxxAI6h73NcFPmXolQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/karma/-/karma-6.4.2.tgz}
+  registry.npmjs.org/karma@6.4.3:
+    resolution: {integrity: sha512-LuucC/RE92tJ8mlCwqEoRWXP38UMAqpnq98vktmS9SznSoUPPUJQbc91dHcxcunROvfQjdORVA/YFviH+Xci9Q==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/karma/-/karma-6.4.3.tgz}
     name: karma
-    version: 6.4.2
+    version: 6.4.3
     engines: {node: '>= 10'}
     hasBin: true
     dependencies:
@@ -6924,7 +6953,7 @@ packages:
       qjobs: registry.npmjs.org/qjobs@1.2.0
       range-parser: registry.npmjs.org/range-parser@1.2.1
       rimraf: registry.npmjs.org/rimraf@3.0.2
-      socket.io: registry.npmjs.org/socket.io@4.5.0
+      socket.io: registry.npmjs.org/socket.io@4.7.5
       source-map: registry.npmjs.org/source-map@0.6.1
       tmp: registry.npmjs.org/tmp@0.2.1
       ua-parser-js: registry.npmjs.org/ua-parser-js@0.7.37
@@ -7142,7 +7171,7 @@ packages:
     dependencies:
       date-format: registry.npmjs.org/date-format@4.0.14
       debug: registry.npmjs.org/debug@4.3.4
-      flatted: registry.npmjs.org/flatted@3.2.9
+      flatted: registry.npmjs.org/flatted@3.3.1
       rfdc: registry.npmjs.org/rfdc@1.3.1
       streamroller: registry.npmjs.org/streamroller@3.1.5
     transitivePeerDependencies:
@@ -9415,6 +9444,19 @@ packages:
     version: 2.4.0
     dev: true
 
+  registry.npmjs.org/socket.io-adapter@2.5.4:
+    resolution: {integrity: sha512-wDNHGXGewWAjQPt3pyeYBtpWSq9cLE5UW1ZUPL/2eGK9jtse/FpXib7epSTsz0Q0m+6sg6Y4KtcFTlah1bdOVg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/socket.io-adapter/-/socket.io-adapter-2.5.4.tgz}
+    name: socket.io-adapter
+    version: 2.5.4
+    dependencies:
+      debug: registry.npmjs.org/debug@4.3.4
+      ws: registry.npmjs.org/ws@8.11.0
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+    dev: true
+
   registry.npmjs.org/socket.io-client@4.5.0:
     resolution: {integrity: sha512-HW61c1G7OrYGxaI79WRn17+b03iBCdvhBj4iqyXHBoL5M8w2MSO/vChsjA93knG4GYEai1/vbXWJna9dzxXtSg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/socket.io-client/-/socket.io-client-4.5.0.tgz}
     name: socket.io-client
@@ -9456,6 +9498,18 @@ packages:
       - supports-color
     dev: true
 
+  registry.npmjs.org/socket.io-parser@4.2.4:
+    resolution: {integrity: sha512-/GbIKmo8ioc+NIWIhwdecY0ge+qVBSMdgxGygevmdHj24bsfgtCmcUUcQ5ZzcylGFHsN3k4HB4Cgkl96KVnuew==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/socket.io-parser/-/socket.io-parser-4.2.4.tgz}
+    name: socket.io-parser
+    version: 4.2.4
+    engines: {node: '>=10.0.0'}
+    dependencies:
+      '@socket.io/component-emitter': registry.npmjs.org/@socket.io/component-emitter@3.1.0
+      debug: registry.npmjs.org/debug@4.3.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   registry.npmjs.org/socket.io@4.5.0:
     resolution: {integrity: sha512-slTYqU2jCgMjXwresG8grhUi/cC6GjzmcfqArzaH3BN/9I/42eZk9yamNvZJdBfTubkjEdKAKs12NEztId+bUA==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/socket.io/-/socket.io-4.5.0.tgz}
     name: socket.io
@@ -9468,6 +9522,25 @@ packages:
       engine.io: registry.npmjs.org/engine.io@6.2.0
       socket.io-adapter: registry.npmjs.org/socket.io-adapter@2.4.0
       socket.io-parser: registry.npmjs.org/socket.io-parser@4.0.4
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+    dev: true
+
+  registry.npmjs.org/socket.io@4.7.5:
+    resolution: {integrity: sha512-DmeAkF6cwM9jSfmp6Dr/5/mfMwb5Z5qRrSXLpo3Fq5SqyU8CMF15jIN4ZhfSwu35ksM1qmHZDQ/DK5XTccSTvA==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/socket.io/-/socket.io-4.7.5.tgz}
+    name: socket.io
+    version: 4.7.5
+    engines: {node: '>=10.2.0'}
+    dependencies:
+      accepts: registry.npmjs.org/accepts@1.3.8
+      base64id: registry.npmjs.org/base64id@2.0.0
+      cors: registry.npmjs.org/cors@2.8.5
+      debug: registry.npmjs.org/debug@4.3.4
+      engine.io: registry.npmjs.org/engine.io@6.5.4
+      socket.io-adapter: registry.npmjs.org/socket.io-adapter@2.5.4
+      socket.io-parser: registry.npmjs.org/socket.io-parser@4.2.4
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -10811,6 +10884,16 @@ packages:
       isexe: registry.npmjs.org/isexe@2.0.0
     dev: true
 
+  registry.npmjs.org/which@3.0.1:
+    resolution: {integrity: sha512-XA1b62dzQzLfaEOSQFTCOd5KFf/1VSzZo7/7TUjnya6u0vGGKzU96UQBZTAThCb2j4/xjBAyii1OhRLJEivHvg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/which/-/which-3.0.1.tgz}
+    name: which
+    version: 3.0.1
+    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
+    hasBin: true
+    dependencies:
+      isexe: registry.npmjs.org/isexe@2.0.0
+    dev: true
+
   registry.npmjs.org/wildcard@2.0.0:
     resolution: {integrity: sha512-JcKqAHLPxcdb9KM49dufGXn2x3ssnfjbcaQdLlfZsL9rH9wgDQjUtDxbo8NE0F6SFvydeu1VhZe7hZuHsB2/pw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/wildcard/-/wildcard-2.0.0.tgz}
     name: wildcard
@@ -10843,6 +10926,21 @@ packages:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz}
     name: wrappy
     version: 1.0.2
+    dev: true
+
+  registry.npmjs.org/ws@8.11.0:
+    resolution: {integrity: sha512-HPG3wQd9sNQoT9xHyNCXoDUa+Xw/VevmY9FoHyQ+g+rrMn4j6FB4np7Z0OhdTgjx6MgQLK7jwSy1YecU1+4Asg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/ws/-/ws-8.11.0.tgz}
+    name: ws
+    version: 8.11.0
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: ^5.0.2
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
     dev: true
 
   registry.npmjs.org/ws@8.2.3:

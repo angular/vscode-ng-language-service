@@ -1,8 +1,15 @@
+# 17.3.1
+This release upgrades `@angular/language-service` to v17.3.1.
+
+fix(compiler-cli): symbol feature detection for the compiler (https://github.com/angular/angular/pull/54711)
+
+# 17.3.0
+This release upgrades `@angular/language-service` to v17.3.0.
+
 # 17.2.2
 This release upgrades `@angular/language-service` to v17.2.1.
 
 fix: pass oldest Angular version in the workspace to the compiler (#2003)
-
 
 # 17.2.1
 This release rolls back the `@angular/language-service` version to v17.2.0-next.0 to resolve an issue reported in ticket [#2001](https://github.com/angular/vscode-ng-language-service/issues/2001).

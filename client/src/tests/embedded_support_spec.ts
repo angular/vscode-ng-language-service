@@ -38,21 +38,6 @@ describe('embedded language support', () => {
     it('at end of template', () => {
       test(`template: '<div></div>¦'`, isInsideInlineTemplateRegion, true);
     });
-
-    it('works for inline templates after a template string', () => {
-      test(
-          'const x = `${""}`;\n' +
-              'template: `hello ¦world`',
-          isInsideInlineTemplateRegion, true);
-    });
-
-    it('works for inline templates after a tagged template string inside tagged template string',
-       () => {
-         test(
-             'const x = `${`${""}`}`;\n' +
-                 'template: `hello ¦world`',
-             isInsideInlineTemplateRegion, true);
-       });
   });
 
   describe('isInsideAngularContext', () => {

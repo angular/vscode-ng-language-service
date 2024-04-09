@@ -67,6 +67,9 @@ export function isInsideStringLiteral(
  * `@Component` or `{styleUrls: [someFunction('stringL¦iteral')]}`, the @angular/language-service
  * will always give us the correct answer. This helper gives us a quick win for optimizing the
  * number of requests we send to the server.
+ *
+ * TODO(atscott): tagged templates don't work: #1872 /
+ * https://github.com/Microsoft/TypeScript/issues/20055
  */
 function isPropertyAssignmentToStringOrStringInArray(
     documentText: string, offset: number, propertyAssignmentNames: string[]): boolean {
@@ -78,23 +81,8 @@ function isPropertyAssignmentToStringOrStringInArray(
   let lastTokenText: string|undefined;
   let unclosedBraces = 0;
   let unclosedBrackets = 0;
-  let unclosedTaggedTemplates = 0;
   let propertyAssignmentContext = false;
-
-  function isTemplateStartOfTaggedTemplate() {
-    return token === ts.SyntaxKind.NoSubstitutionTemplateLiteral ||
-        token === ts.SyntaxKind.TemplateHead;
-  }
-
   while (token !== ts.SyntaxKind.EndOfFileToken && scanner.getStartPos() < offset) {
-    if (isTemplateStartOfTaggedTemplate()) {
-      unclosedTaggedTemplates++;
-    }
-    if (token === ts.SyntaxKind.CloseBraceToken && unclosedTaggedTemplates > 0) {
-      // https://github.com/Microsoft/TypeScript/issues/20055
-      token = scanner.reScanTemplateToken(/*isTaggedTemplate*/ true);
-      unclosedTaggedTemplates--;
-    }
     if (lastToken === ts.SyntaxKind.Identifier && lastTokenText !== undefined &&
         propertyAssignmentNames.includes(lastTokenText) && token === ts.SyntaxKind.ColonToken) {
       propertyAssignmentContext = true;

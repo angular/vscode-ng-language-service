@@ -17,27 +17,42 @@ describe('embedded language support', () => {
     });
 
     it('just after template', () => {
-      test(`template: '<div></div>'¦`, isInsideInlineTemplateRegion, false);
+      test(`const foo = {template: '<div></div>'¦}`, isInsideInlineTemplateRegion, false);
     });
 
     it('just before template', () => {
       // Note that while it seems that this should be `false`, we should still consider this inside
       // the string because the visual mode of vim appears to have a position on top of the open
       // quote while the cursor position is before it.
-      test(`template: ¦'<div></div>'`, isInsideInlineTemplateRegion, true);
+      test(`const foo = {template: ¦'<div></div>'}`, isInsideInlineTemplateRegion, true);
     });
 
     it('two spaces before template', () => {
-      test(`template:¦ '<div></div>'`, isInsideInlineTemplateRegion, false);
+      test(`const foo = {template:¦ '<div></div>'}`, isInsideInlineTemplateRegion, false);
     });
 
     it('at beginning of template', () => {
-      test(`template: '¦<div></div>'`, isInsideInlineTemplateRegion, true);
+      test(`const foo = {template: '¦<div></div>'}`, isInsideInlineTemplateRegion, true);
     });
 
     it('at end of template', () => {
-      test(`template: '<div></div>¦'`, isInsideInlineTemplateRegion, true);
+      test(`const foo = {template: '<div></div>¦'}`, isInsideInlineTemplateRegion, true);
     });
+
+    it('works for inline templates after a template string', () => {
+      test(
+          'const x = `${""}`;\n' +
+              'const foo = {template: `hello ¦world`}',
+          isInsideInlineTemplateRegion, true);
+    });
+
+    it('works for inline templates after a tagged template string inside tagged template string',
+       () => {
+         test(
+             'const x = `${`${""}`}`;\n' +
+                 'const foo = {template: `hello ¦world`}',
+             isInsideInlineTemplateRegion, true);
+       });
   });
 
   describe('isInsideAngularContext', () => {
@@ -46,42 +61,42 @@ describe('embedded language support', () => {
     });
 
     it('just after template', () => {
-      test(`template: '<div></div>'¦`, isInsideComponentDecorator, false);
+      test(`const foo = {template: '<div></div>'¦}`, isInsideComponentDecorator, false);
     });
 
     it('inside template', () => {
-      test(`template: '<div>¦</div>'`, isInsideComponentDecorator, true);
+      test(`const foo = {template: '<div>¦</div>'}`, isInsideComponentDecorator, true);
     });
 
     it('just after templateUrl', () => {
-      test(`templateUrl: './abc.html'¦`, isInsideComponentDecorator, false);
+      test(`const foo = {templateUrl: './abc.html'¦}`, isInsideComponentDecorator, false);
     });
 
     it('inside templateUrl', () => {
-      test(`templateUrl: './abc¦.html'`, isInsideComponentDecorator, true);
+      test(`const foo = {templateUrl: './abc¦.html'}`, isInsideComponentDecorator, true);
     });
 
     it('just after styleUrls', () => {
-      test(`styleUrls: ['./abc.css']¦`, isInsideComponentDecorator, false);
+      test(`const foo = {styleUrls: ['./abc.css']¦}`, isInsideComponentDecorator, false);
     });
 
     it('inside first item of styleUrls', () => {
-      test(`styleUrls: ['./abc.c¦ss', 'def.css']`, isInsideComponentDecorator, true);
+      test(`const foo = {styleUrls: ['./abc.c¦ss', 'def.css']}`, isInsideComponentDecorator, true);
     });
 
     it('inside second item of styleUrls', () => {
-      test(`styleUrls: ['./abc.css', 'def¦.css']`, isInsideComponentDecorator, true);
+      test(`const foo = {styleUrls: ['./abc.css', 'def¦.css']}`, isInsideComponentDecorator, true);
     });
 
     it('inside second item of styleUrls, when first is complicated function', () => {
       test(
-          `styleUrls: [getCss({strict: true, dirs: ['apple', 'banana']}), 'def¦.css']`,
+          `const foo = {styleUrls: [getCss({strict: true, dirs: ['apple', 'banana']}), 'def¦.css']}`,
           isInsideComponentDecorator, true);
     });
 
     it('inside non-string item of styleUrls', () => {
       test(
-          `styleUrls: [getCss({strict: true¦, dirs: ['apple', 'banana']}), 'def.css']`,
+          `const foo = {styleUrls: [getCss({strict: true¦, dirs: ['apple', 'banana']}), 'def.css']}`,
           isInsideComponentDecorator, false);
     });
   });
@@ -92,8 +107,10 @@ function test(
     testFn: (doc: vscode.TextDocument, position: vscode.Position) => boolean,
     expectation: boolean): void {
   const {cursor, text} = extractCursorInfo(fileWithCursor);
-  const vdoc = TextDocument.create('test' as DocumentUri, 'typescript', 0, text) as {} as
+
+  const vdoc = TextDocument.create('test.ts' as DocumentUri, 'typescript', 0, text) as {} as
       vscode.TextDocument;
+  (vdoc as any).fileName = 'test.ts';
   const actual = testFn(vdoc, vdoc.positionAt(cursor));
   expect(actual).toBe(expectation);
 }

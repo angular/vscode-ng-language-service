@@ -1,3 +1,8 @@
+# 17.3.2
+This release upgrades `@angular/language-service` to v17.3.6.
+
+* fix(extension): Go to definition works on the second component in a single file (#2027)
+
 # 17.3.1
 This release upgrades `@angular/language-service` to v17.3.1.
 

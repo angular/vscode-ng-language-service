@@ -14,7 +14,7 @@ import {URI} from 'vscode-uri';
 
 import {ProjectLanguageService, ProjectLanguageServiceParams, SuggestStrictMode, SuggestStrictModeParams} from '../../common/notifications';
 import {GetComponentsWithTemplateFile, GetTcbRequest, GetTemplateLocationForComponent, IsInAngularProject} from '../../common/requests';
-import {APP_COMPONENT, APP_COMPONENT_URI, FOO_COMPONENT, FOO_COMPONENT_URI, FOO_TEMPLATE, FOO_TEMPLATE_URI, IS_BAZEL, PROJECT_PATH, TSCONFIG} from '../test_constants';
+import {APP_COMPONENT, APP_COMPONENT_MODULE_URI, APP_COMPONENT_URI, BAR_COMPONENT, BAR_COMPONENT_URI, FOO_COMPONENT, FOO_COMPONENT_URI, FOO_TEMPLATE, FOO_TEMPLATE_URI, IS_BAZEL, PROJECT_PATH, TSCONFIG} from '../test_constants';
 
 import {convertPathToFileUrl, createConnection, createTracer, initializeServer, openTextDocument} from './test_utils';
 
@@ -580,6 +580,56 @@ export class AppComponent {
     });
     expect(componentResponse).toBe(true);
   })
+
+  describe('auto-import component', () => {
+    it('should generate import in the different file', async () => {
+      openTextDocument(client, FOO_TEMPLATE, `<bar-`);
+      const response = await client.sendRequest(lsp.CompletionRequest.type, {
+        textDocument: {
+          uri: FOO_TEMPLATE_URI,
+        },
+        position: {line: 0, character: 5},
+      }) as lsp.CompletionItem[];
+      const libPostResponse = response.find(res => res.label === 'bar-component')!;
+      const detail = await client.sendRequest(lsp.CompletionResolveRequest.type, libPostResponse);
+      expect(detail.command?.command).toEqual('angular.applyCompletionCodeAction');
+      expect(detail.command?.arguments?.[0])
+          .toEqual(([{
+            'changes': {
+              [APP_COMPONENT_MODULE_URI]: [
+                {
+                  'newText': '\nimport { BarComponent } from "./bar.component";',
+                  'range':
+                      {'start': {'line': 5, 'character': 45}, 'end': {'line': 5, 'character': 45}}
+                },
+                {
+                  'newText': 'imports: [\n    CommonModule,\n    PostModule,\n    BarComponent\n]',
+                  'range':
+                      {'start': {'line': 8, 'character': 2}, 'end': {'line': 11, 'character': 3}}
+                }
+              ]
+            }
+          }]
+
+                    ));
+    });
+
+    it('should generate import in the current file', async () => {
+      openTextDocument(client, BAR_COMPONENT);
+      const response = await client.sendRequest(lsp.CompletionRequest.type, {
+        textDocument: {
+          uri: BAR_COMPONENT_URI,
+        },
+        position: {line: 13, character: 16},
+      }) as lsp.CompletionItem[];
+      const libPostResponse = response.find(res => res.label === 'baz-component')!;
+      const detail = await client.sendRequest(lsp.CompletionResolveRequest.type, libPostResponse);
+      expect(detail.additionalTextEdits).toEqual([{
+        'newText': ',\n    imports: [BazComponent]',
+        'range': {'start': {'line': 14, 'character': 20}, 'end': {'line': 14, 'character': 20}}
+      }]);
+    });
+  });
 });
 
 describe('auto-apply optional chaining', () => {

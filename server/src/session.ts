@@ -1190,7 +1190,9 @@ export class Session {
       return item;
     }
 
-    const {kind, kindModifiers, displayParts, documentation, tags} = details;
+    const {kind, kindModifiers, displayParts, documentation, tags, codeActions} = details;
+    const codeActionsDetail = generateCommandAndTextEditsFromCodeActions(
+        codeActions ?? [], filePath, (path: string) => this.projectService.getScriptInfo(path));
     let desc = kindModifiers ? kindModifiers + ' ' : '';
     if (displayParts && displayParts.length > 0) {
       // displayParts does not contain info about kindModifiers
@@ -1206,6 +1208,8 @@ export class Session {
                  documentation, tags, (fileName) => this.getLSAndScriptInfo(fileName)?.scriptInfo)
                  .join('\n'),
     };
+    item.additionalTextEdits = codeActionsDetail.additionalTextEdits;
+    item.command = codeActionsDetail.command;
     return item;
   }
 
@@ -1339,4 +1343,68 @@ function getCodeFixesAll(
     });
   }
   return lspCodeActions;
+}
+
+/**
+ * In the completion item, the `additionalTextEdits` can only be included the changes about the
+ * current file, the other changes should be inserted by the vscode command.
+ *
+ * For example, when the user selects a component in an HTML file, the extension inserts the
+ * selector in the HTML file and auto-generates the import declaration in the TS file.
+ *
+ * The code is copied from
+ * [here](https://github.com/microsoft/vscode/blob/4608b378a8101ff273fa5db36516da6022f66bbf/extensions/typescript-language-features/src/languageFeatures/completions.ts#L304)
+ */
+function generateCommandAndTextEditsFromCodeActions(
+    codeActions: ts.CodeAction[], currentFilePath: string,
+    getScriptInfo: (path: string) => ts.server.ScriptInfo |
+        undefined): {command?: lsp.Command; additionalTextEdits?: lsp.TextEdit[]} {
+  if (codeActions.length === 0) {
+    return {};
+  }
+
+  // Try to extract out the additionalTextEdits for the current file.
+  // Also check if we still have to apply other workspace edits and commands
+  // using a vscode command
+  const additionalTextEdits: lsp.TextEdit[] = [];
+  const commandTextEditors: lsp.WorkspaceEdit[] = [];
+
+  for (const tsAction of codeActions) {
+    const currentFileChanges =
+        tsAction.changes.filter(change => change.fileName === currentFilePath);
+    const otherWorkspaceFileChanges =
+        tsAction.changes.filter(change => change.fileName !== currentFilePath);
+
+    if (currentFileChanges.length > 0) {
+      // Apply all edits in the current file using `additionalTextEdits`
+      const additionalWorkspaceEdit =
+          tsFileTextChangesToLspWorkspaceEdit(currentFileChanges, getScriptInfo).changes;
+      if (additionalWorkspaceEdit !== undefined) {
+        for (const edit of Object.values(additionalWorkspaceEdit)) {
+          additionalTextEdits.push(...edit);
+        }
+      }
+    }
+
+    if (otherWorkspaceFileChanges.length > 0) {
+      commandTextEditors.push(
+          tsFileTextChangesToLspWorkspaceEdit(otherWorkspaceFileChanges, getScriptInfo),
+      );
+    }
+  }
+
+  let command: lsp.Command|undefined = undefined;
+  if (commandTextEditors.length > 0) {
+    // Create command that applies all edits not in the current file.
+    command = {
+      title: '',
+      command: 'angular.applyCompletionCodeAction',
+      arguments: [commandTextEditors],
+    };
+  }
+
+  return {
+    command,
+    additionalTextEdits: additionalTextEdits.length ? additionalTextEdits : undefined
+  };
 }

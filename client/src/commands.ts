@@ -7,6 +7,7 @@
  */
 
 import * as vscode from 'vscode';
+import * as lsp from 'vscode-languageclient/node';
 
 import {OpenJsDocLinkCommand_Args, OpenJsDocLinkCommandId, ServerOptions} from '../../common/initialize';
 
@@ -191,6 +192,16 @@ function openJsDocLinkCommand(): Command<OpenJsDocLinkCommand_Args> {
   };
 }
 
+function applyCodeActionCommand(ngClient: AngularLanguageClient): Command {
+  return {
+    id: 'angular.applyCompletionCodeAction',
+    isTextEditorCommand: false,
+    async execute(args: lsp.WorkspaceEdit[]) {
+      await ngClient.applyWorkspaceEdits(args);
+    },
+  };
+}
+
 /**
  * Register all supported vscode commands for the Angular extension.
  * @param client language client
@@ -205,6 +216,7 @@ export function registerCommands(
     goToComponentWithTemplateFile(client),
     goToTemplateForComponent(client),
     openJsDocLinkCommand(),
+    applyCodeActionCommand(client),
   ];
 
   for (const command of commands) {

@@ -176,6 +176,16 @@ export class AngularLanguageClient implements vscode.Disposable {
     };
   }
 
+  async applyWorkspaceEdits(workspaceEdits: lsp.WorkspaceEdit[]) {
+    for (const edit of workspaceEdits) {
+      const workspaceEdit = this.client?.protocol2CodeConverter.asWorkspaceEdit(edit);
+      if (workspaceEdit === undefined) {
+        continue;
+      }
+      await vscode.workspace.applyEdit(workspaceEdit);
+    }
+  }
+
   private async isInAngularProject(doc: vscode.TextDocument): Promise<boolean> {
     if (this.client === null) {
       return false;

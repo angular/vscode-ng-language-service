@@ -38,11 +38,21 @@
     {{o}}
 }
 
-<!-- Should not highlight -->
 @if 
 (items) {}
 
+@for 
+(item of items; track $index) { }
+
+@for (item of items; track $index) { 
+
+} 
+@empty 
+{
+
+}
+
+<!-- Should not highlight -->
+
 some.email@google.com ({}) {}
 
-@for 
-(let item of items; track $index) { }

@@ -12,7 +12,7 @@
       "name": "keyword.control.block.transition.ng"
     },
     "block": {
-      "begin": "(@)((?:\\w+\\s*)+)(?=\\(|\\{)",
+      "begin": "(@)(if|else if|else|defer|placeholder|loading|error|switch|case|default|for|empty)(?:\\s*)",
       "beginCaptures": {
         "1": {
           "patterns": [

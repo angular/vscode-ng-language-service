@@ -1,7 +1,17 @@
+# 18.0.0
+This release upgrades `@angular/language-service` to v18.0.0.
+
+* fix: allow external projects to use provided compiler options ([#55035](https://github.com/angular/angular/pull/55035))
+* fix: avoid generating TS syntactic diagnostics for templates ([#55091](https://github.com/angular/angular/pull/55091))
+* fix: implement getDefinitionAtPosition for Angular templates ([#55269](https://github.com/angular/angular/pull/55269))
+* fix: prevent underlying TS Service from handling template files ([#55003](https://github.com/angular/angular/pull/55003))
+* fix: use type-only import in plugin factory ([#55996](https://github.com/angular/angular/pull/55996))
+* fix(syntaxes): Only match known block names (#2034) (dceedb686)
+
 # 17.2.2
 This release upgrades `@angular/language-service` to v17.2.1.
 
-fix: pass oldest Angular version in the workspace to the compiler (#2003)
+* fix: pass oldest Angular version in the workspace to the compiler (#2003)
 
 
 # 17.2.1
@@ -11,18 +21,18 @@ This release rolls back the `@angular/language-service` version to v17.2.0-next.
 # 17.2.0
 This release upgrades `@angular/language-service` to v17.2.0-rc.1.
 
-fix(syntaxes): Do not highlight bindings outside element tags (#1725) (28739e4)
+* fix(syntaxes): Do not highlight bindings outside element tags (#1725) (28739e4)
 
 
 # 17.1.0
 This release upgrades `@angular/language-service` to v17.1.0. It is based on the final RC of `@angular/compiler`.
 
-feat: Complete inside @switch ([#52153](https://github.com/angular/angular/pull/52153))
-feat: Enable go to definition of styleUrl ([#51746](https://github.com/angular/angular/pull/51746))
-feat: Implement outlining spans for control flow blocks ([#52062](https://github.com/angular/angular/pull/52062))
-feat: Support autocompletion for blocks ([#52121](https://github.com/angular/angular/pull/52121))
-fix: Autocomplete block keywords in more cases ([#52198](https://github.com/angular/angular/pull/52198))
-fix(syntaxes): Do not apply block syntax highlighting to JS and CSS in templates (#1952)
+* feat: Complete inside @switch ([#52153](https://github.com/angular/angular/pull/52153))
+* feat: Enable go to definition of styleUrl ([#51746](https://github.com/angular/angular/pull/51746))
+* feat: Implement outlining spans for control flow blocks ([#52062](https://github.com/angular/angular/pull/52062))
+* feat: Support autocompletion for blocks ([#52121](https://github.com/angular/angular/pull/52121))
+* fix: Autocomplete block keywords in more cases ([#52198](https://github.com/angular/angular/pull/52198))
+* fix(syntaxes): Do not apply block syntax highlighting to JS and CSS in templates (#1952)
 
 # 17.0.2
 This release upgrades `@angular/language-service` to v17.0.2.

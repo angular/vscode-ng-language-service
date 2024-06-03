@@ -14,13 +14,8 @@ export function isInsideInlineTemplateRegion(
   if (document.languageId !== 'typescript') {
     return true;
   }
-  const node = getNodeAtDocumentPosition(document, position);
-
-  if (!node) {
-    return false;
-  }
-
-  return getPropertyAssignmentFromValue(node, 'template') !== null;
+  return isPropertyAssignmentToStringOrStringInArray(
+      document.getText(), document.offsetAt(position), ['template']);
 }
 
 /** Determines if the position is inside an inline template, templateUrl, or string in styleUrls. */
@@ -29,94 +24,102 @@ export function isInsideComponentDecorator(
   if (document.languageId !== 'typescript') {
     return true;
   }
-
-  const node = getNodeAtDocumentPosition(document, position);
-  if (!node) {
-    return false;
-  }
-  const assignment = getPropertyAssignmentFromValue(node, 'template') ??
-      getPropertyAssignmentFromValue(node, 'templateUrl') ??
-      // `node.parent` is used because the string is a child of an array element and we want to get
-      // the property name
-      getPropertyAssignmentFromValue(node.parent, 'styleUrls') ??
-      getPropertyAssignmentFromValue(node, 'styleUrl');
-  return assignment !== null;
+  return isPropertyAssignmentToStringOrStringInArray(
+      document.getText(), document.offsetAt(position),
+      ['template', 'templateUrl', 'styleUrls', 'styleUrl']);
 }
 
 /**
- * Determines if the position is inside a string literal. Returns `true` if the document language
- * is not TypeScript.
+ * Determines if the position is inside a string literal. Returns `true` if the document language is
+ * not TypeScript.
  */
 export function isInsideStringLiteral(
     document: vscode.TextDocument, position: vscode.Position): boolean {
   if (document.languageId !== 'typescript') {
     return true;
   }
-  const node = getNodeAtDocumentPosition(document, position);
-
-  if (!node) {
-    return false;
-  }
-
-  return ts.isStringLiteralLike(node);
-}
-
-/**
- * Return the node that most tightly encompasses the specified `position`.
- * @param node The starting node to start the top-down search.
- * @param position The target position within the `node`.
- */
-function findTightestNodeAtPosition(node: ts.Node, position: number): ts.Node|undefined {
-  if (node.getStart() <= position && position < node.getEnd()) {
-    return node.forEachChild(c => findTightestNodeAtPosition(c, position)) ?? node;
-  }
-  return undefined;
-}
-
-/**
- * Returns a property assignment from the assignment value if the property name
- * matches the specified `key`, or `null` if there is no match.
- */
-function getPropertyAssignmentFromValue(value: ts.Node, key: string): ts.PropertyAssignment|null {
-  const propAssignment = value.parent;
-  if (!propAssignment || !ts.isPropertyAssignment(propAssignment) ||
-      propAssignment.name.getText() !== key) {
-    return null;
-  }
-  return propAssignment;
-}
-
-type NgLSClientSourceFile = ts.SourceFile&{[NgLSClientSourceFileVersion]: number};
-
-/**
- * The `TextDocument` is not extensible, so the `WeakMap` is used here.
- */
-const ngLSClientSourceFileMap = new WeakMap<vscode.TextDocument, NgLSClientSourceFile>();
-const NgLSClientSourceFileVersion = Symbol('NgLSClientSourceFileVersion');
-
-/**
- *
- * Parse the document to `SourceFile` and return the node at the document position.
- */
-function getNodeAtDocumentPosition(
-    document: vscode.TextDocument, position: vscode.Position): ts.Node|undefined {
   const offset = document.offsetAt(position);
+  const scanner = ts.createScanner(ts.ScriptTarget.ESNext, true /* skipTrivia */);
+  scanner.setText(document.getText());
 
-  let sourceFile = ngLSClientSourceFileMap.get(document);
-  if (!sourceFile || sourceFile[NgLSClientSourceFileVersion] !== document.version) {
-    sourceFile =
-        ts.createSourceFile(
-            document.fileName, document.getText(), {
-              languageVersion: ts.ScriptTarget.ESNext,
-              jsDocParsingMode: ts.JSDocParsingMode.ParseNone,
-            },
-            /** setParentNodes */
-            true /** If not set, the `findTightestNodeAtPosition` will throw an error */) as
-        NgLSClientSourceFile;
-    sourceFile[NgLSClientSourceFileVersion] = document.version;
+  let token: ts.SyntaxKind = scanner.scan();
+  while (token !== ts.SyntaxKind.EndOfFileToken && scanner.getStartPos() < offset) {
+    const isStringToken = token === ts.SyntaxKind.StringLiteral ||
+        token === ts.SyntaxKind.NoSubstitutionTemplateLiteral;
+    const isCursorInToken = scanner.getStartPos() <= offset &&
+        scanner.getStartPos() + scanner.getTokenText().length >= offset;
+    if (isCursorInToken && isStringToken) {
+      return true;
+    }
+    token = scanner.scan();
+  }
+  return false;
+}
 
-    ngLSClientSourceFileMap.set(document, sourceFile);
+/**
+ * Basic scanner to determine if we're inside a string of a property with one of the given names.
+ *
+ * This scanner is not currently robust or perfect but provides us with an accurate answer _most_ of
+ * the time.
+ *
+ * False positives are OK here. Though this will give some false positives for determining if a
+ * position is within an Angular context, i.e. an object like `{template: ''}` that is not inside an
+ * `@Component` or `{styleUrls: [someFunction('stringL¦iteral')]}`, the @angular/language-service
+ * will always give us the correct answer. This helper gives us a quick win for optimizing the
+ * number of requests we send to the server.
+ *
+ * TODO(atscott): tagged templates don't work: #1872 /
+ * https://github.com/Microsoft/TypeScript/issues/20055
+ */
+function isPropertyAssignmentToStringOrStringInArray(
+    documentText: string, offset: number, propertyAssignmentNames: string[]): boolean {
+  const scanner = ts.createScanner(ts.ScriptTarget.ESNext, true /* skipTrivia */);
+  scanner.setText(documentText);
+
+  let token: ts.SyntaxKind = scanner.scan();
+  let lastToken: ts.SyntaxKind|undefined;
+  let lastTokenText: string|undefined;
+  let unclosedBraces = 0;
+  let unclosedBrackets = 0;
+  let propertyAssignmentContext = false;
+  while (token !== ts.SyntaxKind.EndOfFileToken && scanner.getStartPos() < offset) {
+    if (lastToken === ts.SyntaxKind.Identifier && lastTokenText !== undefined &&
+        propertyAssignmentNames.includes(lastTokenText) && token === ts.SyntaxKind.ColonToken) {
+      propertyAssignmentContext = true;
+      token = scanner.scan();
+      continue;
+    }
+    if (unclosedBraces === 0 && unclosedBrackets === 0 && isPropertyAssignmentTerminator(token)) {
+      propertyAssignmentContext = false;
+    }
+
+    if (token === ts.SyntaxKind.OpenBracketToken) {
+      unclosedBrackets++;
+    } else if (token === ts.SyntaxKind.OpenBraceToken) {
+      unclosedBraces++;
+    } else if (token === ts.SyntaxKind.CloseBracketToken) {
+      unclosedBrackets--;
+    } else if (token === ts.SyntaxKind.CloseBraceToken) {
+      unclosedBraces--;
+    }
+
+    const isStringToken = token === ts.SyntaxKind.StringLiteral ||
+        token === ts.SyntaxKind.NoSubstitutionTemplateLiteral;
+    const isCursorInToken = scanner.getStartPos() <= offset &&
+        scanner.getStartPos() + scanner.getTokenText().length >= offset;
+    if (propertyAssignmentContext && isCursorInToken && isStringToken) {
+      return true;
+    }
+
+    lastTokenText = scanner.getTokenText();
+    lastToken = token;
+    token = scanner.scan();
   }
 
-  return findTightestNodeAtPosition(sourceFile, offset);
+  return false;
+}
+
+function isPropertyAssignmentTerminator(token: ts.SyntaxKind) {
+  return token === ts.SyntaxKind.EndOfFileToken || token === ts.SyntaxKind.CommaToken ||
+      token === ts.SyntaxKind.SemicolonToken || token === ts.SyntaxKind.CloseBraceToken;
 }

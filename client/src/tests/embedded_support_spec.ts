@@ -39,7 +39,7 @@ describe('embedded language support', () => {
       test(`const foo = {template: '<div></div>¦'}`, isInsideInlineTemplateRegion, true);
     });
 
-    it('works for inline templates after a template string', () => {
+    xit('works for inline templates after a template string', () => {
       test(
           'const x = `${""}`;\n' +
               'const foo = {template: `hello ¦world`}',

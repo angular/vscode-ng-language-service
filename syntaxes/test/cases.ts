@@ -37,5 +37,11 @@ export const cases = [
     'scopeName': 'template.ng',
     'grammarFiles': ['syntaxes/template.json', 'syntaxes/expression.json'],
     'testFile': 'syntaxes/test/data/expression.html'
-  }
+  },
+  {
+    'name': 'let syntax',
+    'scopeName': 'template.let.ng',
+    'grammarFiles': ['syntaxes/let-declaration.json', 'syntaxes/expression.json'],
+    'testFile': 'syntaxes/test/data/let-declaration.html'
+  },
 ];

@@ -13,6 +13,7 @@ import {InlineStyles} from './inline-styles';
 import {InlineTemplate} from './inline-template';
 import {Template} from './template';
 import {TemplateBlocks} from './template-blocks';
+import {LetDeclaration} from './template-let-declaration';
 import {TemplateTag} from './template-tag';
 import {GrammarDefinition, JsonObject} from './types';
 
@@ -57,3 +58,4 @@ build(InlineTemplate, 'inline-template');
 build(InlineStyles, 'inline-styles');
 build(TemplateBlocks, 'template-blocks');
 build(TemplateTag, 'template-tag');
+build(LetDeclaration, 'let-declaration');

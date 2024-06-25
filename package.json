@@ -186,6 +186,14 @@
         }
       },
       {
+        "path": "./syntaxes/let-declaration.json",
+        "scopeName": "template.let.ng",
+        "injectTo": [
+          "text.html.derivative",
+          "source.ts"
+        ]
+      },
+      {
         "path": "./syntaxes/template-tag.json",
         "scopeName": "template.tag.ng",
         "injectTo": [

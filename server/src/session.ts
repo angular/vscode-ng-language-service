@@ -14,7 +14,7 @@ import {TextDocument} from 'vscode-languageserver-textdocument';
 import * as lsp from 'vscode-languageserver/node';
 
 import {ServerOptions} from '../../common/initialize';
-import {OpenOutputChannel, ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode} from '../../common/notifications';
+import {ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode} from '../../common/notifications';
 import {GetComponentsWithTemplateFile, GetTcbParams, GetTcbRequest, GetTcbResponse, GetTemplateLocationForComponent, GetTemplateLocationForComponentParams, IsInAngularProject, IsInAngularProjectParams} from '../../common/requests';
 
 import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './completion';
@@ -34,6 +34,7 @@ export interface SessionOptions {
   includeCompletionsWithSnippetText: boolean;
   forceStrictTemplates: boolean;
   disableBlockSyntax: boolean;
+  disableLetSyntax: boolean;
   angularCoreVersion: string|null;
 }
 
@@ -161,9 +162,11 @@ export class Session {
     if (options.disableBlockSyntax) {
       pluginConfig.enableBlockSyntax = false;
     }
+    if (options.disableLetSyntax) {
+      pluginConfig.enableLetSyntax = false;
+    }
     if (options.angularCoreVersion !== null) {
-      // TODO(crisbeto): temporarily cast to `any` until 17.2 is released.
-      (pluginConfig as any).angularCoreVersion = options.angularCoreVersion;
+      pluginConfig.angularCoreVersion = options.angularCoreVersion;
     }
     projSvc.configurePlugin({
       pluginName: options.ngPlugin,

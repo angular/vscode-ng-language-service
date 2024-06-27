@@ -323,11 +323,25 @@ export class AngularLanguageClient implements vscode.Disposable {
 
     // Only disable block syntax if we find angular/core and every one we find does not support
     // block syntax
-    if (angularVersions.length > 0 && angularVersions.every(v => v.version.major < 17)) {
-      args.push('--disableBlockSyntax');
-      this.outputChannel.appendLine(
-          `All workspace roots are using versions of Angular that do not support control flow block syntax.` +
-          ` Block syntax parsing in templates will be disabled.`);
+    if (angularVersions.length > 0) {
+      const disableBlocks = angularVersions.every(v => v.version.major < 17);
+      const disableLet = angularVersions.every(v => {
+        return v.version.major < 18 || v.version.major === 18 && v.version.minor < 1;
+      });
+
+      if (disableBlocks) {
+        args.push('--disableBlockSyntax');
+        this.outputChannel.appendLine(
+            `All workspace roots are using versions of Angular that do not support control flow block syntax.` +
+            ` Block syntax parsing in templates will be disabled.`);
+      }
+
+      if (disableLet) {
+        args.push('--disableLetSyntax');
+        this.outputChannel.appendLine(
+            `All workspace roots are using versions of Angular that do not support @let syntax.` +
+            ` @let syntax parsing in templates will be disabled.`);
+      }
     }
 
     // Pass the earliest Angular version along to the compiler for maximum compatibility.

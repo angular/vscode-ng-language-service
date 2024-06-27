@@ -7,6 +7,13 @@ export const cases = [
     'testFile': 'syntaxes/test/data/inline-template.ts'
   },
   {
+    'name': 'inline template tsx',
+    'scopeName': 'inline-template.ng',
+    'grammarFiles':
+        ['syntaxes/inline-template.json', 'syntaxes/template.json', 'syntaxes/expression.json'],
+    'testFile': 'syntaxes/test/data/inline-template.tsx'
+  },
+  {
     'name': 'inline styles',
     'scopeName': 'inline-styles.ng',
     'grammarFiles': ['syntaxes/inline-styles.json'],

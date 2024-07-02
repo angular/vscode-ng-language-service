@@ -33,7 +33,7 @@ export const TemplateBlocks: GrammarDefinition = {
         2: {name: 'keyword.control.block.kind.ng'},
       },
       patterns: [{include: '#blockExpression'}, {include: '#blockBody'}],
-      contentName: 'control.block.ng',
+      name: 'control.block.ng',
       // The block ends at the close `}` but we don't capture it here because. It's captured instead
       // by the #blockBody.
       end: /(?<=\})/,

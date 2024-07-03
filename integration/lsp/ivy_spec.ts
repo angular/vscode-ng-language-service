@@ -282,8 +282,7 @@ export class AppComponent {
       }))!;
       expect(response).not.toBeNull();
       expect(response.signatures.length).toEqual(1);
-      expect(response.signatures[0].label)
-          .toContain('(from: number, length?: number | undefined): string');
+      expect(response.signatures[0].label).toContain('(from: number, length?: number): string');
       expect(response.signatures[0].parameters).not.toBeUndefined();
       expect(response.activeParameter).toBe(1);
 
@@ -292,7 +291,7 @@ export class AppComponent {
         const [start, end] = param.label as [number, number];
         return label.substring(start, end);
       });
-      expect(paramLabels).toEqual(['from: number', 'length?: number | undefined']);
+      expect(paramLabels).toEqual(['from: number', 'length?: number']);
     });
   });
 

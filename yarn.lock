@@ -122,6 +122,13 @@
   dependencies:
     tslib "^2.3.0"
 
+"@angular/core@^18.1.0-rc.0":
+  version "18.1.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-18.1.0-rc.0.tgz#9e39dd50642a67dcfc944d3c32d018847b65a8bf"
+  integrity sha512-+DPirFXTHIuelawSFr8hPN4nF6IVcu6FvfTnxAqkdQ8eqjLdLa45n0rki1cY8OeMC7K2/7YClISDO9GRzqOcqA==
+  dependencies:
+    tslib "^2.3.0"
+
 "@angular/dev-infra-private@https://github.com/angular/dev-infra-private-builds.git#262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2":
   version "0.0.0-860ebf16b8617ce999394c2c70a8af307bb0ddc2"
   resolved "https://github.com/angular/dev-infra-private-builds.git#262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2"
@@ -158,10 +165,10 @@
     uuid "^8.3.2"
     yargs "^17.0.0"
 
-"@angular/language-service@18.1.0-next.4":
-  version "18.1.0-next.4"
-  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-18.1.0-next.4.tgz#c220a83d999754a281b1f5c1232cab9d966cbd45"
-  integrity sha512-1ZBwjnNvZczJ3KkBndLzVIxx1SJ8kSoTlig0E6QlDdExdtduC54ZoSQpugYoPyUUfP6ILxfVyt7Z+Xr9/yHZgQ==
+"@angular/language-service@18.1.0-rc.0":
+  version "18.1.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-18.1.0-rc.0.tgz#fac26be3d2b4e5402b592f9a746a6f4b7b564cb6"
+  integrity sha512-k1h56MDQFVE/JB90QLGnbwy9UUcQtlvjGDisCx3yMCfDnXZwN9+/NighXkymzC4VVXZcU4U1SmnSzXmfblkB9Q==
 
 "@assemblyscript/loader@^0.10.1":
   version "0.10.1"
@@ -7396,10 +7403,10 @@ typed-rest-client@^1.8.4:
     tunnel "0.0.6"
     underscore "^1.12.1"
 
-typescript@5.4.5:
-  version "5.4.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.4.5.tgz#42ccef2c571fdbd0f6718b1d1f5e6e5ef006f611"
-  integrity sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==
+typescript@5.5.3:
+  version "5.5.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.5.3.tgz#e1b0a3c394190838a0b168e771b0ad56a0af0faa"
+  integrity sha512-/hreyEujaB0w76zKo6717l3L0o/qEUtRgdvUBvlkhoWeOVMjMuHNHk0BRBzikzuGDqNmPQbg5ifMEqsHLiIUcQ==
 
 typescript@~4.6.3:
   version "4.6.4"

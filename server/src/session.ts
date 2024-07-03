@@ -450,7 +450,8 @@ export class Session {
       // languageService.cleanupSemanticCache(). However, the program is not
       // recreated when the language service is re-enabled. We manually mark the
       // project as dirty to force update the graph.
-      project.markAsDirty();
+      // Note: markAsDirty() is not a public API
+      (project as any).markAsDirty();
     }
     this.info(`Enabling language service for ${projectName}.`);
     this.handleCompilerOptionsDiagnostics(project);
@@ -771,7 +772,8 @@ export class Session {
         // compiler is aware of this change that shouldn't have happened and recompiles the file
         // because we store references to some string expressions (inline templates, style/template
         // urls).
-        project.markAsDirty();
+        // Note: markAsDirty() is not a public API
+        (project as any).markAsDirty();
         // Show initial diagnostics
         this.requestDiagnosticsOnOpenOrChangeFile(filePath, `Opening ${filePath}`);
       }

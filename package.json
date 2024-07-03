@@ -218,8 +218,8 @@
     "test:legacy-syntaxes": "yarn compile:syntaxes-test && yarn build:syntaxes && jasmine dist/syntaxes/test/driver.js"
   },
   "dependencies": {
-    "@angular/language-service": "18.1.0-next.4",
-    "typescript": "5.4.5",
+    "@angular/language-service": "18.1.0-rc.0",
+    "typescript": "5.5.3",
     "vscode-html-languageservice": "^4.2.5",
     "vscode-jsonrpc": "6.0.0",
     "vscode-languageclient": "7.0.0",
@@ -229,6 +229,7 @@
   },
   "devDependencies": {
     "@angular/dev-infra-private": "https://github.com/angular/dev-infra-private-builds.git#262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2",
+    "@angular/core": "^18.1.0-rc.0",
     "@bazel/bazelisk": "1.18.0",
     "@bazel/ibazel": "0.16.2",
     "@types/jasmine": "3.10.7",

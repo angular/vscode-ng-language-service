@@ -31,6 +31,7 @@ export const TemplateTag: GrammarDefinition = {
         2: {name: 'punctuation.separator.key-value.html'},
         3: {name: 'string.quoted.html punctuation.definition.string.begin.html'},
       },
+      // @ts-ignore
       end: /\3/,
       endCaptures: {
         0: {name: 'string.quoted.html punctuation.definition.string.end.html'},
@@ -54,6 +55,7 @@ export const TemplateTag: GrammarDefinition = {
         2: {name: 'punctuation.separator.key-value.html'},
         3: {name: 'string.quoted.html punctuation.definition.string.begin.html'},
       },
+      // @ts-ignore
       end: /\3/,
       endCaptures: {
         0: {name: 'string.quoted.html punctuation.definition.string.end.html'},
@@ -77,6 +79,7 @@ export const TemplateTag: GrammarDefinition = {
         2: {name: 'punctuation.separator.key-value.html'},
         3: {name: 'string.quoted.html punctuation.definition.string.begin.html'},
       },
+      // @ts-ignore
       end: /\3/,
       endCaptures: {
         0: {name: 'string.quoted.html punctuation.definition.string.end.html'},
@@ -100,6 +103,7 @@ export const TemplateTag: GrammarDefinition = {
         2: {name: 'punctuation.separator.key-value.html'},
         3: {name: 'string.quoted.html punctuation.definition.string.begin.html'},
       },
+      // @ts-ignore
       end: /\3/,
       endCaptures: {
         0: {name: 'string.quoted.html punctuation.definition.string.end.html'},

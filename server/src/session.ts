@@ -159,9 +159,6 @@ export class Session {
     if (options.forceStrictTemplates) {
       pluginConfig.forceStrictTemplates = true;
     }
-    if (options.disableBlockSyntax) {
-      pluginConfig.enableBlockSyntax = false;
-    }
     if (options.disableLetSyntax) {
       pluginConfig.enableLetSyntax = false;
     }
@@ -199,7 +196,7 @@ export class Session {
     conn.onCodeLensResolve(p => this.onCodeLensResolve(p));
     conn.onSignatureHelp(p => this.onSignatureHelp(p));
     conn.onCodeAction(p => this.onCodeAction(p));
-    conn.onCodeActionResolve(p => this.onCodeActionResolve(p));
+    conn.onCodeActionResolve(async p => await this.onCodeActionResolve(p));
   }
 
   private onCodeAction(params: lsp.CodeActionParams): lsp.CodeAction[]|null {
@@ -208,6 +205,13 @@ export class Session {
     if (!lsInfo) {
       return null;
     }
+
+    const refactorRange = {
+      pos: lspPositionToTsPosition(lsInfo.scriptInfo, params.range.start),
+      end: lspPositionToTsPosition(lsInfo.scriptInfo, params.range.end)
+    };
+    const applicableRefactors =
+        lsInfo.languageService.getApplicableRefactors(filePath, refactorRange, defaultPreferences);
 
     const codeActions: ts.CodeFixAction[] = [];
     for (const diagnostic of params.context.diagnostics) {
@@ -232,11 +236,63 @@ export class Session {
       };
     });
     const codeFixesAll = getCodeFixesAll(codeActions, params.textDocument);
-    return [...individualCodeFixes, ...codeFixesAll];
+    return [
+      ...individualCodeFixes, ...codeFixesAll,
+      ...applicableRefactors.map(r => ({
+                                        title: r.description,
+                                        kind: lsp.CodeActionKind.Refactor,
+                                        data: {
+                                          refactor: true,
+                                          name: r.name,
+                                          range: refactorRange,
+                                          document: params.textDocument,
+                                        } as CodeActionResolveData,
+                                      }) as lsp.CodeAction)
+    ];
   }
 
-  private onCodeActionResolve(param: lsp.CodeAction): lsp.CodeAction {
+  private async onCodeActionResolve(param: lsp.CodeAction): Promise<lsp.CodeAction> {
     const codeActionResolve = param.data as unknown as CodeActionResolveData;
+
+    // This is a refactoring action; not a code fix.
+    if (codeActionResolve.refactor === true) {
+      const filePath = uriToFilePath(codeActionResolve.document.uri);
+      const lsInfo = this.getLSAndScriptInfo(codeActionResolve.document);
+      if (!lsInfo) {
+        return param;
+      }
+
+      const progress = await this.connection.window.createWorkDoneProgress();
+      progress.begin('Refactoring', 0);
+
+      let edits: ts.RefactorEditInfo|undefined = undefined;
+      try {
+        edits = lsInfo.languageService.applyRefactoring(
+            filePath, codeActionResolve.range, codeActionResolve.name,
+            (percentage, updateMessage) => {
+              progress.report(percentage, updateMessage);
+            });
+      } catch (e: unknown) {
+        console.error(e);
+        this.connection.window.showErrorMessage(`Refactor failed with unexpected error: ${e}`);
+      } finally {
+        progress.done();
+      }
+
+      if (edits?.notApplicableReason !== undefined) {
+        this.connection.window.showErrorMessage(edits.notApplicableReason);
+      }
+      if (!edits) {
+        return param;
+      }
+
+      return {
+        ...param,
+        edit: tsFileTextChangesToLspWorkspaceEdit(
+            edits.edits, (path) => this.projectService.getScriptInfo(path)),
+      };
+    }
+
     /**
      * Now `@angular/language-service` only support quick fix, so the `onCodeAction` will return the
      * `edit` of the `lsp.CodeAction` for the diagnostics in the range that the user selects except
@@ -1310,10 +1366,19 @@ function isExternalTemplate(path: string): boolean {
   return !isTypeScriptFile(path);
 }
 
-interface CodeActionResolveData {
+// A code action resolve data might either metadata for a refactor action
+// from `onCodeAction` and `getApplicableEdits`, or is a code fix from Angular.
+type CodeActionResolveData =|{
+  refactor?: undefined;
   fixId?: string;
   document: lsp.TextDocumentIdentifier;
 }
+|{
+  refactor: true;
+  name: string;
+  document: lsp.TextDocumentIdentifier;
+  range: ts.TextRange
+};
 
 /**
  * Extract the fixAll action from `codeActions`

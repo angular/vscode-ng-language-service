@@ -66,9 +66,8 @@ export class AngularLanguageClient implements vscode.Disposable {
         provideCodeActions: async (
             document: vscode.TextDocument, range: vscode.Range, context: vscode.CodeActionContext,
             token: vscode.CancellationToken, next: lsp.ProvideCodeActionsSignature) => {
-          if (await this.isInAngularProject(document) &&
-              isNotTypescriptOrInsideComponentDecorator(document, range.start) &&
-              isNotTypescriptOrInsideComponentDecorator(document, range.end)) {
+          // Code actions can trigger also outside of `@Component(<...>)` fields.
+          if (await this.isInAngularProject(document)) {
             return next(document, range, context, token);
           }
         },

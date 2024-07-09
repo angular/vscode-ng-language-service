@@ -1,3 +1,15 @@
+# 18.1.1
+
+* fix(syntaxes): inject template tags to top-level source.ts (#2058)
+
+# 18.1.0
+
+This release upgrades `@angular/language-service` to v18.1.0-rc.0.
+
+* feat(syntaxes): add support for let declarations (#2042)
+* feat: generate the import declaration for the completion item code actions (#2031)
+* fix(server): disable let syntax when not supported (#2047)
+
 # 18.0.0
 This release upgrades `@angular/language-service` to v18.0.0.
 

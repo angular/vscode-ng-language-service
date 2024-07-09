@@ -43,6 +43,7 @@ export const InlineStyles: GrammarDefinition = {
     style: {
       begin: /\s*([`|'|"])/,
       beginCaptures: {1: {name: 'string'}},
+      // @ts-ignore
       end: /\1/,
       endCaptures: {0: {name: 'string'}},
       contentName: 'source.css.scss',

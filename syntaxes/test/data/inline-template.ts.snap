@@ -13,7 +13,7 @@
 #          ^ inline-template.ng meta.object-literal.key.ts punctuation.separator.key-value.ts
 #           ^ inline-template.ng
 #            ^ inline-template.ng string
-#             ^^^^^^^^^^^ inline-template.ng text.html
+#             ^^^^^^^^^^^ inline-template.ng text.html.derivative
 #                        ^ inline-template.ng string
 #                         ^^ inline-template.ng
 >
@@ -25,7 +25,7 @@
 #          ^ inline-template.ng meta.object-literal.key.ts punctuation.separator.key-value.ts
 #           ^ inline-template.ng
 #            ^ inline-template.ng string
-#             ^^^^^^^^^^^ inline-template.ng text.html
+#             ^^^^^^^^^^^ inline-template.ng text.html.derivative
 #                        ^ inline-template.ng string
 #                         ^^ inline-template.ng
 >  template: "<div></div>",
@@ -34,7 +34,7 @@
 #          ^ inline-template.ng meta.object-literal.key.ts punctuation.separator.key-value.ts
 #           ^ inline-template.ng
 #            ^ inline-template.ng string
-#             ^^^^^^^^^^^ inline-template.ng text.html
+#             ^^^^^^^^^^^ inline-template.ng text.html.derivative
 #                        ^ inline-template.ng string
 #                         ^^ inline-template.ng
 >  template: '<div></div>',
@@ -43,7 +43,7 @@
 #          ^ inline-template.ng meta.object-literal.key.ts punctuation.separator.key-value.ts
 #           ^ inline-template.ng
 #            ^ inline-template.ng string
-#             ^^^^^^^^^^^ inline-template.ng text.html
+#             ^^^^^^^^^^^ inline-template.ng text.html.derivative
 #                        ^ inline-template.ng string
 #                         ^^ inline-template.ng
 >
@@ -60,7 +60,7 @@
 #               ^ inline-template.ng meta.brace.round.ts
 #                ^ inline-template.ng
 #                 ^ inline-template.ng string
-#                  ^^^^^^^^^^^ inline-template.ng text.html
+#                  ^^^^^^^^^^^ inline-template.ng text.html.derivative
 #                             ^ inline-template.ng string
 #                              ^ inline-template.ng
 #                               ^ inline-template.ng meta.brace.round.ts
@@ -77,7 +77,7 @@
 #             ^ inline-template.ng meta.object-literal.key.ts punctuation.separator.key-value.ts
 #              ^ inline-template.ng
 #               ^ inline-template.ng string
-#                ^^^^^^^^^^^ inline-template.ng text.html
+#                ^^^^^^^^^^^ inline-template.ng text.html.derivative
 #                           ^ inline-template.ng string
 >  /*
 #^^^^^ inline-template.ng
@@ -108,9 +108,9 @@
 #          ^ inline-template.ng meta.object-literal.key.ts punctuation.separator.key-value.ts
 #           ^ inline-template.ng
 #            ^ inline-template.ng string
-#             ^^ inline-template.ng text.html punctuation.definition.block.ts
-#               ^^^^^^^^ inline-template.ng text.html expression.ng variable.other.readwrite.ts
-#                       ^^ inline-template.ng text.html punctuation.definition.block.ts
+#             ^^ inline-template.ng text.html.derivative punctuation.definition.block.ts
+#               ^^^^^^^^ inline-template.ng text.html.derivative expression.ng variable.other.readwrite.ts
+#                       ^^ inline-template.ng text.html.derivative punctuation.definition.block.ts
 #                         ^ inline-template.ng string
 #                          ^^ inline-template.ng
 >})

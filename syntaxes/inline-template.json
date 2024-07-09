@@ -62,7 +62,7 @@
           "name": "string"
         }
       },
-      "contentName": "text.html",
+      "contentName": "text.html.derivative",
       "patterns": [
         {
           "include": "text.html.derivative"
@@ -72,9 +72,6 @@
         },
         {
           "include": "template.blocks.ng"
-        },
-        {
-          "include": "template.tag.ng"
         },
         {
           "include": "template.let.ng"

@@ -34,6 +34,7 @@ export const InlineTemplate: GrammarDefinition = {
     ngTemplate: {
       begin: /\G\s*([`|'|"])/,
       beginCaptures: {1: {name: 'string'}},
+      // @ts-ignore
       end: /\1/,
       endCaptures: {0: {name: 'string'}},
       contentName: 'text.html.derivative',

@@ -6,7 +6,8 @@
     "sourceMap": true,
     "strict": true,
     "esModuleInterop": true,
-    "declaration": true
+    "declaration": true,
+    "skipLibCheck": true
   },
   "files": [],
   "references": [

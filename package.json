@@ -146,7 +146,7 @@
           "source.ts"
         ],
         "embeddedLanguages": {
-          "text.html": "html",
+          "text.html.derivative": "html",
           "source.css": "css",
           "source.js": "javascript"
         }
@@ -174,12 +174,15 @@
       {
         "path": "./syntaxes/let-declaration.json",
         "scopeName": "template.let.ng",
-        "injectTo": [ "text.html.derivative" ]
+        "injectTo": ["text.html.derivative"]
       },
       {
         "path": "./syntaxes/template-tag.json",
         "scopeName": "template.tag.ng",
-        "injectTo": ["text.html.derivative"]
+        "injectTo": [
+          "text.html.derivative",
+          "source.ts"
+        ]
       },
       {
         "path": "./syntaxes/expression.json",

@@ -36,13 +36,16 @@ export const InlineTemplate: GrammarDefinition = {
       beginCaptures: {1: {name: 'string'}},
       end: /\1/,
       endCaptures: {0: {name: 'string'}},
-      contentName: 'text.html',
+      contentName: 'text.html.derivative',
       patterns: [
-        {include: 'text.html.derivative'},
-        {include: 'template.ng'},
-        {include: 'template.blocks.ng'},
-        {include: 'template.tag.ng'},
-        {include: 'template.let.ng'},
+        {include: 'text.html.derivative'}, {include: 'template.ng'},
+        {include: 'template.blocks.ng'}, {include: 'template.let.ng'},
+        // note: template.tag.ng isn't used here and needs to be directly injected into source.ts
+        // scopes at the top level because it relies entirely on the injectionSelector to filter its
+        // matching out of non-html tag contexts. Since we don't have any scopes that match HTML
+        // tags, we rely entirely on the text.html.derivative pattern matching and apply the tag
+        // scope via injectionSelector only rather than being able to include it in a pattern list
+        // of another match.
       ]
     }
   }

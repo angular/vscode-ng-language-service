@@ -69,12 +69,6 @@
         },
         {
           "include": "template.ng"
-        },
-        {
-          "include": "template.blocks.ng"
-        },
-        {
-          "include": "template.let.ng"
         }
       ]
     }

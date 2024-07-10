@@ -164,17 +164,17 @@
       {
         "path": "./syntaxes/template.json",
         "scopeName": "template.ng",
-        "injectTo": ["text.html.derivative"]
+        "injectTo": ["text.html.derivative", "source.ts"]
       },
       {
         "path": "./syntaxes/template-blocks.json",
         "scopeName": "template.blocks.ng",
-        "injectTo": ["text.html.derivative"]
+        "injectTo": ["text.html.derivative", "source.ts"]
       },
       {
         "path": "./syntaxes/let-declaration.json",
         "scopeName": "template.let.ng",
-        "injectTo": ["text.html.derivative"]
+        "injectTo": ["text.html.derivative", "source.ts"]
       },
       {
         "path": "./syntaxes/template-tag.json",

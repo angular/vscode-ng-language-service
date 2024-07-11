@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@angular/language-service':
-        specifier: 18.1.0-rc.0
-        version: 18.1.0-rc.0
+        specifier: 18.1.0
+        version: 18.1.0
       typescript:
         specifier: 5.4.5
         version: 5.4.5
@@ -313,8 +313,8 @@ packages:
       zone.js: 0.11.8
     dev: true
 
-  /@angular/language-service@18.1.0-rc.0:
-    resolution: {integrity: sha512-k1h56MDQFVE/JB90QLGnbwy9UUcQtlvjGDisCx3yMCfDnXZwN9+/NighXkymzC4VVXZcU4U1SmnSzXmfblkB9Q==}
+  /@angular/language-service@18.1.0:
+    resolution: {integrity: sha512-sS9G/ZdS4CVhbClunpur8lZDP2cNTMFiAaxsF3sWg+HTSbQm7v57ypQsainSzoD30YxzoSCvyk18unDAO1vYUA==}
     engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0}
     dev: false
 

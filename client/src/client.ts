@@ -15,7 +15,7 @@ import {OpenOutputChannel, ProjectLoadingFinish, ProjectLoadingStart, SuggestStr
 import {GetComponentsWithTemplateFile, GetTcbRequest, GetTemplateLocationForComponent, IsInAngularProject} from '../../common/requests';
 import {NodeModule, resolve} from '../../common/resolver';
 
-import {isInsideComponentDecorator, isInsideInlineTemplateRegion, isInsideStringLiteral} from './embedded_support';
+import {isInsideStringLiteral, isNotTypescriptOrInsideComponentDecorator} from './embedded_support';
 
 interface GetTcbResponse {
   uri: vscode.Uri;
@@ -67,8 +67,8 @@ export class AngularLanguageClient implements vscode.Disposable {
             document: vscode.TextDocument, range: vscode.Range, context: vscode.CodeActionContext,
             token: vscode.CancellationToken, next: lsp.ProvideCodeActionsSignature) => {
           if (await this.isInAngularProject(document) &&
-              isInsideInlineTemplateRegion(document, range.start) &&
-              isInsideInlineTemplateRegion(document, range.end)) {
+              isNotTypescriptOrInsideComponentDecorator(document, range.start) &&
+              isNotTypescriptOrInsideComponentDecorator(document, range.end)) {
             return next(document, range, context, token);
           }
         },
@@ -92,7 +92,7 @@ export class AngularLanguageClient implements vscode.Disposable {
             document: vscode.TextDocument, position: vscode.Position,
             token: vscode.CancellationToken, next: lsp.ProvideDefinitionSignature) => {
           if (await this.isInAngularProject(document) &&
-              isInsideComponentDecorator(document, position)) {
+              isNotTypescriptOrInsideComponentDecorator(document, position)) {
             return next(document, position, token);
           }
         },
@@ -100,7 +100,7 @@ export class AngularLanguageClient implements vscode.Disposable {
             document: vscode.TextDocument, position: vscode.Position,
             token: vscode.CancellationToken, next) => {
           if (await this.isInAngularProject(document) &&
-              isInsideInlineTemplateRegion(document, position)) {
+              isNotTypescriptOrInsideComponentDecorator(document, position)) {
             return next(document, position, token);
           }
         },
@@ -108,7 +108,7 @@ export class AngularLanguageClient implements vscode.Disposable {
             document: vscode.TextDocument, position: vscode.Position,
             token: vscode.CancellationToken, next: lsp.ProvideHoverSignature) => {
           if (!(await this.isInAngularProject(document)) ||
-              !isInsideInlineTemplateRegion(document, position)) {
+              !isNotTypescriptOrInsideComponentDecorator(document, position)) {
             return;
           }
 
@@ -132,7 +132,7 @@ export class AngularLanguageClient implements vscode.Disposable {
             context: vscode.SignatureHelpContext, token: vscode.CancellationToken,
             next: lsp.ProvideSignatureHelpSignature) => {
           if (await this.isInAngularProject(document) &&
-              isInsideInlineTemplateRegion(document, position)) {
+              isNotTypescriptOrInsideComponentDecorator(document, position)) {
             return next(document, position, context, token);
           }
         },
@@ -142,7 +142,7 @@ export class AngularLanguageClient implements vscode.Disposable {
             next: lsp.ProvideCompletionItemsSignature) => {
           // If not in inline template, do not perform request forwarding
           if (!(await this.isInAngularProject(document)) ||
-              !isInsideInlineTemplateRegion(document, position)) {
+              !isNotTypescriptOrInsideComponentDecorator(document, position)) {
             return;
           }
           const angularCompletionsPromise = next(document, position, context, token) as

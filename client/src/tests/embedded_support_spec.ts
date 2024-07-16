@@ -8,96 +8,66 @@
 import * as vscode from 'vscode';
 import {DocumentUri, TextDocument} from 'vscode-languageserver-textdocument';
 
-import {isInsideComponentDecorator, isInsideInlineTemplateRegion} from '../embedded_support';
+import {isNotTypescriptOrInsideComponentDecorator} from '../embedded_support';
 
 describe('embedded language support', () => {
-  describe('isInsideInlineTemplateRegion', () => {
-    it('empty file', () => {
-      test('¦', isInsideInlineTemplateRegion, false);
-    });
-
-    it('just after template', () => {
-      test(`const foo = {template: '<div></div>'¦}`, isInsideInlineTemplateRegion, false);
-    });
-
-    it('just before template', () => {
-      // Note that while it seems that this should be `false`, we should still consider this inside
-      // the string because the visual mode of vim appears to have a position on top of the open
-      // quote while the cursor position is before it.
-      test(`const foo = {template: ¦'<div></div>'}`, isInsideInlineTemplateRegion, true);
-    });
-
-    it('two spaces before template', () => {
-      test(`const foo = {template:¦ '<div></div>'}`, isInsideInlineTemplateRegion, false);
-    });
-
-    it('at beginning of template', () => {
-      test(`const foo = {template: '¦<div></div>'}`, isInsideInlineTemplateRegion, true);
-    });
-
-    it('at end of template', () => {
-      test(`const foo = {template: '<div></div>¦'}`, isInsideInlineTemplateRegion, true);
-    });
-
-    xit('works for inline templates after a template string', () => {
-      test(
-          'const x = `${""}`;\n' +
-              'const foo = {template: `hello ¦world`}',
-          isInsideInlineTemplateRegion, true);
-    });
-
-    it('works for inline templates after a tagged template string inside tagged template string',
-       () => {
-         test(
-             'const x = `${`${""}`}`;\n' +
-                 'const foo = {template: `hello ¦world`}',
-             isInsideInlineTemplateRegion, true);
-       });
-  });
-
   describe('isInsideAngularContext', () => {
     it('empty file', () => {
-      test('¦', isInsideComponentDecorator, false);
+      test('¦', isNotTypescriptOrInsideComponentDecorator, false);
     });
 
     it('just after template', () => {
-      test(`const foo = {template: '<div></div>'¦}`, isInsideComponentDecorator, false);
+      test(
+          `const foo = {template: '<div></div>'¦}`, isNotTypescriptOrInsideComponentDecorator,
+          false);
     });
 
     it('inside template', () => {
-      test(`const foo = {template: '<div>¦</div>'}`, isInsideComponentDecorator, true);
+      test(
+          `const foo = {template: '<div>¦</div>'}`, isNotTypescriptOrInsideComponentDecorator,
+          true);
     });
 
     it('just after templateUrl', () => {
-      test(`const foo = {templateUrl: './abc.html'¦}`, isInsideComponentDecorator, false);
+      test(
+          `const foo = {templateUrl: './abc.html'¦}`, isNotTypescriptOrInsideComponentDecorator,
+          false);
     });
 
     it('inside templateUrl', () => {
-      test(`const foo = {templateUrl: './abc¦.html'}`, isInsideComponentDecorator, true);
+      test(
+          `const foo = {templateUrl: './abc¦.html'}`, isNotTypescriptOrInsideComponentDecorator,
+          true);
     });
 
     it('just after styleUrls', () => {
-      test(`const foo = {styleUrls: ['./abc.css']¦}`, isInsideComponentDecorator, false);
+      test(
+          `const foo = {styleUrls: ['./abc.css']¦}`, isNotTypescriptOrInsideComponentDecorator,
+          false);
     });
 
     it('inside first item of styleUrls', () => {
-      test(`const foo = {styleUrls: ['./abc.c¦ss', 'def.css']}`, isInsideComponentDecorator, true);
+      test(
+          `const foo = {styleUrls: ['./abc.c¦ss', 'def.css']}`,
+          isNotTypescriptOrInsideComponentDecorator, true);
     });
 
     it('inside second item of styleUrls', () => {
-      test(`const foo = {styleUrls: ['./abc.css', 'def¦.css']}`, isInsideComponentDecorator, true);
+      test(
+          `const foo = {styleUrls: ['./abc.css', 'def¦.css']}`,
+          isNotTypescriptOrInsideComponentDecorator, true);
     });
 
     it('inside second item of styleUrls, when first is complicated function', () => {
       test(
           `const foo = {styleUrls: [getCss({strict: true, dirs: ['apple', 'banana']}), 'def¦.css']}`,
-          isInsideComponentDecorator, true);
+          isNotTypescriptOrInsideComponentDecorator, true);
     });
 
     it('inside non-string item of styleUrls', () => {
       test(
           `const foo = {styleUrls: [getCss({strict: true¦, dirs: ['apple', 'banana']}), 'def.css']}`,
-          isInsideComponentDecorator, false);
+          isNotTypescriptOrInsideComponentDecorator, false);
     });
   });
 });

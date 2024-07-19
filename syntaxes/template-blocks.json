@@ -33,7 +33,7 @@
           "include": "#blockBody"
         }
       ],
-      "contentName": "control.block.ng",
+      "name": "control.block.ng",
       "end": "(?<=\\})"
     },
     "blockExpression": {

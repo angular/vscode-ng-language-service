@@ -8,18 +8,8 @@
 import * as ts from 'typescript';
 import * as vscode from 'vscode';
 
-/** Determines if the position is inside an inline template. */
-export function isInsideInlineTemplateRegion(
-    document: vscode.TextDocument, position: vscode.Position): boolean {
-  if (document.languageId !== 'typescript') {
-    return true;
-  }
-  return isPropertyAssignmentToStringOrStringInArray(
-      document.getText(), document.offsetAt(position), ['template']);
-}
-
 /** Determines if the position is inside an inline template, templateUrl, or string in styleUrls. */
-export function isInsideComponentDecorator(
+export function isNotTypescriptOrInsideComponentDecorator(
     document: vscode.TextDocument, position: vscode.Position): boolean {
   if (document.languageId !== 'typescript') {
     return true;

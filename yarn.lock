@@ -131,9 +131,9 @@
     tslib "^2.3.0"
 
 "@angular/core@^18.1.0-rc.0":
-  version "18.1.0"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-18.1.0.tgz#4b78e40e5c0d0ee36080c048adaa029013779b72"
-  integrity sha512-/57/s7CD/0CwlN+3FlhVmx7ypCWXjKi5UKtnlBAUg0D1denIf6ADxwTHFZABYZcYBqOTJgeQUtUw9u/A+0CIlg==
+  version "18.1.4"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-18.1.4.tgz#f88d38bb4c5af73fd9c769f8ffceb3f4836b4d6d"
+  integrity sha512-+N3oWYFubT3GdCkBfD/CmH4DGjr/fGFQZChWbph2ZuPpK7JYNgfyvXS4SjLtdL4WTjjBevBTgR70GyLH/5EbKA==
   dependencies:
     tslib "^2.3.0"
 
@@ -174,9 +174,9 @@
     yargs "^17.0.0"
 
 "@angular/language-service@~18.2.0-next.1":
-  version "18.2.0-next.2"
-  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-18.2.0-next.2.tgz#5dc9bf27a13e2e4aae1aa992d9230454335a13d2"
-  integrity sha512-pprfx3xc0SBLmru4VsR1DYmzJ4mTsI84P3kKvgK5Rztm6Wi38XFSUPwfTx5jz4xbf1F9HDYAdmvHoM8KSiB3gA==
+  version "18.2.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-18.2.0-rc.0.tgz#dd1063824078894f8562dbb7ce17fa306cb7f0dd"
+  integrity sha512-mcWU4PPMRDwuPrGO6p1lOOH+KbHoAdPxtjoBA0wuR4PlELis6scWKoDHwuFOrga0ZL6/hZHc0qEG3iycLzD5Ng==
 
 "@assemblyscript/loader@^0.10.1":
   version "0.10.1"

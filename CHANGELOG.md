@@ -1,3 +1,17 @@
+# 18.2.0
+This release upgrades `@angular/language-service` to v18.2.0-rc.0.
+
+* feat: integrate code refactorings from language-service via LSP (#2050)
+
+# 18.1.2
+This release upgrades `@angular/language-service` to v18.1.0.
+
+* fix(syntaxes): add back block syntaxes to injection for entire TS file (#2065)
+
+# 18.1.1
+
+* fix(syntaxes): inject template tags to top-level source.ts (#2058)
+
 # 18.1.0
 
 This release upgrades `@angular/language-service` to v18.1.0-rc.0.

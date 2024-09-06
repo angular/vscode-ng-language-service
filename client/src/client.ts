@@ -355,6 +355,12 @@ export class AngularLanguageClient implements vscode.Disposable {
       args.push('--forceStrictTemplates');
     }
 
+    const suppressAngularDiagnosticCodes =
+        config.get<string>('angular.suppressAngularDiagnosticCodes');
+    if (suppressAngularDiagnosticCodes) {
+      args.push('--suppressAngularDiagnosticCodes', suppressAngularDiagnosticCodes);
+    }
+
     const tsdk = config.get('typescript.tsdk', '');
     if (tsdk.trim().length > 0) {
       args.push('--tsdk', tsdk);

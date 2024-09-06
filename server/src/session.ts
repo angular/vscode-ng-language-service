@@ -36,6 +36,7 @@ export interface SessionOptions {
   disableBlockSyntax: boolean;
   disableLetSyntax: boolean;
   angularCoreVersion: string|null;
+  suppressAngularDiagnosticCodes: string|null;
 }
 
 enum LanguageId {
@@ -51,6 +52,11 @@ const defaultFormatOptions: ts.FormatCodeSettings = {};
 const defaultPreferences: ts.UserPreferences = {};
 
 const htmlLS = getHTMLLanguageService();
+
+const alwaysSuppressDiagnostics: number[] = [
+  // Diagnostics codes whose errors should always be suppressed, regardless of the options
+  // configuration.
+];
 
 /**
  * Session is a wrapper around lsp.IConnection, with all the necessary protocol
@@ -164,6 +170,12 @@ export class Session {
     }
     if (options.angularCoreVersion !== null) {
       pluginConfig.angularCoreVersion = options.angularCoreVersion;
+    }
+    if (options.suppressAngularDiagnosticCodes !== null) {
+      const parsedDiagnosticCodes =
+          options.suppressAngularDiagnosticCodes.split(',').map(c => parseInt(c));
+      pluginConfig.suppressAngularDiagnosticCodes =
+          [...alwaysSuppressDiagnostics, ...parsedDiagnosticCodes];
     }
     projSvc.configurePlugin({
       pluginName: options.ngPlugin,

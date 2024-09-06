@@ -267,7 +267,7 @@ export class Session {
 
       let edits: ts.RefactorEditInfo|undefined = undefined;
       try {
-        edits = lsInfo.languageService.applyRefactoring(
+        edits = await lsInfo.languageService.applyRefactoring(
             filePath, codeActionResolve.range, codeActionResolve.name,
             (percentage, updateMessage) => {
               progress.report(percentage, updateMessage);

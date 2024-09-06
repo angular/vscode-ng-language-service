@@ -135,6 +135,11 @@
           "type": "boolean",
           "default": false,
           "markdownDescription": "Enabling this option will force the language service to use [strictTemplates](https://angular.io/guide/angular-compiler-options#stricttemplates) and ignore the user settings in the `tsconfig.json`."
+        },
+        "angular.suppressAngularDiagnosticCodes": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "A comma-separated list of error codes in templates whose diagnostics should be ignored."
         }
       }
     },
@@ -164,7 +169,10 @@
       {
         "path": "./syntaxes/template.json",
         "scopeName": "template.ng",
-        "injectTo": ["text.html.derivative", "source.ts"],
+        "injectTo": [
+          "text.html.derivative",
+          "source.ts"
+        ],
         "embeddedLanguages": {
           "text.html": "html",
           "source.css": "css",
@@ -174,7 +182,10 @@
       {
         "path": "./syntaxes/template-blocks.json",
         "scopeName": "template.blocks.ng",
-        "injectTo": ["text.html.derivative", "source.ts"],
+        "injectTo": [
+          "text.html.derivative",
+          "source.ts"
+        ],
         "embeddedLanguages": {
           "text.html": "html",
           "control.block.expression.ng": "javascript",
@@ -184,7 +195,10 @@
       {
         "path": "./syntaxes/let-declaration.json",
         "scopeName": "template.let.ng",
-        "injectTo": ["text.html.derivative", "source.ts"]
+        "injectTo": [
+          "text.html.derivative",
+          "source.ts"
+        ]
       },
       {
         "path": "./syntaxes/template-tag.json",
@@ -231,7 +245,7 @@
     "test:legacy-syntaxes": "yarn compile:syntaxes-test && yarn build:syntaxes && jasmine dist/syntaxes/test/driver.js"
   },
   "dependencies": {
-    "@angular/language-service": "~19.0.0-next.3",
+    "@angular/language-service": "~19.0.0-next.4",
     "typescript": "5.6.1-rc",
     "vscode-html-languageservice": "^4.2.5",
     "vscode-jsonrpc": "6.0.0",

@@ -51,6 +51,7 @@ function main() {
     disableBlockSyntax: options.disableBlockSyntax,
     disableLetSyntax: options.disableLetSyntax,
     angularCoreVersion: options.angularCoreVersion ?? null,
+    suppressAngularDiagnosticCodes: options.suppressAngularDiagnosticCodes ?? null,
   });
 
   // Log initialization info

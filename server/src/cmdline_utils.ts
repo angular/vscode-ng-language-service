@@ -40,6 +40,7 @@ interface CommandLineOptions {
   disableBlockSyntax: boolean;
   disableLetSyntax: boolean;
   angularCoreVersion?: string;
+  suppressAngularDiagnosticCodes?: string;
 }
 
 export function parseCommandLine(argv: string[]): CommandLineOptions {
@@ -58,6 +59,7 @@ export function parseCommandLine(argv: string[]): CommandLineOptions {
     disableBlockSyntax: hasArgument(argv, '--disableBlockSyntax'),
     disableLetSyntax: hasArgument(argv, '--disableLetSyntax'),
     angularCoreVersion: findArgument(argv, '--angularCoreVersion'),
+    suppressAngularDiagnosticCodes: findArgument(argv, '--suppressAngularDiagnosticCodes'),
   };
 }
 
@@ -76,6 +78,7 @@ export function generateHelpMessage(argv: string[]) {
     --includeAutomaticOptionalChainCompletions: Shows completions on potentially undefined values that insert an optional chain call. Requires TS 3.7+ and strict null checks to be enabled.
     --includeCompletionsWithSnippetText: Enables snippet completions from Angular language server;
     --forceStrictTemplates: Forces the language service to use strictTemplates and ignore the user settings in the 'tsconfig.json'.
+    --suppressAngularDiagnosticCodes: A comma-separated list of error codes in templates whose diagnostics should be ignored.
 
   Additional options supported by vscode-languageserver:
     --clientProcessId=<number>: Automatically kills the server if the client process dies.

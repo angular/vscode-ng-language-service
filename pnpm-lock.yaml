@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@angular/language-service':
-        specifier: ~19.0.0-next.4
-        version: 19.0.0-next.4
+        specifier: ~19.0.0-next.6
+        version: 19.0.0-next.6
       typescript:
         specifier: 5.6.1-rc
         version: 5.6.1-rc
@@ -335,8 +335,8 @@ packages:
       tslib: 2.6.3
     dev: true
 
-  /@angular/language-service@19.0.0-next.4:
-    resolution: {integrity: sha512-LPNvgTeOe4icJSy2ryYdkqekxYmqPtjqbbPyo5HPH8jH7fcSDhXHKqMk5U/ho1quEvrBosGXE+sx+MO0u2mQqg==}
+  /@angular/language-service@19.0.0-next.6:
+    resolution: {integrity: sha512-CGitv/BdTv8viFJiYTeJZKK3/HoG9dthNApNwi0GJFRL4wmOU4VVqmb+XBdLm8293KkpU65PpOjbpOkms89Yag==}
     engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0}
     dev: false
 
@@ -5712,7 +5712,7 @@ packages:
       socket.io: 4.7.5
       source-map: 0.6.1
       tmp: 0.2.3
-      ua-parser-js: 0.7.38
+      ua-parser-js: 0.7.39
       yargs: 16.2.0
     transitivePeerDependencies:
       - bufferutil
@@ -8378,8 +8378,9 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  /ua-parser-js@0.7.38:
-    resolution: {integrity: sha512-fYmIy7fKTSFAhG3fuPlubeGaMoAd6r0rSnfEsO5nEY55i26KSLt9EH7PLQiiqPUhNqYIJvSkTy1oArIcXAbPbA==}
+  /ua-parser-js@0.7.39:
+    resolution: {integrity: sha512-IZ6acm6RhQHNibSt7+c09hhvsKy9WUr4DVbeq9U8o71qxyYtJpQeDxQnMrVqnIFMLcQjHO0I9wgfO2vIahht4w==}
+    hasBin: true
     dev: true
 
   /ua-parser-js@1.0.38:

@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@angular/language-service':
-        specifier: ~19.0.0-next.6
-        version: 19.0.0-next.6
+        specifier: ~19.0.0-next.8
+        version: 19.0.0-next.8
       typescript:
         specifier: 5.6.1-rc
         version: 5.6.1-rc
@@ -335,8 +335,8 @@ packages:
       tslib: 2.6.3
     dev: true
 
-  /@angular/language-service@19.0.0-next.6:
-    resolution: {integrity: sha512-CGitv/BdTv8viFJiYTeJZKK3/HoG9dthNApNwi0GJFRL4wmOU4VVqmb+XBdLm8293KkpU65PpOjbpOkms89Yag==}
+  /@angular/language-service@19.0.0-next.8:
+    resolution: {integrity: sha512-AuCraKqmEZ0zQ6DOikIpbP48kpw2gjR1mXcZLdLayteqqBtlCTu+cG1t0dyZ0nm463QFJl7XkUl0/Nr74Juisg==}
     engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0}
     dev: false
 
@@ -1724,7 +1724,7 @@ packages:
 
   /@bazel/typescript@5.5.0(typescript@4.7.4):
     resolution: {integrity: sha512-Ord0+nCj+B1M4NDbe0uqZf2FyOCzaDAlc4DAsr5UKJrArCipIbMTEAxlsEk+WAYBNAFGO/FS9/zlDtLceqpHqw==}
-    deprecated: No longer maintained, https://github.com/aspect-build/rules_ts is the recommended replacement
+    deprecated: This package is no longer maintained, see https://github.com/aspect-build/rules_ts for replacement
     hasBin: true
     requiresBuild: true
     peerDependencies:
@@ -8531,7 +8531,6 @@ packages:
   /vsce@1.100.1:
     resolution: {integrity: sha512-1VjLyse5g6e2eQ6jUpslu7IDq44velwF8Jy8s7ePdwGNuG8EzfmaOfVyig3ZSMJ0l8DiJmZllx5bRAB4RMdnHg==}
     engines: {node: '>= 10'}
-    deprecated: vsce has been renamed to @vscode/vsce. Install using @vscode/vsce instead.
     hasBin: true
     dependencies:
       azure-devops-node-api: 11.2.0

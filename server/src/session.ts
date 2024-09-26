@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {isNgLanguageService, NgLanguageService, PluginConfig} from '@angular/language-service/api';
+import {ApplyRefactoringResult, isNgLanguageService, NgLanguageService, PluginConfig} from '@angular/language-service/api';
 import * as ts from 'typescript/lib/tsserverlibrary';
 import {promisify} from 'util';
 import {getLanguageService as getHTMLLanguageService} from 'vscode-html-languageservice';
@@ -277,7 +277,7 @@ export class Session {
       const progress = await this.connection.window.createWorkDoneProgress();
       progress.begin('Refactoring', 0);
 
-      let edits: ts.RefactorEditInfo|undefined = undefined;
+      let edits: ApplyRefactoringResult|undefined = undefined;
       try {
         edits = await lsInfo.languageService.applyRefactoring(
             filePath, codeActionResolve.range, codeActionResolve.name,
@@ -291,8 +291,12 @@ export class Session {
         progress.done();
       }
 
-      if (edits?.notApplicableReason !== undefined) {
-        this.connection.window.showErrorMessage(edits.notApplicableReason);
+
+      if (edits?.warningMessage !== undefined) {
+        this.connection.window.showWarningMessage(edits.warningMessage);
+      }
+      if (edits?.errorMessage !== undefined) {
+        this.connection.window.showErrorMessage(edits.errorMessage);
       }
       if (!edits) {
         return param;

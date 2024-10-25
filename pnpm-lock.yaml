@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@angular/language-service':
-        specifier: ~19.0.0-next.8
-        version: 19.0.0-next.8
+        specifier: ~19.0.0-next.11
+        version: 19.0.0-next.11
       typescript:
         specifier: 5.6.1-rc
         version: 5.6.1-rc
@@ -335,8 +335,8 @@ packages:
       tslib: 2.6.3
     dev: true
 
-  /@angular/language-service@19.0.0-next.8:
-    resolution: {integrity: sha512-AuCraKqmEZ0zQ6DOikIpbP48kpw2gjR1mXcZLdLayteqqBtlCTu+cG1t0dyZ0nm463QFJl7XkUl0/Nr74Juisg==}
+  /@angular/language-service@19.0.0-next.11:
+    resolution: {integrity: sha512-gDX3/TSF2tgp7IgvaQYbpO7mY0B5b+JUftK1jRAbiKkaFDOyhyNCpOSg0wWFnccqI7hiRO4SuYZfhjDYeIxfSA==}
     engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0}
     dev: false
 

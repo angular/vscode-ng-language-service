@@ -10,7 +10,7 @@ jasmine_test(
     ],
     args = ["*_spec.js"],
     chdir = package_name(),
-    tags = ["e2e"],
+    tags = ["e2e", "no-sandbox"],
 )
 
 copy_to_bin(

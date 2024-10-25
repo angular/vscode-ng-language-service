@@ -1,3 +1,16 @@
+# 19.0.0-next.1
+This release upgrades `@angular/language-service` to v19.0.0-next.11.
+
+* **feat**: Code refactoring action to migrate `@Input` to signal inputs.
+  * https://v19.angular.dev/reference/migrations/signal-inputs
+* **feat**: Code refactoring action to migrate decorator queries to signal queries.
+e.g. `@ViewChild` to `viewChild()`.
+  * https://v19.angular.dev/reference/migrations/signal-queries
+
+To use any of the new code refactoring actions, click on an input or query, and wait for
+the code refactoring lightbulb to appear. You can also click on the class header to update
+inputs or queries for the full class!
+
 # 19.0.0-next.0
 This release upgrades `@angular/language-service` to v19.0.0-next.6.
 
@@ -111,7 +124,7 @@ This release upgrades `@angular/language-service` to v17.0.0-next.6.
 This release upgrades the `@angular/language-service` to v16.2.8
 
 * fix: Retain correct language service when ts.Project reloads ([#51912](https://github.com/angular/angular/commit/08482f2c7dcbcd100981dfb266a6e63f64432328))
-* fix(server): support to show the tag info in the jsDoc (#1904) 
+* fix(server): support to show the tag info in the jsDoc (#1904)
 * fix(client): fix detection of Angular context after string interpolation (#1922)
 
 # 16.1.8
@@ -208,8 +221,8 @@ This release upgrades `@angular/language-service` to v14.0.0
 * feat(extension): Support renaming from TypeScript files (#1589)
 * feat(extension): Add option to force strict templates (#1646) (17fdb9ec6)
 * feat: add command to run ngcc manually (#1621) (dd0e0009b)
-* Fix detection of Angular for v14+ projects ([#45998](https://github.com/angular/angular/pull/45998)) 
-* Prevent TSServer from removing templates from project ([#45965](https://github.com/angular/angular/pull/45965)) 
+* Fix detection of Angular for v14+ projects ([#45998](https://github.com/angular/angular/pull/45998))
+* Prevent TSServer from removing templates from project ([#45965](https://github.com/angular/angular/pull/45965))
 
 # v13.3.4
 

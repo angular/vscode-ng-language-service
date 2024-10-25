@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 
 @Component({
   templateUrl: 'foo.component.html',
+  standalone: false,
 })
 export class FooComponent {
   title = 'Foo Component';

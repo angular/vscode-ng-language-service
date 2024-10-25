@@ -356,8 +356,8 @@ export class AppComponent {
 
       const expectedRenameInComponent = {
         range: {
-          start: {line: 6, character: 2},
-          end: {line: 6, character: 7},
+          start: {line: 7, character: 2},
+          end: {line: 7, character: 7},
         },
         newText: 'subtitle',
       };
@@ -407,8 +407,8 @@ export class AppComponent {
       describe('property rename', () => {
         const expectedRenameInComponent = {
           range: {
-            start: {line: 7, character: 2},
-            end: {line: 7, character: 6},
+            start: {line: 8, character: 2},
+            end: {line: 8, character: 6},
           },
           newText: 'surname',
         };
@@ -439,7 +439,7 @@ export class AppComponent {
             textDocument: {
               uri: APP_COMPONENT_URI,
             },
-            position: {line: 7, character: 4},
+            position: {line: 8, character: 4},
             newName: 'surname'
           });
           expect(response).not.toBeNull();

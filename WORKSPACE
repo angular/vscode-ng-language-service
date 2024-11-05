@@ -153,3 +153,18 @@ npm_translate_lock(
 load("@npm_integration_project//:repositories.bzl", npm_integration_project_repositories = "npm_repositories")
 
 npm_integration_project_repositories()
+
+npm_translate_lock(
+    name = "npm_integration_pre_standalone_project",
+    data = [
+        "//integration/pre_standalone_project:package.json",
+        "//integration/pre_standalone_project:pnpm-workspace.yaml",
+    ],
+    npmrc = "//:.npmrc",
+    pnpm_lock = "//integration/pre_standalone_project:pnpm-lock.yaml",
+    verify_node_modules_ignored = "//:.bazelignore",
+)
+
+load("@npm_integration_pre_standalone_project//:repositories.bzl", npm_integration_pre_standalone_project_repositories = "npm_repositories")
+
+npm_integration_pre_standalone_project_repositories()

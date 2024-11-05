@@ -18,6 +18,7 @@ export interface ServerOptions {
   ivy: boolean;
   includeAutomaticOptionalChainCompletions?: boolean;
   includeCompletionsWithSnippetText?: boolean;
+  angularCoreVersion?: string;
 }
 
 export function createConnection(serverOptions: ServerOptions): MessageConnection {
@@ -36,6 +37,9 @@ export function createConnection(serverOptions: ServerOptions): MessageConnectio
   }
   if (serverOptions.includeCompletionsWithSnippetText) {
     argv.push('--includeCompletionsWithSnippetText');
+  }
+  if (serverOptions.angularCoreVersion) {
+    argv.push('--angularCoreVersion', serverOptions.angularCoreVersion);
   }
   const server = fork(SERVER_PATH, argv, {
     cwd: PROJECT_PATH,

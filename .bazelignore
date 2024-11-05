@@ -5,6 +5,7 @@ integration/project/node_modules/
 integration/project/libs/post/node_modules
 integration/project/dist/
 integration/workspace/node_modules/
+integration/pre_standalone_project/node_modules/
 
 override_rename_ts_plugin/node_modules
 server/node_modules

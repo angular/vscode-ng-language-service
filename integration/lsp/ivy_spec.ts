@@ -7,6 +7,7 @@
  */
 
 import * as fs from 'fs';
+import {join} from 'path';
 import {promisify} from 'util';
 import {MessageConnection} from 'vscode-jsonrpc';
 import * as lsp from 'vscode-languageserver-protocol';
@@ -14,9 +15,9 @@ import {URI} from 'vscode-uri';
 
 import {ProjectLanguageService, ProjectLanguageServiceParams, SuggestStrictMode, SuggestStrictModeParams} from '../../common/notifications';
 import {GetComponentsWithTemplateFile, GetTcbRequest, GetTemplateLocationForComponent, IsInAngularProject} from '../../common/requests';
-import {APP_COMPONENT, APP_COMPONENT_MODULE_URI, APP_COMPONENT_URI, BAR_COMPONENT, BAR_COMPONENT_URI, FOO_COMPONENT, FOO_COMPONENT_URI, FOO_TEMPLATE, FOO_TEMPLATE_URI, IS_BAZEL, PROJECT_PATH, TSCONFIG} from '../test_constants';
+import {APP_COMPONENT, APP_COMPONENT_MODULE_URI, APP_COMPONENT_URI, BAR_COMPONENT, BAR_COMPONENT_URI, FOO_COMPONENT, FOO_COMPONENT_URI, FOO_TEMPLATE, FOO_TEMPLATE_URI, IS_BAZEL, PRE_STANDALONE_PROJECT_PATH, PROJECT_PATH, TSCONFIG} from '../test_constants';
 
-import {convertPathToFileUrl, createConnection, createTracer, initializeServer, openTextDocument} from './test_utils';
+import {convertPathToFileUrl, createConnection, createTracer, initializeServer, openTextDocument, ServerOptions} from './test_utils';
 
 const setTimeoutP = promisify(setTimeout);
 
@@ -26,8 +27,17 @@ describe('Angular Ivy language server', () => {
   let client: MessageConnection;
 
   beforeEach(async () => {
+    await initServer({});
+  });
+
+  afterEach(() => {
+    client.dispose();
+  });
+
+  async function initServer(options: Partial<ServerOptions>) {
     client = createConnection({
       ivy: true,
+      ...options,
     });
     // If debugging, set to
     // - lsp.Trace.Messages to inspect request/response/notification, or
@@ -35,11 +45,7 @@ describe('Angular Ivy language server', () => {
     client.trace(lsp.Trace.Off, createTracer());
     client.listen();
     await initializeServer(client);
-  });
-
-  afterEach(() => {
-    client.dispose();
-  });
+  }
 
   it('should handle hover on inline template', async () => {
     openTextDocument(client, APP_COMPONENT);
@@ -545,6 +551,15 @@ export class AppComponent {
       position: {line: 1, character: 0},
     });
     expect(response).toBeNull();
+  });
+
+  it('should handle apps where standalone is not enabled by default (pre v19)', async () => {
+    await initServer({angularCoreVersion: '18.0.0'})
+    const moduleFile = join(PRE_STANDALONE_PROJECT_PATH, 'app/app.module.ts');
+
+    openTextDocument(client, moduleFile);
+    const diagnostics = await getDiagnosticsForFile(client, moduleFile);
+    expect(diagnostics.length).toBe(0);
   });
 
   it('should provide a "go to component" codelens', async () => {

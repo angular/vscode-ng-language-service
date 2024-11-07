@@ -1,5 +1,5 @@
-# 19.0.0-rc.0
-This release upgrades `@angular/language-service` to v19.0.0-rc.0.
+# 19.0.0
+This release upgrades `@angular/language-service` to v19.0.0-rc.1.
 
 * **feat**: Code refactoring action to migrate `@Input` to signal inputs.
   * https://v19.angular.dev/reference/migrations/signal-inputs

@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@angular/language-service':
-        specifier: ~19.0.0-rc.0
-        version: 19.0.0-rc.0
+        specifier: ~19.0.0-rc.1
+        version: 19.0.0-rc.1
       typescript:
         specifier: 5.6.2
         version: 5.6.2
@@ -335,8 +335,8 @@ packages:
       tslib: 2.6.3
     dev: true
 
-  /@angular/language-service@19.0.0-rc.0:
-    resolution: {integrity: sha512-e4aHLmP4S7PyX3K240mK9bfX2qg0ddINuGaFUY+hph6m4E/PVl34yd2fQ9ksUO3IDd/0J8TBVWD7z4KOIE0SMQ==}
+  /@angular/language-service@19.0.0-rc.1:
+    resolution: {integrity: sha512-t8o7+22YyjKDHglRg5rOo8Vk06HyQymcC9BWgDvqbfx6q7HL9aTfSHCfzx2I4SIej+3/h0vt3IIAtMWm9AmRGw==}
     engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0}
     dev: false
 
@@ -2536,6 +2536,7 @@ packages:
 
   /acorn-import-assertions@1.9.0(acorn@8.12.1):
     resolution: {integrity: sha512-cmMwop9x+8KFhxvKrKfPYmN6/pKTYYHBqLa0DfvVZcKMJWNyWLnaqND7dx/qn66R7ewM1UX5XMaDVP5wlVTaVA==}
+    deprecated: package has been renamed to acorn-import-attributes
     peerDependencies:
       acorn: ^8
     dependencies:

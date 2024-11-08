@@ -317,8 +317,8 @@ export class AngularLanguageClient implements vscode.Disposable {
     }
 
     // Sort the versions from oldest to newest.
-    const angularVersions = (await getAngularVersionsInWorkspace(this.outputChannel)).sort(
-        (a, b) => a.version.greaterThanOrEqual(b.version) ? 1 : -1);
+    const angularVersions = (await getAngularVersionsInWorkspace(this.outputChannel))
+                                .sort((a, b) => a.version.greaterThanOrEqual(b.version) ? 1 : -1);
 
     // Only disable block syntax if we find angular/core and every one we find does not support
     // block syntax
@@ -552,10 +552,15 @@ function extensionVersionCompatibleWithAllProjects(serverModuleLocation: string)
 }
 
 /**
- * Returns true if any project in the workspace supports block syntax (v17+).
+ * Traverses through the currently open VSCode workspace (i.e. all open folders)
+ * and finds all `@angular/core` versions installed based on `package.json` files.
  */
-async function getAngularVersionsInWorkspace(outputChannel: vscode.OutputChannel): Promise<NodeModule[]> {
-  const packageJsonFiles = await vscode.workspace.findFiles("**/package.json", "**/node_modules/**");
+async function getAngularVersionsInWorkspace(outputChannel: vscode.OutputChannel):
+    Promise<NodeModule[]> {
+  const packageJsonFiles = await vscode.workspace.findFiles(
+      '**/package.json',
+      // Skip looking inside `node_module` folders as those contain irrelevant files.
+      '**/node_modules/**');
   const packageJsonRoots = packageJsonFiles.map(f => path.dirname(f.fsPath));
   const angularCoreModules = new Set<NodeModule>();
 

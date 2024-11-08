@@ -1,3 +1,7 @@
+# 19.0.1
+
+* **fix**: [improve detection of Angular core version in monorepo setup](https://github.com/angular/vscode-ng-language-service/commit/6692c40500cabe7f1fae9cc12e6298946a2e37ee)
+
 # 19.0.0
 This release upgrades `@angular/language-service` to v19.0.0-rc.1.
 

@@ -227,7 +227,7 @@ export class AngularLanguageClient implements vscode.Disposable {
     }
 
     // Node module for the language server
-    const args = this.constructArgs();
+    const args = await this.constructArgs();
     const prodBundle = this.context.asAbsolutePath('server');
     const devBundle =
         this.context.asAbsolutePath(path.join('bazel-bin', 'server', 'src', 'server.js'));
@@ -289,7 +289,7 @@ export class AngularLanguageClient implements vscode.Disposable {
    * Construct the arguments that's used to spawn the server process.
    * @param ctx vscode extension context
    */
-  private constructArgs(): string[] {
+  private async constructArgs(): Promise<string[]> {
     const config = vscode.workspace.getConfiguration();
     const args: string[] = ['--logToConsole'];
 
@@ -317,7 +317,7 @@ export class AngularLanguageClient implements vscode.Disposable {
     }
 
     // Sort the versions from oldest to newest.
-    const angularVersions = getAngularVersionsInWorkspace().sort(
+    const angularVersions = (await getAngularVersionsInWorkspace(this.outputChannel)).sort(
         (a, b) => a.version.greaterThanOrEqual(b.version) ? 1 : -1);
 
     // Only disable block syntax if we find angular/core and every one we find does not support
@@ -554,11 +554,15 @@ function extensionVersionCompatibleWithAllProjects(serverModuleLocation: string)
 /**
  * Returns true if any project in the workspace supports block syntax (v17+).
  */
-function getAngularVersionsInWorkspace(): NodeModule[] {
+async function getAngularVersionsInWorkspace(outputChannel: vscode.OutputChannel): Promise<NodeModule[]> {
+  const packageJsonFiles = await vscode.workspace.findFiles("**/package.json", "**/node_modules/**");
+  const packageJsonRoots = packageJsonFiles.map(f => path.dirname(f.fsPath));
   const angularCoreModules = new Set<NodeModule>();
-  const workspaceFolders = vscode.workspace.workspaceFolders || [];
-  for (const workspaceFolder of workspaceFolders) {
-    const angularCore = resolve('@angular/core', workspaceFolder.uri.fsPath);
+
+  outputChannel.appendLine(`package.json roots detected: ${packageJsonRoots.join(',\n  ')}`);
+
+  for (const packageJsonRoot of packageJsonRoots) {
+    const angularCore = resolve('@angular/core', packageJsonRoot);
     if (angularCore === undefined) {
       continue;
     }

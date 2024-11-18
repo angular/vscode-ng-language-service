@@ -1,3 +1,9 @@
+# 19.0.2
+This release upgrades `@angular/language-service` to v19.0.0-rc.3.
+
+* [Better diagnostics for unused standalone imports](https://github.com/angular/angular/commit/9bbb01c85e763b0457456a2393a834db15008671)
+* [Migration fixes for the signal input and queries code actions](https://github.com/angular/angular/pull/58581)
+
 # 19.0.1
 
 * **fix**: [improve detection of Angular core version in monorepo setup](https://github.com/angular/vscode-ng-language-service/commit/6692c40500cabe7f1fae9cc12e6298946a2e37ee)

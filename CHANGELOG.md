@@ -1,3 +1,9 @@
+# 19.0.3
+This release upgrades `@angular/language-service` to v19.0.1.
+
+* [Fixes for the unused standalone imports](https://github.com/angular/angular/pull/58719)
+* [Improved diagnostics for `host` binding issues](https://github.com/angular/angular/pull/58870)
+
 # 19.0.2
 This release upgrades `@angular/language-service` to v19.0.0-rc.3.
 

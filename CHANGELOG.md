@@ -1,3 +1,8 @@
+# 19.0.4
+This release upgrades `@angular/language-service` to v19.0.6.
+
+* [fix(compiler-cli): consider pre-release versions when detecting feature support #59061](https://github.com/angular/angular/pull/59061)
+
 # 19.0.3
 This release upgrades `@angular/language-service` to v19.0.1.
 

@@ -53,6 +53,12 @@
         "category": "Angular"
       }
     ],
+    "submenus": [
+      {
+        "id": "angular.submenu",
+        "label": "Angular"
+      }
+    ],
     "menus": {
       "commandPalette": [
         {
@@ -70,19 +76,25 @@
       ],
       "editor/context": [
         {
+          "submenu": "angular.submenu",
+          "group": "angular"
+        }
+      ],
+      "angular.submenu": [
+        {
           "when": "(resourceLangId == html || resourceLangId == typescript) && !virtualWorkspace",
           "command": "angular.getTemplateTcb",
-          "group": "angular"
+          "group": "debug"
         },
         {
           "when": "resourceLangId == html && !virtualWorkspace",
           "command": "angular.goToComponentWithTemplateFile",
-          "group": "angular"
+          "group": "navigation"
         },
         {
           "when": "resourceLangId == typescript && !virtualWorkspace",
           "command": "angular.goToTemplateForComponent",
-          "group": "angular"
+          "group": "navigation"
         }
       ]
     },

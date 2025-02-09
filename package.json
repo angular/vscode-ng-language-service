@@ -269,7 +269,7 @@
   "devDependencies": {
     "@angular/dev-infra-private": "https://github.com/angular/dev-infra-private-builds.git#262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2",
     "@angular/core": "^19.0.1",
-    "@bazel/bazelisk": "1.18.0",
+    "@bazel/bazelisk": "1.25.0",
     "@bazel/ibazel": "0.16.2",
     "@types/jasmine": "3.10.7",
     "@types/node": "18.19.39",

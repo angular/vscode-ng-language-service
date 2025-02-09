@@ -106,8 +106,8 @@ function ngCompletionKindToLspCompletionItemKind(kind: CompletionKind): lsp.Comp
  * @param scriptInfo
  */
 export function tsCompletionEntryToLspCompletionItem(
-    entry: ts.CompletionEntry, position: lsp.Position, scriptInfo: ts.server.ScriptInfo,
-    insertReplaceSupport: boolean): lsp.CompletionItem {
+    entry: ts.CompletionEntry, position: lsp.Position,
+    scriptInfo: ts.server.ScriptInfo): lsp.CompletionItem {
   const item = lsp.CompletionItem.create(entry.name);
   // Even though `entry.kind` is typed as ts.ScriptElementKind, it's
   // really Angular's CompletionKind. This is because ts.ScriptElementKind does
@@ -121,7 +121,7 @@ export function tsCompletionEntryToLspCompletionItem(
   // from 'entry.name'. For example, a method name could be 'greet', but the
   // insertText is 'greet()'.
   const insertText = entry.insertText || entry.name;
-  item.textEdit = createTextEdit(scriptInfo, entry, position, insertText, insertReplaceSupport);
+  item.textEdit = createTextEdit(scriptInfo, entry, position, insertText);
 
   // If the user enables the config `includeAutomaticOptionalChainCompletions`, the `insertText`
   // range will include the dot. the `insertText` should be assigned to the `filterText` to filter
@@ -141,17 +141,26 @@ export function tsCompletionEntryToLspCompletionItem(
 
 function createTextEdit(
     scriptInfo: ts.server.ScriptInfo, entry: ts.CompletionEntry, position: lsp.Position,
-    insertText: string, insertReplaceSupport: boolean) {
+    insertText: string) {
   if (entry.replacementSpan === undefined) {
     return lsp.TextEdit.insert(position, insertText);
-  } else if (insertReplaceSupport) {
-    const replacementRange = tsTextSpanToLspRange(scriptInfo, entry.replacementSpan);
-    const tsPosition = lspPositionToTsPosition(scriptInfo, position);
-    const insertLength = tsPosition - entry.replacementSpan.start;
-    const insertionRange =
-        tsTextSpanToLspRange(scriptInfo, {...entry.replacementSpan, length: insertLength});
-    return lsp.InsertReplaceEdit.create(insertText, insertionRange, replacementRange);
   } else {
+    /**
+     * The Angular Language Service does not return `InsertReplaceEdit`.
+     * There is no need to allow the developer to choose how to insert the completion.
+     *
+     * For example, `<button (c|) />`.
+     *                       ^^__________Insert edit
+     *                       ^^ ^________Replace edit
+     *
+     * If the LS returns the `InsertReplaceEdit` as shown above, selecting "Insert" by the developer
+     * results in `(click)="")`, and selecting "Replace" results in `(click)=""`.
+     *
+     * Now in the vscode, the default `editor.suggest.insertMode` value for HTML is `Replace`, for
+     * ts is `Insert`, So this leads to a bug in the ts file.
+     *
+     * Fixes https://github.com/angular/vscode-ng-language-service/issues/2137
+     */
     return lsp.TextEdit.replace(
         tsTextSpanToLspRange(scriptInfo, entry.replacementSpan), insertText);
   }

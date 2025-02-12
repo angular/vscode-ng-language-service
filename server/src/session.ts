@@ -1236,12 +1236,8 @@ export class Session {
     if (!completions) {
       return null;
     }
-    const clientSupportsInsertReplaceCompletion =
-        this.clientCapabilities.textDocument?.completion?.completionItem?.insertReplaceSupport ??
-        false;
     return completions.entries.map(
-        (e) => tsCompletionEntryToLspCompletionItem(
-            e, params.position, scriptInfo, clientSupportsInsertReplaceCompletion));
+        (e) => tsCompletionEntryToLspCompletionItem(e, params.position, scriptInfo));
   }
 
   private onCompletionResolve(item: lsp.CompletionItem): lsp.CompletionItem {

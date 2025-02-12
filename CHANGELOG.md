@@ -1,3 +1,9 @@
+# 19.1.0
+This release upgrades `@angular/language-service` to v19.1.4.
+
+* [fix: replace the closing symbol for inputs/outputs (#2142)](https://github.com/angular/vscode-ng-language-service/pull/2142)
+* [fix(extension): Fix grouping of Angular commands into submenu (#2136)](https://github.com/angular/vscode-ng-language-service/pull/2136)
+
 # 19.0.4
 This release upgrades `@angular/language-service` to v19.0.6.
 

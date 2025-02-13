@@ -273,7 +273,7 @@
     "@bazel/ibazel": "0.16.2",
     "@types/jasmine": "3.10.7",
     "@types/node": "18.19.39",
-    "@types/vscode": "1.67.0",
+    "@types/vscode": "1.97.0",
     "clang-format": "1.8.0",
     "cross-env": "^7.0.3",
     "esbuild": "0.14.39",

@@ -7258,10 +7258,10 @@ typed-rest-client@^1.8.4:
     tunnel "0.0.6"
     underscore "^1.12.1"
 
-typescript@5.8.0-beta:
-  version "5.8.0-beta"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.8.0-beta.tgz#ba16fac5715be6540d01f0a9778f5eab7ae2ec61"
-  integrity sha512-7VGUiBOGi+BYhiuy3iITIgu6m2wVW2Vb4CW+OJsW6OJS/TgvezKbAN3WBfiSErE8QOLdce0ilm6VANMkzNWW1A==
+typescript@5.8.0-dev.20250218:
+  version "5.8.0-dev.20250218"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.8.0-dev.20250218.tgz#4fd98cc5524a9ce0d09a557d97905657a909f6fa"
+  integrity sha512-ug24uoLMp4xZWUZOYi900L8VM9Tjpvm7+clJYYDY9OYOlveZf7en8ndF/kfZZ7QoODkFC/z6mvDdaD0ePD2fmQ==
 
 typescript@~4.6.3:
   version "4.6.4"

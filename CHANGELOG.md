@@ -1,3 +1,8 @@
+# 19.2.0
+This release upgrades `@angular/language-service` to v19.2.0.
+
+* [fix(language-service): provide correct rename info for elements (#60088)](https://github.com/angular/angular/pull/60088)
+
 # 19.1.0
 This release upgrades `@angular/language-service` to v19.1.4.
 

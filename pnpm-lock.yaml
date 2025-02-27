@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@angular/language-service':
-        specifier: ^19.2.0-next.2
-        version: 19.2.0-next.2
+        specifier: ^19.2.0
+        version: 19.2.0
       typescript:
-        specifier: 5.8.0-beta
-        version: 5.8.0-beta
+        specifier: 5.8.1-rc
+        version: 5.8.1-rc
       vscode-html-languageservice:
         specifier: ^4.2.5
         version: 4.2.5
@@ -74,13 +74,13 @@ importers:
         version: 6.6.7
       ts-node:
         specifier: ^10.8.1
-        version: 10.9.2(@types/node@18.19.39)(typescript@5.8.0-beta)
+        version: 10.9.2(@types/node@18.19.39)(typescript@5.8.1-rc)
       tslint:
         specifier: 6.1.3
-        version: 6.1.3(typescript@5.8.0-beta)
+        version: 6.1.3(typescript@5.8.1-rc)
       tslint-eslint-rules:
         specifier: 5.4.0
-        version: 5.4.0(tslint@6.1.3)(typescript@5.8.0-beta)
+        version: 5.4.0(tslint@6.1.3)(typescript@5.8.1-rc)
       vsce:
         specifier: 1.100.1
         version: 1.100.1
@@ -155,7 +155,7 @@ packages:
       '@angular-devkit/architect': 0.1401.0-next.1
       '@angular-devkit/build-webpack': 0.1401.0-next.1(webpack-dev-server@4.9.1)(webpack@5.73.0)
       '@angular-devkit/core': 14.1.0-next.1
-      '@angular/compiler-cli': 14.3.0(@angular/compiler@14.3.0)(typescript@5.8.0-beta)
+      '@angular/compiler-cli': 14.3.0(@angular/compiler@14.3.0)(typescript@5.8.1-rc)
       '@babel/core': 7.18.2
       '@babel/generator': 7.18.2
       '@babel/helper-annotate-as-pure': 7.16.7
@@ -276,7 +276,7 @@ packages:
       - zone.js
     dev: true
 
-  /@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0)(typescript@5.8.0-beta):
+  /@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0)(typescript@5.8.1-rc):
     resolution: {integrity: sha512-eoKpKdQ2X6axMgzcPUMZVYl3bIlTMzMeTo5V29No4BzgiUB+QoOTYGNJZkGRyqTNpwD9uSBJvmT2vG9+eC4ghQ==}
     engines: {node: ^14.15.0 || >=16.10.0}
     hasBin: true
@@ -294,7 +294,7 @@ packages:
       semver: 7.6.2
       sourcemap-codec: 1.4.8
       tslib: 2.6.3
-      typescript: 5.8.0-beta
+      typescript: 5.8.1-rc
       yargs: 17.7.2
     transitivePeerDependencies:
       - supports-color
@@ -335,8 +335,8 @@ packages:
       tslib: 2.6.3
     dev: true
 
-  /@angular/language-service@19.2.0-next.2:
-    resolution: {integrity: sha512-foKMPzcI+9hPLe4JM2aeLEdpiBFRdQ+PZSdOF/yAn1X2t6T23yjESumOuHv5uEIASPWNs0isXNB1MiUHqmXD7w==}
+  /@angular/language-service@19.2.0:
+    resolution: {integrity: sha512-45utEVXwCYE5vQSMX0ImBjgkcMQ8cqPN4xGHLqYiFEkp/hgbixejA4sMPP1Jn7YrjpfK4DmAaO5z5Hzp11zJ7A==}
     engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0}
     dev: false
 
@@ -2021,7 +2021,7 @@ packages:
       typescript: '>=4.6.2 <4.8'
       webpack: ^5.54.0
     dependencies:
-      '@angular/compiler-cli': 14.3.0(@angular/compiler@14.3.0)(typescript@5.8.0-beta)
+      '@angular/compiler-cli': 14.3.0(@angular/compiler@14.3.0)(typescript@5.8.1-rc)
       typescript: 4.7.4
       webpack: 5.73.0(esbuild@0.14.39)
     dev: true
@@ -3176,7 +3176,7 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind-apply-helpers: 1.0.2
-      get-intrinsic: 1.2.7
+      get-intrinsic: 1.3.0
     dev: true
 
   /callsites@3.1.0:
@@ -4799,8 +4799,8 @@ packages:
       path-exists: 4.0.0
     dev: true
 
-  /flatted@3.3.2:
-    resolution: {integrity: sha512-AiwGJM8YcNOaobumgtng+6NHuOqC3A7MixFeDafM3X9cIUM+xUXoS5Vfgf+OihAYe20fxqNM9yPBXJzRtZ/4eA==}
+  /flatted@3.3.3:
+    resolution: {integrity: sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==}
     dev: true
 
   /follow-redirects@1.15.6(debug@4.3.2):
@@ -4927,8 +4927,8 @@ packages:
       hasown: 2.0.2
     dev: true
 
-  /get-intrinsic@1.2.7:
-    resolution: {integrity: sha512-VW6Pxhsrk0KAOqs3WEd0klDiF/+V7gQOpAvY1jVU/LHmaD/kQO4523aiJuikX/QAKYiW6x8Jh+RJej1almdtCA==}
+  /get-intrinsic@1.3.0:
+    resolution: {integrity: sha512-9fSjSaos/fRIVIp+xSJlE6lfwhES7LNtKaCBIamHsjr2na1BiABJPo0mOjjz8GJDURarmCPGqaiVg5mfjb98CQ==}
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind-apply-helpers: 1.0.2
@@ -5973,7 +5973,7 @@ packages:
     dependencies:
       date-format: 4.0.14
       debug: 4.3.5
-      flatted: 3.3.2
+      flatted: 3.3.3
       rfdc: 1.4.1
       streamroller: 3.1.5
     transitivePeerDependencies:
@@ -8316,7 +8316,7 @@ packages:
     resolution: {integrity: sha512-0z3j8R7MCjy10kc/g+qg7Ln3alJTodw9aDuVWZa3uiWqfuBMKeAeP2ocWcxoyM3D73yz3Jt/Pu4qPr4wHSdB/Q==}
     dev: true
 
-  /ts-node@10.9.2(@types/node@18.19.39)(typescript@5.8.0-beta):
+  /ts-node@10.9.2(@types/node@18.19.39)(typescript@5.8.1-rc):
     resolution: {integrity: sha512-f0FFpIdcHgn8zcPSbf1dRevwt047YMnaiJM3u2w2RewrB+fob/zePZcrOyQoLMMO7aBIddLcQIEK5dYjkLnGrQ==}
     hasBin: true
     peerDependencies:
@@ -8342,7 +8342,7 @@ packages:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 5.8.0-beta
+      typescript: 5.8.1-rc
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true
@@ -8363,7 +8363,7 @@ packages:
     resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
     dev: true
 
-  /tslint-eslint-rules@5.4.0(tslint@6.1.3)(typescript@5.8.0-beta):
+  /tslint-eslint-rules@5.4.0(tslint@6.1.3)(typescript@5.8.1-rc):
     resolution: {integrity: sha512-WlSXE+J2vY/VPgIcqQuijMQiel+UtmXS+4nvK4ZzlDiqBfXse8FAvkNnTcYhnQyOTW5KFM+uRRGXxYhFpuBc6w==}
     peerDependencies:
       tslint: ^5.0.0
@@ -8371,12 +8371,12 @@ packages:
     dependencies:
       doctrine: 0.7.2
       tslib: 1.9.0
-      tslint: 6.1.3(typescript@5.8.0-beta)
-      tsutils: 3.21.0(typescript@5.8.0-beta)
-      typescript: 5.8.0-beta
+      tslint: 6.1.3(typescript@5.8.1-rc)
+      tsutils: 3.21.0(typescript@5.8.1-rc)
+      typescript: 5.8.1-rc
     dev: true
 
-  /tslint@6.1.3(typescript@5.8.0-beta):
+  /tslint@6.1.3(typescript@5.8.1-rc):
     resolution: {integrity: sha512-IbR4nkT96EQOvKE2PW/djGz8iGNeJ4rF2mBfiYaR/nvUWYKJhLwimoJKgjIFEIDibBtOevj7BqCRL4oHeWWUCg==}
     engines: {node: '>=4.8.0'}
     deprecated: TSLint has been deprecated in favor of ESLint. Please see https://github.com/palantir/tslint/issues/4534 for more information.
@@ -8396,17 +8396,17 @@ packages:
       resolve: 1.22.8
       semver: 5.7.2
       tslib: 1.14.1
-      tsutils: 2.29.0(typescript@5.8.0-beta)
-      typescript: 5.8.0-beta
+      tsutils: 2.29.0(typescript@5.8.1-rc)
+      typescript: 5.8.1-rc
     dev: true
 
-  /tsutils@2.29.0(typescript@5.8.0-beta):
+  /tsutils@2.29.0(typescript@5.8.1-rc):
     resolution: {integrity: sha512-g5JVHCIJwzfISaXpXE1qvNalca5Jwob6FjI4AoPlqMusJ6ftFE7IkkFoMhVLRgK+4Kx3gkzb8UZK5t5yTTvEmA==}
     peerDependencies:
       typescript: '>=2.1.0 || >=2.1.0-dev || >=2.2.0-dev || >=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >= 3.0.0-dev || >= 3.1.0-dev'
     dependencies:
       tslib: 1.14.1
-      typescript: 5.8.0-beta
+      typescript: 5.8.1-rc
     dev: true
 
   /tsutils@3.21.0(typescript@4.7.4):
@@ -8419,14 +8419,14 @@ packages:
       typescript: 4.7.4
     dev: true
 
-  /tsutils@3.21.0(typescript@5.8.0-beta):
+  /tsutils@3.21.0(typescript@5.8.1-rc):
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
     engines: {node: '>= 6'}
     peerDependencies:
       typescript: '>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta'
     dependencies:
       tslib: 1.14.1
-      typescript: 5.8.0-beta
+      typescript: 5.8.1-rc
     dev: true
 
   /tunnel-agent@0.6.0:
@@ -8481,8 +8481,8 @@ packages:
     hasBin: true
     dev: true
 
-  /typescript@5.8.0-beta:
-    resolution: {integrity: sha512-7VGUiBOGi+BYhiuy3iITIgu6m2wVW2Vb4CW+OJsW6OJS/TgvezKbAN3WBfiSErE8QOLdce0ilm6VANMkzNWW1A==}
+  /typescript@5.8.1-rc:
+    resolution: {integrity: sha512-D8IlSOUk1E08jpFdK81reYkA1a/4XtEdV6MElOGdbu/uOy1RpEDqNO/onWmqUaLkTyeHmmU/QlWvjcM9cqF85g==}
     engines: {node: '>=14.17'}
     hasBin: true
 

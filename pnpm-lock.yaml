@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@angular/language-service':
-        specifier: ^20.1.0-next.0
-        version: registry.npmjs.org/@angular/language-service@20.1.0-next.0
+        specifier: 20.1.0-rc.0
+        version: registry.npmjs.org/@angular/language-service@20.1.0-rc.0
       typescript:
         specifier: ^5.8.1
         version: registry.npmjs.org/typescript@5.8.3
@@ -438,10 +438,10 @@ packages:
       tslib: registry.npmjs.org/tslib@2.6.3
     dev: true
 
-  registry.npmjs.org/@angular/language-service@20.1.0-next.0:
-    resolution: {integrity: sha512-CH2Oj7ytaEXl/4W0CzCgO3gC71uzU+gHOnM8NdAnM0ccEjzOeq1ty0PaQzQbf2psKed7V0KRfpWT+0xOO38V4A==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-20.1.0-next.0.tgz}
+  registry.npmjs.org/@angular/language-service@20.1.0-rc.0:
+    resolution: {integrity: sha512-8iXIiBGOD4fUulzhH1yEZIQhlwTsY3Kbj1N8wpS1uV1sH2DSgHNq4WR5k3fQYUx7VYbF3VyTCjdBzjh7s2Xcsg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-20.1.0-rc.0.tgz}
     name: '@angular/language-service'
-    version: 20.1.0-next.0
+    version: 20.1.0-rc.0
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
     dev: false
 

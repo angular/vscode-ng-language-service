@@ -131,9 +131,9 @@
     tslib "^2.3.0"
 
 "@angular/core@^19.0.1":
-  version "19.0.1"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-19.0.1.tgz#7e89b3971b087c284bfeabd4f8874f76fa4c5400"
-  integrity sha512-+VpWcg2aC/dY9TM6fsj00enZ6RP5wpRqk/SeRe3UP3Je/n+vWIgHJTb1ZLNeOIvDaE86BhKPMwFS0QVjoEGQFA==
+  version "19.2.1"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-19.2.1.tgz#695f65a33ad26c22479317ef7592d23fb313f853"
+  integrity sha512-gwdytbZSM9m5v9PhRsvh6Q13vI1Ydcx52QGs93bpWx5ACOGYGp/Y7zc2mcZb1aUM63zGBTpS9Qw9bEsPHeLZPA==
   dependencies:
     tslib "^2.3.0"
 
@@ -174,9 +174,9 @@
     yargs "^17.0.0"
 
 "@angular/language-service@^19.2.0":
-  version "19.2.0"
-  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-19.2.0.tgz#a66236d4d51aef232e3252516c5b7c17b429787e"
-  integrity sha512-45utEVXwCYE5vQSMX0ImBjgkcMQ8cqPN4xGHLqYiFEkp/hgbixejA4sMPP1Jn7YrjpfK4DmAaO5z5Hzp11zJ7A==
+  version "19.2.1"
+  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-19.2.1.tgz#45018df62dde246c63c34620c7541b8e67ebda75"
+  integrity sha512-JJPxFQp3tbKy6xSKLHMYUA6SOBxtJoOKDNAasj8tNrgZLgxtGABWz3kPNlgzpVQ6HHyderrzPhDir9aQDooSJQ==
 
 "@assemblyscript/loader@^0.10.1":
   version "0.10.1"
@@ -7167,10 +7167,15 @@ tslib@^1.13.0, tslib@^1.8.1, tslib@^1.9.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2.1.0, tslib@^2.3.0:
+tslib@^2.1.0:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.3.tgz#0438f810ad7a9edcde7a241c3d80db693c8cbfe0"
   integrity sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==
+
+tslib@^2.3.0:
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.8.1.tgz#612efe4ed235d567e8aba5f2a5fab70280ade83f"
+  integrity sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==
 
 tslint-eslint-rules@5.4.0:
   version "5.4.0"

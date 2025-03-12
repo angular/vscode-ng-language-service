@@ -85,6 +85,12 @@
 {{ (let param of params) | customPipe: 'param' | search: ['term1', 'term2'] }}
 {{ ((let param of params) | async) | translate }}
 
+<!-- Template literals -->
+{{ `hello world` }}
+{{ tag`hello world` }}
+{{ `before ${123} - ${fn()} after` }}
+{{ tag`before ${123} - ${fn()} after` }}
+
 <!-- Mixed -->
 {{ (let param of params?.get('value')!.property | async).anotherProperty | translate: ['language1', 'language2']; index
 as i }}

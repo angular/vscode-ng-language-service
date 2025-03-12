@@ -975,6 +975,63 @@
 #                                              ^ template.ng expression.ng
 #                                               ^^ template.ng punctuation.definition.block.ts
 >
+><!-- Template literals -->
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.ng
+>{{ `hello world` }}
+#^^ template.ng punctuation.definition.block.ts
+#  ^ template.ng expression.ng
+#   ^ template.ng expression.ng string.template.ts punctuation.definition.string.template.begin.ts
+#    ^^^^^^^^^^^ template.ng expression.ng string.template.ts
+#               ^ template.ng expression.ng string.template.ts punctuation.definition.string.template.end.ts
+#                ^ template.ng expression.ng
+#                 ^^ template.ng punctuation.definition.block.ts
+>{{ tag`hello world` }}
+#^^ template.ng punctuation.definition.block.ts
+#  ^ template.ng expression.ng
+#   ^^^ template.ng expression.ng entity.name.function.tagged-template.ts
+#      ^ template.ng expression.ng string.template.ts punctuation.definition.string.template.begin.ts
+#       ^^^^^^^^^^^ template.ng expression.ng string.template.ts
+#                  ^ template.ng expression.ng string.template.ts punctuation.definition.string.template.end.ts
+#                   ^ template.ng expression.ng
+#                    ^^ template.ng punctuation.definition.block.ts
+>{{ `before ${123} - ${fn()} after` }}
+#^^ template.ng punctuation.definition.block.ts
+#  ^ template.ng expression.ng
+#   ^ template.ng expression.ng string.template.ts punctuation.definition.string.template.begin.ts
+#    ^^^^^^^ template.ng expression.ng string.template.ts
+#           ^^ template.ng expression.ng string.template.ts meta.template.expression.ts punctuation.definition.template-expression.begin.ts
+#             ^^^ template.ng expression.ng string.template.ts meta.template.expression.ts meta.embedded.line.ts constant.numeric.decimal.ts
+#                ^ template.ng expression.ng string.template.ts meta.template.expression.ts punctuation.definition.template-expression.end.ts
+#                 ^^^ template.ng expression.ng string.template.ts
+#                    ^^ template.ng expression.ng string.template.ts meta.template.expression.ts punctuation.definition.template-expression.begin.ts
+#                      ^^ template.ng expression.ng string.template.ts meta.template.expression.ts meta.embedded.line.ts entity.name.function.ts
+#                        ^ template.ng expression.ng string.template.ts meta.template.expression.ts meta.embedded.line.ts meta.brace.round.ts
+#                         ^ template.ng expression.ng string.template.ts meta.template.expression.ts meta.embedded.line.ts meta.brace.round.ts
+#                          ^ template.ng expression.ng string.template.ts meta.template.expression.ts punctuation.definition.template-expression.end.ts
+#                           ^^^^^^ template.ng expression.ng string.template.ts
+#                                 ^ template.ng expression.ng string.template.ts punctuation.definition.string.template.end.ts
+#                                  ^ template.ng expression.ng
+#                                   ^^ template.ng punctuation.definition.block.ts
+>{{ tag`before ${123} - ${fn()} after` }}
+#^^ template.ng punctuation.definition.block.ts
+#  ^ template.ng expression.ng
+#   ^^^ template.ng expression.ng entity.name.function.tagged-template.ts
+#      ^ template.ng expression.ng string.template.ts punctuation.definition.string.template.begin.ts
+#       ^^^^^^^ template.ng expression.ng string.template.ts
+#              ^^ template.ng expression.ng string.template.ts meta.template.expression.ts punctuation.definition.template-expression.begin.ts
+#                ^^^ template.ng expression.ng string.template.ts meta.template.expression.ts meta.embedded.line.ts constant.numeric.decimal.ts
+#                   ^ template.ng expression.ng string.template.ts meta.template.expression.ts punctuation.definition.template-expression.end.ts
+#                    ^^^ template.ng expression.ng string.template.ts
+#                       ^^ template.ng expression.ng string.template.ts meta.template.expression.ts punctuation.definition.template-expression.begin.ts
+#                         ^^ template.ng expression.ng string.template.ts meta.template.expression.ts meta.embedded.line.ts entity.name.function.ts
+#                           ^ template.ng expression.ng string.template.ts meta.template.expression.ts meta.embedded.line.ts meta.brace.round.ts
+#                            ^ template.ng expression.ng string.template.ts meta.template.expression.ts meta.embedded.line.ts meta.brace.round.ts
+#                             ^ template.ng expression.ng string.template.ts meta.template.expression.ts punctuation.definition.template-expression.end.ts
+#                              ^^^^^^ template.ng expression.ng string.template.ts
+#                                    ^ template.ng expression.ng string.template.ts punctuation.definition.string.template.end.ts
+#                                     ^ template.ng expression.ng
+#                                      ^^ template.ng punctuation.definition.block.ts
+>
 ><!-- Mixed -->
 #^^^^^^^^^^^^^^^ template.ng
 >{{ (let param of params?.get('value')!.property | async).anotherProperty | translate: ['language1', 'language2']; index

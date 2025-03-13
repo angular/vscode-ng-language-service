@@ -1,3 +1,10 @@
+# 19.2.1
+This release upgrades `@angular/language-service` to v19.2.2.
+
+* [feat(syntaxes): support template literals (#2152)](https://github.com/angular/vscode-ng-language-service/commit/de5d9650caa3a9de1b50e9815acb2a631f14ab3d)
+* [Updates the bundled version of the Angular compiler to fix enum resolution errors](https://github.com/angular/angular/commit/4fa5d18e5a57be03979b73be03a3d280c6dc0cb5)
+* [feat: forward tags for quick info from type definitions](https://github.com/angular/angular/commit/3f0116607dc3ad7e31cb4d895a56094f77c82f5d)
+
 # 19.2.0
 This release upgrades `@angular/language-service` to v19.2.0.
 

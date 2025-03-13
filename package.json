@@ -271,7 +271,7 @@
     "@angular/core": "^19.0.1",
     "@bazel/bazelisk": "1.18.0",
     "@bazel/ibazel": "0.16.2",
-    "@types/jasmine": "3.10.7",
+    "@types/jasmine": "3.10.18",
     "@types/node": "18.19.39",
     "@types/vscode": "1.67.0",
     "clang-format": "1.8.0",

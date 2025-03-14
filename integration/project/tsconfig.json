@@ -16,6 +16,7 @@
   },
   "angularCompilerOptions": {
     "strictTemplates": true,
+    "typeCheckHostBindings": true,
     "strictInjectionParameters": true
   }
 }

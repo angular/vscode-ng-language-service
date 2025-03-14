@@ -9,6 +9,7 @@
 import * as fs from 'fs';
 
 import {Expression} from './expression';
+import {HostObjectLiteral} from './host-object-literal';
 import {InlineStyles} from './inline-styles';
 import {InlineTemplate} from './inline-template';
 import {Template} from './template';
@@ -59,3 +60,4 @@ build(InlineStyles, 'inline-styles');
 build(TemplateBlocks, 'template-blocks');
 build(TemplateTag, 'template-tag');
 build(LetDeclaration, 'let-declaration');
+build(HostObjectLiteral, 'host-object-literal');

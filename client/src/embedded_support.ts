@@ -8,15 +8,25 @@
 import * as ts from 'typescript';
 import * as vscode from 'vscode';
 
-/** Determines if the position is inside an inline template, templateUrl, or string in styleUrls. */
-export function isNotTypescriptOrInsideComponentDecorator(
+const ANGULAR_PROPERTY_ASSIGNMENTS = new Set([
+  'template',
+  'templateUrl',
+  'styleUrls',
+  'styleUrl',
+  'host',
+]);
+
+/**
+ * Determines if the position is inside a decorator
+ * property that supports language service features.
+ */
+export function isNotTypescriptOrSupportedDecoratorField(
     document: vscode.TextDocument, position: vscode.Position): boolean {
   if (document.languageId !== 'typescript') {
     return true;
   }
   return isPropertyAssignmentToStringOrStringInArray(
-      document.getText(), document.offsetAt(position),
-      ['template', 'templateUrl', 'styleUrls', 'styleUrl']);
+      document.getText(), document.offsetAt(position), ANGULAR_PROPERTY_ASSIGNMENTS);
 }
 
 /**
@@ -62,7 +72,7 @@ export function isInsideStringLiteral(
  * https://github.com/Microsoft/TypeScript/issues/20055
  */
 function isPropertyAssignmentToStringOrStringInArray(
-    documentText: string, offset: number, propertyAssignmentNames: string[]): boolean {
+    documentText: string, offset: number, propertyAssignmentNames: Set<string>): boolean {
   const scanner = ts.createScanner(ts.ScriptTarget.ESNext, true /* skipTrivia */);
   scanner.setText(documentText);
 
@@ -74,7 +84,7 @@ function isPropertyAssignmentToStringOrStringInArray(
   let propertyAssignmentContext = false;
   while (token !== ts.SyntaxKind.EndOfFileToken && scanner.getStartPos() < offset) {
     if (lastToken === ts.SyntaxKind.Identifier && lastTokenText !== undefined &&
-        propertyAssignmentNames.includes(lastTokenText) && token === ts.SyntaxKind.ColonToken) {
+        token === ts.SyntaxKind.ColonToken && propertyAssignmentNames.has(lastTokenText)) {
       propertyAssignmentContext = true;
       token = scanner.scan();
       continue;

@@ -2147,6 +2147,7 @@ packages:
     id: registry.npmjs.org/@bazel/typescript/5.5.0
     name: '@bazel/typescript'
     version: 5.5.0
+    deprecated: No longer maintained, https://github.com/aspect-build/rules_ts is the recommended replacement
     hasBin: true
     requiresBuild: true
     peerDependencies:
@@ -11042,6 +11043,7 @@ packages:
     name: vsce
     version: 1.100.1
     engines: {node: '>= 10'}
+    deprecated: vsce has been renamed to @vscode/vsce. Install using @vscode/vsce instead.
     hasBin: true
     dependencies:
       azure-devops-node-api: registry.npmjs.org/azure-devops-node-api@11.2.0

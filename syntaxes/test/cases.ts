@@ -44,4 +44,11 @@ export const cases = [
     'grammarFiles': ['syntaxes/let-declaration.json', 'syntaxes/expression.json'],
     'testFile': 'syntaxes/test/data/let-declaration.html'
   },
+  {
+    'name': 'host object literal',
+    'scopeName': 'host-object-literal.ng',
+    'grammarFiles':
+        ['syntaxes/host-object-literal.json', 'syntaxes/template.json', 'syntaxes/expression.json'],
+    'testFile': 'syntaxes/test/data/host-object-literal.ts'
+  },
 ];

@@ -213,6 +213,18 @@
         ]
       },
       {
+        "path": "./syntaxes/host-object-literal.json",
+        "scopeName": "host-object-literal.ng",
+        "injectTo": [
+          "source.ts"
+        ],
+        "embeddedLanguages": {
+          "text.html.derivative": "html",
+          "expression.ng": "javascript",
+          "source.ts": "typescript"
+        }
+      },
+      {
         "path": "./syntaxes/template-tag.json",
         "scopeName": "template.tag.ng",
         "injectTo": [

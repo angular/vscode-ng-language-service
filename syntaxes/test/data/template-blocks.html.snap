@@ -143,15 +143,16 @@
 # ^^^ template.blocks.ng control.block.ng keyword.control.block.kind.ng
 #    ^ template.blocks.ng control.block.ng
 #     ^ template.blocks.ng control.block.ng meta.brace.round.ts
-#      ^^^ template.blocks.ng control.block.ng control.block.expression.ng storage.type.ts
+#      ^^^ template.blocks.ng control.block.ng control.block.expression.ng storage.type.ng
 #         ^ template.blocks.ng control.block.ng control.block.expression.ng
 #          ^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
 #              ^ template.blocks.ng control.block.ng control.block.expression.ng
 #               ^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.operator.expression.of.ts
 #                 ^ template.blocks.ng control.block.ng control.block.expression.ng
 #                  ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
-#                       ^^ template.blocks.ng control.block.ng control.block.expression.ng
-#                         ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#                       ^ template.blocks.ng control.block.ng control.block.expression.ng
+#                        ^ template.blocks.ng control.block.ng control.block.expression.ng
+#                         ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.control.track.ng
 #                              ^ template.blocks.ng control.block.ng control.block.expression.ng
 #                               ^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
 #                                     ^ template.blocks.ng control.block.ng meta.brace.round.ts
@@ -173,13 +174,13 @@
 #         ^^ template.blocks.ng control.block.ng control.block.expression.ng
 >    track $index;
 #^^^^ template.blocks.ng control.block.ng control.block.expression.ng
-#    ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#    ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.control.track.ng
 #         ^ template.blocks.ng control.block.ng control.block.expression.ng
 #          ^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
 #                ^^ template.blocks.ng control.block.ng control.block.expression.ng
 >    let o = $odd
 #^^^^ template.blocks.ng control.block.ng control.block.expression.ng
-#    ^^^ template.blocks.ng control.block.ng control.block.expression.ng storage.type.ts
+#    ^^^ template.blocks.ng control.block.ng control.block.expression.ng storage.type.ng
 #       ^ template.blocks.ng control.block.ng control.block.expression.ng
 #        ^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
 #         ^ template.blocks.ng control.block.ng control.block.expression.ng
@@ -216,13 +217,14 @@
 #    ^^ template.blocks.ng control.block.ng
 >(item of items; track $index) { }
 #^ template.blocks.ng control.block.ng meta.brace.round.ts
-# ^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+# ^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.constant.ng
 #     ^ template.blocks.ng control.block.ng control.block.expression.ng
-#      ^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.operator.expression.of.ts
+#      ^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.operator.expression.of.ng
 #        ^ template.blocks.ng control.block.ng control.block.expression.ng
 #         ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
-#              ^^ template.blocks.ng control.block.ng control.block.expression.ng
-#                ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#              ^ template.blocks.ng control.block.ng control.block.expression.ng
+#               ^ template.blocks.ng control.block.ng control.block.expression.ng
+#                ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.control.track.ng
 #                     ^ template.blocks.ng control.block.ng control.block.expression.ng
 #                      ^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
 #                            ^ template.blocks.ng control.block.ng meta.brace.round.ts
@@ -236,13 +238,14 @@
 # ^^^ template.blocks.ng control.block.ng keyword.control.block.kind.ng
 #    ^ template.blocks.ng control.block.ng
 #     ^ template.blocks.ng control.block.ng meta.brace.round.ts
-#      ^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#      ^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.constant.ng
 #          ^ template.blocks.ng control.block.ng control.block.expression.ng
-#           ^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.operator.expression.of.ts
+#           ^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.operator.expression.of.ng
 #             ^ template.blocks.ng control.block.ng control.block.expression.ng
 #              ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
-#                   ^^ template.blocks.ng control.block.ng control.block.expression.ng
-#                     ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#                   ^ template.blocks.ng control.block.ng control.block.expression.ng
+#                    ^ template.blocks.ng control.block.ng control.block.expression.ng
+#                     ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.control.track.ng
 #                          ^ template.blocks.ng control.block.ng control.block.expression.ng
 #                           ^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
 #                                 ^ template.blocks.ng control.block.ng meta.brace.round.ts
@@ -262,6 +265,59 @@
 >
 >}
 #^ template.blocks.ng control.block.ng punctuation.definition.block.ts
+>
+><!-- `track` is only a keyword at the start of the clause -->
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.blocks.ng
+>@for (item of items; let track = $index; track item.track) { }
+#^ template.blocks.ng control.block.ng keyword.control.block.transition.ng
+# ^^^ template.blocks.ng control.block.ng keyword.control.block.kind.ng
+#    ^ template.blocks.ng control.block.ng
+#     ^ template.blocks.ng control.block.ng meta.brace.round.ts
+#      ^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.constant.ng
+#          ^ template.blocks.ng control.block.ng control.block.expression.ng
+#           ^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.operator.expression.of.ng
+#             ^ template.blocks.ng control.block.ng control.block.expression.ng
+#              ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#                   ^ template.blocks.ng control.block.ng control.block.expression.ng
+#                    ^ template.blocks.ng control.block.ng control.block.expression.ng
+#                     ^^^ template.blocks.ng control.block.ng control.block.expression.ng storage.type.ng
+#                        ^ template.blocks.ng control.block.ng control.block.expression.ng
+#                         ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#                              ^ template.blocks.ng control.block.ng control.block.expression.ng
+#                               ^ template.blocks.ng control.block.ng control.block.expression.ng keyword.operator.assignment.ts
+#                                ^ template.blocks.ng control.block.ng control.block.expression.ng
+#                                 ^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#                                       ^^ template.blocks.ng control.block.ng control.block.expression.ng
+#                                         ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.control.track.ng
+#                                              ^ template.blocks.ng control.block.ng control.block.expression.ng
+#                                               ^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.object.ts
+#                                                   ^ template.blocks.ng control.block.ng control.block.expression.ng punctuation.accessor.ts
+#                                                    ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.property.ts
+#                                                         ^ template.blocks.ng control.block.ng meta.brace.round.ts
+#                                                          ^ template.blocks.ng control.block.ng
+#                                                           ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
+#                                                            ^ template.blocks.ng control.block.ng control.block.body.ng
+#                                                             ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
+>@for (track of tracks; track track) { }
+#^ template.blocks.ng control.block.ng keyword.control.block.transition.ng
+# ^^^ template.blocks.ng control.block.ng keyword.control.block.kind.ng
+#    ^ template.blocks.ng control.block.ng
+#     ^ template.blocks.ng control.block.ng meta.brace.round.ts
+#      ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.constant.ng
+#           ^ template.blocks.ng control.block.ng control.block.expression.ng
+#            ^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.operator.expression.of.ng
+#              ^ template.blocks.ng control.block.ng control.block.expression.ng
+#               ^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#                     ^ template.blocks.ng control.block.ng control.block.expression.ng
+#                      ^ template.blocks.ng control.block.ng control.block.expression.ng
+#                       ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.control.track.ng
+#                            ^ template.blocks.ng control.block.ng control.block.expression.ng
+#                             ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
+#                                  ^ template.blocks.ng control.block.ng meta.brace.round.ts
+#                                   ^ template.blocks.ng control.block.ng
+#                                    ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
+#                                     ^ template.blocks.ng control.block.ng control.block.body.ng
+#                                      ^ template.blocks.ng control.block.ng punctuation.definition.block.ts
 >
 ><!-- Should not highlight -->
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ template.blocks.ng

@@ -45,11 +45,44 @@ export const TemplateBlocks: GrammarDefinition = {
         0: {name: 'meta.brace.round.ts'},
       },
       contentName: 'control.block.expression.ng',
-      patterns: [{include: 'expression.ng'}],
+      patterns: [
+        {include: '#blockExpressionOfClause'},
+        {include: '#blockExpressionLetBinding'},
+        {include: '#blockExpressionTrackClause'},
+        {include: 'expression.ng'},
+      ],
       end: /\)/,
       endCaptures: {
         0: {name: 'meta.brace.round.ts'},
       },
+    },
+
+    blockExpressionOfClause: {
+      begin: /([_$[:alpha:]][_$[:alnum:]]*)\s+(of)\b/,
+      beginCaptures: {
+        1: {name: 'variable.other.constant.ng'},
+        2: {name: 'keyword.operator.expression.of.ng'},
+      },
+      end: /(?=[$)])|(?<=;)/,
+      patterns: [{include: 'expression.ng'}],
+    },
+
+    blockExpressionLetBinding: {
+      begin: /\blet\b/,
+      beginCaptures: {
+        0: {name: 'storage.type.ng'},
+      },
+      end: /(?=[$)])|(?<=;)/,
+      patterns: [{include: 'expression.ng'}],
+    },
+
+    blockExpressionTrackClause: {
+      begin: /\btrack\b/,
+      beginCaptures: {
+        0: {name: 'keyword.control.track.ng'},
+      },
+      end: /(?=[$)])|(?<=;)/,
+      patterns: [{include: 'expression.ng'}],
     },
 
     blockBody: {

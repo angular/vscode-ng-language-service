@@ -52,6 +52,10 @@
 
 }
 
+<!-- `track` is only a keyword at the start of the clause -->
+@for (item of items; let track = $index; track item.track) { }
+@for (track of tracks; track track) { }
+
 <!-- Should not highlight -->
 
 some.email@google.com ({}) {}

@@ -150,7 +150,8 @@
 #               ^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.operator.expression.of.ts
 #                 ^ template.blocks.ng control.block.ng control.block.expression.ng
 #                  ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
-#                       ^^ template.blocks.ng control.block.ng control.block.expression.ng
+#                       ^ template.blocks.ng control.block.ng control.block.expression.ng punctuation.terminator.statement.ts
+#                        ^ template.blocks.ng control.block.ng control.block.expression.ng
 #                         ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
 #                              ^ template.blocks.ng control.block.ng control.block.expression.ng
 #                               ^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
@@ -170,13 +171,13 @@
 >    items;
 #^^^^ template.blocks.ng control.block.ng control.block.expression.ng
 #    ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
-#         ^^ template.blocks.ng control.block.ng control.block.expression.ng
+#         ^ template.blocks.ng control.block.ng control.block.expression.ng punctuation.terminator.statement.ts
 >    track $index;
 #^^^^ template.blocks.ng control.block.ng control.block.expression.ng
 #    ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
 #         ^ template.blocks.ng control.block.ng control.block.expression.ng
 #          ^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
-#                ^^ template.blocks.ng control.block.ng control.block.expression.ng
+#                ^ template.blocks.ng control.block.ng control.block.expression.ng punctuation.terminator.statement.ts
 >    let o = $odd
 #^^^^ template.blocks.ng control.block.ng control.block.expression.ng
 #    ^^^ template.blocks.ng control.block.ng control.block.expression.ng storage.type.ts
@@ -221,7 +222,8 @@
 #      ^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.operator.expression.of.ts
 #        ^ template.blocks.ng control.block.ng control.block.expression.ng
 #         ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
-#              ^^ template.blocks.ng control.block.ng control.block.expression.ng
+#              ^ template.blocks.ng control.block.ng control.block.expression.ng punctuation.terminator.statement.ts
+#               ^ template.blocks.ng control.block.ng control.block.expression.ng
 #                ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
 #                     ^ template.blocks.ng control.block.ng control.block.expression.ng
 #                      ^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
@@ -241,7 +243,8 @@
 #           ^^ template.blocks.ng control.block.ng control.block.expression.ng keyword.operator.expression.of.ts
 #             ^ template.blocks.ng control.block.ng control.block.expression.ng
 #              ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
-#                   ^^ template.blocks.ng control.block.ng control.block.expression.ng
+#                   ^ template.blocks.ng control.block.ng control.block.expression.ng punctuation.terminator.statement.ts
+#                    ^ template.blocks.ng control.block.ng control.block.expression.ng
 #                     ^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts
 #                          ^ template.blocks.ng control.block.ng control.block.expression.ng
 #                           ^^^^^^ template.blocks.ng control.block.ng control.block.expression.ng variable.other.readwrite.ts

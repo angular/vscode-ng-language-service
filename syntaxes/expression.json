@@ -35,6 +35,9 @@
           "include": "#punctuationComma"
         },
         {
+          "include": "#punctuationSemicolon"
+        },
+        {
           "include": "#punctuationAccessor"
         }
       ]

@@ -16,16 +16,16 @@ export const LetDeclaration: GrammarDefinition = {
   ],
   repository: {
     letDeclaration: {
+      name: 'meta.definition.variable.ng',
       // Equals group is optional so that we start highlighting as
       // soon as the user starts writing a valid name.
       begin: /(@let)\s+([_$[:alpha:]][_$[:alnum:]]*)\s*(=)?/,
       beginCaptures: {
         1: {name: 'storage.type.ng'},
-        2: {name: 'meta.definition.variable.ng'},
+        2: {name: 'variable.other.constant.ng'},
         3: {name: 'keyword.operator.assignment.ng'},
       },
       patterns: [{include: '#letInitializer'}],
-      contentName: 'meta.definition.variable.ng',
       end: /(?<=;)/,
     },
 

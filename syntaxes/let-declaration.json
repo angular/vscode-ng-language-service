@@ -8,13 +8,14 @@
   ],
   "repository": {
     "letDeclaration": {
+      "name": "meta.definition.variable.ng",
       "begin": "(@let)\\s+([_$[:alpha:]][_$[:alnum:]]*)\\s*(=)?",
       "beginCaptures": {
         "1": {
           "name": "storage.type.ng"
         },
         "2": {
-          "name": "meta.definition.variable.ng"
+          "name": "variable.other.constant.ng"
         },
         "3": {
           "name": "keyword.operator.assignment.ng"
@@ -25,7 +26,6 @@
           "include": "#letInitializer"
         }
       ],
-      "contentName": "meta.definition.variable.ng",
       "end": "(?<=;)"
     },
     "letInitializer": {

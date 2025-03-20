@@ -192,7 +192,7 @@
 #                    ^ template.tag.ng meta.ng-binding.event.html expression.ng meta.brace.round.ts
 #                     ^^^^^^ template.tag.ng meta.ng-binding.event.html expression.ng variable.other.readwrite.ts
 #                           ^ template.tag.ng meta.ng-binding.event.html expression.ng meta.brace.round.ts
-#                            ^^ template.tag.ng meta.ng-binding.event.html expression.ng
+#                            ^ template.tag.ng meta.ng-binding.event.html expression.ng punctuation.terminator.statement.ts
 >    } else {
 #^^^^^^ template.tag.ng meta.ng-binding.event.html expression.ng
 #      ^^^^ template.tag.ng meta.ng-binding.event.html expression.ng keyword.control.else.ts
@@ -203,7 +203,7 @@
 #                     ^ template.tag.ng meta.ng-binding.event.html expression.ng meta.brace.round.ts
 #                      ^^^^^^ template.tag.ng meta.ng-binding.event.html expression.ng variable.other.readwrite.ts
 #                            ^ template.tag.ng meta.ng-binding.event.html expression.ng meta.brace.round.ts
-#                             ^^ template.tag.ng meta.ng-binding.event.html expression.ng
+#                             ^ template.tag.ng meta.ng-binding.event.html expression.ng punctuation.terminator.statement.ts
 >    }
 #^^^^^^ template.tag.ng meta.ng-binding.event.html expression.ng
 >"></div>
@@ -437,7 +437,7 @@
 #                   ^ template.tag.ng meta.ng-binding.template.html expression.ng keyword.operator.assignment.ts
 #                    ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                     ^^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
-#                          ^ template.tag.ng meta.ng-binding.template.html expression.ng
+#                          ^ template.tag.ng meta.ng-binding.template.html expression.ng punctuation.terminator.statement.ts
 #                           ^ template.tag.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.end.html
 #                            ^^^^^^^^ template.tag.ng
 ><div *ngFor="let i = index"></div>
@@ -470,11 +470,12 @@
 #                   ^ template.tag.ng meta.ng-binding.template.html expression.ng keyword.operator.assignment.ts
 #                    ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                     ^^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
-#                          ^^ template.tag.ng meta.ng-binding.template.html expression.ng
+#                          ^ template.tag.ng meta.ng-binding.template.html expression.ng punctuation.terminator.statement.ts
+#                           ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                            ^^^^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
 #                                   ^^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                     ^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
-#                                         ^ template.tag.ng meta.ng-binding.template.html expression.ng
+#                                         ^ template.tag.ng meta.ng-binding.template.html expression.ng punctuation.terminator.statement.ts
 #                                          ^ template.tag.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.end.html
 #                                           ^^^^^^^^ template.tag.ng
 ><div *ngFor="let i = index; trackBy: hash"></div>
@@ -490,7 +491,8 @@
 #                   ^ template.tag.ng meta.ng-binding.template.html expression.ng keyword.operator.assignment.ts
 #                    ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                     ^^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
-#                          ^^ template.tag.ng meta.ng-binding.template.html expression.ng
+#                          ^ template.tag.ng meta.ng-binding.template.html expression.ng punctuation.terminator.statement.ts
+#                           ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                            ^^^^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
 #                                   ^^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                     ^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
@@ -509,7 +511,7 @@
 #                       ^^ template.tag.ng meta.ng-binding.template.html expression.ng keyword.operator.expression.of.ts
 #                         ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                          ^^^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
-#                                ^ template.tag.ng meta.ng-binding.template.html expression.ng
+#                                ^ template.tag.ng meta.ng-binding.template.html expression.ng punctuation.terminator.statement.ts
 #                                 ^ template.tag.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.end.html
 #                                  ^^^^^^^^ template.tag.ng
 ><div *ngFor="let param of params"></div>
@@ -542,13 +544,14 @@
 #                       ^^ template.tag.ng meta.ng-binding.template.html expression.ng keyword.operator.expression.of.ts
 #                         ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                          ^^^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
-#                                ^^ template.tag.ng meta.ng-binding.template.html expression.ng
+#                                ^ template.tag.ng meta.ng-binding.template.html expression.ng punctuation.terminator.statement.ts
+#                                 ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                  ^^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
 #                                       ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                        ^^ template.tag.ng meta.ng-binding.template.html expression.ng storage.type.as.ts
 #                                          ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                           ^ template.tag.ng meta.ng-binding.template.html expression.ng entity.name.type.ts
-#                                            ^ template.tag.ng meta.ng-binding.template.html expression.ng
+#                                            ^ template.tag.ng meta.ng-binding.template.html expression.ng punctuation.terminator.statement.ts
 #                                             ^ template.tag.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.end.html
 #                                              ^^^^^^^^ template.tag.ng
 ><div *ngFor="let param of params; index as i"></div>
@@ -564,7 +567,8 @@
 #                       ^^ template.tag.ng meta.ng-binding.template.html expression.ng keyword.operator.expression.of.ts
 #                         ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                          ^^^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
-#                                ^^ template.tag.ng meta.ng-binding.template.html expression.ng
+#                                ^ template.tag.ng meta.ng-binding.template.html expression.ng punctuation.terminator.statement.ts
+#                                 ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                  ^^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
 #                                       ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                        ^^ template.tag.ng meta.ng-binding.template.html expression.ng storage.type.as.ts
@@ -600,7 +604,8 @@
 #                       ^^ template.tag.ng meta.ng-binding.template.html expression.ng keyword.operator.expression.of.ts
 #                         ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                          ^^^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
-#                                ^^ template.tag.ng meta.ng-binding.template.html expression.ng
+#                                ^ template.tag.ng meta.ng-binding.template.html expression.ng punctuation.terminator.statement.ts
+#                                 ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                  ^^^ template.tag.ng meta.ng-binding.template.html expression.ng storage.type.ts
 #                                     ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                      ^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
@@ -608,7 +613,8 @@
 #                                        ^ template.tag.ng meta.ng-binding.template.html expression.ng keyword.operator.assignment.ts
 #                                         ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                          ^^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
-#                                               ^^ template.tag.ng meta.ng-binding.template.html expression.ng
+#                                               ^ template.tag.ng meta.ng-binding.template.html expression.ng punctuation.terminator.statement.ts
+#                                                ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                                 ^^^ template.tag.ng meta.ng-binding.template.html expression.ng storage.type.ts
 #                                                    ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                                     ^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
@@ -631,7 +637,8 @@
 #                       ^^ template.tag.ng meta.ng-binding.template.html expression.ng keyword.operator.expression.of.ts
 #                         ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                          ^^^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
-#                                ^^ template.tag.ng meta.ng-binding.template.html expression.ng
+#                                ^ template.tag.ng meta.ng-binding.template.html expression.ng punctuation.terminator.statement.ts
+#                                 ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                  ^^^ template.tag.ng meta.ng-binding.template.html expression.ng storage.type.ts
 #                                     ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                      ^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
@@ -639,7 +646,8 @@
 #                                        ^ template.tag.ng meta.ng-binding.template.html expression.ng keyword.operator.assignment.ts
 #                                         ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                          ^^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
-#                                               ^^ template.tag.ng meta.ng-binding.template.html expression.ng
+#                                               ^ template.tag.ng meta.ng-binding.template.html expression.ng punctuation.terminator.statement.ts
+#                                                ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                                 ^^^ template.tag.ng meta.ng-binding.template.html expression.ng storage.type.ts
 #                                                    ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                                     ^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
@@ -647,7 +655,7 @@
 #                                                          ^ template.tag.ng meta.ng-binding.template.html expression.ng keyword.operator.assignment.ts
 #                                                           ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                                            ^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
-#                                                                ^ template.tag.ng meta.ng-binding.template.html expression.ng
+#                                                                ^ template.tag.ng meta.ng-binding.template.html expression.ng punctuation.terminator.statement.ts
 #                                                                 ^ template.tag.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.end.html
 #                                                                  ^^^^^^^^ template.tag.ng
 ><div *ngFor="let param of params; let i = index; last as last"></div>
@@ -663,7 +671,8 @@
 #                       ^^ template.tag.ng meta.ng-binding.template.html expression.ng keyword.operator.expression.of.ts
 #                         ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                          ^^^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
-#                                ^^ template.tag.ng meta.ng-binding.template.html expression.ng
+#                                ^ template.tag.ng meta.ng-binding.template.html expression.ng punctuation.terminator.statement.ts
+#                                 ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                  ^^^ template.tag.ng meta.ng-binding.template.html expression.ng storage.type.ts
 #                                     ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                      ^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
@@ -671,7 +680,8 @@
 #                                        ^ template.tag.ng meta.ng-binding.template.html expression.ng keyword.operator.assignment.ts
 #                                         ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                          ^^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
-#                                               ^^ template.tag.ng meta.ng-binding.template.html expression.ng
+#                                               ^ template.tag.ng meta.ng-binding.template.html expression.ng punctuation.terminator.statement.ts
+#                                                ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                                 ^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
 #                                                     ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                                      ^^ template.tag.ng meta.ng-binding.template.html expression.ng storage.type.as.ts
@@ -692,7 +702,8 @@
 #                       ^^ template.tag.ng meta.ng-binding.template.html expression.ng keyword.operator.expression.of.ts
 #                         ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                          ^^^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
-#                                ^^ template.tag.ng meta.ng-binding.template.html expression.ng
+#                                ^ template.tag.ng meta.ng-binding.template.html expression.ng punctuation.terminator.statement.ts
+#                                 ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                  ^^^ template.tag.ng meta.ng-binding.template.html expression.ng storage.type.ts
 #                                     ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                      ^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
@@ -700,13 +711,14 @@
 #                                        ^ template.tag.ng meta.ng-binding.template.html expression.ng keyword.operator.assignment.ts
 #                                         ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                          ^^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
-#                                               ^^ template.tag.ng meta.ng-binding.template.html expression.ng
+#                                               ^ template.tag.ng meta.ng-binding.template.html expression.ng punctuation.terminator.statement.ts
+#                                                ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                                 ^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
 #                                                     ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                                      ^^ template.tag.ng meta.ng-binding.template.html expression.ng storage.type.as.ts
 #                                                        ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                                         ^^^^ template.tag.ng meta.ng-binding.template.html expression.ng entity.name.type.ts
-#                                                             ^ template.tag.ng meta.ng-binding.template.html expression.ng
+#                                                             ^ template.tag.ng meta.ng-binding.template.html expression.ng punctuation.terminator.statement.ts
 #                                                              ^ template.tag.ng meta.ng-binding.template.html string.quoted.html punctuation.definition.string.end.html
 #                                                               ^^^^^^^^ template.tag.ng
 >
@@ -727,7 +739,8 @@
 #                   ^^ template.tag.ng meta.ng-binding.template.html expression.ng keyword.operator.expression.of.ts
 #                     ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                      ^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
-#                          ^^ template.tag.ng meta.ng-binding.template.html expression.ng
+#                          ^ template.tag.ng meta.ng-binding.template.html expression.ng punctuation.terminator.statement.ts
+#                           ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                            ^^^^^ template.tag.ng meta.ng-binding.template.html expression.ng variable.other.readwrite.ts
 #                                 ^ template.tag.ng meta.ng-binding.template.html expression.ng
 #                                  ^^ template.tag.ng meta.ng-binding.template.html expression.ng storage.type.as.ts

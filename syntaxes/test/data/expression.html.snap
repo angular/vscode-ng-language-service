@@ -305,7 +305,8 @@
 #   ^^^^ template.ng expression.ng entity.name.function.ts
 #       ^ template.ng expression.ng meta.brace.round.ts
 #        ^ template.ng expression.ng meta.brace.round.ts
-#         ^^ template.ng expression.ng
+#         ^ template.ng expression.ng punctuation.terminator.statement.ts
+#          ^ template.ng expression.ng
 #           ^^ template.ng punctuation.definition.block.ts
 >{{ call().object }}
 #^^ template.ng punctuation.definition.block.ts
@@ -325,7 +326,8 @@
 #        ^ template.ng expression.ng meta.brace.round.ts
 #         ^ template.ng expression.ng punctuation.accessor.ts
 #          ^^^^^^ template.ng expression.ng variable.other.property.ts
-#                ^^ template.ng expression.ng
+#                ^ template.ng expression.ng punctuation.terminator.statement.ts
+#                 ^ template.ng expression.ng
 #                  ^^ template.ng punctuation.definition.block.ts
 >{{ call()?.conditional }}
 #^^ template.ng punctuation.definition.block.ts
@@ -345,7 +347,8 @@
 #        ^ template.ng expression.ng meta.brace.round.ts
 #         ^^ template.ng expression.ng punctuation.accessor.ts
 #           ^^^^^^^^^^^ template.ng expression.ng variable.other.property.ts
-#                      ^^ template.ng expression.ng
+#                      ^ template.ng expression.ng punctuation.terminator.statement.ts
+#                       ^ template.ng expression.ng
 #                        ^^ template.ng punctuation.definition.block.ts
 >{{ call()!.conditional }}
 #^^ template.ng punctuation.definition.block.ts
@@ -367,7 +370,8 @@
 #         ^ template.ng expression.ng keyword.operator.logical.ts
 #          ^ template.ng expression.ng punctuation.accessor.ts
 #           ^^^^^^^^^^^ template.ng expression.ng variable.other.property.ts
-#                      ^^ template.ng expression.ng
+#                      ^ template.ng expression.ng punctuation.terminator.statement.ts
+#                       ^ template.ng expression.ng
 #                        ^^ template.ng punctuation.definition.block.ts
 >
 ><!-- Property read and method call: received -->
@@ -390,7 +394,8 @@
 #          ^^^^ template.ng expression.ng entity.name.function.ts
 #              ^ template.ng expression.ng meta.brace.round.ts
 #               ^ template.ng expression.ng meta.brace.round.ts
-#                ^^ template.ng expression.ng
+#                ^ template.ng expression.ng punctuation.terminator.statement.ts
+#                 ^ template.ng expression.ng
 #                  ^^ template.ng punctuation.definition.block.ts
 >{{ object.call().object }}
 #^^ template.ng punctuation.definition.block.ts
@@ -414,7 +419,8 @@
 #               ^ template.ng expression.ng meta.brace.round.ts
 #                ^ template.ng expression.ng punctuation.accessor.ts
 #                 ^^^^^^ template.ng expression.ng variable.other.property.ts
-#                       ^^ template.ng expression.ng
+#                       ^ template.ng expression.ng punctuation.terminator.statement.ts
+#                        ^ template.ng expression.ng
 #                         ^^ template.ng punctuation.definition.block.ts
 >{{ object?.call()?.conditional }}
 #^^ template.ng punctuation.definition.block.ts
@@ -440,7 +446,8 @@
 #                ^ template.ng expression.ng meta.brace.round.ts
 #                 ^^ template.ng expression.ng punctuation.accessor.ts
 #                   ^^^^^^^^^^^ template.ng expression.ng variable.other.property.ts
-#                              ^^ template.ng expression.ng
+#                              ^ template.ng expression.ng punctuation.terminator.statement.ts
+#                               ^ template.ng expression.ng
 #                                ^^ template.ng punctuation.definition.block.ts
 >{{ object!.call()!.conditional }}
 #^^ template.ng punctuation.definition.block.ts
@@ -468,7 +475,8 @@
 #                 ^ template.ng expression.ng keyword.operator.logical.ts
 #                  ^ template.ng expression.ng punctuation.accessor.ts
 #                   ^^^^^^^^^^^ template.ng expression.ng variable.other.property.ts
-#                              ^^ template.ng expression.ng
+#                              ^ template.ng expression.ng punctuation.terminator.statement.ts
+#                               ^ template.ng expression.ng
 #                                ^^ template.ng punctuation.definition.block.ts
 >
 ><!-- Method call with parameters -->
@@ -664,7 +672,8 @@
 #                    ^ template.ng expression.ng keyword.operator.ternary.ts
 #                     ^ template.ng expression.ng
 #                      ^^^^^ template.ng expression.ng constant.language.boolean.false.ts
-#                           ^^ template.ng expression.ng
+#                           ^ template.ng expression.ng punctuation.terminator.statement.ts
+#                            ^ template.ng expression.ng
 #                             ^^ template.ng punctuation.definition.block.ts
 >{{ condition() ? call(1 + 2 + 3) : call() }}
 #^^ template.ng punctuation.definition.block.ts
@@ -722,7 +731,8 @@
 #                                   ^^^^ template.ng expression.ng entity.name.function.ts
 #                                       ^ template.ng expression.ng meta.brace.round.ts
 #                                        ^ template.ng expression.ng meta.brace.round.ts
-#                                         ^^ template.ng expression.ng
+#                                         ^ template.ng expression.ng punctuation.terminator.statement.ts
+#                                          ^ template.ng expression.ng
 #                                           ^^ template.ng punctuation.definition.block.ts
 >{{ condition()?.object ? call()!.test() : false }}
 #^^ template.ng punctuation.definition.block.ts
@@ -1078,7 +1088,8 @@
 #                                                                                                     ^^^^^^^^^ template.ng expression.ng meta.array.literal.ts string.quoted.single.ts
 #                                                                                                              ^ template.ng expression.ng meta.array.literal.ts string.quoted.single.ts punctuation.definition.string.end.ts
 #                                                                                                               ^ template.ng expression.ng meta.array.literal.ts meta.brace.square.ts
-#                                                                                                                ^^ template.ng expression.ng
+#                                                                                                                ^ template.ng expression.ng punctuation.terminator.statement.ts
+#                                                                                                                 ^ template.ng expression.ng
 #                                                                                                                  ^^^^^ template.ng expression.ng variable.other.readwrite.ts
 >as i }}
 #^^ template.ng expression.ng storage.type.as.ts
@@ -1115,7 +1126,8 @@
 #                                                              ^^ template.ng expression.ng storage.type.as.ts
 #                                                                ^ template.ng expression.ng
 #                                                                 ^ template.ng expression.ng entity.name.type.ts
-#                                                                  ^^ template.ng expression.ng
+#                                                                  ^ template.ng expression.ng punctuation.terminator.statement.ts
+#                                                                   ^ template.ng expression.ng
 #                                                                    ^^^ template.ng expression.ng storage.type.ts
 #                                                                       ^ template.ng expression.ng
 #                                                                        ^ template.ng expression.ng variable.other.readwrite.ts
@@ -1123,7 +1135,8 @@
 #                                                                          ^ template.ng expression.ng keyword.operator.assignment.ts
 #                                                                           ^ template.ng expression.ng
 #                                                                            ^^^^^ template.ng expression.ng variable.other.readwrite.ts
-#                                                                                 ^^ template.ng expression.ng
+#                                                                                 ^ template.ng expression.ng punctuation.terminator.statement.ts
+#                                                                                  ^ template.ng expression.ng
 #                                                                                   ^^^ template.ng expression.ng storage.type.ts
 #                                                                                      ^ template.ng expression.ng
 #                                                                                       ^^^^^ template.ng expression.ng variable.other.readwrite.ts
@@ -1177,7 +1190,8 @@
 #                                                                                                     ^^^^^^^^^ template.ng expression.ng meta.array.literal.ts string.quoted.single.ts
 #                                                                                                              ^ template.ng expression.ng meta.array.literal.ts string.quoted.single.ts punctuation.definition.string.end.ts
 #                                                                                                               ^ template.ng expression.ng meta.array.literal.ts meta.brace.square.ts
-#                                                                                                                ^^ template.ng expression.ng
+#                                                                                                                ^ template.ng expression.ng punctuation.terminator.statement.ts
+#                                                                                                                 ^ template.ng expression.ng
 #                                                                                                                  ^^^ template.ng expression.ng storage.type.ts
 #                                                                                                                     ^ template.ng expression.ng
 #                                                                                                                      ^ template.ng expression.ng variable.other.readwrite.ts
@@ -1185,7 +1199,8 @@
 #^ template.ng expression.ng keyword.operator.assignment.ts
 # ^ template.ng expression.ng
 #  ^^^^^ template.ng expression.ng variable.other.readwrite.ts
-#       ^^ template.ng expression.ng
+#       ^ template.ng expression.ng punctuation.terminator.statement.ts
+#        ^ template.ng expression.ng
 #         ^^ template.ng punctuation.definition.block.ts
 >
 >

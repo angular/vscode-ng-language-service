@@ -42,6 +42,9 @@ export const Expression: GrammarDefinition = {
               include: '#punctuationComma',
             },
             {
+              include: '#punctuationSemicolon',
+            },
+            {
               include: '#punctuationAccessor',
             },
           ],

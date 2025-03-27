@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@angular/language-service':
-        specifier: ^19.2.2
-        version: registry.npmjs.org/@angular/language-service@19.2.2
+        specifier: 19.2.4
+        version: registry.npmjs.org/@angular/language-service@19.2.4
       typescript:
         specifier: 5.8.1-rc
         version: registry.npmjs.org/typescript@5.8.1-rc
@@ -433,10 +433,10 @@ packages:
       tslib: registry.npmjs.org/tslib@2.6.3
     dev: true
 
-  registry.npmjs.org/@angular/language-service@19.2.2:
-    resolution: {integrity: sha512-QWGE0+T9W6Abu1JpEuEywM89PP0ROy/qLORxrNeEiQxObzTvseqvzjREIV7dEh9wfc4A58OvG3E88TZHt30TuA==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-19.2.2.tgz}
+  registry.npmjs.org/@angular/language-service@19.2.4:
+    resolution: {integrity: sha512-bSLgjQYKyoUHUoD/SEQAmaQAFF2kVVFEBa8oXAFMjLov49CNybLuwgJI4Y11mjOnq6IONjnKLdKFvdrJhQn73g==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-19.2.4.tgz}
     name: '@angular/language-service'
-    version: 19.2.2
+    version: 19.2.4
     engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0}
     dev: false
 
@@ -11043,7 +11043,6 @@ packages:
     name: vsce
     version: 1.100.1
     engines: {node: '>= 10'}
-    deprecated: vsce has been renamed to @vscode/vsce. Install using @vscode/vsce instead.
     hasBin: true
     dependencies:
       azure-devops-node-api: registry.npmjs.org/azure-devops-node-api@11.2.0

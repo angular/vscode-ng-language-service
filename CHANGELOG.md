@@ -1,3 +1,9 @@
+# 19.2.2
+This release upgrades `@angular/language-service` to v19.2.4.
+
+* Bumps `@angular/language-server` to use the latest language-service version of Angular.
+* [fix: report more accurate diagnostic for invalid import](https://github.com/angular/angular/commit/aa8ea7a5b227913e3f15270dac48479481c47f9a)
+
 # 19.2.1
 This release upgrades `@angular/language-service` to v19.2.2.
 

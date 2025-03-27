@@ -1367,7 +1367,10 @@ function isExternalAngularCore(path: string): boolean {
 }
 
 function isInternalAngularCore(path: string): boolean {
-  return path.endsWith('angular2/rc/packages/core/index.d.ts');
+  // path in g3
+  return path.endsWith('angular2/rc/packages/core/index.d.ts') || 
+  // angular/angular repository direct sources
+  path.indexOf('angular/packages/core/src') !== -1;
 }
 
 function isTypeScriptFile(path: string): boolean {

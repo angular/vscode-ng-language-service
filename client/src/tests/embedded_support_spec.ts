@@ -8,66 +8,66 @@
 import * as vscode from 'vscode';
 import {DocumentUri, TextDocument} from 'vscode-languageserver-textdocument';
 
-import {isNotTypescriptOrInsideComponentDecorator} from '../embedded_support';
+import {isNotTypescriptOrSupportedDecoratorField} from '../embedded_support';
 
 describe('embedded language support', () => {
   describe('isInsideAngularContext', () => {
     it('empty file', () => {
-      test('¦', isNotTypescriptOrInsideComponentDecorator, false);
+      test('¦', isNotTypescriptOrSupportedDecoratorField, false);
     });
 
     it('just after template', () => {
       test(
-          `const foo = {template: '<div></div>'¦}`, isNotTypescriptOrInsideComponentDecorator,
+          `const foo = {template: '<div></div>'¦}`, isNotTypescriptOrSupportedDecoratorField,
           false);
     });
 
     it('inside template', () => {
       test(
-          `const foo = {template: '<div>¦</div>'}`, isNotTypescriptOrInsideComponentDecorator,
+          `const foo = {template: '<div>¦</div>'}`, isNotTypescriptOrSupportedDecoratorField,
           true);
     });
 
     it('just after templateUrl', () => {
       test(
-          `const foo = {templateUrl: './abc.html'¦}`, isNotTypescriptOrInsideComponentDecorator,
+          `const foo = {templateUrl: './abc.html'¦}`, isNotTypescriptOrSupportedDecoratorField,
           false);
     });
 
     it('inside templateUrl', () => {
       test(
-          `const foo = {templateUrl: './abc¦.html'}`, isNotTypescriptOrInsideComponentDecorator,
+          `const foo = {templateUrl: './abc¦.html'}`, isNotTypescriptOrSupportedDecoratorField,
           true);
     });
 
     it('just after styleUrls', () => {
       test(
-          `const foo = {styleUrls: ['./abc.css']¦}`, isNotTypescriptOrInsideComponentDecorator,
+          `const foo = {styleUrls: ['./abc.css']¦}`, isNotTypescriptOrSupportedDecoratorField,
           false);
     });
 
     it('inside first item of styleUrls', () => {
       test(
           `const foo = {styleUrls: ['./abc.c¦ss', 'def.css']}`,
-          isNotTypescriptOrInsideComponentDecorator, true);
+          isNotTypescriptOrSupportedDecoratorField, true);
     });
 
     it('inside second item of styleUrls', () => {
       test(
           `const foo = {styleUrls: ['./abc.css', 'def¦.css']}`,
-          isNotTypescriptOrInsideComponentDecorator, true);
+          isNotTypescriptOrSupportedDecoratorField, true);
     });
 
     it('inside second item of styleUrls, when first is complicated function', () => {
       test(
           `const foo = {styleUrls: [getCss({strict: true, dirs: ['apple', 'banana']}), 'def¦.css']}`,
-          isNotTypescriptOrInsideComponentDecorator, true);
+          isNotTypescriptOrSupportedDecoratorField, true);
     });
 
     it('inside non-string item of styleUrls', () => {
       test(
           `const foo = {styleUrls: [getCss({strict: true¦, dirs: ['apple', 'banana']}), 'def.css']}`,
-          isNotTypescriptOrInsideComponentDecorator, false);
+          isNotTypescriptOrSupportedDecoratorField, false);
     });
   });
 });

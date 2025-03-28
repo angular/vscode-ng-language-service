@@ -821,7 +821,20 @@ export class Session {
       // The content could be newer than that on disk. This could be due to
       // buffer in the user's editor which has not been saved to disk.
       // See https://github.com/angular/vscode-ng-language-service/issues/632
-      const result = this.projectService.openClientFile(filePath, text, scriptKind);
+      let result = this.projectService.openClientFile(filePath, text, scriptKind);
+      // If the first opened file is an HTML file and the project is a composite/solution-style project with references,
+      // TypeScript will _not_ open a project unless the file is explicitly included in the files/includes list.
+      // This is quite unlikely to be the case for HTML files. As a best-effort to fix this, we attempt to open
+      // a TS file with the same name. Most of the time, this is going to be the component file for the external template.
+      // https://github.com/angular/vscode-ng-language-service/issues/2149
+      if (result.configFileName === undefined && languageId === LanguageId.HTML) {
+        const maybeComponentTsPath = filePath.replace(/\.html$/, '.ts');
+        if (!this.projectService.openFiles.has(this.projectService.toPath(maybeComponentTsPath))) {
+          this.projectService.openClientFile(maybeComponentTsPath);
+          this.projectService.closeClientFile(maybeComponentTsPath);
+          result = this.projectService.openClientFile(filePath, text, scriptKind);
+        }
+      }
 
       const {configFileName, configFileErrors} = result;
       if (configFileErrors && configFileErrors.length) {
@@ -831,24 +844,22 @@ export class Session {
       const project = configFileName ?
           this.projectService.findProject(configFileName) :
           this.projectService.getScriptInfo(filePath)?.containingProjects.find(isConfiguredProject);
-      if (!project) {
+      if (!project?.languageServiceEnabled) {
         return;
       }
-      if (project.languageServiceEnabled) {
-        // The act of opening a file can cause the text storage to switchToScriptVersionCache for
-        // version tracking, which results in an identity change for the source file. This isn't
-        // typically an issue but the identity can change during an update operation for template
-        // type-checking, when we _only_ expect the typecheck files to change. This _is_ an issue
-        // because the because template type-checking should not modify the identity of any other
-        // source files (other than the generated typecheck files). We need to ensure that the
-        // compiler is aware of this change that shouldn't have happened and recompiles the file
-        // because we store references to some string expressions (inline templates, style/template
-        // urls).
-        // Note: markAsDirty() is not a public API
-        (project as any).markAsDirty();
-        // Show initial diagnostics
-        this.requestDiagnosticsOnOpenOrChangeFile(filePath, `Opening ${filePath}`);
-      }
+      // The act of opening a file can cause the text storage to switchToScriptVersionCache for
+      // version tracking, which results in an identity change for the source file. This isn't
+      // typically an issue but the identity can change during an update operation for template
+      // type-checking, when we _only_ expect the typecheck files to change. This _is_ an issue
+      // because the because template type-checking should not modify the identity of any other
+      // source files (other than the generated typecheck files). We need to ensure that the
+      // compiler is aware of this change that shouldn't have happened and recompiles the file
+      // because we store references to some string expressions (inline templates, style/template
+      // urls).
+      // Note: markAsDirty() is not a public API
+      (project as any).markAsDirty();
+      // Show initial diagnostics
+      this.requestDiagnosticsOnOpenOrChangeFile(filePath, `Opening ${filePath}`);
     } catch (error) {
       if (this.isProjectLoading) {
         this.isProjectLoading = false;

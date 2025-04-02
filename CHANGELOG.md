@@ -1,3 +1,12 @@
+# 19.2.3
+This release upgrades `@angular/language-service` to v19.2.5.
+
+* [fix(language-service):	Produce fatal diagnostic on duplicate decorated properties](https://github.com/angular/angular/commit/f4c4b10ea8dc263c30d1051a83a72486344d81e4)
+* [fix(language-service): Update adapter to log instead of throw errors](https://github.com/angular/angular/commit/ea62a4f3172d0618a33e8e95b49e133cfee6b15d)
+* [fix(syntaxes): variable token for @let binding](https://github.com/angular/vscode-ng-language-service/commit/0aa2aa572dedcad4c5fc3c6825227396f4e99f21)
+* [fix(syntaxes): keyword token for track](https://github.com/angular/vscode-ng-language-service/commit/8c84410f61ed87e261a83458af10af18cbf669a9)
+* [fix(syntaxes): Semicolons not tokenized](https://github.com/angular/vscode-ng-language-service/commit/39057fc2dbb37125778fb2c5c517c661f9399996)
+
 # 19.2.2
 This release upgrades `@angular/language-service` to v19.2.4.
 

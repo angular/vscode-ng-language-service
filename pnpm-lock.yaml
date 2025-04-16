@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@angular/language-service':
-        specifier: 19.2.5
-        version: registry.npmjs.org/@angular/language-service@19.2.5
+        specifier: 19.2.7
+        version: registry.npmjs.org/@angular/language-service@19.2.7
       typescript:
         specifier: 5.8.1-rc
         version: registry.npmjs.org/typescript@5.8.1-rc
@@ -433,10 +433,10 @@ packages:
       tslib: registry.npmjs.org/tslib@2.6.3
     dev: true
 
-  registry.npmjs.org/@angular/language-service@19.2.5:
-    resolution: {integrity: sha512-Q1L0NxDwsbP4T27uc+aHThBCaqHwuI20iuuvTVy7+QK8kRrpBDgnmNuJ4a0KSfe9xw1CMW48V9HdxhWA9DqCyg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-19.2.5.tgz}
+  registry.npmjs.org/@angular/language-service@19.2.7:
+    resolution: {integrity: sha512-+/Pa6NWkunZyHVPi8rAQX+5MmFSE7aBgB9Qs0ZiCymgdJt8aFC/ry0O62k+9s2uxBd//GS1CZSIttwOxOZnZ7w==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-19.2.7.tgz}
     name: '@angular/language-service'
-    version: 19.2.5
+    version: 19.2.7
     engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0}
     dev: false
 

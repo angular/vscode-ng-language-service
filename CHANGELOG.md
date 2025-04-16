@@ -1,3 +1,10 @@
+# 19.2.4
+This release upgrades `@angular/language-service` to v19.2.7.
+
+* [fix(language-service): Do not provide element completions in end tag](https://github.com/angular/angular/commit/a22b13f99041eb6931471aaa81391f9ab0ad7c6d)
+* [fix(language-service): Ensure dollar signs are escaped in completions](https://github.com/angular/angular/commit/b9cf414790f5217cd5c73f7520a11031bde6c864)
+* [fix(language-server): Do best-effort to initialize composite project](https://github.com/angular/vscode-ng-language-service/commit/f0c8831c1d66c13a48deae1dd4abe636825a8676)
+
 # 19.2.3
 This release upgrades `@angular/language-service` to v19.2.5.
 

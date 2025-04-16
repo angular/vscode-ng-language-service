@@ -270,7 +270,7 @@
   },
   "dependencies": {
     "@angular/language-service": "19.2.7",
-    "typescript": "5.8.1-rc",
+    "typescript": "5.8.3",
     "vscode-html-languageservice": "^4.2.5",
     "vscode-jsonrpc": "6.0.0",
     "vscode-languageclient": "7.0.0",

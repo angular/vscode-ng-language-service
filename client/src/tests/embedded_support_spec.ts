@@ -24,8 +24,7 @@ describe('embedded language support', () => {
 
     it('inside template', () => {
       test(
-          `const foo = {template: '<div>¦</div>'}`, isNotTypescriptOrSupportedDecoratorField,
-          true);
+          `const foo = {template: '<div>¦</div>'}`, isNotTypescriptOrSupportedDecoratorField, true);
     });
 
     it('just after templateUrl', () => {

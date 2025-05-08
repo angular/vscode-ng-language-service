@@ -822,10 +822,11 @@ export class Session {
       // buffer in the user's editor which has not been saved to disk.
       // See https://github.com/angular/vscode-ng-language-service/issues/632
       let result = this.projectService.openClientFile(filePath, text, scriptKind);
-      // If the first opened file is an HTML file and the project is a composite/solution-style project with references,
-      // TypeScript will _not_ open a project unless the file is explicitly included in the files/includes list.
-      // This is quite unlikely to be the case for HTML files. As a best-effort to fix this, we attempt to open
-      // a TS file with the same name. Most of the time, this is going to be the component file for the external template.
+      // If the first opened file is an HTML file and the project is a composite/solution-style
+      // project with references, TypeScript will _not_ open a project unless the file is explicitly
+      // included in the files/includes list. This is quite unlikely to be the case for HTML files.
+      // As a best-effort to fix this, we attempt to open a TS file with the same name. Most of the
+      // time, this is going to be the component file for the external template.
       // https://github.com/angular/vscode-ng-language-service/issues/2149
       if (result.configFileName === undefined && languageId === LanguageId.HTML) {
         const maybeComponentTsPath = filePath.replace(/\.html$/, '.ts');
@@ -1379,9 +1380,9 @@ function isExternalAngularCore(path: string): boolean {
 
 function isInternalAngularCore(path: string): boolean {
   // path in g3
-  return path.endsWith('angular2/rc/packages/core/index.d.ts') || 
-  // angular/angular repository direct sources
-  path.indexOf('angular/packages/core/src') !== -1;
+  return path.endsWith('angular2/rc/packages/core/index.d.ts') ||
+      // angular/angular repository direct sources
+      path.indexOf('angular/packages/core/src') !== -1;
 }
 
 function isTypeScriptFile(path: string): boolean {

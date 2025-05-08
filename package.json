@@ -2,7 +2,7 @@
   "name": "ng-template",
   "displayName": "Angular Language Service",
   "description": "Editor services for Angular templates",
-  "version": "19.2.3",
+  "version": "19.2.4",
   "publisher": "Angular",
   "icon": "angular.png",
   "license": "MIT",
@@ -269,8 +269,8 @@
     "test:legacy-syntaxes": "yarn compile:syntaxes-test && yarn build:syntaxes && jasmine dist/syntaxes/test/driver.js"
   },
   "dependencies": {
-    "@angular/language-service": "19.2.5",
-    "typescript": "5.8.1-rc",
+    "@angular/language-service": "^20.0.0-rc.0",
+    "typescript": "^5.8.1",
     "vscode-html-languageservice": "^4.2.5",
     "vscode-jsonrpc": "6.0.0",
     "vscode-languageclient": "7.0.0",
@@ -280,7 +280,7 @@
   },
   "devDependencies": {
     "@angular/dev-infra-private": "https://github.com/angular/dev-infra-private-builds.git#262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2",
-    "@angular/core": "^19.0.1",
+    "@angular/core": "^20.0.0-rc.0",
     "@bazel/bazelisk": "1.18.0",
     "@bazel/ibazel": "0.16.2",
     "@types/jasmine": "3.10.7",

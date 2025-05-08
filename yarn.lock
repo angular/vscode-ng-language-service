@@ -130,10 +130,10 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/core@^19.0.1":
-  version "19.0.1"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-19.0.1.tgz#7e89b3971b087c284bfeabd4f8874f76fa4c5400"
-  integrity sha512-+VpWcg2aC/dY9TM6fsj00enZ6RP5wpRqk/SeRe3UP3Je/n+vWIgHJTb1ZLNeOIvDaE86BhKPMwFS0QVjoEGQFA==
+"@angular/core@^20.0.0-rc.0":
+  version "20.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-20.0.0-rc.0.tgz#ea02d6f7a0a582adfd617e5a77377b8fb30981ec"
+  integrity sha512-RKIXYA129vdrRKrnac2XOgpWuYusWqwM4KsQ7b5qKIMZabJ0a2GoOlezT6+NhPkOSsyygYuZtaia5wzQeU1acA==
   dependencies:
     tslib "^2.3.0"
 
@@ -173,10 +173,10 @@
     uuid "^8.3.2"
     yargs "^17.0.0"
 
-"@angular/language-service@19.2.7":
-  version "19.2.7"
-  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-19.2.7.tgz#6d8ef4eec7b7d7f1da4cf87d52b5aa6b2e236294"
-  integrity sha512-+/Pa6NWkunZyHVPi8rAQX+5MmFSE7aBgB9Qs0ZiCymgdJt8aFC/ry0O62k+9s2uxBd//GS1CZSIttwOxOZnZ7w==
+"@angular/language-service@^20.0.0-rc.0":
+  version "20.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-20.0.0-rc.0.tgz#97e37e119e49ef190c5caa2f84e9506d36dc1ee3"
+  integrity sha512-7oN7QZyQmAGDlkTA1O1SsN4nigk6B+uduW6TndQnPSgVY/aR2yL6H3tmVuUjbT7wKYk4ND238BU/AP4fiPx6Pg==
 
 "@assemblyscript/loader@^0.10.1":
   version "0.10.1"
@@ -7258,10 +7258,10 @@ typed-rest-client@^1.8.4:
     tunnel "0.0.6"
     underscore "^1.12.1"
 
-typescript@5.8.1-rc:
-  version "5.8.1-rc"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.8.1-rc.tgz#678b7586bf1d7fdec0dbf35708ab7bb39ce13c3d"
-  integrity sha512-D8IlSOUk1E08jpFdK81reYkA1a/4XtEdV6MElOGdbu/uOy1RpEDqNO/onWmqUaLkTyeHmmU/QlWvjcM9cqF85g==
+typescript@^5.8.1:
+  version "5.8.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.8.3.tgz#92f8a3e5e3cf497356f4178c34cd65a7f5e8440e"
+  integrity sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==
 
 typescript@~4.6.3:
   version "4.6.4"

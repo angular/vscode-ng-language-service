@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "ng-packagr": "^18.0.0-next.0",
-    "typescript": "~5.5.3"
+    "typescript": "~5.8.0"
   },
   "scripts": {
     "build": "ng-packagr -p libs/post/ng-package.json -c libs/post/tsconfig.json"

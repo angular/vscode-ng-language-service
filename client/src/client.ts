@@ -316,6 +316,13 @@ export class AngularLanguageClient implements vscode.Disposable {
       args.push('--includeCompletionsWithSnippetText');
     }
 
+    const includeCompletionsForModuleExports = config.get<boolean>('angular.suggest.autoImports');
+    args.push(
+        '--includeCompletionsForModuleExports',
+        includeCompletionsForModuleExports === undefined ?
+            'true' :
+            includeCompletionsForModuleExports.toString());
+
     // Sort the versions from oldest to newest.
     const angularVersions = (await getAngularVersionsInWorkspace(this.outputChannel))
                                 .sort((a, b) => a.version.greaterThanOrEqual(b.version) ? 1 : -1);

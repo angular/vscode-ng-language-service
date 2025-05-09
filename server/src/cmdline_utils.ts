@@ -14,6 +14,31 @@ function findArgument(argv: string[], argName: string): string|undefined {
   return argv[index + 1];
 }
 
+function findArgumentWithDefault<T>(argv: string[], argName: string, defaultValue: T): T|string|
+    undefined {
+  const index = argv.indexOf(argName);
+  if (index < 0) {
+    return defaultValue;
+  }
+  if (index === argv.length - 1) {
+    return undefined;
+  }
+  const argValue = argv[index + 1];
+  if (argValue.startsWith('-')) {
+    return undefined;
+  } else {
+    return argValue;
+  }
+}
+
+function parseBooleanArgument(argv: string[], argName: string): boolean {
+  const argValue = findArgumentWithDefault(argv, argName, 'true');
+  if (argValue === undefined || argValue === 'true') {
+    return true;
+  }
+  return false;
+}
+
 function parseStringArray(argv: string[], argName: string): string[] {
   const arg = findArgument(argv, argName);
   if (!arg) {
@@ -36,6 +61,7 @@ interface CommandLineOptions {
   tsdk: string|null;
   includeAutomaticOptionalChainCompletions: boolean;
   includeCompletionsWithSnippetText: boolean;
+  includeCompletionsForModuleExports: boolean;
   forceStrictTemplates: boolean;
   disableBlockSyntax: boolean;
   disableLetSyntax: boolean;
@@ -55,6 +81,8 @@ export function parseCommandLine(argv: string[]): CommandLineOptions {
     includeAutomaticOptionalChainCompletions:
         hasArgument(argv, '--includeAutomaticOptionalChainCompletions'),
     includeCompletionsWithSnippetText: hasArgument(argv, '--includeCompletionsWithSnippetText'),
+    includeCompletionsForModuleExports:
+        parseBooleanArgument(argv, '--includeCompletionsForModuleExports'),
     forceStrictTemplates: hasArgument(argv, '--forceStrictTemplates'),
     disableBlockSyntax: hasArgument(argv, '--disableBlockSyntax'),
     disableLetSyntax: hasArgument(argv, '--disableLetSyntax'),

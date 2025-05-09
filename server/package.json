@@ -9,13 +9,13 @@
   "author": "Angular",
   "license": "MIT",
   "engines": {
-    "node": "^18.19.1 || ^20.11.1"
+    "node": "^20.11.1 || ^22.11.0"
   },
   "bin": {
     "ngserver": "./bin/ngserver"
   },
   "dependencies": {
-    "@angular/language-service": "19.2.7",
+    "@angular/language-service": "20.0.0-rc.0",
     "vscode-html-languageservice": "^4.2.5",
     "vscode-jsonrpc": "6.0.0",
     "vscode-languageserver": "7.0.0",

@@ -1,3 +1,8 @@
+# 20.0.0
+This release upgrades `@angular/language-service` to v20.0.0-rc.0.
+
+* [feat(language-server): support type checking of host bindings](https://github.com/angular/angular/pull/60267)
+
 # 19.2.4
 This release upgrades `@angular/language-service` to v19.2.7.
 

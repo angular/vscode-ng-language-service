@@ -36,6 +36,7 @@ interface CommandLineOptions {
   tsdk: string|null;
   includeAutomaticOptionalChainCompletions: boolean;
   includeCompletionsWithSnippetText: boolean;
+  includeCompletionsForModuleExports: boolean;
   forceStrictTemplates: boolean;
   disableBlockSyntax: boolean;
   disableLetSyntax: boolean;
@@ -55,6 +56,7 @@ export function parseCommandLine(argv: string[]): CommandLineOptions {
     includeAutomaticOptionalChainCompletions:
         hasArgument(argv, '--includeAutomaticOptionalChainCompletions'),
     includeCompletionsWithSnippetText: hasArgument(argv, '--includeCompletionsWithSnippetText'),
+    includeCompletionsForModuleExports: hasArgument(argv, '--includeCompletionsForModuleExports'),
     forceStrictTemplates: hasArgument(argv, '--forceStrictTemplates'),
     disableBlockSyntax: hasArgument(argv, '--disableBlockSyntax'),
     disableLetSyntax: hasArgument(argv, '--disableLetSyntax'),

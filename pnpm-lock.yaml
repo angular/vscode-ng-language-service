@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@angular/language-service':
-        specifier: ^20.0.0-rc.0
-        version: registry.npmjs.org/@angular/language-service@20.0.0-rc.0
+        specifier: ^20.0.0-rc.2
+        version: registry.npmjs.org/@angular/language-service@20.0.0-rc.2
       typescript:
         specifier: ^5.8.1
         version: registry.npmjs.org/typescript@5.8.3
@@ -34,8 +34,8 @@ importers:
         version: registry.npmjs.org/vscode-uri@3.0.7
     devDependencies:
       '@angular/core':
-        specifier: ^20.0.0-rc.0
-        version: registry.npmjs.org/@angular/core@20.0.0-rc.0(@angular/compiler@14.3.0)(rxjs@6.6.7)
+        specifier: ^20.0.0-rc.2
+        version: registry.npmjs.org/@angular/core@20.0.0-rc.2(@angular/compiler@14.3.0)(rxjs@6.6.7)
       '@angular/dev-infra-private':
         specifier: https://github.com/angular/dev-infra-private-builds.git#262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2
         version: github.com/angular/dev-infra-private-builds/262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2(@angular/compiler-cli@14.3.0)(karma-chrome-launcher@3.2.0)(karma-firefox-launcher@2.1.3)(karma-jasmine@5.1.0)(karma-junit-reporter@2.0.1)(karma-requirejs@1.1.0)(karma-sourcemap-loader@0.4.0)(karma@6.4.4)(rxjs@6.6.7)(terser@5.8.0)
@@ -373,7 +373,7 @@ packages:
       '@angular/compiler': 14.3.0
       typescript: '>=4.6.2 <4.9'
     dependencies:
-      '@angular/compiler': registry.npmjs.org/@angular/compiler@14.3.0(@angular/core@20.0.0-rc.0)
+      '@angular/compiler': registry.npmjs.org/@angular/compiler@14.3.0(@angular/core@20.0.0-rc.2)
       '@babel/core': registry.npmjs.org/@babel/core@7.24.9
       chokidar: registry.npmjs.org/chokidar@3.6.0
       convert-source-map: registry.npmjs.org/convert-source-map@1.9.0
@@ -389,7 +389,7 @@ packages:
       - supports-color
     dev: true
 
-  registry.npmjs.org/@angular/compiler@14.3.0(@angular/core@20.0.0-rc.0):
+  registry.npmjs.org/@angular/compiler@14.3.0(@angular/core@20.0.0-rc.2):
     resolution: {integrity: sha512-E15Rh0t3vA+bctbKnBCaDmLvc3ix+ZBt6yFZmhZalReQ+KpOlvOJv+L9oiFEgg+rYVl2QdvN7US1fvT0PqswLw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/compiler/-/compiler-14.3.0.tgz}
     id: registry.npmjs.org/@angular/compiler/14.3.0
     name: '@angular/compiler'
@@ -401,7 +401,7 @@ packages:
       '@angular/core':
         optional: true
     dependencies:
-      '@angular/core': registry.npmjs.org/@angular/core@20.0.0-rc.0(@angular/compiler@14.3.0)(rxjs@6.6.7)
+      '@angular/core': registry.npmjs.org/@angular/core@20.0.0-rc.2(@angular/compiler@14.3.0)(rxjs@6.6.7)
       tslib: registry.npmjs.org/tslib@2.6.3
     dev: true
 
@@ -419,30 +419,30 @@ packages:
       tslib: registry.npmjs.org/tslib@2.6.3
     dev: true
 
-  registry.npmjs.org/@angular/core@20.0.0-rc.0(@angular/compiler@14.3.0)(rxjs@6.6.7):
-    resolution: {integrity: sha512-RKIXYA129vdrRKrnac2XOgpWuYusWqwM4KsQ7b5qKIMZabJ0a2GoOlezT6+NhPkOSsyygYuZtaia5wzQeU1acA==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/core/-/core-20.0.0-rc.0.tgz}
-    id: registry.npmjs.org/@angular/core/20.0.0-rc.0
+  registry.npmjs.org/@angular/core@20.0.0-rc.2(@angular/compiler@14.3.0)(rxjs@6.6.7):
+    resolution: {integrity: sha512-yblIk2fE5PUVfzeono+fEd/gQsIH45kmOrxmmmAjXBx1B5qXkoBGgFMtqtJ4VjQRVk1CsLFikCejBoygz6waeA==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/core/-/core-20.0.0-rc.2.tgz}
+    id: registry.npmjs.org/@angular/core/20.0.0-rc.2
     name: '@angular/core'
-    version: 20.0.0-rc.0
-    engines: {node: ^20.11.1 || ^22.11.0 || >=24.0.0}
+    version: 20.0.0-rc.2
+    engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
     peerDependencies:
-      '@angular/compiler': 20.0.0-rc.0
+      '@angular/compiler': 20.0.0-rc.2
       rxjs: ^6.5.3 || ^7.4.0
       zone.js: ~0.15.0
     peerDependenciesMeta:
       '@angular/compiler':
         optional: true
     dependencies:
-      '@angular/compiler': registry.npmjs.org/@angular/compiler@14.3.0(@angular/core@20.0.0-rc.0)
+      '@angular/compiler': registry.npmjs.org/@angular/compiler@14.3.0(@angular/core@20.0.0-rc.2)
       rxjs: registry.npmjs.org/rxjs@6.6.7
       tslib: registry.npmjs.org/tslib@2.6.3
     dev: true
 
-  registry.npmjs.org/@angular/language-service@20.0.0-rc.0:
-    resolution: {integrity: sha512-7oN7QZyQmAGDlkTA1O1SsN4nigk6B+uduW6TndQnPSgVY/aR2yL6H3tmVuUjbT7wKYk4ND238BU/AP4fiPx6Pg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-20.0.0-rc.0.tgz}
+  registry.npmjs.org/@angular/language-service@20.0.0-rc.2:
+    resolution: {integrity: sha512-2XVMORuIdUKSAR6Df8eOLlU0oFGDGxpz9DZquaEG8sI2sH/4hyHEZWuBtwTeCeZSEBhVbF75Y+eWXViaOGrClA==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-20.0.0-rc.2.tgz}
     name: '@angular/language-service'
-    version: 20.0.0-rc.0
-    engines: {node: ^20.11.1 || ^22.11.0 || >=24.0.0}
+    version: 20.0.0-rc.2
+    engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
     dev: false
 
   registry.npmjs.org/@assemblyscript/loader@0.10.1:

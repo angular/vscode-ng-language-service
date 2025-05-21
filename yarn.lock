@@ -130,10 +130,10 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/core@^20.0.0-rc.0":
-  version "20.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-20.0.0-rc.0.tgz#ea02d6f7a0a582adfd617e5a77377b8fb30981ec"
-  integrity sha512-RKIXYA129vdrRKrnac2XOgpWuYusWqwM4KsQ7b5qKIMZabJ0a2GoOlezT6+NhPkOSsyygYuZtaia5wzQeU1acA==
+"@angular/core@^20.0.0-rc.2":
+  version "20.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-20.0.0-rc.2.tgz#b95bd86728febada2732de9052ae6107aca257c9"
+  integrity sha512-yblIk2fE5PUVfzeono+fEd/gQsIH45kmOrxmmmAjXBx1B5qXkoBGgFMtqtJ4VjQRVk1CsLFikCejBoygz6waeA==
   dependencies:
     tslib "^2.3.0"
 
@@ -173,10 +173,10 @@
     uuid "^8.3.2"
     yargs "^17.0.0"
 
-"@angular/language-service@^20.0.0-rc.0":
-  version "20.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-20.0.0-rc.0.tgz#97e37e119e49ef190c5caa2f84e9506d36dc1ee3"
-  integrity sha512-7oN7QZyQmAGDlkTA1O1SsN4nigk6B+uduW6TndQnPSgVY/aR2yL6H3tmVuUjbT7wKYk4ND238BU/AP4fiPx6Pg==
+"@angular/language-service@^20.0.0-rc.2":
+  version "20.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-20.0.0-rc.2.tgz#97b99c19872a1996ecfe8025db33fcdb77985fc7"
+  integrity sha512-2XVMORuIdUKSAR6Df8eOLlU0oFGDGxpz9DZquaEG8sI2sH/4hyHEZWuBtwTeCeZSEBhVbF75Y+eWXViaOGrClA==
 
 "@assemblyscript/loader@^0.10.1":
   version "0.10.1"

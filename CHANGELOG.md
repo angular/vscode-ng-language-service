@@ -1,3 +1,8 @@
+# 20.0.1
+This release upgrades `@angular/language-service` to v20.0.0-rc.2.
+
+* [fix(language-server): fix	Always retain prior results for all files](https://github.com/angular/angular/pull/61487)
+
 # 20.0.0
 This release upgrades `@angular/language-service` to v20.0.0-rc.0.
 

@@ -2,7 +2,7 @@
   "name": "ng-template",
   "displayName": "Angular Language Service",
   "description": "Editor services for Angular templates",
-  "version": "20.0.1",
+  "version": "20.1.0-next.0",
   "publisher": "Angular",
   "icon": "angular.png",
   "license": "MIT",
@@ -269,7 +269,7 @@
     "test:legacy-syntaxes": "yarn compile:syntaxes-test && yarn build:syntaxes && jasmine dist/syntaxes/test/driver.js"
   },
   "dependencies": {
-    "@angular/language-service": "^20.0.0-rc.2",
+    "@angular/language-service": "^20.1.0-next.0",
     "typescript": "^5.8.1",
     "vscode-html-languageservice": "^4.2.5",
     "vscode-jsonrpc": "6.0.0",

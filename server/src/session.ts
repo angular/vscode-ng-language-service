@@ -32,6 +32,7 @@ export interface SessionOptions {
   logToConsole: boolean;
   includeAutomaticOptionalChainCompletions: boolean;
   includeCompletionsWithSnippetText: boolean;
+  includeCompletionsForModuleExports: boolean;
   forceStrictTemplates: boolean;
   disableBlockSyntax: boolean;
   disableLetSyntax: boolean;
@@ -49,7 +50,7 @@ const EMPTY_RANGE = lsp.Range.create(0, 0, 0, 0);
 const setImmediateP = promisify(setImmediate);
 
 const defaultFormatOptions: ts.FormatCodeSettings = {};
-const defaultPreferences: ts.UserPreferences = {};
+let defaultPreferences: ts.UserPreferences = {};
 
 const htmlLS = getHTMLLanguageService();
 
@@ -70,6 +71,7 @@ export class Session {
   private readonly openFiles = new MruTracker();
   private readonly includeAutomaticOptionalChainCompletions: boolean;
   private readonly includeCompletionsWithSnippetText: boolean;
+  private readonly includeCompletionsForModuleExports: boolean;
   private snippetSupport: boolean|undefined;
   private diagnosticsTimeout: NodeJS.Timeout|null = null;
   private isProjectLoading = false;
@@ -86,8 +88,13 @@ export class Session {
     this.includeAutomaticOptionalChainCompletions =
         options.includeAutomaticOptionalChainCompletions;
     this.includeCompletionsWithSnippetText = options.includeCompletionsWithSnippetText;
+    this.includeCompletionsForModuleExports = options.includeCompletionsForModuleExports;
     this.logger = options.logger;
     this.logToConsole = options.logToConsole;
+    defaultPreferences = {
+      ...defaultPreferences,
+      includeCompletionsForModuleExports: options.includeCompletionsForModuleExports,
+    };
     // Create a connection for the server. The connection uses Node's IPC as a transport.
     this.connection = lsp.createConnection({
       // cancelUndispatched is a "middleware" to handle all cancellation requests.
@@ -150,6 +157,7 @@ export class Session {
         // We don't want the AutoImportProvider projects to be created. See
         // https://devblogs.microsoft.com/typescript/announcing-typescript-4-0/#smarter-auto-imports
         includePackageJsonAutoImports: 'off',
+        includeCompletionsForModuleExports: this.includeCompletionsForModuleExports,
       },
       watchOptions: {
         // Used as watch options when not specified by user's `tsconfig`.
@@ -1234,12 +1242,14 @@ export class Session {
     let options: ts.GetCompletionsAtPositionOptions = {};
     const includeCompletionsWithSnippetText =
         this.includeCompletionsWithSnippetText && this.snippetSupport;
-    if (this.includeAutomaticOptionalChainCompletions || includeCompletionsWithSnippetText) {
+    if (this.includeAutomaticOptionalChainCompletions || includeCompletionsWithSnippetText ||
+        this.includeCompletionsForModuleExports) {
       options = {
         includeAutomaticOptionalChainCompletions: this.includeAutomaticOptionalChainCompletions,
         includeCompletionsWithSnippetText: includeCompletionsWithSnippetText,
         includeCompletionsWithInsertText:
             this.includeAutomaticOptionalChainCompletions || includeCompletionsWithSnippetText,
+        includeCompletionsForModuleExports: this.includeCompletionsForModuleExports,
       };
     }
 
@@ -1269,8 +1279,8 @@ export class Session {
 
     const offset = lspPositionToTsPosition(scriptInfo, position);
     const details = languageService.getCompletionEntryDetails(
-        filePath, offset, item.insertText ?? item.label, undefined, undefined, undefined,
-        undefined);
+        filePath, offset, item.insertText ?? item.label, undefined, undefined, defaultPreferences,
+        data.tsData);
     if (details === undefined) {
       return item;
     }

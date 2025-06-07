@@ -143,6 +143,11 @@
           "default": true,
           "markdownDescription": "Enable snippet completions from Angular language server. Requires using TypeScript 4.3+ in the workspace."
         },
+        "angular.suggest.autoImports": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Enable/disable auto import suggestions for the exported Angular components from the current project."
+        },
         "angular.forceStrictTemplates": {
           "type": "boolean",
           "default": false,

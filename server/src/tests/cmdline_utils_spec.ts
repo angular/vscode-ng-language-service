@@ -33,4 +33,24 @@ describe('parseCommandLine', () => {
     const options = parseCommandLine(['--tsProbeLocations', '/baz,/qux']);
     expect(options.tsProbeLocations).toEqual(['/baz', '/qux']);
   });
+
+  it('should parse without "includeCompletionsForModuleExports"', () => {
+    const options = parseCommandLine(['--tsProbeLocations', '/baz,/qux']);
+    expect(options.includeCompletionsForModuleExports).toEqual(true);
+  });
+
+  it('should parse with "--includeCompletionsForModuleExports --help"', () => {
+    const options = parseCommandLine(['--includeCompletionsForModuleExports', '--help']);
+    expect(options.includeCompletionsForModuleExports).toEqual(true);
+  });
+
+  it('should parse with "--includeCompletionsForModuleExports true --help"', () => {
+    const options = parseCommandLine(['--includeCompletionsForModuleExports', 'true', '--help']);
+    expect(options.includeCompletionsForModuleExports).toEqual(true);
+  });
+
+  it('should parse with "--includeCompletionsForModuleExports false --help"', () => {
+    const options = parseCommandLine(['--includeCompletionsForModuleExports', 'false', '--help']);
+    expect(options.includeCompletionsForModuleExports).toEqual(false);
+  });
 });

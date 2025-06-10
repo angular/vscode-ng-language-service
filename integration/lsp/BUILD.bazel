@@ -6,6 +6,8 @@ jasmine_test(
     data = [
         "//integration",
         "//integration/project",
+        "//integration/project:node_modules/@angular/core",
+        "//integration/project:node_modules/@angular/common",
         "//integration/pre_standalone_project",
         "//integration/pre_standalone_project:node_modules/@angular/core",
         "//integration/pre_standalone_project:node_modules/@angular/common",

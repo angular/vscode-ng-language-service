@@ -47,6 +47,7 @@ function main() {
     logToConsole: options.logToConsole,
     includeAutomaticOptionalChainCompletions: options.includeAutomaticOptionalChainCompletions,
     includeCompletionsWithSnippetText: options.includeCompletionsWithSnippetText,
+    includeCompletionsForModuleExports: options.includeCompletionsForModuleExports,
     forceStrictTemplates: isG3 || options.forceStrictTemplates,
     disableBlockSyntax: options.disableBlockSyntax,
     disableLetSyntax: options.disableLetSyntax,

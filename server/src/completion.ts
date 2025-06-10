@@ -47,6 +47,8 @@ export interface NgCompletionOriginData {
 
   filePath: string;
   position: lsp.Position;
+
+  tsData?: ts.CompletionEntryData;
 }
 
 /**
@@ -135,6 +137,7 @@ export function tsCompletionEntryToLspCompletionItem(
     kind: 'ngCompletionOriginData',
     filePath: scriptInfo.fileName,
     position,
+    tsData: entry.data,
   } as NgCompletionOriginData;
   return item;
 }

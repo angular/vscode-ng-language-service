@@ -113,12 +113,14 @@ export function lspRangeToTsPositions(
  * @param relatedInfo
  */
 export function tsRelatedInformationToLspRelatedInformation(
-    scriptInfo: ts.server.ScriptInfo,
+    projectService: ts.server.ProjectService,
     relatedInfo?: ts.DiagnosticRelatedInformation[]): lsp.DiagnosticRelatedInformation[]|undefined {
   if (relatedInfo === undefined) return;
   const lspRelatedInfo: lsp.DiagnosticRelatedInformation[] = [];
   for (const info of relatedInfo) {
     if (info.file === undefined || info.start === undefined || info.length === undefined) continue;
+    const scriptInfo = projectService.getScriptInfo(info.file.fileName);
+    if (scriptInfo === undefined) continue;
     const textSpan: ts.TextSpan = {
       start: info.start,
       length: info.length,

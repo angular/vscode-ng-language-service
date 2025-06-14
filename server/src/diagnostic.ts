@@ -35,17 +35,21 @@ function tsDiagnosticCategoryToLspDiagnosticSeverity(category: ts.DiagnosticCate
  * @param scriptInfo Used to compute proper offset.
  */
 export function tsDiagnosticToLspDiagnostic(
-    tsDiag: ts.Diagnostic, scriptInfo: ts.server.ScriptInfo): lsp.Diagnostic {
+    tsDiag: ts.Diagnostic, projectService: ts.server.ProjectService): lsp.Diagnostic {
   const textSpan: ts.TextSpan = {
     start: tsDiag.start || 0,
     length: tsDiag.length || 0,
   };
-  return lsp.Diagnostic.create(
-      tsTextSpanToLspRange(scriptInfo, textSpan),
-      ts.flattenDiagnosticMessageText(tsDiag.messageText, '\n'),
-      tsDiagnosticCategoryToLspDiagnosticSeverity(tsDiag.category),
-      tsDiag.code,
-      tsDiag.source,
-      tsRelatedInformationToLspRelatedInformation(scriptInfo, tsDiag.relatedInformation),
-  );
+
+  const diagScriptInfo =
+      tsDiag.file !== undefined ? projectService.getScriptInfo(tsDiag.file.fileName) : undefined;
+  const range = diagScriptInfo !== undefined ? tsTextSpanToLspRange(diagScriptInfo, textSpan) :
+                                               lsp.Range.create(0, 0, 0, 0);
+  const diag = lsp.Diagnostic.create(
+      range, ts.flattenDiagnosticMessageText(tsDiag.messageText, '\n'),
+      tsDiagnosticCategoryToLspDiagnosticSeverity(tsDiag.category), tsDiag.code, tsDiag.source,
+      tsRelatedInformationToLspRelatedInformation(projectService, tsDiag.relatedInformation));
+  diag.tags = tsDiag.reportsDeprecated !== undefined ? [lsp.DiagnosticTag.Deprecated] : undefined;
+
+  return diag;
 }

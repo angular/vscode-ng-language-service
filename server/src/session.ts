@@ -710,11 +710,21 @@ export class Session {
       if (isDebugMode) {
         console.timeEnd(label);
       }
+
+      const suggestionLabel = `${reason} - getSuggestionDiagnostics for ${fileName}`;
+      if (isDebugMode) {
+        console.time(suggestionLabel);
+      }
+      diagnostics.push(...result.languageService.getSuggestionDiagnostics(fileName));
+      if (isDebugMode) {
+        console.timeEnd(suggestionLabel);
+      }
+
       // Need to send diagnostics even if it's empty otherwise editor state will
       // not be updated.
       this.connection.sendDiagnostics({
         uri: filePathToUri(fileName),
-        diagnostics: diagnostics.map(d => tsDiagnosticToLspDiagnostic(d, result.scriptInfo)),
+        diagnostics: diagnostics.map(d => tsDiagnosticToLspDiagnostic(d, this.projectService)),
       });
       if (this.diagnosticsTimeout) {
         // There is a pending request to check diagnostics for all open files,

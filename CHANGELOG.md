@@ -1,3 +1,10 @@
+# 20.1.0
+This release upgrades `@angular/language-service` to v20.1.0-rc.0.
+
+* [feat(language-server): Support semantic tokens for components in templates](https://github.com/angular/vscode-ng-language-service/commit/1c0fd4e94daf3d082c0f629d9ec0e32ff290b354)
+* [feat(language-server): Support external modules in autocomplete](https://github.com/angular/vscode-ng-language-service/commit/a39e01df7d474b1495ea93dd64c26880c54ec4de)
+* [feat(language-service): Quick fix missing required inputs](https://github.com/angular/angular/commit/5d2e85920e714560e8d06bfb9c41d9312eeaae3b)
+
 # 20.0.1
 This release upgrades `@angular/language-service` to v20.0.0-rc.2.
 

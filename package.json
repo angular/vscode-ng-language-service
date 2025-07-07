@@ -269,7 +269,7 @@
     "test:legacy-syntaxes": "yarn compile:syntaxes-test && yarn build:syntaxes && jasmine dist/syntaxes/test/driver.js"
   },
   "dependencies": {
-    "@angular/language-service": "^20.1.0-next.0",
+    "@angular/language-service": "20.1.0-rc.0",
     "typescript": "^5.8.1",
     "vscode-html-languageservice": "^4.2.5",
     "vscode-jsonrpc": "6.0.0",

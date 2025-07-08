@@ -20,7 +20,6 @@ import {GetComponentsWithTemplateFile, GetTcbParams, GetTcbRequest, GetTcbRespon
 import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './completion';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
 import {getHTMLVirtualContent} from './embedded_support';
-import {getSemanticTokens} from './semantic_tokens';
 import {ServerHost} from './server_host';
 import {documentationToMarkdown} from './text_render';
 import {filePathToUri, getMappedDefinitionInfo, isConfiguredProject, isDebugMode, lspPositionToTsPosition, lspRangeToTsPositions, MruTracker, tsDisplayPartsToText, tsFileTextChangesToLspWorkspaceEdit, tsTextSpanToLspRange, uriToFilePath} from './utils';
@@ -218,37 +217,7 @@ export class Session {
     conn.onSignatureHelp(p => this.onSignatureHelp(p));
     conn.onCodeAction(p => this.onCodeAction(p));
     conn.onCodeActionResolve(async p => await this.onCodeActionResolve(p));
-    conn.onRequest(lsp.SemanticTokensRequest.type, p => this.onSemanticTokensRequest(p));
-    conn.onRequest(lsp.SemanticTokensRangeRequest.type, p => this.onSemanticTokensRangeRequest(p));
   }
-
-  private onSemanticTokensRequest(params: lsp.SemanticTokensParams): lsp.SemanticTokens|null {
-    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
-    if (lsInfo === null) {
-      return null;
-    }
-    const {languageService, scriptInfo} = lsInfo;
-    const span = {start: 0, length: scriptInfo.getSnapshot().getLength()};
-    const classifications = languageService.getEncodedSemanticClassifications(
-        scriptInfo.fileName, span, ts.SemanticClassificationFormat.TwentyTwenty);
-    return getSemanticTokens(languageService, classifications, scriptInfo);
-  }
-
-  private onSemanticTokensRangeRequest(params: lsp.SemanticTokensRangeParams): lsp.SemanticTokens
-      |null {
-    const lsInfo = this.getLSAndScriptInfo(params.textDocument);
-    if (lsInfo === null) {
-      return null;
-    }
-    const {languageService, scriptInfo} = lsInfo;
-    const start = lspPositionToTsPosition(lsInfo.scriptInfo, params.range.start);
-    const end = lspPositionToTsPosition(lsInfo.scriptInfo, params.range.end);
-    const span = {start, length: end - start};
-    const classifications = languageService.getEncodedSemanticClassifications(
-        scriptInfo.fileName, span, ts.SemanticClassificationFormat.TwentyTwenty);
-    return getSemanticTokens(languageService, classifications, scriptInfo);
-  }
-
 
   private onCodeAction(params: lsp.CodeActionParams): lsp.CodeAction[]|null {
     const filePath = uriToFilePath(params.textDocument.uri);
@@ -840,17 +809,6 @@ export class Session {
           // [here](https://github.com/angular/vscode-ng-language-service/issues/1828)
           codeActionKinds: [lsp.CodeActionKind.QuickFix],
         },
-        semanticTokensProvider: {
-          documentSelector: null,
-          legend: {
-            tokenTypes: [
-              'class',
-            ],
-            tokenModifiers: [],
-          },
-          full: true,
-          range: true
-        }
       },
       serverOptions,
     };

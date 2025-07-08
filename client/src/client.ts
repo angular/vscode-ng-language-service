@@ -171,16 +171,6 @@ export class AngularLanguageClient implements vscode.Disposable {
           }
           return next(document, context, token);
         },
-        provideDocumentSemanticTokens: async (document, token, next) => {
-          if (await this.isInAngularProject(document)) {
-            return next(document, token);
-          }
-        },
-        provideDocumentRangeSemanticTokens: async (document, range, token, next) => {
-          if (await this.isInAngularProject(document)) {
-            return next(document, range, token);
-          }
-        },
       }
     };
   }

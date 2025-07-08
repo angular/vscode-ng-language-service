@@ -1,3 +1,7 @@
+# 20.1.1
+
+* [fix(server): Remove custom semantic tokens to fix regression in file highlighting](https://github.com/angular/vscode-ng-language-service/pull/2197)
+
 # 20.1.0
 This release upgrades `@angular/language-service` to v20.1.0-rc.0.
 

@@ -1,36 +1,63 @@
-lockfileVersion: 5.3
+lockfileVersion: '9.0'
 
-specifiers:
-  '@angular/common': 18.2.10
-  '@angular/core': 18.2.10
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
-dependencies:
-  '@angular/common': 18.2.10_@angular+core@18.2.10
-  '@angular/core': 18.2.10
+importers:
+
+  .:
+    dependencies:
+      '@angular/common':
+        specifier: 20.2.0-next.1
+        version: 20.2.0-next.1(@angular/core@20.2.0-next.1(rxjs@7.8.2))(rxjs@7.8.2)
+      '@angular/core':
+        specifier: 20.2.0-next.1
+        version: 20.2.0-next.1(rxjs@7.8.2)
 
 packages:
 
-  /@angular/common/18.2.10_@angular+core@18.2.10:
-    resolution: {integrity: sha512-YzTCmuqLiOuT+Yv07vuKymDWiebOVZ8BuXakJiz4EM7FMoOw5gICHJ04jepZSjDNWpA16e7kJSdt5ucnmvCFDQ==}
-    engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0}
+  '@angular/common@20.2.0-next.1':
+    resolution: {integrity: sha512-I5njujaVyRfA7IGBUAhgSWw4XYWqx79qyzlXuMOGBOgGSUFfx/n7Uv1yfm4O9STA9Rmdqj3z6/q8lHe7pmidOA==}
+    engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
     peerDependencies:
-      '@angular/core': 18.2.10
+      '@angular/core': 20.2.0-next.1
       rxjs: ^6.5.3 || ^7.4.0
-    dependencies:
-      '@angular/core': 18.2.10
-      tslib: 2.8.1
-    dev: false
 
-  /@angular/core/18.2.10:
-    resolution: {integrity: sha512-EfxVz0pLaxnOppOYkdhnaUkk8HZT+uxaAGpJD3ppAa7YAWTE9xIGoNJmtS33cZNNOnvriMkdv7yn6pDtV4ct+Q==}
-    engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0}
+  '@angular/core@20.2.0-next.1':
+    resolution: {integrity: sha512-lCvQC1J7m6T0RAbKmfNxrZTje8qGom3ALkjino4EiTzzT0bfRGXC5a0rySVR1cIqXe9UMgSlTyyU2Tc5Sqex5g==}
+    engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
     peerDependencies:
+      '@angular/compiler': 20.2.0-next.1
       rxjs: ^6.5.3 || ^7.4.0
-      zone.js: ~0.14.10
-    dependencies:
-      tslib: 2.8.1
-    dev: false
+      zone.js: ~0.15.0
+    peerDependenciesMeta:
+      '@angular/compiler':
+        optional: true
+      zone.js:
+        optional: true
 
-  /tslib/2.8.1:
+  rxjs@7.8.2:
+    resolution: {integrity: sha512-dhKf903U/PQZY6boNNtAGdWbG85WAbjT/1xYoZIC7FAY0yWapOBQVsVrDl58W86//e1VpMNBtRV4MaXfdMySFA==}
+
+  tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
-    dev: false
+
+snapshots:
+
+  '@angular/common@20.2.0-next.1(@angular/core@20.2.0-next.1(rxjs@7.8.2))(rxjs@7.8.2)':
+    dependencies:
+      '@angular/core': 20.2.0-next.1(rxjs@7.8.2)
+      rxjs: 7.8.2
+      tslib: 2.8.1
+
+  '@angular/core@20.2.0-next.1(rxjs@7.8.2)':
+    dependencies:
+      rxjs: 7.8.2
+      tslib: 2.8.1
+
+  rxjs@7.8.2:
+    dependencies:
+      tslib: 2.8.1
+
+  tslib@2.8.1: {}

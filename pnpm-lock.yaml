@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@angular/language-service':
-        specifier: 20.2.0-next.3
-        version: registry.npmjs.org/@angular/language-service@20.2.0-next.3
+        specifier: 20.2.0-next.5
+        version: registry.npmjs.org/@angular/language-service@20.2.0-next.5
       typescript:
-        specifier: ^5.8.1
-        version: registry.npmjs.org/typescript@5.8.3
+        specifier: ^5.9.2
+        version: registry.npmjs.org/typescript@5.9.2
       vscode-html-languageservice:
         specifier: ^4.2.5
         version: registry.npmjs.org/vscode-html-languageservice@4.2.5
@@ -74,13 +74,13 @@ importers:
         version: registry.npmjs.org/rxjs@6.6.7
       ts-node:
         specifier: ^10.8.1
-        version: registry.npmjs.org/ts-node@10.9.2(@types/node@18.19.39)(typescript@5.8.3)
+        version: registry.npmjs.org/ts-node@10.9.2(@types/node@18.19.39)(typescript@5.9.2)
       tslint:
         specifier: 6.1.3
-        version: registry.npmjs.org/tslint@6.1.3(typescript@5.8.3)
+        version: registry.npmjs.org/tslint@6.1.3(typescript@5.9.2)
       tslint-eslint-rules:
         specifier: 5.4.0
-        version: registry.npmjs.org/tslint-eslint-rules@5.4.0(tslint@6.1.3)(typescript@5.8.3)
+        version: registry.npmjs.org/tslint-eslint-rules@5.4.0(tslint@6.1.3)(typescript@5.9.2)
       vsce:
         specifier: 1.100.1
         version: registry.npmjs.org/vsce@1.100.1
@@ -233,7 +233,7 @@ packages:
       '@angular-devkit/architect': registry.npmjs.org/@angular-devkit/architect@0.1401.0-next.1
       '@angular-devkit/build-webpack': registry.npmjs.org/@angular-devkit/build-webpack@0.1401.0-next.1(webpack-dev-server@4.9.1)(webpack@5.73.0)
       '@angular-devkit/core': registry.npmjs.org/@angular-devkit/core@14.1.0-next.1
-      '@angular/compiler-cli': registry.npmjs.org/@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0)(typescript@5.8.3)
+      '@angular/compiler-cli': registry.npmjs.org/@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0)(typescript@5.9.2)
       '@babel/core': registry.npmjs.org/@babel/core@7.18.2
       '@babel/generator': registry.npmjs.org/@babel/generator@7.18.2
       '@babel/helper-annotate-as-pure': registry.npmjs.org/@babel/helper-annotate-as-pure@7.16.7
@@ -362,7 +362,7 @@ packages:
       - zone.js
     dev: true
 
-  registry.npmjs.org/@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0)(typescript@5.8.3):
+  registry.npmjs.org/@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0)(typescript@5.9.2):
     resolution: {integrity: sha512-eoKpKdQ2X6axMgzcPUMZVYl3bIlTMzMeTo5V29No4BzgiUB+QoOTYGNJZkGRyqTNpwD9uSBJvmT2vG9+eC4ghQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/compiler-cli/-/compiler-cli-14.3.0.tgz}
     id: registry.npmjs.org/@angular/compiler-cli/14.3.0
     name: '@angular/compiler-cli'
@@ -383,7 +383,7 @@ packages:
       semver: registry.npmjs.org/semver@7.6.2
       sourcemap-codec: registry.npmjs.org/sourcemap-codec@1.4.8
       tslib: registry.npmjs.org/tslib@2.6.3
-      typescript: registry.npmjs.org/typescript@5.8.3
+      typescript: registry.npmjs.org/typescript@5.9.2
       yargs: registry.npmjs.org/yargs@17.7.2
     transitivePeerDependencies:
       - supports-color
@@ -438,10 +438,10 @@ packages:
       tslib: registry.npmjs.org/tslib@2.6.3
     dev: true
 
-  registry.npmjs.org/@angular/language-service@20.2.0-next.3:
-    resolution: {integrity: sha512-PveyzuR4PsuHLIRr2OfzatsRj6G3kzjU/EBiMgFjvWn8xsC+VJmiuvaEReLBtOoAuGnXA7pmeWyjrDFr5lNNQA==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-20.2.0-next.3.tgz}
+  registry.npmjs.org/@angular/language-service@20.2.0-next.5:
+    resolution: {integrity: sha512-kgKoqFS5hYtptOB08j5XmL3sfUzh2vArzksW6nqA7SDHGWfxZzlahusHGJDYJPh0YOgLBerP/0Yy6RBBuWXRfQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-20.2.0-next.5.tgz}
     name: '@angular/language-service'
-    version: 20.2.0-next.3
+    version: 20.2.0-next.5
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
     dev: false
 
@@ -2533,7 +2533,7 @@ packages:
       typescript: '>=4.6.2 <4.8'
       webpack: ^5.54.0
     dependencies:
-      '@angular/compiler-cli': registry.npmjs.org/@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0)(typescript@5.8.3)
+      '@angular/compiler-cli': registry.npmjs.org/@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0)(typescript@5.9.2)
       typescript: registry.npmjs.org/typescript@4.7.4
       webpack: registry.npmjs.org/webpack@5.73.0(esbuild@0.14.39)
     dev: true
@@ -10624,7 +10624,7 @@ packages:
     version: 2.2.1
     dev: true
 
-  registry.npmjs.org/ts-node@10.9.2(@types/node@18.19.39)(typescript@5.8.3):
+  registry.npmjs.org/ts-node@10.9.2(@types/node@18.19.39)(typescript@5.9.2):
     resolution: {integrity: sha512-f0FFpIdcHgn8zcPSbf1dRevwt047YMnaiJM3u2w2RewrB+fob/zePZcrOyQoLMMO7aBIddLcQIEK5dYjkLnGrQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/ts-node/-/ts-node-10.9.2.tgz}
     id: registry.npmjs.org/ts-node/10.9.2
     name: ts-node
@@ -10653,7 +10653,7 @@ packages:
       create-require: registry.npmjs.org/create-require@1.1.1
       diff: registry.npmjs.org/diff@4.0.2
       make-error: registry.npmjs.org/make-error@1.3.6
-      typescript: registry.npmjs.org/typescript@5.8.3
+      typescript: registry.npmjs.org/typescript@5.9.2
       v8-compile-cache-lib: registry.npmjs.org/v8-compile-cache-lib@3.0.1
       yn: registry.npmjs.org/yn@3.1.1
     dev: true
@@ -10682,7 +10682,7 @@ packages:
     version: 2.6.3
     dev: true
 
-  registry.npmjs.org/tslint-eslint-rules@5.4.0(tslint@6.1.3)(typescript@5.8.3):
+  registry.npmjs.org/tslint-eslint-rules@5.4.0(tslint@6.1.3)(typescript@5.9.2):
     resolution: {integrity: sha512-WlSXE+J2vY/VPgIcqQuijMQiel+UtmXS+4nvK4ZzlDiqBfXse8FAvkNnTcYhnQyOTW5KFM+uRRGXxYhFpuBc6w==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/tslint-eslint-rules/-/tslint-eslint-rules-5.4.0.tgz}
     id: registry.npmjs.org/tslint-eslint-rules/5.4.0
     name: tslint-eslint-rules
@@ -10693,12 +10693,12 @@ packages:
     dependencies:
       doctrine: registry.npmjs.org/doctrine@0.7.2
       tslib: registry.npmjs.org/tslib@1.9.0
-      tslint: registry.npmjs.org/tslint@6.1.3(typescript@5.8.3)
-      tsutils: registry.npmjs.org/tsutils@3.21.0(typescript@5.8.3)
-      typescript: registry.npmjs.org/typescript@5.8.3
+      tslint: registry.npmjs.org/tslint@6.1.3(typescript@5.9.2)
+      tsutils: registry.npmjs.org/tsutils@3.21.0(typescript@5.9.2)
+      typescript: registry.npmjs.org/typescript@5.9.2
     dev: true
 
-  registry.npmjs.org/tslint@6.1.3(typescript@5.8.3):
+  registry.npmjs.org/tslint@6.1.3(typescript@5.9.2):
     resolution: {integrity: sha512-IbR4nkT96EQOvKE2PW/djGz8iGNeJ4rF2mBfiYaR/nvUWYKJhLwimoJKgjIFEIDibBtOevj7BqCRL4oHeWWUCg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/tslint/-/tslint-6.1.3.tgz}
     id: registry.npmjs.org/tslint/6.1.3
     name: tslint
@@ -10721,11 +10721,11 @@ packages:
       resolve: registry.npmjs.org/resolve@1.22.8
       semver: registry.npmjs.org/semver@5.7.2
       tslib: registry.npmjs.org/tslib@1.14.1
-      tsutils: registry.npmjs.org/tsutils@2.29.0(typescript@5.8.3)
-      typescript: registry.npmjs.org/typescript@5.8.3
+      tsutils: registry.npmjs.org/tsutils@2.29.0(typescript@5.9.2)
+      typescript: registry.npmjs.org/typescript@5.9.2
     dev: true
 
-  registry.npmjs.org/tsutils@2.29.0(typescript@5.8.3):
+  registry.npmjs.org/tsutils@2.29.0(typescript@5.9.2):
     resolution: {integrity: sha512-g5JVHCIJwzfISaXpXE1qvNalca5Jwob6FjI4AoPlqMusJ6ftFE7IkkFoMhVLRgK+4Kx3gkzb8UZK5t5yTTvEmA==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/tsutils/-/tsutils-2.29.0.tgz}
     id: registry.npmjs.org/tsutils/2.29.0
     name: tsutils
@@ -10734,7 +10734,7 @@ packages:
       typescript: '>=2.1.0 || >=2.1.0-dev || >=2.2.0-dev || >=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >= 3.0.0-dev || >= 3.1.0-dev'
     dependencies:
       tslib: registry.npmjs.org/tslib@1.14.1
-      typescript: registry.npmjs.org/typescript@5.8.3
+      typescript: registry.npmjs.org/typescript@5.9.2
     dev: true
 
   registry.npmjs.org/tsutils@3.21.0(typescript@4.7.4):
@@ -10750,7 +10750,7 @@ packages:
       typescript: registry.npmjs.org/typescript@4.7.4
     dev: true
 
-  registry.npmjs.org/tsutils@3.21.0(typescript@5.8.3):
+  registry.npmjs.org/tsutils@3.21.0(typescript@5.9.2):
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/tsutils/-/tsutils-3.21.0.tgz}
     id: registry.npmjs.org/tsutils/3.21.0
     name: tsutils
@@ -10760,7 +10760,7 @@ packages:
       typescript: '>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta'
     dependencies:
       tslib: registry.npmjs.org/tslib@1.14.1
-      typescript: registry.npmjs.org/typescript@5.8.3
+      typescript: registry.npmjs.org/typescript@5.9.2
     dev: true
 
   registry.npmjs.org/tunnel-agent@0.6.0:
@@ -10833,10 +10833,10 @@ packages:
     hasBin: true
     dev: true
 
-  registry.npmjs.org/typescript@5.8.3:
-    resolution: {integrity: sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/typescript/-/typescript-5.8.3.tgz}
+  registry.npmjs.org/typescript@5.9.2:
+    resolution: {integrity: sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/typescript/-/typescript-5.9.2.tgz}
     name: typescript
-    version: 5.8.3
+    version: 5.9.2
     engines: {node: '>=14.17'}
     hasBin: true
 

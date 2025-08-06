@@ -1,3 +1,9 @@
+# 20.2.0
+
+This release upgrades `@angular/language-service` to v20.2.0-next.5.
+
+* [feat(language-service): support to report the deprecated API in the template](https://github.com/angular/vscode-ng-language-service/pull/2192)
+
 # 20.1.1
 
 * [fix(server): Remove custom semantic tokens to fix regression in file highlighting](https://github.com/angular/vscode-ng-language-service/pull/2197)

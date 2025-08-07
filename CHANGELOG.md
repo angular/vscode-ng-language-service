@@ -1,5 +1,14 @@
 # 20.2.0
 
+This release upgrades `@angular/language-service` to v20.2.0-next.6.
+
+| Commit | Type | Description |
+| -- | -- | -- |
+| [812463c563](https://github.com/angular/angular/commit/812463c5636effe5bd5ba5c7c7fc65c3cc08d047) | fix | Ignore diagnostics on ngTemplateContextGuard lines in TCB ([#63054](https://github.com/angular/angular/pull/63054)) |
+| [45b030b5ce](https://github.com/angular/angular/commit/45b030b5ce1e116a88fe1c2fe133f654fb1f66c5) | fix | prevent dom event assertion in TCB generation on older angular versions ([#63053](https://github.com/angular/angular/pull/63053)) |
+
+# 20.2.0
+
 This release upgrades `@angular/language-service` to v20.2.0-next.5.
 
 * [feat(language-service): support to report the deprecated API in the template](https://github.com/angular/vscode-ng-language-service/pull/2192)

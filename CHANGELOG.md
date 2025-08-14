@@ -1,4 +1,14 @@
-# 20.2.0
+# 20.2.2
+
+This release upgrades `@angular/language-service` to v20.2.0-rc.1.
+
+| Commit | Type | Description |
+| -- | -- | -- |
+| [c81e345e72](https://github.com/angular/angular/commit/c81e345e726b5b281621159c789e6d80a9f328e2) | feat | support auto-import for attribute completions ([#62797](https://github.com/angular/angular/pull/62797)) |
+| [4aa120ac00](https://github.com/angular/angular/commit/4aa120ac000a569a29e45e9c6db9e4f32c61d183) | fix | error when type checking host bindings of generic directive ([#63061](https://github.com/angular/angular/pull/63061)) |
+
+
+# 20.2.1
 
 This release upgrades `@angular/language-service` to v20.2.0-next.6.
 

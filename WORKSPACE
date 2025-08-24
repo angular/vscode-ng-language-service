@@ -2,9 +2,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "aspect_rules_js",
-    sha256 = "5af82fe13fecb467e9c2c19765a593de2e1976afd0a1e18a80d930a2465508fc",
-    strip_prefix = "rules_js-1.33.2",
-    url = "https://github.com/aspect-build/rules_js/releases/download/v1.33.2/rules_js-v1.33.2.tar.gz",
+    sha256 = "17c5964f6a4507488c2ce99ebd493ee111da5d5cab85ca99119eaae331d38989",
+    strip_prefix = "rules_js-2.5.0",
+    url = "https://github.com/aspect-build/rules_js/releases/download/v2.5.0/rules_js-v2.5.0.tar.gz",
 )
 
 load("@aspect_rules_js//js:repositories.bzl", "rules_js_dependencies")
@@ -13,9 +13,9 @@ rules_js_dependencies()
 
 http_archive(
     name = "aspect_rules_ts",
-    sha256 = "4c3f34fff9f96ffc9c26635d8235a32a23a6797324486c7d23c1dfa477e8b451",
-    strip_prefix = "rules_ts-1.4.5",
-    url = "https://github.com/aspect-build/rules_ts/releases/download/v1.4.5/rules_ts-v1.4.5.tar.gz",
+    sha256 = "6fd16aa24c2e8547b72561ece1c7d307b77a5f98f0402934396f6eefbac59aa2",
+    strip_prefix = "rules_ts-3.7.0",
+    url = "https://github.com/aspect-build/rules_ts/releases/download/v3.7.0/rules_ts-v3.7.0.tar.gz",
 )
 
 load("@aspect_rules_ts//ts:repositories.bzl", "rules_ts_dependencies")
@@ -29,9 +29,9 @@ rules_ts_dependencies(
 
 http_archive(
     name = "aspect_rules_jasmine",
-    sha256 = "b3b2ff30ed222db653092d8280e0b62a4d54c5e65c598df09a0a1d7aae78fc8f",
-    strip_prefix = "rules_jasmine-0.3.1",
-    url = "https://github.com/aspect-build/rules_jasmine/releases/download/v0.3.1/rules_jasmine-v0.3.1.tar.gz",
+    sha256 = "0d2f9c977842685895020cac721d8cc4f1b37aae15af46128cf619741dc61529",
+    strip_prefix = "rules_jasmine-2.0.0",
+    url = "https://github.com/aspect-build/rules_jasmine/releases/download/v2.0.0/rules_jasmine-v2.0.0.tar.gz",
 )
 
 load("@aspect_rules_jasmine//jasmine:dependencies.bzl", "rules_jasmine_dependencies")

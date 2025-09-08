@@ -249,12 +249,7 @@
   "main": "./bazel-bin/client/src/extension",
   "scripts": {
     "ng-dev": "cross-env TS_NODE_PROJECT=$PWD/.ng-dev/tsconfig.json TS_NODE_TRANSPILE_ONLY=1 node --no-warnings --loader ts-node/esm node_modules/@angular/dev-infra-private/ng-dev/bundles/cli.mjs",
-    "compile": "tsc -b && bazel build :npm",
-    "compile:client-server": "bazel build //client:index.js //server:index.js",
-    "compile:test": "tsc -b test.tsconfig.json",
-    "compile:integration": "tsc -b integration && pnpm -C integration/project build",
-    "compile:syntaxes-test": "tsc -b syntaxes/test",
-    "build:syntaxes": "tsc -b syntaxes && node dist/syntaxes/build.js",
+    "build:syntaxes": "bazel run //syntaxes:syntaxes",
     "format": "scripts/format.sh",
     "watch": "ibazel build //client:index.js //server:index.js",
     "package": "scripts/build.sh package.json",
@@ -265,12 +260,7 @@
     "test:inspect-client": "bazel run --config=debug //client/src/tests:test",
     "test:inspect-common": "bazel run --config=debug //common/tests:test",
     "test:inspect-server": "bazel run --config=debug //server/src/tests:test",
-    "test:inspect-syntaxes": "bazel run --config=debug //syntaxes/test:test",
-    "test:legacy-inspect": "compile:test && node --inspect-brk node_modules/jasmine/bin/jasmine.js --config=jasmine.json",
-    "test:legacy": "compile:test && jasmine --config=jasmine.json",
-    "test:legacy-lsp": "compile:integration && jasmine --config=integration/lsp/jasmine.json",
-    "test:legacy-e2e": "compile:integration && node dist/integration/e2e",
-    "test:legacy-syntaxes": "compile:syntaxes-test && build:syntaxes && jasmine dist/syntaxes/test/driver.js"
+    "test:inspect-syntaxes": "bazel run --config=debug //syntaxes/test:test"
   },
   "dependencies": {
     "@angular/language-service": "20.2.0-rc.1",

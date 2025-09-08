@@ -6,4 +6,4 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-module.exports = require("@angular/language-service/override_rename_ts_plugin").factory;
+module.exports = require('@angular/language-service/override_rename_ts_plugin').factory;

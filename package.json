@@ -248,9 +248,9 @@
   ],
   "main": "./bazel-bin/client/src/extension",
   "scripts": {
-    "ng-dev": "cross-env TS_NODE_PROJECT=$PWD/.ng-dev/tsconfig.json TS_NODE_TRANSPILE_ONLY=1 node --no-warnings --loader ts-node/esm node_modules/@angular/dev-infra-private/ng-dev/bundles/cli.mjs",
+    "ng-dev": "tsx --tsconfig .ng-dev/tsconfig.json node_modules/@angular/ng-dev/bundles/cli.mjs",
     "build:syntaxes": "bazel run //syntaxes:syntaxes",
-    "format": "scripts/format.sh",
+    "format": "pnpm ng-dev format all",
     "watch": "ibazel build //client:index.js //server:index.js",
     "package": "scripts/build.sh package.json",
     "test": "bazel test --test_tag_filters=unit_test //...",
@@ -273,14 +273,14 @@
     "vscode-uri": "3.0.7"
   },
   "devDependencies": {
-    "@angular/dev-infra-private": "https://github.com/angular/dev-infra-private-builds.git#262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2",
+    "@angular/ng-dev": "https://github.com/angular/dev-infra-private-ng-dev-builds.git#586406bccb7ae283f803f1c36e127b7b16c942ce",
     "@angular/core": "^20.0.0-rc.2",
     "@bazel/bazelisk": "1.18.0",
+    "@bazel/buildifier": "8.2.1",
     "@bazel/ibazel": "0.16.2",
     "@types/jasmine": "3.10.7",
     "@types/node": "18.19.39",
     "@types/vscode": "1.67.0",
-    "clang-format": "1.8.0",
     "cross-env": "^7.0.3",
     "esbuild": "0.14.39",
     "jasmine": "5.10.0",
@@ -292,6 +292,7 @@
     "ts-node": "^10.8.1",
     "tslint": "6.1.3",
     "tslint-eslint-rules": "5.4.0",
+    "tsx": "4.20.5",
     "vsce": "1.100.1",
     "vscode-languageserver-protocol": "3.16.0",
     "vscode-languageserver-types": "3.16.0",
@@ -303,6 +304,13 @@
     "url": "https://github.com/angular/vscode-ng-language-service"
   },
   "pnpm": {
+    "packageExtensions": {
+      "grpc-gcp": {
+        "peerDependencies": {
+          "protobufjs": "*"
+        }
+      }
+    },
     "onlyBuiltDependencies": []
   }
 }

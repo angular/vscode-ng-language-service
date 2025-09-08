@@ -1,2 +1,6 @@
 packages:
   - .
+  - integration/pre_standalone_project
+  - integration/workspace
+  - integration/pre_apf_project
+  - integration/project

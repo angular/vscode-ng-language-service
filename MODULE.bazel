@@ -32,6 +32,10 @@ npm.npm_translate_lock(
     name = "npm",
     data = [
         "//:package.json",
+        "//integration/pre_standalone_project:package.json",
+        "//integration/workspace:package.json",
+        "//integration/pre_apf_project:package.json",
+        "//integration/project:package.json",
         "//:pnpm-workspace.yaml",
     ],
     npmrc = "//:.npmrc",
@@ -54,60 +58,7 @@ npm.npm_translate_lock(
     verify_node_modules_ignored = "//:.bazelignore",
     yarn_lock = "//:yarn.lock",
 )
-
-npm.npm_translate_lock(
-    name = "npm_integration_pre_standalone_project",
-    data = [
-        "//integration/pre_standalone_project:package.json",
-        "//integration/pre_standalone_project:pnpm-workspace.yaml",
-    ],
-    npmrc = "//:.npmrc",
-    pnpm_lock = "//integration/pre_standalone_project:pnpm-lock.yaml",
-    verify_node_modules_ignored = "//:.bazelignore",
-)
-
-npm.npm_translate_lock(
-    name = "npm_integration_workspace",
-    data = [
-        "//integration/workspace:package.json",
-        "//integration/workspace:pnpm-workspace.yaml",
-    ],
-    npmrc = "//:.npmrc",
-    pnpm_lock = "//integration/workspace:pnpm-lock.yaml",
-    verify_node_modules_ignored = "//:.bazelignore",
-    yarn_lock = "//integration/workspace:yarn.lock",
-)
-
-npm.npm_translate_lock(
-    name = "npm_integration_pre_apf_project",
-    data = [
-        "//integration/pre_apf_project:package.json",
-        "//integration/pre_apf_project:pnpm-workspace.yaml",
-    ],
-    npmrc = "//:.npmrc",
-    pnpm_lock = "//integration/pre_apf_project:pnpm-lock.yaml",
-    verify_node_modules_ignored = "//:.bazelignore",
-    yarn_lock = "//integration/pre_apf_project:yarn.lock",
-)
-
-
-npm.npm_translate_lock(
-    name = "npm_integration_project",
-    data = [
-        "//integration/project:package.json",
-        "//integration/project:pnpm-workspace.yaml",
-    ],
-    npmrc = "//:.npmrc",
-    pnpm_lock = "//integration/project:pnpm-lock.yaml",
-    verify_node_modules_ignored = "//:.bazelignore",
-    yarn_lock = "//integration/project:yarn.lock",
-)
-
-
-
-
-
-use_repo(npm, "npm", "npm_integration_pre_standalone_project", "npm_integration_workspace", "npm_integration_pre_apf_project", "npm_integration_project")
+use_repo(npm, "npm")
 
 node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
 node.toolchain(node_version = "22.11.0")

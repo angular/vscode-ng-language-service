@@ -11,9 +11,7 @@ import {GrammarDefinition} from './types';
 export const LetDeclaration: GrammarDefinition = {
   scopeName: 'template.let.ng',
   injectionSelector: 'L:text.html -comment -expression.ng -meta.tag -source.css -source.js',
-  patterns: [
-    {include: '#letDeclaration'},
-  ],
+  patterns: [{include: '#letDeclaration'}],
   repository: {
     letDeclaration: {
       name: 'meta.definition.variable.ng',

@@ -4,9 +4,7 @@ export async function run(): Promise<void> {
   const jasmine = new Jasmine({projectBaseDir: __dirname});
 
   jasmine.loadConfig({
-    spec_files: [
-      '*_spec.js',
-    ],
+    spec_files: ['*_spec.js'],
   });
 
   // For whatever reason, the built-in jasmine reporter printin does not make it to the console
@@ -16,7 +14,7 @@ export async function run(): Promise<void> {
   let failed = false;
   jasmine.configureDefaultReporter({
     // The `print` function passed the reporter will be called to print its results.
-    print: function(message: string) {
+    print: function (message: string) {
       if (message.trim()) {
         console.log(message);
       }
@@ -33,7 +31,7 @@ export async function run(): Promise<void> {
 
   console.log(`Expecting to run ${jasmine.specFiles.length} specs.`);
 
-  console.log(JSON.stringify(jasmine.specFiles, null, 2))
+  console.log(JSON.stringify(jasmine.specFiles, null, 2));
 
   if (jasmine.specFiles.length === 0) {
     throw new Error('No specs found');

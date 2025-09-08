@@ -11,8 +11,19 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import * as lsp from 'vscode-languageclient/node';
 
-import {OpenOutputChannel, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode, SuggestStrictModeParams} from '../../common/notifications';
-import {GetComponentsWithTemplateFile, GetTcbRequest, GetTemplateLocationForComponent, IsInAngularProject} from '../../common/requests';
+import {
+  OpenOutputChannel,
+  ProjectLoadingFinish,
+  ProjectLoadingStart,
+  SuggestStrictMode,
+  SuggestStrictModeParams,
+} from '../../common/notifications';
+import {
+  GetComponentsWithTemplateFile,
+  GetTcbRequest,
+  GetTemplateLocationForComponent,
+  IsInAngularProject,
+} from '../../common/requests';
 import {NodeModule, resolve} from '../../common/resolver';
 
 import {isInsideStringLiteral, isNotTypescriptOrSupportedDecoratorField} from './embedded_support';
@@ -24,7 +35,7 @@ interface GetTcbResponse {
 }
 
 export class AngularLanguageClient implements vscode.Disposable {
-  private client: lsp.LanguageClient|null = null;
+  private client: lsp.LanguageClient | null = null;
   private readonly disposables: vscode.Disposable[] = [];
   private readonly outputChannel: vscode.OutputChannel;
   private readonly clientOptions: lsp.LanguageClientOptions;
@@ -35,9 +46,9 @@ export class AngularLanguageClient implements vscode.Disposable {
 
   constructor(private readonly context: vscode.ExtensionContext) {
     vscode.workspace.registerTextDocumentContentProvider('angular-embedded-content', {
-      provideTextDocumentContent: uri => {
+      provideTextDocumentContent: (uri) => {
         return this.virtualDocumentContents.get(uri.toString());
-      }
+      },
     });
 
     this.outputChannel = vscode.window.createOutputChannel(this.name);
@@ -54,7 +65,7 @@ export class AngularLanguageClient implements vscode.Disposable {
         fileEvents: [
           // Notify the server about file changes to tsconfig.json contained in the workspace
           vscode.workspace.createFileSystemWatcher('**/tsconfig.json'),
-        ]
+        ],
       },
       // Don't let our output console pop open
       revealOutputChannelOn: lsp.RevealOutputChannelOn.Never,
@@ -64,16 +75,23 @@ export class AngularLanguageClient implements vscode.Disposable {
       },
       middleware: {
         provideCodeActions: async (
-            document: vscode.TextDocument, range: vscode.Range, context: vscode.CodeActionContext,
-            token: vscode.CancellationToken, next: lsp.ProvideCodeActionsSignature) => {
+          document: vscode.TextDocument,
+          range: vscode.Range,
+          context: vscode.CodeActionContext,
+          token: vscode.CancellationToken,
+          next: lsp.ProvideCodeActionsSignature,
+        ) => {
           // Code actions can trigger also outside of `@Component(<...>)` fields.
           if (await this.isInAngularProject(document)) {
             return next(document, range, context, token);
           }
         },
         prepareRename: async (
-            document: vscode.TextDocument, position: vscode.Position,
-            token: vscode.CancellationToken, next: lsp.PrepareRenameSignature) => {
+          document: vscode.TextDocument,
+          position: vscode.Position,
+          token: vscode.CancellationToken,
+          next: lsp.PrepareRenameSignature,
+        ) => {
           // We are able to provide renames for many types of string literals: template strings,
           // pipe names, and hopefully in the future selectors and input/output aliases. Because
           // TypeScript isn't able to provide renames for these, we can more or less
@@ -82,32 +100,49 @@ export class AngularLanguageClient implements vscode.Disposable {
           // because we cannot ensure our extension is prioritized for renames in TS files (see
           // https://github.com/microsoft/vscode/issues/115354) we disable renaming completely so we
           // can provide consistent expectations.
-          if (await this.isInAngularProject(document) &&
-              isInsideStringLiteral(document, position)) {
+          if (
+            (await this.isInAngularProject(document)) &&
+            isInsideStringLiteral(document, position)
+          ) {
             return next(document, position, token);
           }
         },
         provideDefinition: async (
-            document: vscode.TextDocument, position: vscode.Position,
-            token: vscode.CancellationToken, next: lsp.ProvideDefinitionSignature) => {
-          if (await this.isInAngularProject(document) &&
-              isNotTypescriptOrSupportedDecoratorField(document, position)) {
+          document: vscode.TextDocument,
+          position: vscode.Position,
+          token: vscode.CancellationToken,
+          next: lsp.ProvideDefinitionSignature,
+        ) => {
+          if (
+            (await this.isInAngularProject(document)) &&
+            isNotTypescriptOrSupportedDecoratorField(document, position)
+          ) {
             return next(document, position, token);
           }
         },
         provideTypeDefinition: async (
-            document: vscode.TextDocument, position: vscode.Position,
-            token: vscode.CancellationToken, next) => {
-          if (await this.isInAngularProject(document) &&
-              isNotTypescriptOrSupportedDecoratorField(document, position)) {
+          document: vscode.TextDocument,
+          position: vscode.Position,
+          token: vscode.CancellationToken,
+          next,
+        ) => {
+          if (
+            (await this.isInAngularProject(document)) &&
+            isNotTypescriptOrSupportedDecoratorField(document, position)
+          ) {
             return next(document, position, token);
           }
         },
         provideHover: async (
-            document: vscode.TextDocument, position: vscode.Position,
-            token: vscode.CancellationToken, next: lsp.ProvideHoverSignature) => {
-          if (!(await this.isInAngularProject(document)) ||
-              !isNotTypescriptOrSupportedDecoratorField(document, position)) {
+          document: vscode.TextDocument,
+          position: vscode.Position,
+          token: vscode.CancellationToken,
+          next: lsp.ProvideHoverSignature,
+        ) => {
+          if (
+            !(await this.isInAngularProject(document)) ||
+            !isNotTypescriptOrSupportedDecoratorField(document, position)
+          ) {
             return;
           }
 
@@ -117,35 +152,51 @@ export class AngularLanguageClient implements vscode.Disposable {
           if (document.languageId === 'typescript') {
             const vdocUri = this.createVirtualHtmlDoc(document);
             const htmlProviderResultsPromise = vscode.commands.executeCommand<vscode.Hover[]>(
-                'vscode.executeHoverProvider', vdocUri, position);
+              'vscode.executeHoverProvider',
+              vdocUri,
+              position,
+            );
 
-            const [angularResults, htmlProviderResults] =
-                await Promise.all([angularResultsPromise, htmlProviderResultsPromise]);
+            const [angularResults, htmlProviderResults] = await Promise.all([
+              angularResultsPromise,
+              htmlProviderResultsPromise,
+            ]);
             return angularResults ?? htmlProviderResults?.[0];
           }
 
           return angularResultsPromise;
         },
         provideSignatureHelp: async (
-            document: vscode.TextDocument, position: vscode.Position,
-            context: vscode.SignatureHelpContext, token: vscode.CancellationToken,
-            next: lsp.ProvideSignatureHelpSignature) => {
-          if (await this.isInAngularProject(document) &&
-              isNotTypescriptOrSupportedDecoratorField(document, position)) {
+          document: vscode.TextDocument,
+          position: vscode.Position,
+          context: vscode.SignatureHelpContext,
+          token: vscode.CancellationToken,
+          next: lsp.ProvideSignatureHelpSignature,
+        ) => {
+          if (
+            (await this.isInAngularProject(document)) &&
+            isNotTypescriptOrSupportedDecoratorField(document, position)
+          ) {
             return next(document, position, context, token);
           }
         },
         provideCompletionItem: async (
-            document: vscode.TextDocument, position: vscode.Position,
-            context: vscode.CompletionContext, token: vscode.CancellationToken,
-            next: lsp.ProvideCompletionItemsSignature) => {
+          document: vscode.TextDocument,
+          position: vscode.Position,
+          context: vscode.CompletionContext,
+          token: vscode.CancellationToken,
+          next: lsp.ProvideCompletionItemsSignature,
+        ) => {
           // If not in inline template, do not perform request forwarding
-          if (!(await this.isInAngularProject(document)) ||
-              !isNotTypescriptOrSupportedDecoratorField(document, position)) {
+          if (
+            !(await this.isInAngularProject(document)) ||
+            !isNotTypescriptOrSupportedDecoratorField(document, position)
+          ) {
             return;
           }
-          const angularCompletionsPromise = next(document, position, context, token) as
-              Promise<vscode.CompletionItem[]|null|undefined>;
+          const angularCompletionsPromise = next(document, position, context, token) as Promise<
+            vscode.CompletionItem[] | null | undefined
+          >;
 
           // Include results for inline HTML via virtual document and native html providers.
           if (document.languageId === 'typescript') {
@@ -153,25 +204,33 @@ export class AngularLanguageClient implements vscode.Disposable {
             // This will not include angular stuff because the vdoc is not associated with an
             // angular component
             const htmlProviderCompletionsPromise =
-                vscode.commands.executeCommand<vscode.CompletionList>(
-                    'vscode.executeCompletionItemProvider', vdocUri, position,
-                    context.triggerCharacter);
-            const [angularCompletions, htmlProviderCompletions] =
-                await Promise.all([angularCompletionsPromise, htmlProviderCompletionsPromise]);
+              vscode.commands.executeCommand<vscode.CompletionList>(
+                'vscode.executeCompletionItemProvider',
+                vdocUri,
+                position,
+                context.triggerCharacter,
+              );
+            const [angularCompletions, htmlProviderCompletions] = await Promise.all([
+              angularCompletionsPromise,
+              htmlProviderCompletionsPromise,
+            ]);
             return [...(angularCompletions ?? []), ...(htmlProviderCompletions?.items ?? [])];
           }
 
           return angularCompletionsPromise;
         },
         provideFoldingRanges: async (
-            document: vscode.TextDocument, context: vscode.FoldingContext,
-            token: vscode.CancellationToken, next) => {
-          if (!await this.isInAngularProject(document)) {
+          document: vscode.TextDocument,
+          context: vscode.FoldingContext,
+          token: vscode.CancellationToken,
+          next,
+        ) => {
+          if (!(await this.isInAngularProject(document))) {
             return null;
           }
           return next(document, context, token);
         },
-      }
+      },
     };
   }
 
@@ -212,8 +271,10 @@ export class AngularLanguageClient implements vscode.Disposable {
 
   private createVirtualHtmlDoc(document: vscode.TextDocument): vscode.Uri {
     const originalUri = document.uri.toString();
-    const vdocUri = vscode.Uri.file(encodeURIComponent(originalUri) + '.html')
-                        .with({scheme: 'angular-embedded-content', authority: 'html'});
+    const vdocUri = vscode.Uri.file(encodeURIComponent(originalUri) + '.html').with({
+      scheme: 'angular-embedded-content',
+      authority: 'html',
+    });
     this.virtualDocumentContents.set(vdocUri.toString(), document.getText());
     return vdocUri;
   }
@@ -229,8 +290,9 @@ export class AngularLanguageClient implements vscode.Disposable {
     // Node module for the language server
     const args = await this.constructArgs();
     const prodBundle = this.context.asAbsolutePath('server');
-    const devBundle =
-        this.context.asAbsolutePath(path.join('bazel-bin', 'server', 'src', 'server.js'));
+    const devBundle = this.context.asAbsolutePath(
+      path.join('bazel-bin', 'server', 'src', 'server.js'),
+    );
 
     // If the extension is launched in debug mode then the debug server options are used
     // Otherwise the run options are used
@@ -255,28 +317,29 @@ export class AngularLanguageClient implements vscode.Disposable {
           ],
           env: {
             NG_DEBUG: true,
-          }
+          },
         },
-        args
+        args,
       },
     };
 
     if (!extensionVersionCompatibleWithAllProjects(serverOptions.run.module)) {
       vscode.window.showWarningMessage(
-          `A project in the workspace is using a newer version of Angular than the language service extension. ` +
-          `This may cause the extension to show incorrect diagnostics.`);
+        `A project in the workspace is using a newer version of Angular than the language service extension. ` +
+          `This may cause the extension to show incorrect diagnostics.`,
+      );
     }
 
     // Create the language client and start the client.
     const forceDebug = process.env['NG_DEBUG'] === 'true';
     this.client = new lsp.LanguageClient(
-        // This is the ID for Angular-specific configurations, like "angular.log".
-        // See contributes.configuration in package.json.
-        'angular',
-        this.name,
-        serverOptions,
-        this.clientOptions,
-        forceDebug,
+      // This is the ID for Angular-specific configurations, like "angular.log".
+      // See contributes.configuration in package.json.
+      'angular',
+      this.name,
+      serverOptions,
+      this.clientOptions,
+      forceDebug,
     );
     this.disposables.push(this.client.start());
     await this.client.onReady();
@@ -304,49 +367,55 @@ export class AngularLanguageClient implements vscode.Disposable {
     const ngProbeLocations = getProbeLocations(this.context.extensionPath);
     args.push('--ngProbeLocations', ngProbeLocations.join(','));
 
-    const includeAutomaticOptionalChainCompletions =
-        config.get<boolean>('angular.suggest.includeAutomaticOptionalChainCompletions');
+    const includeAutomaticOptionalChainCompletions = config.get<boolean>(
+      'angular.suggest.includeAutomaticOptionalChainCompletions',
+    );
     if (includeAutomaticOptionalChainCompletions) {
       args.push('--includeAutomaticOptionalChainCompletions');
     }
 
-    const includeCompletionsWithSnippetText =
-        config.get<boolean>('angular.suggest.includeCompletionsWithSnippetText');
+    const includeCompletionsWithSnippetText = config.get<boolean>(
+      'angular.suggest.includeCompletionsWithSnippetText',
+    );
     if (includeCompletionsWithSnippetText) {
       args.push('--includeCompletionsWithSnippetText');
     }
 
     const includeCompletionsForModuleExports = config.get<boolean>('angular.suggest.autoImports');
     args.push(
-        '--includeCompletionsForModuleExports',
-        includeCompletionsForModuleExports === undefined ?
-            'true' :
-            includeCompletionsForModuleExports.toString());
+      '--includeCompletionsForModuleExports',
+      includeCompletionsForModuleExports === undefined
+        ? 'true'
+        : includeCompletionsForModuleExports.toString(),
+    );
 
     // Sort the versions from oldest to newest.
-    const angularVersions = (await getAngularVersionsInWorkspace(this.outputChannel))
-                                .sort((a, b) => a.version.greaterThanOrEqual(b.version) ? 1 : -1);
+    const angularVersions = (await getAngularVersionsInWorkspace(this.outputChannel)).sort((a, b) =>
+      a.version.greaterThanOrEqual(b.version) ? 1 : -1,
+    );
 
     // Only disable block syntax if we find angular/core and every one we find does not support
     // block syntax
     if (angularVersions.length > 0) {
-      const disableBlocks = angularVersions.every(v => v.version.major < 17);
-      const disableLet = angularVersions.every(v => {
-        return v.version.major < 18 || v.version.major === 18 && v.version.minor < 1;
+      const disableBlocks = angularVersions.every((v) => v.version.major < 17);
+      const disableLet = angularVersions.every((v) => {
+        return v.version.major < 18 || (v.version.major === 18 && v.version.minor < 1);
       });
 
       if (disableBlocks) {
         args.push('--disableBlockSyntax');
         this.outputChannel.appendLine(
-            `All workspace roots are using versions of Angular that do not support control flow block syntax.` +
-            ` Block syntax parsing in templates will be disabled.`);
+          `All workspace roots are using versions of Angular that do not support control flow block syntax.` +
+            ` Block syntax parsing in templates will be disabled.`,
+        );
       }
 
       if (disableLet) {
         args.push('--disableLetSyntax');
         this.outputChannel.appendLine(
-            `All workspace roots are using versions of Angular that do not support @let syntax.` +
-            ` @let syntax parsing in templates will be disabled.`);
+          `All workspace roots are using versions of Angular that do not support @let syntax.` +
+            ` @let syntax parsing in templates will be disabled.`,
+        );
       }
     }
 
@@ -354,7 +423,8 @@ export class AngularLanguageClient implements vscode.Disposable {
     if (angularVersions.length > 0) {
       args.push('--angularCoreVersion', angularVersions[0].version.toString());
       this.outputChannel.appendLine(
-          `Using Angular version ${angularVersions[0].version.toString()}.`);
+        `Using Angular version ${angularVersions[0].version.toString()}.`,
+      );
     }
 
     const forceStrictTemplates = config.get<boolean>('angular.forceStrictTemplates');
@@ -362,8 +432,9 @@ export class AngularLanguageClient implements vscode.Disposable {
       args.push('--forceStrictTemplates');
     }
 
-    const suppressAngularDiagnosticCodes =
-        config.get<string>('angular.suppressAngularDiagnosticCodes');
+    const suppressAngularDiagnosticCodes = config.get<string>(
+      'angular.suppressAngularDiagnosticCodes',
+    );
     if (suppressAngularDiagnosticCodes) {
       args.push('--suppressAngularDiagnosticCodes', suppressAngularDiagnosticCodes);
     }
@@ -397,7 +468,7 @@ export class AngularLanguageClient implements vscode.Disposable {
    * Requests a template typecheck block at the current cursor location in the
    * specified editor.
    */
-  async getTcbUnderCursor(textEditor: vscode.TextEditor): Promise<GetTcbResponse|undefined> {
+  async getTcbUnderCursor(textEditor: vscode.TextEditor): Promise<GetTcbResponse | undefined> {
     if (this.client === null) {
       return undefined;
     }
@@ -420,19 +491,21 @@ export class AngularLanguageClient implements vscode.Disposable {
     };
   }
 
-  get initializeResult(): lsp.InitializeResult|undefined {
+  get initializeResult(): lsp.InitializeResult | undefined {
     return this.client?.initializeResult;
   }
 
-  async getComponentsForOpenExternalTemplate(textEditor: vscode.TextEditor):
-      Promise<vscode.Location[]|undefined> {
+  async getComponentsForOpenExternalTemplate(
+    textEditor: vscode.TextEditor,
+  ): Promise<vscode.Location[] | undefined> {
     if (this.client === null) {
       return undefined;
     }
 
     const response = await this.client.sendRequest(GetComponentsWithTemplateFile, {
-      textDocument:
-          this.client.code2ProtocolConverter.asTextDocumentIdentifier(textEditor.document),
+      textDocument: this.client.code2ProtocolConverter.asTextDocumentIdentifier(
+        textEditor.document,
+      ),
     });
     if (response === undefined) {
       return undefined;
@@ -440,11 +513,13 @@ export class AngularLanguageClient implements vscode.Disposable {
 
     const p2cConverter = this.client.protocol2CodeConverter;
     return response.map(
-        v => new vscode.Location(p2cConverter.asUri(v.uri), p2cConverter.asRange(v.range)));
+      (v) => new vscode.Location(p2cConverter.asUri(v.uri), p2cConverter.asRange(v.range)),
+    );
   }
 
-  async getTemplateLocationForComponent(textEditor: vscode.TextEditor):
-      Promise<vscode.Location|null> {
+  async getTemplateLocationForComponent(
+    textEditor: vscode.TextEditor,
+  ): Promise<vscode.Location | null> {
     if (this.client === null) {
       return null;
     }
@@ -460,7 +535,9 @@ export class AngularLanguageClient implements vscode.Disposable {
     }
     const p2cConverter = this.client.protocol2CodeConverter;
     return new vscode.Location(
-        p2cConverter.asUri(response.uri), p2cConverter.asRange(response.range));
+      p2cConverter.asUri(response.uri),
+      p2cConverter.asRange(response.range),
+    );
   }
 
   dispose() {
@@ -472,49 +549,61 @@ export class AngularLanguageClient implements vscode.Disposable {
 
 function registerNotificationHandlers(client: lsp.LanguageClient): vscode.Disposable {
   const disposables: vscode.Disposable[] = [];
-  disposables.push(client.onNotification(ProjectLoadingStart, () => {
-    vscode.window.withProgress(
+  disposables.push(
+    client.onNotification(ProjectLoadingStart, () => {
+      vscode.window.withProgress(
         {
           location: vscode.ProgressLocation.Window,
           title: 'Initializing Angular language features',
         },
-        () => new Promise<void>((resolve) => {
-          client.onNotification(ProjectLoadingFinish, resolve);
-        }),
-    );
-  }));
+        () =>
+          new Promise<void>((resolve) => {
+            client.onNotification(ProjectLoadingFinish, resolve);
+          }),
+      );
+    }),
+  );
 
-  disposables.push(client.onNotification(SuggestStrictMode, async (params: SuggestStrictModeParams) => {
-    const config = vscode.workspace.getConfiguration();
-    if (config.get('angular.enable-strict-mode-prompt') === false ||
-        config.get('angular.forceStrictTemplates')) {
-      return;
-    }
+  disposables.push(
+    client.onNotification(SuggestStrictMode, async (params: SuggestStrictModeParams) => {
+      const config = vscode.workspace.getConfiguration();
+      if (
+        config.get('angular.enable-strict-mode-prompt') === false ||
+        config.get('angular.forceStrictTemplates')
+      ) {
+        return;
+      }
 
-    const openTsConfig = 'Open tsconfig.json';
-    // Markdown is not generally supported in `showInformationMessage()`,
-    // but links are supported. See
-    // https://github.com/microsoft/vscode/issues/20595#issuecomment-281099832
-    const doNotPromptAgain = 'Do not show again for this workspace';
-    const selection = await vscode.window.showInformationMessage(
+      const openTsConfig = 'Open tsconfig.json';
+      // Markdown is not generally supported in `showInformationMessage()`,
+      // but links are supported. See
+      // https://github.com/microsoft/vscode/issues/20595#issuecomment-281099832
+      const doNotPromptAgain = 'Do not show again for this workspace';
+      const selection = await vscode.window.showInformationMessage(
         'Some language features are not available. To access all features, enable ' +
-            '[strictTemplates](https://angular.io/guide/angular-compiler-options#stricttemplates) in ' +
-            '[angularCompilerOptions](https://angular.io/guide/angular-compiler-options).',
+          '[strictTemplates](https://angular.io/guide/angular-compiler-options#stricttemplates) in ' +
+          '[angularCompilerOptions](https://angular.io/guide/angular-compiler-options).',
         openTsConfig,
         doNotPromptAgain,
-    );
-    if (selection === openTsConfig) {
-      const document = await vscode.workspace.openTextDocument(params.configFilePath);
-      vscode.window.showTextDocument(document);
-    } else if (selection === doNotPromptAgain) {
-      config.update(
-          'angular.enable-strict-mode-prompt', false, vscode.ConfigurationTarget.Workspace);
-    }
-  }));
+      );
+      if (selection === openTsConfig) {
+        const document = await vscode.workspace.openTextDocument(params.configFilePath);
+        vscode.window.showTextDocument(document);
+      } else if (selection === doNotPromptAgain) {
+        config.update(
+          'angular.enable-strict-mode-prompt',
+          false,
+          vscode.ConfigurationTarget.Workspace,
+        );
+      }
+    }),
+  );
 
-  disposables.push(client.onNotification(OpenOutputChannel, () => {
-    client.outputChannel.show();
-  }));
+  disposables.push(
+    client.onNotification(OpenOutputChannel, () => {
+      client.outputChannel.show();
+    }),
+  );
 
   return vscode.Disposable.from(...disposables);
 }
@@ -537,10 +626,11 @@ function getProbeLocations(bundled: string): string[] {
   return locations;
 }
 
-
 function extensionVersionCompatibleWithAllProjects(serverModuleLocation: string): boolean {
-  const languageServiceVersion =
-      resolve('@angular/language-service', serverModuleLocation)?.version;
+  const languageServiceVersion = resolve(
+    '@angular/language-service',
+    serverModuleLocation,
+  )?.version;
   if (languageServiceVersion === undefined) {
     return true;
   }
@@ -562,13 +652,15 @@ function extensionVersionCompatibleWithAllProjects(serverModuleLocation: string)
  * Traverses through the currently open VSCode workspace (i.e. all open folders)
  * and finds all `@angular/core` versions installed based on `package.json` files.
  */
-async function getAngularVersionsInWorkspace(outputChannel: vscode.OutputChannel):
-    Promise<NodeModule[]> {
+async function getAngularVersionsInWorkspace(
+  outputChannel: vscode.OutputChannel,
+): Promise<NodeModule[]> {
   const packageJsonFiles = await vscode.workspace.findFiles(
-      '**/package.json',
-      // Skip looking inside `node_module` folders as those contain irrelevant files.
-      '**/node_modules/**');
-  const packageJsonRoots = packageJsonFiles.map(f => path.dirname(f.fsPath));
+    '**/package.json',
+    // Skip looking inside `node_module` folders as those contain irrelevant files.
+    '**/node_modules/**',
+  );
+  const packageJsonRoots = packageJsonFiles.map((f) => path.dirname(f.fsPath));
   const angularCoreModules = new Set<NodeModule>();
 
   outputChannel.appendLine(`package.json roots detected: ${packageJsonRoots.join(',\n  ')}`);

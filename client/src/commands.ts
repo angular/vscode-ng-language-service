@@ -9,7 +9,11 @@
 import * as vscode from 'vscode';
 import * as lsp from 'vscode-languageclient/node';
 
-import {OpenJsDocLinkCommand_Args, OpenJsDocLinkCommandId, ServerOptions} from '../../common/initialize';
+import {
+  OpenJsDocLinkCommand_Args,
+  OpenJsDocLinkCommandId,
+  ServerOptions,
+} from '../../common/initialize';
 
 import {AngularLanguageClient} from './client';
 import {ANGULAR_SCHEME, TcbContentProvider} from './providers';
@@ -17,15 +21,17 @@ import {ANGULAR_SCHEME, TcbContentProvider} from './providers';
 /**
  * Represent a vscode command with an ID and an impl function `execute`.
  */
-type Command<T = any> = {
-  id: string,
-  isTextEditorCommand: false,
-  execute(_: T): Promise<unknown>,
-}|{
-  id: string,
-  isTextEditorCommand: true,
-  execute(textEditor: vscode.TextEditor): Promise<unknown>,
-};
+type Command<T = any> =
+  | {
+      id: string;
+      isTextEditorCommand: false;
+      execute(_: T): Promise<unknown>;
+    }
+  | {
+      id: string;
+      isTextEditorCommand: true;
+      execute(textEditor: vscode.TextEditor): Promise<unknown>;
+    };
 
 /**
  * Restart the language server by killing the process then spanwing a new one.
@@ -51,18 +57,19 @@ function openLogFile(client: AngularLanguageClient): Command {
     id: 'angular.openLogFile',
     isTextEditorCommand: false,
     async execute() {
-      const serverOptions: ServerOptions|undefined = client.initializeResult?.serverOptions;
+      const serverOptions: ServerOptions | undefined = client.initializeResult?.serverOptions;
       if (!serverOptions?.logFile) {
         // Show a MessageItem to help users automatically update the
         // configuration option then restart the server.
         const selection = await vscode.window.showErrorMessage(
-            `Angular server logging is off. Please set 'angular.log' and restart the server.`,
-            'Enable logging and restart server',
+          `Angular server logging is off. Please set 'angular.log' and restart the server.`,
+          'Enable logging and restart server',
         );
         if (selection) {
           const isGlobalConfig = false;
-          await vscode.workspace.getConfiguration().update(
-              'angular.log', 'verbose', isGlobalConfig);
+          await vscode.workspace
+            .getConfiguration()
+            .update('angular.log', 'verbose', isGlobalConfig);
           // Server will automatically restart because the config is changed
         }
         return;
@@ -80,7 +87,9 @@ function openLogFile(client: AngularLanguageClient): Command {
  * @param context extension context to which disposables are pushed
  */
 function getTemplateTcb(
-    ngClient: AngularLanguageClient, context: vscode.ExtensionContext): Command {
+  ngClient: AngularLanguageClient,
+  context: vscode.ExtensionContext,
+): Command {
   const TCB_HIGHLIGHT_DECORATION = vscode.window.createTextEditorDecorationType({
     // See https://code.visualstudio.com/api/references/theme-color#editor-colors
     backgroundColor: new vscode.ThemeColor('editor.selectionHighlightBackground'),
@@ -88,8 +97,8 @@ function getTemplateTcb(
 
   const tcbProvider = new TcbContentProvider();
   const disposable = vscode.workspace.registerTextDocumentContentProvider(
-      ANGULAR_SCHEME,
-      tcbProvider,
+    ANGULAR_SCHEME,
+    tcbProvider,
   );
   context.subscriptions.push(disposable);
 
@@ -110,10 +119,10 @@ function getTemplateTcb(
       tcbProvider.update(tcbUri, response.content);
       const editor = await vscode.window.showTextDocument(tcbUri, {
         viewColumn: vscode.ViewColumn.Beside,
-        preserveFocus: true,  // cursor remains in the active editor
+        preserveFocus: true, // cursor remains in the active editor
       });
       editor.setDecorations(TCB_HIGHLIGHT_DECORATION, response.selections);
-    }
+    },
   };
 }
 
@@ -134,11 +143,11 @@ function goToComponentWithTemplateFile(ngClient: AngularLanguageClient): Command
       }
 
       vscode.commands.executeCommand(
-          'editor.action.goToLocations',
-          textEditor.document.uri,
-          textEditor.selection.active,
-          locations,
-          'peek', /** what to do when there are multiple results */
+        'editor.action.goToLocations',
+        textEditor.document.uri,
+        textEditor.selection.active,
+        locations,
+        'peek' /** what to do when there are multiple results */,
       );
     },
   };
@@ -160,11 +169,11 @@ function goToTemplateForComponent(ngClient: AngularLanguageClient): Command {
       }
 
       vscode.commands.executeCommand(
-          'editor.action.goToLocations',
-          textEditor.document.uri,
-          textEditor.selection.active,
-          [location],
-          'goto', /** What to do when there are multiple results (there can't be) */
+        'editor.action.goToLocations',
+        textEditor.document.uri,
+        textEditor.selection.active,
+        [location],
+        'goto' /** What to do when there are multiple results (there can't be) */,
       );
     },
   };
@@ -180,14 +189,14 @@ function openJsDocLinkCommand(): Command<OpenJsDocLinkCommand_Args> {
     id: OpenJsDocLinkCommandId,
     isTextEditorCommand: false,
     async execute(args) {
-      return await vscode.commands.executeCommand(
-          'vscode.open', vscode.Uri.parse(args.file), <vscode.TextDocumentShowOptions>{
-            selection: new vscode.Range(
-                new vscode.Position(
-                    args.position?.start.line ?? 0, args.position?.start.character ?? 0),
-                new vscode.Position(
-                    args.position?.end.line ?? 0, args.position?.end.character ?? 0)),
-          });
+      return await vscode.commands.executeCommand('vscode.open', vscode.Uri.parse(args.file), <
+        vscode.TextDocumentShowOptions
+      >{
+        selection: new vscode.Range(
+          new vscode.Position(args.position?.start.line ?? 0, args.position?.start.character ?? 0),
+          new vscode.Position(args.position?.end.line ?? 0, args.position?.end.character ?? 0),
+        ),
+      });
     },
   };
 }
@@ -208,7 +217,9 @@ function applyCodeActionCommand(ngClient: AngularLanguageClient): Command {
  * @param context extension context for adding disposables
  */
 export function registerCommands(
-    client: AngularLanguageClient, context: vscode.ExtensionContext): void {
+  client: AngularLanguageClient,
+  context: vscode.ExtensionContext,
+): void {
   const commands: Command[] = [
     restartNgServer(client),
     openLogFile(client),
@@ -220,9 +231,9 @@ export function registerCommands(
   ];
 
   for (const command of commands) {
-    const disposable = command.isTextEditorCommand ?
-        vscode.commands.registerTextEditorCommand(command.id, command.execute) :
-        vscode.commands.registerCommand(command.id, command.execute);
+    const disposable = command.isTextEditorCommand
+      ? vscode.commands.registerTextEditorCommand(command.id, command.execute)
+      : vscode.commands.registerCommand(command.id, command.execute);
     context.subscriptions.push(disposable);
   }
 }

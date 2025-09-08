@@ -21,12 +21,17 @@ const ANGULAR_PROPERTY_ASSIGNMENTS = new Set([
  * property that supports language service features.
  */
 export function isNotTypescriptOrSupportedDecoratorField(
-    document: vscode.TextDocument, position: vscode.Position): boolean {
+  document: vscode.TextDocument,
+  position: vscode.Position,
+): boolean {
   if (document.languageId !== 'typescript') {
     return true;
   }
   return isPropertyAssignmentToStringOrStringInArray(
-      document.getText(), document.offsetAt(position), ANGULAR_PROPERTY_ASSIGNMENTS);
+    document.getText(),
+    document.offsetAt(position),
+    ANGULAR_PROPERTY_ASSIGNMENTS,
+  );
 }
 
 /**
@@ -34,7 +39,9 @@ export function isNotTypescriptOrSupportedDecoratorField(
  * not TypeScript.
  */
 export function isInsideStringLiteral(
-    document: vscode.TextDocument, position: vscode.Position): boolean {
+  document: vscode.TextDocument,
+  position: vscode.Position,
+): boolean {
   if (document.languageId !== 'typescript') {
     return true;
   }
@@ -44,10 +51,12 @@ export function isInsideStringLiteral(
 
   let token: ts.SyntaxKind = scanner.scan();
   while (token !== ts.SyntaxKind.EndOfFileToken && scanner.getStartPos() < offset) {
-    const isStringToken = token === ts.SyntaxKind.StringLiteral ||
-        token === ts.SyntaxKind.NoSubstitutionTemplateLiteral;
-    const isCursorInToken = scanner.getStartPos() <= offset &&
-        scanner.getStartPos() + scanner.getTokenText().length >= offset;
+    const isStringToken =
+      token === ts.SyntaxKind.StringLiteral ||
+      token === ts.SyntaxKind.NoSubstitutionTemplateLiteral;
+    const isCursorInToken =
+      scanner.getStartPos() <= offset &&
+      scanner.getStartPos() + scanner.getTokenText().length >= offset;
     if (isCursorInToken && isStringToken) {
       return true;
     }
@@ -72,19 +81,26 @@ export function isInsideStringLiteral(
  * https://github.com/Microsoft/TypeScript/issues/20055
  */
 function isPropertyAssignmentToStringOrStringInArray(
-    documentText: string, offset: number, propertyAssignmentNames: Set<string>): boolean {
+  documentText: string,
+  offset: number,
+  propertyAssignmentNames: Set<string>,
+): boolean {
   const scanner = ts.createScanner(ts.ScriptTarget.ESNext, true /* skipTrivia */);
   scanner.setText(documentText);
 
   let token: ts.SyntaxKind = scanner.scan();
-  let lastToken: ts.SyntaxKind|undefined;
-  let lastTokenText: string|undefined;
+  let lastToken: ts.SyntaxKind | undefined;
+  let lastTokenText: string | undefined;
   let unclosedBraces = 0;
   let unclosedBrackets = 0;
   let propertyAssignmentContext = false;
   while (token !== ts.SyntaxKind.EndOfFileToken && scanner.getStartPos() < offset) {
-    if (lastToken === ts.SyntaxKind.Identifier && lastTokenText !== undefined &&
-        token === ts.SyntaxKind.ColonToken && propertyAssignmentNames.has(lastTokenText)) {
+    if (
+      lastToken === ts.SyntaxKind.Identifier &&
+      lastTokenText !== undefined &&
+      token === ts.SyntaxKind.ColonToken &&
+      propertyAssignmentNames.has(lastTokenText)
+    ) {
       propertyAssignmentContext = true;
       token = scanner.scan();
       continue;
@@ -103,10 +119,12 @@ function isPropertyAssignmentToStringOrStringInArray(
       unclosedBraces--;
     }
 
-    const isStringToken = token === ts.SyntaxKind.StringLiteral ||
-        token === ts.SyntaxKind.NoSubstitutionTemplateLiteral;
-    const isCursorInToken = scanner.getStartPos() <= offset &&
-        scanner.getStartPos() + scanner.getTokenText().length >= offset;
+    const isStringToken =
+      token === ts.SyntaxKind.StringLiteral ||
+      token === ts.SyntaxKind.NoSubstitutionTemplateLiteral;
+    const isCursorInToken =
+      scanner.getStartPos() <= offset &&
+      scanner.getStartPos() + scanner.getTokenText().length >= offset;
     if (propertyAssignmentContext && isCursorInToken && isStringToken) {
       return true;
     }
@@ -120,6 +138,10 @@ function isPropertyAssignmentToStringOrStringInArray(
 }
 
 function isPropertyAssignmentTerminator(token: ts.SyntaxKind) {
-  return token === ts.SyntaxKind.EndOfFileToken || token === ts.SyntaxKind.CommaToken ||
-      token === ts.SyntaxKind.SemicolonToken || token === ts.SyntaxKind.CloseBraceToken;
+  return (
+    token === ts.SyntaxKind.EndOfFileToken ||
+    token === ts.SyntaxKind.CommaToken ||
+    token === ts.SyntaxKind.SemicolonToken ||
+    token === ts.SyntaxKind.CloseBraceToken
+  );
 }

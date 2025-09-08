@@ -1,5 +1,5 @@
-load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_bazel_lib//lib:expand_template.bzl", "expand_template_rule")
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 load("@npm//:defs.bzl", "npm_link_all_packages")

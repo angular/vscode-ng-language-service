@@ -54,13 +54,13 @@ export interface NgCompletionOriginData {
 /**
  * Extract `NgCompletionOriginData` from an `lsp.CompletionItem` if present.
  */
-export function readNgCompletionData(item: lsp.CompletionItem): NgCompletionOriginData|null {
+export function readNgCompletionData(item: lsp.CompletionItem): NgCompletionOriginData | null {
   if (item.data === undefined) {
     return null;
   }
 
   // Validate that `item.data.kind` is actually the right tag, and narrow its type in the process.
-  const data: NgCompletionOriginData|{kind?: never} = item.data;
+  const data: NgCompletionOriginData | {kind?: never} = item.data;
   if (data.kind !== 'ngCompletionOriginData') {
     return null;
   }
@@ -108,8 +108,10 @@ function ngCompletionKindToLspCompletionItemKind(kind: CompletionKind): lsp.Comp
  * @param scriptInfo
  */
 export function tsCompletionEntryToLspCompletionItem(
-    entry: ts.CompletionEntry, position: lsp.Position,
-    scriptInfo: ts.server.ScriptInfo): lsp.CompletionItem {
+  entry: ts.CompletionEntry,
+  position: lsp.Position,
+  scriptInfo: ts.server.ScriptInfo,
+): lsp.CompletionItem {
   const item = lsp.CompletionItem.create(entry.name);
   // Even though `entry.kind` is typed as ts.ScriptElementKind, it's
   // really Angular's CompletionKind. This is because ts.ScriptElementKind does
@@ -143,8 +145,11 @@ export function tsCompletionEntryToLspCompletionItem(
 }
 
 function createTextEdit(
-    scriptInfo: ts.server.ScriptInfo, entry: ts.CompletionEntry, position: lsp.Position,
-    insertText: string) {
+  scriptInfo: ts.server.ScriptInfo,
+  entry: ts.CompletionEntry,
+  position: lsp.Position,
+  insertText: string,
+) {
   if (entry.replacementSpan === undefined) {
     return lsp.TextEdit.insert(position, insertText);
   } else {
@@ -165,6 +170,8 @@ function createTextEdit(
      * Fixes https://github.com/angular/vscode-ng-language-service/issues/2137
      */
     return lsp.TextEdit.replace(
-        tsTextSpanToLspRange(scriptInfo, entry.replacementSpan), insertText);
+      tsTextSpanToLspRange(scriptInfo, entry.replacementSpan),
+      insertText,
+    );
   }
 }

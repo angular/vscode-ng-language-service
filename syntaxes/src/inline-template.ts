@@ -17,10 +17,10 @@ export const InlineTemplate: GrammarDefinition = {
       begin: /(template)\s*(:)/,
       beginCaptures: {
         1: {name: 'meta.object-literal.key.ts'},
-        2: {name: 'meta.object-literal.key.ts punctuation.separator.key-value.ts'}
+        2: {name: 'meta.object-literal.key.ts punctuation.separator.key-value.ts'},
       },
       end: /(?=,|})/,
-      patterns: [{include: '#tsParenExpression'}, {include: '#ngTemplate'}]
+      patterns: [{include: '#tsParenExpression'}, {include: '#ngTemplate'}],
     },
 
     tsParenExpression: {
@@ -28,7 +28,7 @@ export const InlineTemplate: GrammarDefinition = {
       beginCaptures: {1: {name: 'meta.brace.round.ts'}},
       end: /\)/,
       endCaptures: {0: {name: 'meta.brace.round.ts'}},
-      patterns: [{include: '#tsParenExpression'}, {include: '#ngTemplate'}]
+      patterns: [{include: '#tsParenExpression'}, {include: '#ngTemplate'}],
     },
 
     ngTemplate: {
@@ -38,10 +38,7 @@ export const InlineTemplate: GrammarDefinition = {
       end: /\1/,
       endCaptures: {0: {name: 'string'}},
       contentName: 'text.html.derivative',
-      patterns: [
-        {include: 'text.html.derivative'},
-        {include: 'template.ng'},
-      ]
-    }
-  }
+      patterns: [{include: 'text.html.derivative'}, {include: 'template.ng'}],
+    },
+  },
 };

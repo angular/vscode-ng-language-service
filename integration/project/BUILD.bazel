@@ -11,19 +11,25 @@ copy_to_bin(
 
 ng_packagr_bin.ng_packagr(
     name = "dist",
-    srcs = [":project_srcs", ":node_modules"],
-    out_dirs = ["dist"],
-    chdir = package_name(),
+    srcs = [
+        ":node_modules",
+        ":project_srcs",
+    ],
     args = [
         "-p",
         "libs/post/ng-package.json",
         "-c",
         "libs/post/tsconfig.json",
     ],
+    chdir = package_name(),
+    out_dirs = ["dist"],
 )
 
 filegroup(
     name = "project",
-    srcs = [":project_srcs", ":dist"],
+    srcs = [
+        ":dist",
+        ":project_srcs",
+    ],
     visibility = ["//integration:__subpackages__"],
 )

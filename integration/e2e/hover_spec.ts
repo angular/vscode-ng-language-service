@@ -12,7 +12,10 @@ xdescribe('Angular Ivy LS quick info', () => {
   it(`returns quick info from built in extension for class in template`, async () => {
     const position = new vscode.Position(1, 8);
     const quickInfo = await vscode.commands.executeCommand<vscode.Hover[]>(
-        HOVER_COMMAND, FOO_TEMPLATE_URI, position);
+      HOVER_COMMAND,
+      FOO_TEMPLATE_URI,
+      position,
+    );
     expect(quickInfo?.length).toBe(1);
   });
 });

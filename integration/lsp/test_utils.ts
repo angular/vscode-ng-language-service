@@ -8,7 +8,12 @@
 
 import {fork} from 'child_process';
 import * as fs from 'fs';
-import {createMessageConnection, IPCMessageReader, IPCMessageWriter, MessageConnection} from 'vscode-jsonrpc/node';
+import {
+  createMessageConnection,
+  IPCMessageReader,
+  IPCMessageWriter,
+  MessageConnection,
+} from 'vscode-jsonrpc/node';
 import * as lsp from 'vscode-languageserver-protocol';
 import {URI} from 'vscode-uri';
 
@@ -52,8 +57,8 @@ export function createConnection(serverOptions: ServerOptions): MessageConnectio
     }
   });
   const connection = createMessageConnection(
-      new IPCMessageReader(server),
-      new IPCMessageWriter(server),
+    new IPCMessageReader(server),
+    new IPCMessageWriter(server),
   );
   connection.onDispose(() => {
     server.kill();
@@ -74,12 +79,12 @@ export function initializeServer(client: MessageConnection): Promise<lsp.Initial
         completion: {
           completionItem: {
             snippetSupport: true,
-          }
+          },
         },
         moniker: {},
         definition: {linkSupport: true},
-        typeDefinition: {linkSupport: true}
-      }
+        typeDefinition: {linkSupport: true},
+      },
     },
     /**
      * Options are 'off' | 'messages' | 'verbose'.
@@ -113,18 +118,18 @@ export function convertPathToFileUrl(filePath: string): string {
 
 export function createTracer(): lsp.Tracer {
   return {
-    log(messageOrDataObject: string|any, data?: string) {
+    log(messageOrDataObject: string | any, data?: string) {
       if (typeof messageOrDataObject === 'string') {
         const message = messageOrDataObject;
-        console.log(`[Trace - ${(new Date().toLocaleTimeString())}] ${message}`);
+        console.log(`[Trace - ${new Date().toLocaleTimeString()}] ${message}`);
         if (data) {
           console.log(data);
         }
       } else {
         const dataObject = messageOrDataObject;
         console.log(
-            `[Trace - ${(new Date().toLocaleTimeString())}] ` +
-            JSON.stringify(dataObject, null, 2));
+          `[Trace - ${new Date().toLocaleTimeString()}] ` + JSON.stringify(dataObject, null, 2),
+        );
       }
     },
   };

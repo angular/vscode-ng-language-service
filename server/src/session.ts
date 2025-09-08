@@ -6,7 +6,12 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {ApplyRefactoringResult, isNgLanguageService, NgLanguageService, PluginConfig} from '@angular/language-service/api';
+import {
+  ApplyRefactoringResult,
+  isNgLanguageService,
+  NgLanguageService,
+  PluginConfig,
+} from '@angular/language-service/api';
 import * as ts from 'typescript/lib/tsserverlibrary';
 import {promisify} from 'util';
 import {getLanguageService as getHTMLLanguageService} from 'vscode-html-languageservice';
@@ -14,15 +19,41 @@ import {TextDocument} from 'vscode-languageserver-textdocument';
 import * as lsp from 'vscode-languageserver/node';
 
 import {ServerOptions} from '../../common/initialize';
-import {ProjectLanguageService, ProjectLoadingFinish, ProjectLoadingStart, SuggestStrictMode} from '../../common/notifications';
-import {GetComponentsWithTemplateFile, GetTcbParams, GetTcbRequest, GetTcbResponse, GetTemplateLocationForComponent, GetTemplateLocationForComponentParams, IsInAngularProject, IsInAngularProjectParams} from '../../common/requests';
+import {
+  ProjectLanguageService,
+  ProjectLoadingFinish,
+  ProjectLoadingStart,
+  SuggestStrictMode,
+} from '../../common/notifications';
+import {
+  GetComponentsWithTemplateFile,
+  GetTcbParams,
+  GetTcbRequest,
+  GetTcbResponse,
+  GetTemplateLocationForComponent,
+  GetTemplateLocationForComponentParams,
+  IsInAngularProject,
+  IsInAngularProjectParams,
+} from '../../common/requests';
 
 import {readNgCompletionData, tsCompletionEntryToLspCompletionItem} from './completion';
 import {tsDiagnosticToLspDiagnostic} from './diagnostic';
 import {getHTMLVirtualContent} from './embedded_support';
 import {ServerHost} from './server_host';
 import {documentationToMarkdown} from './text_render';
-import {filePathToUri, getMappedDefinitionInfo, isConfiguredProject, isDebugMode, lspPositionToTsPosition, lspRangeToTsPositions, MruTracker, tsDisplayPartsToText, tsFileTextChangesToLspWorkspaceEdit, tsTextSpanToLspRange, uriToFilePath} from './utils';
+import {
+  filePathToUri,
+  getMappedDefinitionInfo,
+  isConfiguredProject,
+  isDebugMode,
+  lspPositionToTsPosition,
+  lspRangeToTsPositions,
+  MruTracker,
+  tsDisplayPartsToText,
+  tsFileTextChangesToLspWorkspaceEdit,
+  tsTextSpanToLspRange,
+  uriToFilePath,
+} from './utils';
 
 export interface SessionOptions {
   host: ServerHost;
@@ -36,8 +67,8 @@ export interface SessionOptions {
   forceStrictTemplates: boolean;
   disableBlockSyntax: boolean;
   disableLetSyntax: boolean;
-  angularCoreVersion: string|null;
-  suppressAngularDiagnosticCodes: string|null;
+  angularCoreVersion: string | null;
+  suppressAngularDiagnosticCodes: string | null;
 }
 
 enum LanguageId {
@@ -72,8 +103,8 @@ export class Session {
   private readonly includeAutomaticOptionalChainCompletions: boolean;
   private readonly includeCompletionsWithSnippetText: boolean;
   private readonly includeCompletionsForModuleExports: boolean;
-  private snippetSupport: boolean|undefined;
-  private diagnosticsTimeout: NodeJS.Timeout|null = null;
+  private snippetSupport: boolean | undefined;
+  private diagnosticsTimeout: NodeJS.Timeout | null = null;
   private isProjectLoading = false;
   /**
    * Tracks which `ts.server.Project`s have the renaming capability disabled.
@@ -86,7 +117,7 @@ export class Session {
 
   constructor(options: SessionOptions) {
     this.includeAutomaticOptionalChainCompletions =
-        options.includeAutomaticOptionalChainCompletions;
+      options.includeAutomaticOptionalChainCompletions;
     this.includeCompletionsWithSnippetText = options.includeCompletionsWithSnippetText;
     this.includeCompletionsForModuleExports = options.includeCompletionsForModuleExports;
     this.logger = options.logger;
@@ -101,8 +132,7 @@ export class Session {
       // LSP spec requires every request to send a response back, even if it is
       // cancelled. See
       // https://microsoft.github.io/language-server-protocol/specifications/specification-current/#cancelRequest
-      cancelUndispatched(message: lsp.Message): lsp.ResponseMessage |
-      undefined {
+      cancelUndispatched(message: lsp.Message): lsp.ResponseMessage | undefined {
         return {
           jsonrpc: message.jsonrpc,
           // This ID is just a placeholder to satisfy the ResponseMessage type.
@@ -112,7 +142,7 @@ export class Session {
           id: -1,
           error: new lsp.ResponseError(lsp.LSPErrorCodes.RequestCancelled, 'Request cancelled'),
         };
-      }
+      },
     });
 
     this.addProtocolHandlers(this.connection);
@@ -164,7 +194,7 @@ export class Session {
         watchFile: ts.WatchFileKind.UseFsEvents,
         watchDirectory: ts.WatchDirectoryKind.UseFsEvents,
         fallbackPolling: ts.PollingWatchKind.DynamicPriority,
-      }
+      },
     });
 
     const pluginConfig: PluginConfig = {
@@ -180,10 +210,13 @@ export class Session {
       pluginConfig.angularCoreVersion = options.angularCoreVersion;
     }
     if (options.suppressAngularDiagnosticCodes !== null) {
-      const parsedDiagnosticCodes =
-          options.suppressAngularDiagnosticCodes.split(',').map(c => parseInt(c));
-      pluginConfig.suppressAngularDiagnosticCodes =
-          [...alwaysSuppressDiagnostics, ...parsedDiagnosticCodes];
+      const parsedDiagnosticCodes = options.suppressAngularDiagnosticCodes
+        .split(',')
+        .map((c) => parseInt(c));
+      pluginConfig.suppressAngularDiagnosticCodes = [
+        ...alwaysSuppressDiagnostics,
+        ...parsedDiagnosticCodes,
+      ];
     }
     projSvc.configurePlugin({
       pluginName: options.ngPlugin,
@@ -194,32 +227,34 @@ export class Session {
   }
 
   private addProtocolHandlers(conn: lsp.Connection) {
-    conn.onInitialize(p => this.onInitialize(p));
-    conn.onDidOpenTextDocument(p => this.onDidOpenTextDocument(p));
-    conn.onDidCloseTextDocument(p => this.onDidCloseTextDocument(p));
-    conn.onDidChangeTextDocument(p => this.onDidChangeTextDocument(p));
-    conn.onDidSaveTextDocument(p => this.onDidSaveTextDocument(p));
-    conn.onDefinition(p => this.onDefinition(p));
-    conn.onTypeDefinition(p => this.onTypeDefinition(p));
-    conn.onReferences(p => this.onReferences(p));
-    conn.onRenameRequest(p => this.onRenameRequest(p));
-    conn.onPrepareRename(p => this.onPrepareRename(p));
-    conn.onHover(p => this.onHover(p));
-    conn.onFoldingRanges(p => this.onFoldingRanges(p));
-    conn.onCompletion(p => this.onCompletion(p));
-    conn.onCompletionResolve(p => this.onCompletionResolve(p));
-    conn.onRequest(GetComponentsWithTemplateFile, p => this.onGetComponentsWithTemplateFile(p));
-    conn.onRequest(GetTemplateLocationForComponent, p => this.onGetTemplateLocationForComponent(p));
-    conn.onRequest(GetTcbRequest, p => this.onGetTcb(p));
-    conn.onRequest(IsInAngularProject, p => this.isInAngularProject(p));
-    conn.onCodeLens(p => this.onCodeLens(p));
-    conn.onCodeLensResolve(p => this.onCodeLensResolve(p));
-    conn.onSignatureHelp(p => this.onSignatureHelp(p));
-    conn.onCodeAction(p => this.onCodeAction(p));
-    conn.onCodeActionResolve(async p => await this.onCodeActionResolve(p));
+    conn.onInitialize((p) => this.onInitialize(p));
+    conn.onDidOpenTextDocument((p) => this.onDidOpenTextDocument(p));
+    conn.onDidCloseTextDocument((p) => this.onDidCloseTextDocument(p));
+    conn.onDidChangeTextDocument((p) => this.onDidChangeTextDocument(p));
+    conn.onDidSaveTextDocument((p) => this.onDidSaveTextDocument(p));
+    conn.onDefinition((p) => this.onDefinition(p));
+    conn.onTypeDefinition((p) => this.onTypeDefinition(p));
+    conn.onReferences((p) => this.onReferences(p));
+    conn.onRenameRequest((p) => this.onRenameRequest(p));
+    conn.onPrepareRename((p) => this.onPrepareRename(p));
+    conn.onHover((p) => this.onHover(p));
+    conn.onFoldingRanges((p) => this.onFoldingRanges(p));
+    conn.onCompletion((p) => this.onCompletion(p));
+    conn.onCompletionResolve((p) => this.onCompletionResolve(p));
+    conn.onRequest(GetComponentsWithTemplateFile, (p) => this.onGetComponentsWithTemplateFile(p));
+    conn.onRequest(GetTemplateLocationForComponent, (p) =>
+      this.onGetTemplateLocationForComponent(p),
+    );
+    conn.onRequest(GetTcbRequest, (p) => this.onGetTcb(p));
+    conn.onRequest(IsInAngularProject, (p) => this.isInAngularProject(p));
+    conn.onCodeLens((p) => this.onCodeLens(p));
+    conn.onCodeLensResolve((p) => this.onCodeLensResolve(p));
+    conn.onSignatureHelp((p) => this.onSignatureHelp(p));
+    conn.onCodeAction((p) => this.onCodeAction(p));
+    conn.onCodeActionResolve(async (p) => await this.onCodeActionResolve(p));
   }
 
-  private onCodeAction(params: lsp.CodeActionParams): lsp.CodeAction[]|null {
+  private onCodeAction(params: lsp.CodeActionParams): lsp.CodeAction[] | null {
     const filePath = uriToFilePath(params.textDocument.uri);
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (!lsInfo) {
@@ -228,10 +263,13 @@ export class Session {
 
     const refactorRange = {
       pos: lspPositionToTsPosition(lsInfo.scriptInfo, params.range.start),
-      end: lspPositionToTsPosition(lsInfo.scriptInfo, params.range.end)
+      end: lspPositionToTsPosition(lsInfo.scriptInfo, params.range.end),
     };
-    const applicableRefactors =
-        lsInfo.languageService.getApplicableRefactors(filePath, refactorRange, defaultPreferences);
+    const applicableRefactors = lsInfo.languageService.getApplicableRefactors(
+      filePath,
+      refactorRange,
+      defaultPreferences,
+    );
 
     const codeActions: ts.CodeFixAction[] = [];
     for (const diagnostic of params.context.diagnostics) {
@@ -242,32 +280,43 @@ export class Session {
       const start = lspPositionToTsPosition(lsInfo.scriptInfo, diagnostic.range.start);
       const end = lspPositionToTsPosition(lsInfo.scriptInfo, diagnostic.range.end);
       const codeActionsForDiagnostic = lsInfo.languageService.getCodeFixesAtPosition(
-          filePath, start, end, [errorCode], defaultFormatOptions, defaultPreferences);
+        filePath,
+        start,
+        end,
+        [errorCode],
+        defaultFormatOptions,
+        defaultPreferences,
+      );
       codeActions.push(...codeActionsForDiagnostic);
     }
 
-    const individualCodeFixes = codeActions.map<lsp.CodeAction>(codeAction => {
+    const individualCodeFixes = codeActions.map<lsp.CodeAction>((codeAction) => {
       return {
         title: codeAction.description,
         kind: lsp.CodeActionKind.QuickFix,
         diagnostics: params.context.diagnostics,
-        edit: tsFileTextChangesToLspWorkspaceEdit(
-            codeAction.changes, (path: string) => this.projectService.getScriptInfo(path)),
+        edit: tsFileTextChangesToLspWorkspaceEdit(codeAction.changes, (path: string) =>
+          this.projectService.getScriptInfo(path),
+        ),
       };
     });
     const codeFixesAll = getCodeFixesAll(codeActions, params.textDocument);
     return [
-      ...individualCodeFixes, ...codeFixesAll,
-      ...applicableRefactors.map(r => ({
-                                        title: r.description,
-                                        kind: lsp.CodeActionKind.Refactor,
-                                        data: {
-                                          refactor: true,
-                                          name: r.name,
-                                          range: refactorRange,
-                                          document: params.textDocument,
-                                        } as CodeActionResolveData,
-                                      }) as lsp.CodeAction)
+      ...individualCodeFixes,
+      ...codeFixesAll,
+      ...applicableRefactors.map(
+        (r) =>
+          ({
+            title: r.description,
+            kind: lsp.CodeActionKind.Refactor,
+            data: {
+              refactor: true,
+              name: r.name,
+              range: refactorRange,
+              document: params.textDocument,
+            } as CodeActionResolveData,
+          } as lsp.CodeAction),
+      ),
     ];
   }
 
@@ -285,20 +334,22 @@ export class Session {
       const progress = await this.connection.window.createWorkDoneProgress();
       progress.begin('Refactoring', 0);
 
-      let edits: ApplyRefactoringResult|undefined = undefined;
+      let edits: ApplyRefactoringResult | undefined = undefined;
       try {
         edits = await lsInfo.languageService.applyRefactoring(
-            filePath, codeActionResolve.range, codeActionResolve.name,
-            (percentage, updateMessage) => {
-              progress.report(percentage, updateMessage);
-            });
+          filePath,
+          codeActionResolve.range,
+          codeActionResolve.name,
+          (percentage, updateMessage) => {
+            progress.report(percentage, updateMessage);
+          },
+        );
       } catch (e: unknown) {
         console.error(e);
         this.connection.window.showErrorMessage(`Refactor failed with unexpected error: ${e}`);
       } finally {
         progress.done();
       }
-
 
       if (edits?.warningMessage !== undefined) {
         this.connection.window.showWarningMessage(edits.warningMessage);
@@ -312,8 +363,9 @@ export class Session {
 
       return {
         ...param,
-        edit: tsFileTextChangesToLspWorkspaceEdit(
-            edits.edits, (path) => this.projectService.getScriptInfo(path)),
+        edit: tsFileTextChangesToLspWorkspaceEdit(edits.edits, (path) =>
+          this.projectService.getScriptInfo(path),
+        ),
       };
     }
 
@@ -335,20 +387,24 @@ export class Session {
       return param;
     }
     const fixesAllChanges = lsInfo.languageService.getCombinedCodeFix(
-        {
-          type: 'file',
-          fileName: filePath,
-        },
-        codeActionResolve.fixId as {}, defaultFormatOptions, defaultPreferences);
+      {
+        type: 'file',
+        fileName: filePath,
+      },
+      codeActionResolve.fixId as {},
+      defaultFormatOptions,
+      defaultPreferences,
+    );
 
     return {
       title: param.title,
-      edit: tsFileTextChangesToLspWorkspaceEdit(
-          fixesAllChanges.changes, (path) => this.projectService.getScriptInfo(path)),
+      edit: tsFileTextChangesToLspWorkspaceEdit(fixesAllChanges.changes, (path) =>
+        this.projectService.getScriptInfo(path),
+      ),
     };
   }
 
-  private isInAngularProject(params: IsInAngularProjectParams): boolean|null {
+  private isInAngularProject(params: IsInAngularProjectParams): boolean | null {
     const filePath = uriToFilePath(params.textDocument.uri);
     if (!filePath) {
       return false;
@@ -369,7 +425,7 @@ export class Session {
     return angularCore !== undefined;
   }
 
-  private onGetTcb(params: GetTcbParams): GetTcbResponse|null {
+  private onGetTcb(params: GetTcbParams): GetTcbResponse | null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
@@ -388,20 +444,23 @@ export class Session {
     return {
       uri: filePathToUri(tcfName),
       content: response.content,
-      selections: response.selections.map((span => tsTextSpanToLspRange(tcfScriptInfo, span))),
+      selections: response.selections.map((span) => tsTextSpanToLspRange(tcfScriptInfo, span)),
     };
   }
 
-  private onGetTemplateLocationForComponent(params: GetTemplateLocationForComponentParams):
-      lsp.Location|null {
+  private onGetTemplateLocationForComponent(
+    params: GetTemplateLocationForComponentParams,
+  ): lsp.Location | null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
     }
     const {languageService, scriptInfo} = lsInfo;
     const offset = lspPositionToTsPosition(scriptInfo, params.position);
-    const documentSpan =
-        languageService.getTemplateLocationForComponent(scriptInfo.fileName, offset);
+    const documentSpan = languageService.getTemplateLocationForComponent(
+      scriptInfo.fileName,
+      offset,
+    );
     if (documentSpan === undefined) {
       return null;
     }
@@ -413,7 +472,7 @@ export class Session {
     return lsp.Location.create(filePathToUri(documentSpan.fileName), range);
   }
 
-  private onGetComponentsWithTemplateFile(params: any): lsp.Location[]|null {
+  private onGetComponentsWithTemplateFile(params: any): lsp.Location[] | null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
@@ -432,7 +491,7 @@ export class Session {
     return results;
   }
 
-  private onSignatureHelp(params: lsp.SignatureHelpParams): lsp.SignatureHelp|null {
+  private onSignatureHelp(params: lsp.SignatureHelpParams): lsp.SignatureHelp | null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
@@ -483,13 +542,12 @@ export class Session {
     };
   }
 
-  private onCodeLens(params: lsp.CodeLensParams): lsp.CodeLens[]|null {
+  private onCodeLens(params: lsp.CodeLensParams): lsp.CodeLens[] | null {
     if (!params.textDocument.uri.endsWith('.html') || !this.isInAngularProject(params)) {
       return null;
     }
     const position = lsp.Position.create(0, 0);
     const topOfDocument = lsp.Range.create(position, position);
-
 
     const codeLens: lsp.CodeLens = {
       range: topOfDocument,
@@ -508,12 +566,15 @@ export class Session {
       // It is documented that code lens resolution can throw an error:
       // https://microsoft.github.io/language-server-protocol/specification#codeLens_resolve
       throw new Error(
-          'Could not determine component for ' + (params.data as lsp.TextDocumentIdentifier).uri);
+        'Could not determine component for ' + (params.data as lsp.TextDocumentIdentifier).uri,
+      );
     }
     params.command = {
       command: 'angular.goToComponentWithTemplateFile',
-      title: components.length > 1 ? `Used as templateUrl in ${components.length} components` :
-                                     'Go to component',
+      title:
+        components.length > 1
+          ? `Used as templateUrl in ${components.length} components`
+          : 'Go to component',
     };
     return params;
   }
@@ -549,7 +610,6 @@ export class Session {
     project.disableLanguageService();
   }
 
-
   /**
    * Invoke the compiler for the first time so that external templates get
    * matched to the project they belong to.
@@ -576,7 +636,7 @@ export class Session {
     }
 
     const diags = project.getLanguageService().getCompilerOptionsDiagnostics();
-    const suggestStrictModeDiag = diags.find(d => d.code === -9910001);
+    const suggestStrictModeDiag = diags.find((d) => d.code === -9910001);
 
     if (suggestStrictModeDiag) {
       const configFilePath: string = project.getConfigFilePath();
@@ -621,12 +681,14 @@ export class Session {
           // We need to keep this language service and program enabled because referenced projects
           // don't load until we open a client file for that project.
           this.info(
-              `@angular/core could not be found for project ${
-                  project.getProjectName()} but it has references that might.` +
-              ` The Angular language service will remain enabled for this project.`);
+            `@angular/core could not be found for project ${project.getProjectName()} but it has references that might.` +
+              ` The Angular language service will remain enabled for this project.`,
+          );
         } else {
           this.disableLanguageServiceForProject(
-              project, `project is not an Angular project ('@angular/core' could not be found)`);
+            project,
+            `project is not an Angular project ('@angular/core' could not be found)`,
+          );
         }
         break;
       }
@@ -683,7 +745,7 @@ export class Session {
     }
     // Set a new timeout
     this.diagnosticsTimeout = setTimeout(() => {
-      this.diagnosticsTimeout = null;  // clear the timeout
+      this.diagnosticsTimeout = null; // clear the timeout
       this.sendPendingDiagnostics(files, reason);
       // Default delay is 200ms, consistent with TypeScript. See
       // https://github.com/microsoft/vscode/blob/7b944a16f52843b44cede123dd43ae36c0405dfd/extensions/typescript-language-features/src/features/bufferSyncSupport.ts#L493)
@@ -724,7 +786,7 @@ export class Session {
       // not be updated.
       this.connection.sendDiagnostics({
         uri: filePathToUri(fileName),
-        diagnostics: diagnostics.map(d => tsDiagnosticToLspDiagnostic(d, this.projectService)),
+        diagnostics: diagnostics.map((d) => tsDiagnosticToLspDiagnostic(d, this.projectService)),
       });
       if (this.diagnosticsTimeout) {
         // There is a pending request to check diagnostics for all open files,
@@ -749,13 +811,13 @@ export class Session {
    * an inferred project.
    * @param scriptInfo
    */
-  getDefaultProjectForScriptInfo(scriptInfo: ts.server.ScriptInfo): ts.server.Project|null {
+  getDefaultProjectForScriptInfo(scriptInfo: ts.server.ScriptInfo): ts.server.Project | null {
     let project = this.projectService.getDefaultProjectForFile(
-        scriptInfo.fileName,
-        // ensureProject tries to find a default project for the scriptInfo if
-        // it does not already have one. It is not needed here because we are
-        // going to assign it a project below if it does not have one.
-        false  // ensureProject
+      scriptInfo.fileName,
+      // ensureProject tries to find a default project for the scriptInfo if
+      // it does not already have one. It is not needed here because we are
+      // going to assign it a project below if it does not have one.
+      false, // ensureProject
     );
 
     // TODO: verify that HTML files are attached to Inferred project by default.
@@ -781,7 +843,7 @@ export class Session {
 
   private onInitialize(params: lsp.InitializeParams): lsp.InitializeResult {
     this.snippetSupport =
-        params.capabilities.textDocument?.completion?.completionItem?.snippetSupport;
+      params.capabilities.textDocument?.completion?.completionItem?.snippetSupport;
     const serverOptions: ServerOptions = {
       logFile: this.logger.getLogFileName(),
     };
@@ -791,8 +853,10 @@ export class Session {
         foldingRangeProvider: true,
         codeLensProvider: {resolveProvider: true},
         textDocumentSync: lsp.TextDocumentSyncKind.Incremental,
-        completionProvider:
-            {resolveProvider: true, triggerCharacters: ['<', '.', '*', '[', '(', '$', '|', '@']},
+        completionProvider: {
+          resolveProvider: true,
+          triggerCharacters: ['<', '.', '*', '[', '(', '$', '|', '@'],
+        },
         definitionProvider: true,
         typeDefinitionProvider: true,
         referencesProvider: true,
@@ -858,11 +922,11 @@ export class Session {
       const {configFileName, configFileErrors} = result;
       if (configFileErrors && configFileErrors.length) {
         // configFileErrors is an empty array even if there's no error, so check length.
-        this.error(configFileErrors.map(e => e.messageText).join('\n'));
+        this.error(configFileErrors.map((e) => e.messageText).join('\n'));
       }
-      const project = configFileName ?
-          this.projectService.findProject(configFileName) :
-          this.projectService.getScriptInfo(filePath)?.containingProjects.find(isConfiguredProject);
+      const project = configFileName
+        ? this.projectService.findProject(configFileName)
+        : this.projectService.getScriptInfo(filePath)?.containingProjects.find(isConfiguredProject);
       if (!project?.languageServiceEnabled) {
         return;
       }
@@ -948,16 +1012,18 @@ export class Session {
     }
   }
 
-  private onFoldingRanges(params: lsp.FoldingRangeParams): lsp.FoldingRange[]|null {
+  private onFoldingRanges(params: lsp.FoldingRangeParams): lsp.FoldingRange[] | null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
     }
     const {scriptInfo, languageService} = lsInfo;
     const angularOutliningSpans = languageService.getOutliningSpans(scriptInfo.fileName);
-    const angularFoldingRanges = angularOutliningSpans.map(outliningSpan => {
-      const range = tsTextSpanToLspRange(
-          scriptInfo, {start: outliningSpan.textSpan.start, length: outliningSpan.textSpan.length});
+    const angularFoldingRanges = angularOutliningSpans.map((outliningSpan) => {
+      const range = tsTextSpanToLspRange(scriptInfo, {
+        start: outliningSpan.textSpan.start,
+        length: outliningSpan.textSpan.length,
+      });
       // We do not want to fold the line containing the closing of the block because then the
       // closing character (and line) would get hidden in the folding range. We only want to fold
       // the inside and leave the start/end lines visible.
@@ -973,13 +1039,18 @@ export class Session {
       return null;
     }
     const virtualHtmlDocContents = getHTMLVirtualContent(sf);
-    const virtualHtmlDoc =
-        TextDocument.create(params.textDocument.uri.toString(), 'html', 0, virtualHtmlDocContents);
+    const virtualHtmlDoc = TextDocument.create(
+      params.textDocument.uri.toString(),
+      'html',
+      0,
+      virtualHtmlDocContents,
+    );
     return [...htmlLS.getFoldingRanges(virtualHtmlDoc), ...angularFoldingRanges];
   }
 
-  private onDefinition(params: lsp.TextDocumentPositionParams):
-      lsp.Location[]|lsp.LocationLink[]|null {
+  private onDefinition(
+    params: lsp.TextDocumentPositionParams,
+  ): lsp.Location[] | lsp.LocationLink[] | null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
@@ -992,7 +1063,7 @@ export class Session {
     }
 
     const clientSupportsLocationLinks =
-        this.clientCapabilities.textDocument?.definition?.linkSupport ?? false;
+      this.clientCapabilities.textDocument?.definition?.linkSupport ?? false;
 
     if (!clientSupportsLocationLinks) {
       return this.tsDefinitionsToLspLocations(definition.definitions);
@@ -1002,8 +1073,9 @@ export class Session {
     return this.tsDefinitionsToLspLocationLinks(definition.definitions, originSelectionRange);
   }
 
-  private onTypeDefinition(params: lsp.TextDocumentPositionParams):
-      lsp.Location[]|lsp.LocationLink[]|null {
+  private onTypeDefinition(
+    params: lsp.TextDocumentPositionParams,
+  ): lsp.Location[] | lsp.LocationLink[] | null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
@@ -1016,7 +1088,7 @@ export class Session {
     }
 
     const clientSupportsLocationLinks =
-        this.clientCapabilities.textDocument?.typeDefinition?.linkSupport ?? false;
+      this.clientCapabilities.textDocument?.typeDefinition?.linkSupport ?? false;
 
     if (!clientSupportsLocationLinks) {
       return this.tsDefinitionsToLspLocations(definitions);
@@ -1025,7 +1097,7 @@ export class Session {
     return this.tsDefinitionsToLspLocationLinks(definitions);
   }
 
-  private onRenameRequest(params: lsp.RenameParams): lsp.WorkspaceEdit|null {
+  private onRenameRequest(params: lsp.RenameParams): lsp.WorkspaceEdit | null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
@@ -1038,7 +1110,11 @@ export class Session {
 
     const offset = lspPositionToTsPosition(scriptInfo, params.position);
     const renameLocations = languageService.findRenameLocations(
-        scriptInfo.fileName, offset, /*findInStrings*/ false, /*findInComments*/ false);
+      scriptInfo.fileName,
+      offset,
+      /*findInStrings*/ false,
+      /*findInComments*/ false,
+    );
     if (renameLocations === undefined) {
       return null;
     }
@@ -1062,8 +1138,9 @@ export class Session {
     return {changes};
   }
 
-  private onPrepareRename(params: lsp.PrepareRenameParams):
-      {range: lsp.Range, placeholder: string}|null {
+  private onPrepareRename(
+    params: lsp.PrepareRenameParams,
+  ): {range: lsp.Range; placeholder: string} | null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
@@ -1086,7 +1163,7 @@ export class Session {
     };
   }
 
-  private onReferences(params: lsp.TextDocumentPositionParams): lsp.Location[]|null {
+  private onReferences(params: lsp.TextDocumentPositionParams): lsp.Location[] | null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
@@ -1097,7 +1174,7 @@ export class Session {
     if (references === undefined) {
       return null;
     }
-    return references.map(ref => {
+    return references.map((ref) => {
       const scriptInfo = this.projectService.getScriptInfo(ref.fileName);
       const range = scriptInfo ? tsTextSpanToLspRange(scriptInfo, ref.textSpan) : EMPTY_RANGE;
       const uri = filePathToUri(ref.fileName);
@@ -1126,7 +1203,7 @@ export class Session {
         mappedInfo = project ? getMappedDefinitionInfo(d, project) : mappedInfo;
         // After the DTS file maps to original source file, the `scriptInfo` should be updated.
         const originalScriptInfo =
-            this.projectService.getScriptInfo(mappedInfo.fileName) ?? scriptInfo;
+          this.projectService.getScriptInfo(mappedInfo.fileName) ?? scriptInfo;
         range = tsTextSpanToLspRange(originalScriptInfo, mappedInfo.textSpan);
       }
 
@@ -1140,8 +1217,9 @@ export class Session {
   }
 
   private tsDefinitionsToLspLocationLinks(
-      definitions: readonly ts.DefinitionInfo[],
-      originSelectionRange?: lsp.Range): lsp.LocationLink[] {
+    definitions: readonly ts.DefinitionInfo[],
+    originSelectionRange?: lsp.Range,
+  ): lsp.LocationLink[] {
     const results: lsp.LocationLink[] = [];
     for (const d of definitions) {
       const scriptInfo = this.projectService.getScriptInfo(d.fileName);
@@ -1162,7 +1240,7 @@ export class Session {
         mappedInfo = project ? getMappedDefinitionInfo(d, project) : mappedInfo;
         // After the DTS file maps to original source file, the `scriptInfo` should be updated.
         const originalScriptInfo =
-            this.projectService.getScriptInfo(mappedInfo.fileName) ?? scriptInfo;
+          this.projectService.getScriptInfo(mappedInfo.fileName) ?? scriptInfo;
         range = tsTextSpanToLspRange(originalScriptInfo, mappedInfo.textSpan);
       }
 
@@ -1177,11 +1255,12 @@ export class Session {
     return results;
   }
 
-  private getLSAndScriptInfo(textDocumentOrFileName: lsp.TextDocumentIdentifier|string):
-      {languageService: NgLanguageService, scriptInfo: ts.server.ScriptInfo}|null {
-    const filePath = lsp.TextDocumentIdentifier.is(textDocumentOrFileName) ?
-        uriToFilePath(textDocumentOrFileName.uri) :
-        textDocumentOrFileName;
+  private getLSAndScriptInfo(
+    textDocumentOrFileName: lsp.TextDocumentIdentifier | string,
+  ): {languageService: NgLanguageService; scriptInfo: ts.server.ScriptInfo} | null {
+    const filePath = lsp.TextDocumentIdentifier.is(textDocumentOrFileName)
+      ? uriToFilePath(textDocumentOrFileName.uri)
+      : textDocumentOrFileName;
     const scriptInfo = this.projectService.getScriptInfo(filePath);
     if (!scriptInfo) {
       this.error(`Script info not found for ${filePath}`);
@@ -1195,7 +1274,8 @@ export class Session {
     if (project.isClosed()) {
       scriptInfo.detachFromProject(project);
       this.logger.info(
-          `Failed to get language service for closed project ${project.getProjectName()}.`);
+        `Failed to get language service for closed project ${project.getProjectName()}.`,
+      );
       return null;
     }
     const languageService = project.getLanguageService();
@@ -1208,7 +1288,7 @@ export class Session {
     };
   }
 
-  private onHover(params: lsp.TextDocumentPositionParams): lsp.Hover|null {
+  private onHover(params: lsp.TextDocumentPositionParams): lsp.Hover | null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
@@ -1224,16 +1304,21 @@ export class Session {
     if (displayParts && displayParts.length > 0) {
       // displayParts does not contain info about kindModifiers
       // but displayParts does contain info about kind
-      desc += displayParts.map(dp => dp.text).join('');
+      desc += displayParts.map((dp) => dp.text).join('');
     } else {
       desc += kind;
     }
-    const contents: lsp.MarkedString[] = [{
-      language: 'typescript',
-      value: desc,
-    }];
+    const contents: lsp.MarkedString[] = [
+      {
+        language: 'typescript',
+        value: desc,
+      },
+    ];
     const mds = documentationToMarkdown(
-        documentation, tags, (fileName: string) => this.getLSAndScriptInfo(fileName)?.scriptInfo);
+      documentation,
+      tags,
+      (fileName: string) => this.getLSAndScriptInfo(fileName)?.scriptInfo,
+    );
     contents.push(mds.join('\n'));
     return {
       contents,
@@ -1241,7 +1326,7 @@ export class Session {
     };
   }
 
-  private onCompletion(params: lsp.CompletionParams): lsp.CompletionItem[]|null {
+  private onCompletion(params: lsp.CompletionParams): lsp.CompletionItem[] | null {
     const lsInfo = this.getLSAndScriptInfo(params.textDocument);
     if (lsInfo === null) {
       return null;
@@ -1251,25 +1336,32 @@ export class Session {
 
     let options: ts.GetCompletionsAtPositionOptions = {};
     const includeCompletionsWithSnippetText =
-        this.includeCompletionsWithSnippetText && this.snippetSupport;
-    if (this.includeAutomaticOptionalChainCompletions || includeCompletionsWithSnippetText ||
-        this.includeCompletionsForModuleExports) {
+      this.includeCompletionsWithSnippetText && this.snippetSupport;
+    if (
+      this.includeAutomaticOptionalChainCompletions ||
+      includeCompletionsWithSnippetText ||
+      this.includeCompletionsForModuleExports
+    ) {
       options = {
         includeAutomaticOptionalChainCompletions: this.includeAutomaticOptionalChainCompletions,
         includeCompletionsWithSnippetText: includeCompletionsWithSnippetText,
         includeCompletionsWithInsertText:
-            this.includeAutomaticOptionalChainCompletions || includeCompletionsWithSnippetText,
+          this.includeAutomaticOptionalChainCompletions || includeCompletionsWithSnippetText,
         includeCompletionsForModuleExports: this.includeCompletionsForModuleExports,
       };
     }
 
-    const completions =
-        languageService.getCompletionsAtPosition(scriptInfo.fileName, offset, options);
+    const completions = languageService.getCompletionsAtPosition(
+      scriptInfo.fileName,
+      offset,
+      options,
+    );
     if (!completions) {
       return null;
     }
-    return completions.entries.map(
-        (e) => tsCompletionEntryToLspCompletionItem(e, params.position, scriptInfo));
+    return completions.entries.map((e) =>
+      tsCompletionEntryToLspCompletionItem(e, params.position, scriptInfo),
+    );
   }
 
   private onCompletionResolve(item: lsp.CompletionItem): lsp.CompletionItem {
@@ -1289,20 +1381,29 @@ export class Session {
 
     const offset = lspPositionToTsPosition(scriptInfo, position);
     const details = languageService.getCompletionEntryDetails(
-        filePath, offset, item.insertText ?? item.label, undefined, undefined, defaultPreferences,
-        data.tsData);
+      filePath,
+      offset,
+      item.insertText ?? item.label,
+      undefined,
+      undefined,
+      defaultPreferences,
+      data.tsData,
+    );
     if (details === undefined) {
       return item;
     }
 
     const {kind, kindModifiers, displayParts, documentation, tags, codeActions} = details;
     const codeActionsDetail = generateCommandAndTextEditsFromCodeActions(
-        codeActions ?? [], filePath, (path: string) => this.projectService.getScriptInfo(path));
+      codeActions ?? [],
+      filePath,
+      (path: string) => this.projectService.getScriptInfo(path),
+    );
     let desc = kindModifiers ? kindModifiers + ' ' : '';
     if (displayParts && displayParts.length > 0) {
       // displayParts does not contain info about kindModifiers
       // but displayParts does contain info about kind
-      desc += displayParts.map(dp => dp.text).join('');
+      desc += displayParts.map((dp) => dp.text).join('');
     } else {
       desc += kind;
     }
@@ -1310,8 +1411,10 @@ export class Session {
     item.documentation = {
       kind: lsp.MarkupKind.Markdown,
       value: documentationToMarkdown(
-                 documentation, tags, (fileName) => this.getLSAndScriptInfo(fileName)?.scriptInfo)
-                 .join('\n'),
+        documentation,
+        tags,
+        (fileName) => this.getLSAndScriptInfo(fileName)?.scriptInfo,
+      ).join('\n'),
     };
     item.additionalTextEdits = codeActionsDetail.additionalTextEdits;
     item.command = codeActionsDetail.command;
@@ -1368,14 +1471,14 @@ export class Session {
    *
    * @returns main declaration file in `@angular/core`.
    */
-  private findAngularCore(project: ts.server.Project): string|null {
+  private findAngularCore(project: ts.server.Project): string | null {
     const projectName = project.getProjectName();
     if (!project.languageServiceEnabled) {
       this.info(
-          `Language service is already disabled for ${projectName}. ` +
-          `This could be due to non-TS files that exceeded the size limit (${
-              ts.server.maxProgramSizeForNonTsFiles} bytes).` +
-          `Please check log file for details.`);
+        `Language service is already disabled for ${projectName}. ` +
+          `This could be due to non-TS files that exceeded the size limit (${ts.server.maxProgramSizeForNonTsFiles} bytes).` +
+          `Please check log file for details.`,
+      );
       return null;
     }
     if (!project.hasRoots() || project.isNonTsProject()) {
@@ -1384,7 +1487,8 @@ export class Session {
     const angularCore = project.getFileNames().find(isAngularCore);
     if (angularCore === undefined && project.getExcludedFiles().some(isAngularCore)) {
       this.info(
-          `Please check your tsconfig.json to make sure 'node_modules' directory is not excluded.`);
+        `Please check your tsconfig.json to make sure 'node_modules' directory is not excluded.`,
+      );
     }
     return angularCore ?? null;
   }
@@ -1400,9 +1504,11 @@ function isExternalAngularCore(path: string): boolean {
 
 function isInternalAngularCore(path: string): boolean {
   // path in g3
-  return path.endsWith('angular2/rc/packages/core/index.d.ts') ||
-      // angular/angular repository direct sources
-      path.indexOf('angular/packages/core/src') !== -1;
+  return (
+    path.endsWith('angular2/rc/packages/core/index.d.ts') ||
+    // angular/angular repository direct sources
+    path.indexOf('angular/packages/core/src') !== -1
+  );
 }
 
 function isTypeScriptFile(path: string): boolean {
@@ -1415,17 +1521,18 @@ function isExternalTemplate(path: string): boolean {
 
 // A code action resolve data might either metadata for a refactor action
 // from `onCodeAction` and `getApplicableEdits`, or is a code fix from Angular.
-type CodeActionResolveData =|{
-  refactor?: undefined;
-  fixId?: string;
-  document: lsp.TextDocumentIdentifier;
-}
-|{
-  refactor: true;
-  name: string;
-  document: lsp.TextDocumentIdentifier;
-  range: ts.TextRange
-};
+type CodeActionResolveData =
+  | {
+      refactor?: undefined;
+      fixId?: string;
+      document: lsp.TextDocumentIdentifier;
+    }
+  | {
+      refactor: true;
+      name: string;
+      document: lsp.TextDocumentIdentifier;
+      range: ts.TextRange;
+    };
 
 /**
  * Extract the fixAll action from `codeActions`
@@ -1439,8 +1546,9 @@ type CodeActionResolveData =|{
  * https://github.com/microsoft/vscode-languageserver-node/blob/f97bb73dbfb920af4bc8c13ecdcdc16359cdeda6/client/src/common/codeAction.ts#L45
  */
 function getCodeFixesAll(
-    codeActions: readonly ts.CodeFixAction[],
-    document: lsp.TextDocumentIdentifier): lsp.CodeAction[] {
+  codeActions: readonly ts.CodeFixAction[],
+  document: lsp.TextDocumentIdentifier,
+): lsp.CodeAction[] {
   const seenFixId = new Set<string>();
   const lspCodeActions: lsp.CodeAction[] = [];
   for (const codeAction of codeActions) {
@@ -1473,9 +1581,10 @@ function getCodeFixesAll(
  * [here](https://github.com/microsoft/vscode/blob/4608b378a8101ff273fa5db36516da6022f66bbf/extensions/typescript-language-features/src/languageFeatures/completions.ts#L304)
  */
 function generateCommandAndTextEditsFromCodeActions(
-    codeActions: ts.CodeAction[], currentFilePath: string,
-    getScriptInfo: (path: string) => ts.server.ScriptInfo |
-        undefined): {command?: lsp.Command; additionalTextEdits?: lsp.TextEdit[]} {
+  codeActions: ts.CodeAction[],
+  currentFilePath: string,
+  getScriptInfo: (path: string) => ts.server.ScriptInfo | undefined,
+): {command?: lsp.Command; additionalTextEdits?: lsp.TextEdit[]} {
   if (codeActions.length === 0) {
     return {};
   }
@@ -1487,15 +1596,19 @@ function generateCommandAndTextEditsFromCodeActions(
   const commandTextEditors: lsp.WorkspaceEdit[] = [];
 
   for (const tsAction of codeActions) {
-    const currentFileChanges =
-        tsAction.changes.filter(change => change.fileName === currentFilePath);
-    const otherWorkspaceFileChanges =
-        tsAction.changes.filter(change => change.fileName !== currentFilePath);
+    const currentFileChanges = tsAction.changes.filter(
+      (change) => change.fileName === currentFilePath,
+    );
+    const otherWorkspaceFileChanges = tsAction.changes.filter(
+      (change) => change.fileName !== currentFilePath,
+    );
 
     if (currentFileChanges.length > 0) {
       // Apply all edits in the current file using `additionalTextEdits`
-      const additionalWorkspaceEdit =
-          tsFileTextChangesToLspWorkspaceEdit(currentFileChanges, getScriptInfo).changes;
+      const additionalWorkspaceEdit = tsFileTextChangesToLspWorkspaceEdit(
+        currentFileChanges,
+        getScriptInfo,
+      ).changes;
       if (additionalWorkspaceEdit !== undefined) {
         for (const edit of Object.values(additionalWorkspaceEdit)) {
           additionalTextEdits.push(...edit);
@@ -1505,12 +1618,12 @@ function generateCommandAndTextEditsFromCodeActions(
 
     if (otherWorkspaceFileChanges.length > 0) {
       commandTextEditors.push(
-          tsFileTextChangesToLspWorkspaceEdit(otherWorkspaceFileChanges, getScriptInfo),
+        tsFileTextChangesToLspWorkspaceEdit(otherWorkspaceFileChanges, getScriptInfo),
       );
     }
   }
 
-  let command: lsp.Command|undefined = undefined;
+  let command: lsp.Command | undefined = undefined;
   if (commandTextEditors.length > 0) {
     // Create command that applies all edits not in the current file.
     command = {
@@ -1522,6 +1635,6 @@ function generateCommandAndTextEditsFromCodeActions(
 
   return {
     command,
-    additionalTextEdits: additionalTextEdits.length ? additionalTextEdits : undefined
+    additionalTextEdits: additionalTextEdits.length ? additionalTextEdits : undefined,
   };
 }

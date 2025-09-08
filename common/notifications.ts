@@ -16,15 +16,17 @@ export interface ProjectLanguageServiceParams {
   languageServiceEnabled: boolean;
 }
 
-export const ProjectLanguageService =
-    new NotificationType<ProjectLanguageServiceParams>('angular/projectLanguageService');
+export const ProjectLanguageService = new NotificationType<ProjectLanguageServiceParams>(
+  'angular/projectLanguageService',
+);
 
 export interface SuggestStrictModeParams {
   configFilePath: string;
   message: string;
 }
 
-export const SuggestStrictMode =
-    new NotificationType<SuggestStrictModeParams>('angular/suggestStrictMode');
+export const SuggestStrictMode = new NotificationType<SuggestStrictModeParams>(
+  'angular/suggestStrictMode',
+);
 
 export const OpenOutputChannel = new NotificationType('angular/OpenOutputChannel');

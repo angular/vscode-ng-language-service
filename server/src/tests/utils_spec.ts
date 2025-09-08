@@ -53,7 +53,6 @@ describe('uriToFilePath', () => {
   }
 });
 
-
 describe('MruTracker', () => {
   it('should track new items', () => {
     const tracker = new MruTracker();

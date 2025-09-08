@@ -17,8 +17,11 @@ export interface NodeModule {
   version: Version;
 }
 
-export function resolve(packageName: string, location: string, rootPackage?: string): NodeModule|
-    undefined {
+export function resolve(
+  packageName: string,
+  location: string,
+  rootPackage?: string,
+): NodeModule | undefined {
   rootPackage = rootPackage || packageName;
   try {
     const packageJsonPath = require.resolve(`${rootPackage}/package.json`, {
@@ -35,8 +38,7 @@ export function resolve(packageName: string, location: string, rootPackage?: str
       resolvedPath,
       version: new Version(packageJson.version),
     };
-  } catch {
-  }
+  } catch {}
 }
 
 export class Version {
@@ -51,7 +53,7 @@ export class Version {
     this.patch = patch;
   }
 
-  greaterThanOrEqual(other: Version, compare: 'patch'|'minor'|'major' = 'patch'): boolean {
+  greaterThanOrEqual(other: Version, compare: 'patch' | 'minor' | 'major' = 'patch'): boolean {
     if (this.major < other.major) {
       return false;
     }

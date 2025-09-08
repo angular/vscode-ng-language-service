@@ -43,8 +43,9 @@ export function filePathToUri(filePath: string): lsp.DocumentUri {
  * Converts ts.FileTextChanges to lsp.WorkspaceEdit.
  */
 export function tsFileTextChangesToLspWorkspaceEdit(
-    changes: readonly ts.FileTextChanges[],
-    getScriptInfo: (path: string) => ts.server.ScriptInfo | undefined): lsp.WorkspaceEdit {
+  changes: readonly ts.FileTextChanges[],
+  getScriptInfo: (path: string) => ts.server.ScriptInfo | undefined,
+): lsp.WorkspaceEdit {
   const workspaceChanges: {[uri: string]: lsp.TextEdit[]} = {};
   for (const change of changes) {
     const scriptInfo = getScriptInfo(change.fileName);
@@ -100,7 +101,9 @@ export function lspPositionToTsPosition(scriptInfo: ts.server.ScriptInfo, positi
  * @param range
  */
 export function lspRangeToTsPositions(
-    scriptInfo: ts.server.ScriptInfo, range: lsp.Range): [number, number] {
+  scriptInfo: ts.server.ScriptInfo,
+  range: lsp.Range,
+): [number, number] {
   const start = lspPositionToTsPosition(scriptInfo, range.start);
   const end = lspPositionToTsPosition(scriptInfo, range.end);
   return [start, end];
@@ -113,8 +116,9 @@ export function lspRangeToTsPositions(
  * @param relatedInfo
  */
 export function tsRelatedInformationToLspRelatedInformation(
-    projectService: ts.server.ProjectService,
-    relatedInfo?: ts.DiagnosticRelatedInformation[]): lsp.DiagnosticRelatedInformation[]|undefined {
+  projectService: ts.server.ProjectService,
+  relatedInfo?: ts.DiagnosticRelatedInformation[],
+): lsp.DiagnosticRelatedInformation[] | undefined {
   if (relatedInfo === undefined) return;
   const lspRelatedInfo: lsp.DiagnosticRelatedInformation[] = [];
   for (const info of relatedInfo) {
@@ -126,19 +130,22 @@ export function tsRelatedInformationToLspRelatedInformation(
       length: info.length,
     };
     const location = lsp.Location.create(
-        filePathToUri(info.file.fileName),
-        tsTextSpanToLspRange(scriptInfo, textSpan),
+      filePathToUri(info.file.fileName),
+      tsTextSpanToLspRange(scriptInfo, textSpan),
     );
-    lspRelatedInfo.push(lsp.DiagnosticRelatedInformation.create(
+    lspRelatedInfo.push(
+      lsp.DiagnosticRelatedInformation.create(
         location,
         ts.flattenDiagnosticMessageText(info.messageText, '\n'),
-        ));
+      ),
+    );
   }
   return lspRelatedInfo;
 }
 
-export function isConfiguredProject(project: ts.server.Project):
-    project is ts.server.ConfiguredProject {
+export function isConfiguredProject(
+  project: ts.server.Project,
+): project is ts.server.ConfiguredProject {
   return project.projectKind === ts.server.ProjectKind.Configured;
 }
 
@@ -172,7 +179,7 @@ export class MruTracker {
 }
 
 export function tsDisplayPartsToText(parts: ts.SymbolDisplayPart[]): string {
-  return parts.map(dp => dp.text).join('');
+  return parts.map((dp) => dp.text).join('');
 }
 
 interface DocumentPosition {
@@ -189,7 +196,9 @@ interface DocumentPosition {
  * @see https://github.com/angular/vscode-ng-language-service/issues/1588
  */
 export function getMappedDefinitionInfo(
-    info: ts.DefinitionInfo, project: ts.server.Project): ts.DefinitionInfo {
+  info: ts.DefinitionInfo,
+  project: ts.server.Project,
+): ts.DefinitionInfo {
   try {
     const mappedDocumentSpan = getMappedDocumentSpan(info, project);
     return {...info, ...mappedDocumentSpan};
@@ -199,7 +208,9 @@ export function getMappedDefinitionInfo(
 }
 
 function getMappedDocumentSpan(
-    documentSpan: ts.DocumentSpan, project: ts.server.Project): ts.DocumentSpan|undefined {
+  documentSpan: ts.DocumentSpan,
+  project: ts.server.Project,
+): ts.DocumentSpan | undefined {
   const newPosition = getMappedLocation(documentSpanLocation(documentSpan), project);
   if (!newPosition) return undefined;
   return {
@@ -208,17 +219,19 @@ function getMappedDocumentSpan(
     originalFileName: documentSpan.fileName,
     originalTextSpan: documentSpan.textSpan,
     contextSpan: getMappedContextSpan(documentSpan, project),
-    originalContextSpan: documentSpan.contextSpan
+    originalContextSpan: documentSpan.contextSpan,
   };
 }
 
 function getMappedLocation(
-    location: DocumentPosition, project: ts.server.Project): DocumentPosition|undefined {
+  location: DocumentPosition,
+  project: ts.server.Project,
+): DocumentPosition | undefined {
   const mapsTo = (project as any).getSourceMapper().tryGetSourcePosition(location);
   return mapsTo &&
-          (project.projectService as any).fileExists(ts.server.toNormalizedPath(mapsTo.fileName)) ?
-      mapsTo :
-      undefined;
+    (project.projectService as any).fileExists(ts.server.toNormalizedPath(mapsTo.fileName))
+    ? mapsTo
+    : undefined;
 }
 
 function documentSpanLocation({fileName, textSpan}: ts.DocumentSpan): DocumentPosition {
@@ -226,17 +239,25 @@ function documentSpanLocation({fileName, textSpan}: ts.DocumentSpan): DocumentPo
 }
 
 function getMappedContextSpan(
-    documentSpan: ts.DocumentSpan, project: ts.server.Project): ts.TextSpan|undefined {
-  const contextSpanStart = documentSpan.contextSpan &&
-      getMappedLocation({fileName: documentSpan.fileName, pos: documentSpan.contextSpan.start},
-                        project);
-  const contextSpanEnd = documentSpan.contextSpan &&
-      getMappedLocation({
-                          fileName: documentSpan.fileName,
-                          pos: documentSpan.contextSpan.start + documentSpan.contextSpan.length
-                         },
-                        project);
-  return contextSpanStart && contextSpanEnd ?
-      {start: contextSpanStart.pos, length: contextSpanEnd.pos - contextSpanStart.pos} :
-      undefined;
+  documentSpan: ts.DocumentSpan,
+  project: ts.server.Project,
+): ts.TextSpan | undefined {
+  const contextSpanStart =
+    documentSpan.contextSpan &&
+    getMappedLocation(
+      {fileName: documentSpan.fileName, pos: documentSpan.contextSpan.start},
+      project,
+    );
+  const contextSpanEnd =
+    documentSpan.contextSpan &&
+    getMappedLocation(
+      {
+        fileName: documentSpan.fileName,
+        pos: documentSpan.contextSpan.start + documentSpan.contextSpan.length,
+      },
+      project,
+    );
+  return contextSpanStart && contextSpanEnd
+    ? {start: contextSpanStart.pos, length: contextSpanEnd.pos - contextSpanStart.pos}
+    : undefined;
 }

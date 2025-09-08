@@ -9,16 +9,20 @@
 import * as lsp from 'vscode-languageserver-protocol';
 
 export const GetComponentsWithTemplateFile = new lsp.RequestType<
-    GetComponentsWithTemplateFileParams, lsp.Location[],
-    /* error */ void>('angular/getComponentsWithTemplateFile');
+  GetComponentsWithTemplateFileParams,
+  lsp.Location[],
+  /* error */ void
+>('angular/getComponentsWithTemplateFile');
 
 export interface GetComponentsWithTemplateFileParams {
   textDocument: lsp.TextDocumentIdentifier;
 }
 
 export const GetTemplateLocationForComponent = new lsp.RequestType<
-    GetTemplateLocationForComponentParams, lsp.Location,
-    /* error */ void>('angular/getTemplateLocationForComponent');
+  GetTemplateLocationForComponentParams,
+  lsp.Location,
+  /* error */ void
+>('angular/getTemplateLocationForComponent');
 
 export interface GetTemplateLocationForComponentParams {
   textDocument: lsp.TextDocumentIdentifier;
@@ -30,8 +34,11 @@ export interface GetTcbParams {
   position: lsp.Position;
 }
 
-export const GetTcbRequest =
-    new lsp.RequestType<GetTcbParams, GetTcbResponse|null, /* error */ void>('angular/getTcb');
+export const GetTcbRequest = new lsp.RequestType<
+  GetTcbParams,
+  GetTcbResponse | null,
+  /* error */ void
+>('angular/getTcb');
 
 export interface GetTcbResponse {
   uri: lsp.DocumentUri;
@@ -39,9 +46,11 @@ export interface GetTcbResponse {
   selections: lsp.Range[];
 }
 
-export const IsInAngularProject =
-    new lsp.RequestType<IsInAngularProjectParams, boolean|null, /* error */ void>(
-        'angular/isAngularCoreInOwningProject');
+export const IsInAngularProject = new lsp.RequestType<
+  IsInAngularProjectParams,
+  boolean | null,
+  /* error */ void
+>('angular/isAngularCoreInOwningProject');
 
 export interface IsInAngularProjectParams {
   textDocument: lsp.TextDocumentIdentifier;

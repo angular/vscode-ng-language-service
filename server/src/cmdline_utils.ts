@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-function findArgument(argv: string[], argName: string): string|undefined {
+function findArgument(argv: string[], argName: string): string | undefined {
   const index = argv.indexOf(argName);
   if (index < 0 || index === argv.length - 1) {
     return;
@@ -14,8 +14,11 @@ function findArgument(argv: string[], argName: string): string|undefined {
   return argv[index + 1];
 }
 
-function findArgumentWithDefault<T>(argv: string[], argName: string, defaultValue: T): T|string|
-    undefined {
+function findArgumentWithDefault<T>(
+  argv: string[],
+  argName: string,
+  defaultValue: T,
+): T | string | undefined {
   const index = argv.indexOf(argName);
   if (index < 0) {
     return defaultValue;
@@ -58,7 +61,7 @@ interface CommandLineOptions {
   logToConsole: boolean;
   ngProbeLocations: string[];
   tsProbeLocations: string[];
-  tsdk: string|null;
+  tsdk: string | null;
   includeAutomaticOptionalChainCompletions: boolean;
   includeCompletionsWithSnippetText: boolean;
   includeCompletionsForModuleExports: boolean;
@@ -78,11 +81,15 @@ export function parseCommandLine(argv: string[]): CommandLineOptions {
     ngProbeLocations: parseStringArray(argv, '--ngProbeLocations'),
     tsProbeLocations: parseStringArray(argv, '--tsProbeLocations'),
     tsdk: findArgument(argv, '--tsdk') ?? null,
-    includeAutomaticOptionalChainCompletions:
-        hasArgument(argv, '--includeAutomaticOptionalChainCompletions'),
+    includeAutomaticOptionalChainCompletions: hasArgument(
+      argv,
+      '--includeAutomaticOptionalChainCompletions',
+    ),
     includeCompletionsWithSnippetText: hasArgument(argv, '--includeCompletionsWithSnippetText'),
-    includeCompletionsForModuleExports:
-        parseBooleanArgument(argv, '--includeCompletionsForModuleExports'),
+    includeCompletionsForModuleExports: parseBooleanArgument(
+      argv,
+      '--includeCompletionsForModuleExports',
+    ),
     forceStrictTemplates: hasArgument(argv, '--forceStrictTemplates'),
     disableBlockSyntax: hasArgument(argv, '--disableBlockSyntax'),
     disableLetSyntax: hasArgument(argv, '--disableLetSyntax'),

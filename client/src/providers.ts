@@ -28,11 +28,11 @@ export class TcbContentProvider implements vscode.TextDocumentContentProvider {
   /**
    * Name of the typecheck file.
    */
-  private tcbFile: vscode.Uri|null = null;
+  private tcbFile: vscode.Uri | null = null;
   /**
    * Content of the entire typecheck file.
    */
-  private tcbContent: string|null = null;
+  private tcbContent: string | null = null;
 
   /**
    * This callback is invoked only when user explicitly requests to view or
@@ -41,8 +41,10 @@ export class TcbContentProvider implements vscode.TextDocumentContentProvider {
    */
   readonly onDidChange = this.onDidChangeEmitter.event;
 
-  provideTextDocumentContent(uri: vscode.Uri, token: vscode.CancellationToken):
-      vscode.ProviderResult<string> {
+  provideTextDocumentContent(
+    uri: vscode.Uri,
+    token: vscode.CancellationToken,
+  ): vscode.ProviderResult<string> {
     if (uri.toString() !== this.tcbFile?.toString()) {
       return null;
     }

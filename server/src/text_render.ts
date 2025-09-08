@@ -13,19 +13,22 @@ import {OpenJsDocLinkCommand_Args, OpenJsDocLinkCommandId} from '../../common/in
 import {tsTextSpanToLspRange} from './utils';
 
 function replaceLinks(text: string): string {
-  return text
+  return (
+    text
       // Http(s) links
       .replace(
-          /\{@(link|linkplain|linkcode) (https?:\/\/[^ |}]+?)(?:[| ]([^{}\n]+?))?\}/gi,
-          (_, tag: string, link: string, text?: string) => {
-            switch (tag) {
-              case 'linkcode':
-                return `[\`${text ? text.trim() : link}\`](${link})`;
+        /\{@(link|linkplain|linkcode) (https?:\/\/[^ |}]+?)(?:[| ]([^{}\n]+?))?\}/gi,
+        (_, tag: string, link: string, text?: string) => {
+          switch (tag) {
+            case 'linkcode':
+              return `[\`${text ? text.trim() : link}\`](${link})`;
 
-              default:
-                return `[${text ? text.trim() : link}](${link})`;
-            }
-          });
+            default:
+              return `[${text ? text.trim() : link}](${link})`;
+          }
+        },
+      )
+  );
 }
 
 function processInlineTags(text: string): string {
@@ -33,8 +36,9 @@ function processInlineTags(text: string): string {
 }
 
 function getTagBodyText(
-    tag: tss.JSDocTagInfo,
-    getScriptInfo: (fileName: string) => tss.server.ScriptInfo | undefined): string|undefined {
+  tag: tss.JSDocTagInfo,
+  getScriptInfo: (fileName: string) => tss.server.ScriptInfo | undefined,
+): string | undefined {
   if (!tag.text) {
     return undefined;
   }
@@ -57,8 +61,9 @@ function getTagBodyText(
       // check for caption tags, fix for #79704
       const captionTagMatches = text.match(/<caption>(.*?)<\/caption>\s*(\r\n|\n)/);
       if (captionTagMatches && captionTagMatches.index === 0) {
-        return captionTagMatches[1] + '\n' +
-            makeCodeblock(text.substr(captionTagMatches[0].length));
+        return (
+          captionTagMatches[1] + '\n' + makeCodeblock(text.substr(captionTagMatches[0].length))
+        );
       } else {
         return makeCodeblock(text);
       }
@@ -81,8 +86,9 @@ function getTagBodyText(
 }
 
 function getTagDocumentation(
-    tag: tss.JSDocTagInfo,
-    getScriptInfo: (fileName: string) => tss.server.ScriptInfo | undefined): string|undefined {
+  tag: tss.JSDocTagInfo,
+  getScriptInfo: (fileName: string) => tss.server.ScriptInfo | undefined,
+): string | undefined {
   switch (tag.name) {
     case 'augments':
     case 'extends':
@@ -96,9 +102,12 @@ function getTagDocumentation(
         if (!doc) {
           return label;
         }
-        return label +
-            (doc.match(/\r\n|\n/g) ? '  \n' + processInlineTags(doc) :
-                                     ` \u2014 ${processInlineTags(doc)}`);
+        return (
+          label +
+          (doc.match(/\r\n|\n/g)
+            ? '  \n' + processInlineTags(doc)
+            : ` \u2014 ${processInlineTags(doc)}`)
+        );
       }
       break;
     }
@@ -114,7 +123,6 @@ function getTagDocumentation(
     }
   }
 
-
   // Generic tag
   const label = `*@${tag.name}*`;
   const text = getTagBodyText(tag, getScriptInfo);
@@ -125,31 +133,37 @@ function getTagDocumentation(
 }
 
 function getTagBody(
-    tag: tss.JSDocTagInfo, getScriptInfo: (fileName: string) => tss.server.ScriptInfo | undefined):
-    Array<string>|undefined {
+  tag: tss.JSDocTagInfo,
+  getScriptInfo: (fileName: string) => tss.server.ScriptInfo | undefined,
+): Array<string> | undefined {
   if (tag.name === 'template') {
     const parts = tag.text;
-    if (parts && typeof (parts) !== 'string') {
-      const params = parts.filter(p => p.kind === 'typeParameterName').map(p => p.text).join(', ');
-      const docs = parts.filter(p => p.kind === 'text')
-                       .map(p => convertLinkTags(p.text.replace(/^\s*-?\s*/, ''), getScriptInfo))
-                       .join(' ');
+    if (parts && typeof parts !== 'string') {
+      const params = parts
+        .filter((p) => p.kind === 'typeParameterName')
+        .map((p) => p.text)
+        .join(', ');
+      const docs = parts
+        .filter((p) => p.kind === 'text')
+        .map((p) => convertLinkTags(p.text.replace(/^\s*-?\s*/, ''), getScriptInfo))
+        .join(' ');
       return params ? ['', params, docs] : undefined;
     }
   }
-  return (convertLinkTags(tag.text, getScriptInfo)).split(/^(\S+)\s*-?\s*/);
+  return convertLinkTags(tag.text, getScriptInfo).split(/^(\S+)\s*-?\s*/);
 }
 
-function asPlainText(parts: readonly tss.SymbolDisplayPart[]|string): string {
+function asPlainText(parts: readonly tss.SymbolDisplayPart[] | string): string {
   if (typeof parts === 'string') {
     return parts;
   }
-  return parts.map(part => part.text).join('');
+  return parts.map((part) => part.text).join('');
 }
 
 export function asPlainTextWithLinks(
-    documentation: tss.SymbolDisplayPart[]|undefined,
-    getScriptInfo: (fileName: string) => tss.server.ScriptInfo | undefined): string {
+  documentation: tss.SymbolDisplayPart[] | undefined,
+  getScriptInfo: (fileName: string) => tss.server.ScriptInfo | undefined,
+): string {
   return processInlineTags(convertLinkTags(documentation, getScriptInfo));
 }
 
@@ -157,8 +171,9 @@ export function asPlainTextWithLinks(
  * Convert `@link` inline tags to markdown links
  */
 function convertLinkTags(
-    documentation: tss.SymbolDisplayPart[]|undefined|string,
-    getScriptInfo: (fileName: string) => tss.server.ScriptInfo | undefined): string {
+  documentation: tss.SymbolDisplayPart[] | undefined | string,
+  getScriptInfo: (fileName: string) => tss.server.ScriptInfo | undefined,
+): string {
   if (!documentation) {
     return '';
   }
@@ -170,8 +185,8 @@ function convertLinkTags(
   const out: string[] = [];
 
   let currentLink:
-      {name?: string; target?: tss.DocumentSpan; text?: string; readonly linkcode: boolean}|
-      undefined;
+    | {name?: string; target?: tss.DocumentSpan; text?: string; readonly linkcode: boolean}
+    | undefined;
   for (const part of documentation) {
     switch (part.kind) {
       case 'link':
@@ -179,17 +194,18 @@ function convertLinkTags(
           if (currentLink.target) {
             const scriptInfo = getScriptInfo(currentLink.target.fileName);
             const args: OpenJsDocLinkCommand_Args = {
-              file:
-                  currentLink.target.fileName,  // Prevent VS Code from trying to transform the uri,
-              position: scriptInfo ? tsTextSpanToLspRange(scriptInfo, currentLink.target.textSpan) :
-                                     undefined,
+              file: currentLink.target.fileName, // Prevent VS Code from trying to transform the uri,
+              position: scriptInfo
+                ? tsTextSpanToLspRange(scriptInfo, currentLink.target.textSpan)
+                : undefined,
             };
-            const command =
-                `command:${OpenJsDocLinkCommandId}?${encodeURIComponent(JSON.stringify(args))}`;
+            const command = `command:${OpenJsDocLinkCommandId}?${encodeURIComponent(
+              JSON.stringify(args),
+            )}`;
 
-            const linkText = currentLink.text ?
-                currentLink.text :
-                escapeMarkdownSyntaxTokensForCode(currentLink.name ?? '');
+            const linkText = currentLink.text
+              ? currentLink.text
+              : escapeMarkdownSyntaxTokensForCode(currentLink.name ?? '');
             out.push(`[${currentLink.linkcode ? '`' + linkText + '`' : linkText}](${command})`);
           } else {
             const text = currentLink.text ?? currentLink.name;
@@ -201,7 +217,8 @@ function convertLinkTags(
                 } else if (parts.length > 1) {
                   const linkText = escapeMarkdownSyntaxTokensForCode(parts.slice(1).join(' '));
                   out.push(
-                      `[${currentLink.linkcode ? '`' + linkText + '`' : linkText}](${parts[0]})`);
+                    `[${currentLink.linkcode ? '`' + linkText + '`' : linkText}](${parts[0]})`,
+                  );
                 }
               } else {
                 out.push(escapeMarkdownSyntaxTokensForCode(text));
@@ -236,28 +253,33 @@ function convertLinkTags(
 }
 
 function escapeMarkdownSyntaxTokensForCode(text: string): string {
-  return text.replace(/`/g, '\\$&');  // CodeQL [SM02383] This is only meant to escape backticks.
-                                      // The Markdown is fully sanitized after being rendered.
+  return text.replace(/`/g, '\\$&'); // CodeQL [SM02383] This is only meant to escape backticks.
+  // The Markdown is fully sanitized after being rendered.
 }
 
 export function tagsToMarkdown(
-    tags: tss.JSDocTagInfo[],
-    getScriptInfo: (fileName: string) => tss.server.ScriptInfo | undefined): string {
-  return tags.map(tag => getTagDocumentation(tag, getScriptInfo)).join('  \n\n');
+  tags: tss.JSDocTagInfo[],
+  getScriptInfo: (fileName: string) => tss.server.ScriptInfo | undefined,
+): string {
+  return tags.map((tag) => getTagDocumentation(tag, getScriptInfo)).join('  \n\n');
 }
 
 export function documentationToMarkdown(
-    documentation: tss.SymbolDisplayPart[]|undefined, tags: tss.JSDocTagInfo[]|undefined,
-    getScriptInfo: (fileName: string) => tss.server.ScriptInfo | undefined): string[] {
+  documentation: tss.SymbolDisplayPart[] | undefined,
+  tags: tss.JSDocTagInfo[] | undefined,
+  getScriptInfo: (fileName: string) => tss.server.ScriptInfo | undefined,
+): string[] {
   const out: string[] = [];
   appendDocumentationAsMarkdown(out, documentation, tags, getScriptInfo);
   return out;
 }
 
 function appendDocumentationAsMarkdown(
-    out: string[], documentation: tss.SymbolDisplayPart[]|undefined,
-    tags: tss.JSDocTagInfo[]|undefined,
-    getScriptInfo: (fileName: string) => tss.server.ScriptInfo | undefined): string[] {
+  out: string[],
+  documentation: tss.SymbolDisplayPart[] | undefined,
+  tags: tss.JSDocTagInfo[] | undefined,
+  getScriptInfo: (fileName: string) => tss.server.ScriptInfo | undefined,
+): string[] {
   if (documentation) {
     out.push(asPlainTextWithLinks(documentation, getScriptInfo));
   }

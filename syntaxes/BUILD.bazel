@@ -1,10 +1,9 @@
-load("@aspect_rules_js//js:defs.bzl", "js_run_binary", "js_library")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@aspect_rules_js//js:defs.bzl", "js_library", "js_run_binary")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 
 js_run_binary(
     name = "build",
-    tool = "//syntaxes/src:build",
     outs = [
         # bazel output files names in the output tree are prefixed with `_` so
         # we can refer to both the source files & output files by label in the
@@ -17,7 +16,8 @@ js_run_binary(
         "_template-tag.json",
         "_let-declaration.json",
         "_host-object-literal.json",
-    ]
+    ],
+    tool = "//syntaxes/src:build",
 )
 
 write_source_files(
@@ -31,24 +31,27 @@ write_source_files(
         "template-tag.json": "_template-tag.json",
         "let-declaration.json": "_let-declaration.json",
         "host-object-literal.json": "_host-object-literal.json",
-    }
+    },
 )
 
 js_library(
     name = "json",
     srcs = glob(["*.json"]),
-    visibility = ["//syntaxes:__subpackages__"]
+    visibility = ["//syntaxes:__subpackages__"],
 )
 
 ts_config(
     name = "tsconfig",
     src = "tsconfig.json",
+    visibility = ["//syntaxes:__subpackages__"],
     deps = ["//:tsconfig"],
-    visibility = ["//syntaxes:__subpackages__"]
 )
 
 filegroup(
     name = "npm_files",
-    srcs = glob(["*.json"], exclude = ["tsconfig.json"]),
-    visibility = ["//:__pkg__"]
+    srcs = glob(
+        ["*.json"],
+        exclude = ["tsconfig.json"],
+    ),
+    visibility = ["//:__pkg__"],
 )

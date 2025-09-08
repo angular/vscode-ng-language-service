@@ -62,7 +62,7 @@ export function createLogger(options: LoggerOptions): ts.server.Logger {
 // implementation.
 // https://github.com/microsoft/TypeScript/blob/ec39d412876d0dcf704fc886d5036cb625220d2f/src/tsserver/server.ts#L120
 
-function noop(_?: {}|null|undefined): void {}  // tslint:disable-line no-empty
+function noop(_?: {} | null | undefined): void {} // tslint:disable-line no-empty
 
 function nowString() {
   // E.g. "12:34:56.789"
@@ -76,10 +76,7 @@ class Logger implements ts.server.Logger {
   private inGroup = false;
   private firstInGroup = true;
 
-  constructor(
-      private readonly level: ts.server.LogLevel,
-      private readonly logFilename?: string,
-  ) {
+  constructor(private readonly level: ts.server.LogLevel, private readonly logFilename?: string) {
     this.fd = -1;
     if (logFilename) {
       try {

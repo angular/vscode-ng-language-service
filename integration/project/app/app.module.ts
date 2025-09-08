@@ -6,15 +6,8 @@ import {AppComponent} from './app.component';
 import {FooComponent} from './foo.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    PostModule,
-  ],
-  declarations: [
-    AppComponent,
-    FooComponent,
-  ],
-  bootstrap: [AppComponent]
+  imports: [CommonModule, PostModule],
+  declarations: [AppComponent, FooComponent],
+  bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

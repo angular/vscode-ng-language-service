@@ -11,11 +11,8 @@ import {GrammarDefinition} from './types';
 export const Template: GrammarDefinition = {
   scopeName: 'template.ng',
   injectionSelector: 'L:text.html -comment',
-  patterns: [
-    {include: '#interpolation'},
-  ],
+  patterns: [{include: '#interpolation'}],
   repository: {
-
     interpolation: {
       begin: /{{/,
       beginCaptures: {
@@ -26,10 +23,7 @@ export const Template: GrammarDefinition = {
         0: {name: 'punctuation.definition.block.ts'},
       },
       contentName: 'expression.ng',
-      patterns: [
-        {include: 'expression.ng'},
-      ],
+      patterns: [{include: 'expression.ng'}],
     },
-
   },
 };

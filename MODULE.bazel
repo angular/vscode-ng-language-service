@@ -22,8 +22,6 @@ rules_ts_ext.deps(
 )
 use_repo(rules_ts_ext, **{"npm_typescript": "angular_npm_typescript"})
 
-
-
 pnpm = use_extension("@aspect_rules_js//npm:extensions.bzl", "pnpm")
 use_repo(pnpm, "pnpm")
 
@@ -32,11 +30,11 @@ npm.npm_translate_lock(
     name = "npm",
     data = [
         "//:package.json",
-        "//integration/pre_standalone_project:package.json",
-        "//integration/workspace:package.json",
-        "//integration/pre_apf_project:package.json",
-        "//integration/project:package.json",
         "//:pnpm-workspace.yaml",
+        "//integration/pre_apf_project:package.json",
+        "//integration/pre_standalone_project:package.json",
+        "//integration/project:package.json",
+        "//integration/workspace:package.json",
     ],
     npmrc = "//:.npmrc",
     pnpm_lock = "//:pnpm-lock.yaml",

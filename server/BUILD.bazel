@@ -1,6 +1,6 @@
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
-load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_bazel_lib//lib:expand_template.bzl", "expand_template_rule")
+load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 
 ts_config(
     name = "tsconfig",
@@ -25,10 +25,6 @@ esbuild(
         # Workaround for https://github.com/aspect-build/rules_esbuild/issues/58
         "resolveExtensions": [".js"],
     },
-    deps = [
-        "//server/src",
-        "//:node_modules/source-map-support",
-    ],
     entry_point = "//server/src:banner.js",
     external = [
         "path",
@@ -38,16 +34,16 @@ esbuild(
     minify = False,
     platform = "node",
     sourcemap = "external",
+    deps = [
+        "//:node_modules/source-map-support",
+        "//server/src",
+    ],
 )
 
 esbuild(
     name = "index",
     srcs = [
         ":banner.js",
-    ],
-    deps = [
-        "//:node_modules/source-map-support",
-        "//server/src",
     ],
     config = "esbuild.mjs",
     entry_point = "//server/src:server.js",
@@ -68,6 +64,10 @@ esbuild(
     sourcemap = "external",
     visibility = [
         "//integration:__subpackages__",
+    ],
+    deps = [
+        "//:node_modules/source-map-support",
+        "//server/src",
     ],
 )
 

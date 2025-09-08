@@ -13,8 +13,8 @@ export interface ServerOptions {
 export interface OpenJsDocLinkCommand_Args {
   readonly file: string;
   readonly position?: {
-    start: {character: number; line: number;},
-    end: {character: number; line: number;},
+    start: {character: number; line: number};
+    end: {character: number; line: number};
   };
 }
 

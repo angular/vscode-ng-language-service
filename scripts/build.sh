@@ -30,9 +30,5 @@ fi
 
 set -ex -o pipefail
 
-# Run legacy yarn install to update the lock file since we may have modified the package.json above
-# and so that we can call bazel via yarn bazel
-yarn install
-
 # Build the npm package with bazel
-yarn bazel build //:npm --config=release
+pnpm bazel build //:npm --config=release

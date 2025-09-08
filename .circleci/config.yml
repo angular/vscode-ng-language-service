@@ -16,19 +16,7 @@ jobs:
     steps:
       - checkout
       - node/install-packages:
-          pkg-manager: yarn
-      - node/install-packages:
-          app-dir: integration/project
-          pkg-manager: yarn
-      - node/install-packages:
-          app-dir: integration/pre_apf_project
-          pkg-manager: yarn
-      - node/install-packages:
-          app-dir: integration/pre_standalone_project
-          pkg-manager: yarn
-      - node/install-packages:
-          app-dir: integration/workspace
-          pkg-manager: yarn
+          pkg-manager: pnpm
       - run: scripts/lint.sh
       - run: scripts/format.sh
       - run: scripts/build.sh << parameters.dependency_type >>

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Usage:
-//   yarn test:syntaxes [options]
+//   pnpm test:syntaxes [options]
 //
 // Options:
 //   -u    update snapshot files (always passes)

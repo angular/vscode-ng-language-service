@@ -2,7 +2,7 @@
 
 set -ex -o pipefail
 
-yarn bazel test //...
+pnpm bazel test //...
 
 # E2E test that brings up full vscode
 # TODO: Disabled for now because it cannot be run on CircleCI

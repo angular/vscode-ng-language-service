@@ -10,9 +10,12 @@
     "Angular",
     "multi-root ready"
   ],
+  "packageManager": "pnpm@10.15.1",
   "engines": {
-    "vscode": "^1.74.3",
-    "pnpm": "10.13.1"
+    "npm": "Please use pnpm instead of NPM to install dependencies",
+    "yarn": "Please use pnpm instead of Yarn to install dependencies",
+    "pnpm": "10.15.1",
+    "vscode": "^1.74.3"
   },
   "capabilities": {
     "untrustedWorkspaces": {
@@ -246,28 +249,28 @@
   "main": "./bazel-bin/client/src/extension",
   "scripts": {
     "ng-dev": "cross-env TS_NODE_PROJECT=$PWD/.ng-dev/tsconfig.json TS_NODE_TRANSPILE_ONLY=1 node --no-warnings --loader ts-node/esm node_modules/@angular/dev-infra-private/ng-dev/bundles/cli.mjs",
-    "compile": "tsc -b && yarn bazel build :npm",
-    "compile:client-server": "yarn bazel build //client:index.js //server:index.js",
+    "compile": "tsc -b && bazel build :npm",
+    "compile:client-server": "bazel build //client:index.js //server:index.js",
     "compile:test": "tsc -b test.tsconfig.json",
-    "compile:integration": "tsc -b integration && yarn --cwd integration/project build",
+    "compile:integration": "tsc -b integration && pnpm -C integration/project build",
     "compile:syntaxes-test": "tsc -b syntaxes/test",
     "build:syntaxes": "tsc -b syntaxes && node dist/syntaxes/build.js",
     "format": "scripts/format.sh",
-    "watch": "yarn ibazel build //client:index.js //server:index.js",
+    "watch": "ibazel build //client:index.js //server:index.js",
     "package": "scripts/build.sh package.json",
-    "test": "yarn bazel test --test_tag_filters=unit_test //...",
-    "test:watch": "yarn ibazel test --test_tag_filters=unit_test //...",
-    "test:lsp": "yarn bazel test --test_output=streamed //integration/lsp:test",
-    "test:e2e": "yarn bazel test --test_output=streamed //integration/e2e:test",
-    "test:inspect-client": "yarn bazel run --config=debug //client/src/tests:test",
-    "test:inspect-common": "yarn bazel run --config=debug //common/tests:test",
-    "test:inspect-server": "yarn bazel run --config=debug //server/src/tests:test",
-    "test:inspect-syntaxes": "yarn bazel run --config=debug //syntaxes/test:test",
-    "test:legacy-inspect": "yarn compile:test && node --inspect-brk node_modules/jasmine/bin/jasmine.js --config=jasmine.json",
-    "test:legacy": "yarn compile:test && jasmine --config=jasmine.json",
-    "test:legacy-lsp": "yarn compile:integration && jasmine --config=integration/lsp/jasmine.json",
-    "test:legacy-e2e": "yarn compile:integration && node dist/integration/e2e",
-    "test:legacy-syntaxes": "yarn compile:syntaxes-test && yarn build:syntaxes && jasmine dist/syntaxes/test/driver.js"
+    "test": "bazel test --test_tag_filters=unit_test //...",
+    "test:watch": "ibazel test --test_tag_filters=unit_test //...",
+    "test:lsp": "bazel test --test_output=streamed //integration/lsp:test",
+    "test:e2e": "bazel test --test_output=streamed //integration/e2e:test",
+    "test:inspect-client": "bazel run --config=debug //client/src/tests:test",
+    "test:inspect-common": "bazel run --config=debug //common/tests:test",
+    "test:inspect-server": "bazel run --config=debug //server/src/tests:test",
+    "test:inspect-syntaxes": "bazel run --config=debug //syntaxes/test:test",
+    "test:legacy-inspect": "compile:test && node --inspect-brk node_modules/jasmine/bin/jasmine.js --config=jasmine.json",
+    "test:legacy": "compile:test && jasmine --config=jasmine.json",
+    "test:legacy-lsp": "compile:integration && jasmine --config=integration/lsp/jasmine.json",
+    "test:legacy-e2e": "compile:integration && node dist/integration/e2e",
+    "test:legacy-syntaxes": "compile:syntaxes-test && build:syntaxes && jasmine dist/syntaxes/test/driver.js"
   },
   "dependencies": {
     "@angular/language-service": "20.2.0-rc.1",

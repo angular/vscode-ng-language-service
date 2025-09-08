@@ -3,7 +3,7 @@
   "tslint.enable": true,
   "typescript.tsc.autoDetect": "off",
   "typescript.preferences.quoteStyle": "single",
-  "//format-on-save-comment": "Format ts files on save with `clang-format.executable`. If `clang-format.executable` is not being used, this setting should be removed. You can instead run `yarn format` to manually format your code.",
+  "//format-on-save-comment": "Format ts files on save with `clang-format.executable`. If `clang-format.executable` is not being used, this setting should be removed. You can instead run `pnpm format` to manually format your code.",
   "[typescript]": {
     "editor.formatOnSave": true
   },

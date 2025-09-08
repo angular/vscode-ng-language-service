@@ -2,9 +2,9 @@
 
 set -ex -o pipefail
 
-yarn tsc --project .ng-dev/tsconfig.json
+pnpm tsc --project .ng-dev/tsconfig.json
 
-yarn tslint --project client/tsconfig.json
-yarn tslint --project server/tsconfig.json
-yarn tslint --project server/src/tests/tsconfig.json
-yarn tslint --project syntaxes/tsconfig.json
+pnpm tslint --project client/tsconfig.json
+pnpm tslint --project server/tsconfig.json
+pnpm tslint --project server/src/tests/tsconfig.json
+pnpm tslint --project syntaxes/tsconfig.json

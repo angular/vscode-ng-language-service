@@ -21,11 +21,10 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: 14.x
-    - run: yarn install
-    - run: yarn install --cwd integration/project
+    - run: pnpm install
     - run: cd integration/project
     - run: scripts/build.sh package.json
-    - run: xvfb-run -a yarn run test:e2e
+    - run: xvfb-run -a pnpm run test:e2e
       if: runner.os == 'Linux'
-    - run: yarn run test:e2e
+    - run: pnpm run test:e2e
       if: runner.os != 'Linux'

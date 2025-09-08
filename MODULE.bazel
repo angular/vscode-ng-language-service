@@ -56,7 +56,6 @@ npm.npm_translate_lock(
         "yallist@4.0.0": [""],
     },
     verify_node_modules_ignored = "//:.bazelignore",
-    yarn_lock = "//:yarn.lock",
 )
 use_repo(npm, "npm")
 

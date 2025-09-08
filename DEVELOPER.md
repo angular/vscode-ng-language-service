@@ -9,9 +9,6 @@ The dependencies of the `server` need to be duplicated in the root [`package.jso
 Therefore, if a new prod dependency is added to the server, it needs to be
 added to both [`package.json`](package.json) and [`server/package.json`](server/package.json).
 
-Note that we do not install the dependencies in [`server`](server),
-hence there should not be a `yarn.lock` file.
-
 ## Navigating Projects in IDE
 
 This repository contains multiple TypeScript projects, each with its own `tsconfig.json`.
@@ -20,7 +17,7 @@ As a result, some projects depend on the `.d.ts` output of their dependencies, l
 and `server` depend on `common`. In order to navigate the projects in your IDE,
 you need to first build them by running
 ```shell
-yarn compile
+pnpm compile
 ```
 
 If you'd like to force a clean build, you can delete the existing build artifacts
@@ -34,7 +31,7 @@ by running
 This repository uses the [NPM distribution](https://www.npmjs.com/package/clang-format) of
 [`clang-format`](http://clang.llvm.org/docs/ClangFormat.html) to format source code.
 
-Code is automatically formatted by running `yarn format`. You can also set up your IDE to format
+Code is automatically formatted by running `pnpm format`. You can also set up your IDE to format
 files on each save.
 
 ### VS Code

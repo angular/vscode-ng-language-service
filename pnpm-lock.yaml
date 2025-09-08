@@ -4,98 +4,96 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-importers:
+dependencies:
+  '@angular/language-service':
+    specifier: 20.2.0-rc.1
+    version: 20.2.0-rc.1
+  typescript:
+    specifier: ^5.9.2
+    version: 5.9.2
+  vscode-html-languageservice:
+    specifier: ^4.2.5
+    version: 4.2.5
+  vscode-jsonrpc:
+    specifier: 6.0.0
+    version: 6.0.0
+  vscode-languageclient:
+    specifier: 7.0.0
+    version: 7.0.0
+  vscode-languageserver:
+    specifier: 7.0.0
+    version: 7.0.0
+  vscode-languageserver-textdocument:
+    specifier: ^1.0.7
+    version: 1.0.11
+  vscode-uri:
+    specifier: 3.0.7
+    version: 3.0.7
 
-  .:
-    dependencies:
-      '@angular/language-service':
-        specifier: 20.2.0-rc.1
-        version: 20.2.0-rc.1
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
-      vscode-html-languageservice:
-        specifier: ^4.2.5
-        version: 4.2.5
-      vscode-jsonrpc:
-        specifier: 6.0.0
-        version: 6.0.0
-      vscode-languageclient:
-        specifier: 7.0.0
-        version: 7.0.0
-      vscode-languageserver:
-        specifier: 7.0.0
-        version: 7.0.0
-      vscode-languageserver-textdocument:
-        specifier: ^1.0.7
-        version: 1.0.11
-      vscode-uri:
-        specifier: 3.0.7
-        version: 3.0.7
-    devDependencies:
-      '@angular/core':
-        specifier: ^20.0.0-rc.2
-        version: 20.0.0-rc.2(@angular/compiler@14.3.0)(rxjs@6.6.7)
-      '@angular/dev-infra-private':
-        specifier: https://github.com/angular/dev-infra-private-builds.git#262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2
-        version: github.com/angular/dev-infra-private-builds/262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2(@angular/compiler-cli@14.3.0)(karma-chrome-launcher@3.2.0)(karma-firefox-launcher@2.1.3)(karma-jasmine@5.1.0)(karma-junit-reporter@2.0.1)(karma-requirejs@1.1.0)(karma-sourcemap-loader@0.4.0)(karma@6.4.4)(rxjs@6.6.7)(terser@5.8.0)
-      '@bazel/bazelisk':
-        specifier: 1.18.0
-        version: 1.18.0
-      '@bazel/ibazel':
-        specifier: 0.16.2
-        version: 0.16.2
-      '@types/jasmine':
-        specifier: 3.10.7
-        version: 3.10.7
-      '@types/node':
-        specifier: 18.19.39
-        version: 18.19.39
-      '@types/vscode':
-        specifier: 1.67.0
-        version: 1.67.0
-      clang-format:
-        specifier: 1.8.0
-        version: 1.8.0
-      cross-env:
-        specifier: ^7.0.3
-        version: 7.0.3
-      esbuild:
-        specifier: 0.14.39
-        version: 0.14.39
-      jasmine:
-        specifier: 3.99.0
-        version: 3.99.0
-      prettier:
-        specifier: 2.7.1
-        version: 2.7.1
-      rxjs:
-        specifier: 6.6.7
-        version: 6.6.7
-      ts-node:
-        specifier: ^10.8.1
-        version: 10.9.2(@types/node@18.19.39)(typescript@5.9.2)
-      tslint:
-        specifier: 6.1.3
-        version: 6.1.3(typescript@5.9.2)
-      tslint-eslint-rules:
-        specifier: 5.4.0
-        version: 5.4.0(tslint@6.1.3)(typescript@5.9.2)
-      vsce:
-        specifier: 1.100.1
-        version: 1.100.1
-      vscode-languageserver-protocol:
-        specifier: 3.16.0
-        version: 3.16.0
-      vscode-languageserver-types:
-        specifier: 3.16.0
-        version: 3.16.0
-      vscode-test:
-        specifier: 1.6.1
-        version: 1.6.1
-      vscode-tmgrammar-test:
-        specifier: 0.0.11
-        version: 0.0.11
+devDependencies:
+  '@angular/core':
+    specifier: ^20.0.0-rc.2
+    version: 20.0.0-rc.2(@angular/compiler@14.3.0)(rxjs@6.6.7)
+  '@angular/dev-infra-private':
+    specifier: https://github.com/angular/dev-infra-private-builds.git#262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2
+    version: github.com/angular/dev-infra-private-builds/262cb3bb487e8dddb3c404f4f2c8b34a9a1f14c2(@angular/compiler-cli@14.3.0)(karma-chrome-launcher@3.2.0)(karma-firefox-launcher@2.1.3)(karma-jasmine@5.1.0)(karma-junit-reporter@2.0.1)(karma-requirejs@1.1.0)(karma-sourcemap-loader@0.4.0)(karma@6.4.4)(rxjs@6.6.7)(terser@5.8.0)
+  '@bazel/bazelisk':
+    specifier: 1.18.0
+    version: 1.18.0
+  '@bazel/ibazel':
+    specifier: 0.16.2
+    version: 0.16.2
+  '@types/jasmine':
+    specifier: 3.10.7
+    version: 3.10.7
+  '@types/node':
+    specifier: 18.19.39
+    version: 18.19.39
+  '@types/vscode':
+    specifier: 1.67.0
+    version: 1.67.0
+  clang-format:
+    specifier: 1.8.0
+    version: 1.8.0
+  cross-env:
+    specifier: ^7.0.3
+    version: 7.0.3
+  esbuild:
+    specifier: 0.14.39
+    version: 0.14.39
+  jasmine:
+    specifier: 3.99.0
+    version: 3.99.0
+  prettier:
+    specifier: 2.7.1
+    version: 2.7.1
+  rxjs:
+    specifier: 6.6.7
+    version: 6.6.7
+  ts-node:
+    specifier: ^10.8.1
+    version: 10.9.2(@types/node@18.19.39)(typescript@5.9.2)
+  tslint:
+    specifier: 6.1.3
+    version: 6.1.3(typescript@5.9.2)
+  tslint-eslint-rules:
+    specifier: 5.4.0
+    version: 5.4.0(tslint@6.1.3)(typescript@5.9.2)
+  vsce:
+    specifier: 1.100.1
+    version: 1.100.1
+  vscode-languageserver-protocol:
+    specifier: 3.16.0
+    version: 3.16.0
+  vscode-languageserver-types:
+    specifier: 3.16.0
+    version: 3.16.0
+  vscode-test:
+    specifier: 1.6.1
+    version: 1.6.1
+  vscode-tmgrammar-test:
+    specifier: 0.0.11
+    version: 0.0.11
 
 packages:
 

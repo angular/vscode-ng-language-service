@@ -1,24 +1,11 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "composite": true,
-    "outDir": "../dist/server/src",
     "rootDir": "src",
     "rootDirs": [
       ".",
       "../dist"
     ],
     "useUnknownInCatchVariables": false
-  },
-  "references": [
-    {
-      "path": "../common"
-    }
-  ],
-  "include": [
-    "src/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  }
 }

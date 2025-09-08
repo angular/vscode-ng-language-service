@@ -1,7 +1,8 @@
+# @generated
 # Input hashes for repository rule npm_translate_lock(name = "npm_integration_pre_apf_project", pnpm_lock = "//integration/pre_apf_project:pnpm-lock.yaml").
 # This file should be checked into version control along with the pnpm-lock.yaml file.
 .npmrc=974837034
-integration/pre_apf_project/pnpm-lock.yaml=2141171294
+integration/pre_apf_project/pnpm-lock.yaml=-921563025
 integration/pre_apf_project/yarn.lock=-941201574
 integration/pre_apf_project/package.json=666737612
 integration/pre_apf_project/pnpm-workspace.yaml=1163575902

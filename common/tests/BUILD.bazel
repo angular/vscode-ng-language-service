@@ -27,5 +27,6 @@ jasmine_test(
     args = ["*_spec.js"],
     chdir = package_name(),
     data = [":tests"],
+    node_modules = "//:node_modules",
     tags = ["unit_test"],
 )

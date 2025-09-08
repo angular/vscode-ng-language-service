@@ -8,17 +8,5 @@
     "esModuleInterop": true,
     "declaration": true,
     "skipLibCheck": true
-  },
-  "files": [],
-  "references": [
-    {
-      "path": "./client"
-    },
-    {
-      "path": "./server"
-    },
-    {
-      "path": "./syntaxes"
-    }
-  ]
+  }
 }

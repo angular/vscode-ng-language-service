@@ -3,6 +3,7 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 
 jasmine_test(
     name = "test",
+    node_modules = "//:node_modules",
     data = [
         "//integration",
         "//integration/project",
@@ -13,6 +14,7 @@ jasmine_test(
         "//integration/pre_standalone_project:node_modules/@angular/common",
         "//server:index",
     ],
+    shard_count = 2,
     args = ["*_spec.js"],
     chdir = package_name(),
     tags = ["e2e", "no-sandbox"],

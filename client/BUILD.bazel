@@ -14,7 +14,10 @@ ts_config(
 esbuild(
     name = "index",
     entry_point = "//client/src:extension.js",
-    data = ["//client/src"],
+    deps = [
+        "//client/src",
+        "//:node_modules/source-map-support",
+    ],
     platform = "node",
     format = "cjs",
     sourcemap = "external",

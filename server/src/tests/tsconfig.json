@@ -1,15 +1,6 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../../dist/server/src/tests",
     "esModuleInterop": false
   },
-  "references": [
-    {
-      "path": "../../tsconfig.json"
-    }
-  ],
-  "include": [
-    "*.ts"
-  ]
 }

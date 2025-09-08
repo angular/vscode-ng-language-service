@@ -27,6 +27,10 @@ test:debug --test_timeout=9999
 test:debug --nocache_test_results
 # ======================================================================================================================
 
+# Required by `rules_ts`.
+common --@aspect_rules_ts//ts:skipLibCheck=always
+common --@aspect_rules_ts//ts:default_to_tsc_transpiler
+
 ###############################
 # Filesystem interactions     #
 ###############################

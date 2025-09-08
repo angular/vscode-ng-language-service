@@ -26,6 +26,7 @@ ts_project(
 
 jasmine_test(
     name = "test",
+    node_modules = "//:node_modules",
     args = ["*_spec.js"],
     chdir = package_name(),
     data = [":tests"],

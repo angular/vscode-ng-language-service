@@ -1,23 +1,10 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "composite": true,
-    "outDir": "../dist/client/src",
     "rootDir": "src",
     "rootDirs": [
       ".",
       "../dist"
     ]
   },
-  "references": [
-    {
-      "path": "../common"
-    }
-  ],
-  "include": [
-    "src/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
 }

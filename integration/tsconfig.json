@@ -1,20 +1,9 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../dist/integration",
     "rootDirs": [
       "..",
       "dist"
     ]
   },
-  "references": [
-    {
-      "path": "../server/tsconfig.json"
-    }
-  ],
-  "include": [
-    "test_constants.ts",
-    "e2e",
-    "lsp"
-  ]
 }

@@ -34,6 +34,7 @@ filegroup(
 jasmine_test(
     name = "test",
     args = ["syntaxes/test/driver.js"],
+    node_modules = "//:node_modules",
     data = [
         "//:package_json",
         ":tests",
@@ -41,9 +42,6 @@ jasmine_test(
         ":dummy",
         "//syntaxes:json",
         "//:node_modules/vscode-tmgrammar-test",
-        # Depend on //:node_modules/jasmine as a temporary work-around for jasmine escaping its
-        # runfiles likely due to esm import issue in rules_js https://github.com/aspect-build/rules_js/issues/362
-        "//:node_modules/jasmine",
     ],
     tags = ["unit_test"],
 )

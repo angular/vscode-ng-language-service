@@ -11,7 +11,8 @@
     "multi-root ready"
   ],
   "engines": {
-    "vscode": "^1.74.3"
+    "vscode": "^1.74.3",
+    "pnpm": "10.13.1"
   },
   "capabilities": {
     "untrustedWorkspaces": {
@@ -307,5 +308,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/angular/vscode-ng-language-service"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": []
   }
 }

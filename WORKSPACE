@@ -20,11 +20,10 @@ http_archive(
 
 load("@aspect_rules_ts//ts:repositories.bzl", "rules_ts_dependencies")
 
-# TODO: should use version from package.json but this version isn't yet supported by aspect/rules_ts
-# rules_ts_dependencies(ts_version_from = "//:package.json")
 rules_ts_dependencies(
-    ts_version = "5.2.2",
-    ts_integrity = "sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==",
+    # Obtained by: curl --silent https://registry.npmjs.org/typescript/5.9.2 | jq -r '.dist.integrity'
+    ts_integrity = "sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A==",
+    ts_version = "5.9.2",
 )
 
 http_archive(

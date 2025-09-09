@@ -42,8 +42,8 @@ importers:
         specifier: https://github.com/angular/dev-infra-private-ng-dev-builds.git#586406bccb7ae283f803f1c36e127b7b16c942ce
         version: https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/586406bccb7ae283f803f1c36e127b7b16c942ce
       '@bazel/bazelisk':
-        specifier: 1.18.0
-        version: 1.18.0
+        specifier: 1.26.0
+        version: 1.26.0
       '@bazel/buildifier':
         specifier: 8.2.1
         version: 8.2.1
@@ -136,10 +136,10 @@ importers:
     dependencies:
       '@angular/common':
         specifier: 18.2.10
-        version: 18.2.10(@angular/core@18.2.10(rxjs@6.6.7)(zone.js@0.11.5))(rxjs@6.6.7)
+        version: 18.2.10(@angular/core@18.2.10(rxjs@7.8.2)(zone.js@0.11.5))(rxjs@7.8.2)
       '@angular/core':
         specifier: 18.2.10
-        version: 18.2.10(rxjs@6.6.7)(zone.js@0.11.5)
+        version: 18.2.10(rxjs@7.8.2)(zone.js@0.11.5)
 
   integration/project:
     dependencies:
@@ -398,8 +398,8 @@ packages:
     resolution: {integrity: sha512-bkFqkLhh3pMBUQQkpVgWDWq/lqzc2678eUyDlTBhRqhCHFguYYGM0Efga7tYk4TogG/3x0EEl66/OQ+WGbWB/Q==}
     engines: {node: '>=6.9.0'}
 
-  '@bazel/bazelisk@1.18.0':
-    resolution: {integrity: sha512-WqlTatsGKypeHYidqe3/6W8dkqkgJ13sMCEers/vH7dNwxojHrMQcuaH26sOnQG1eVn8UfHo78fy34yGAF3zsw==}
+  '@bazel/bazelisk@1.26.0':
+    resolution: {integrity: sha512-bTNcHdGyEQ9r7SczEYUa0gkEQhJo1ld2BjXI8fWBvsUeoHi03QpUs2HZgDbjjrpQFQqG2ZbO7ihZvH8MjhUTHw==}
     hasBin: true
 
   '@bazel/buildifier@8.2.1':
@@ -3836,10 +3836,10 @@ snapshots:
       rxjs: 6.6.7
       tslib: 2.8.1
 
-  '@angular/common@18.2.10(@angular/core@18.2.10(rxjs@6.6.7)(zone.js@0.11.5))(rxjs@6.6.7)':
+  '@angular/common@18.2.10(@angular/core@18.2.10(rxjs@7.8.2)(zone.js@0.11.5))(rxjs@7.8.2)':
     dependencies:
-      '@angular/core': 18.2.10(rxjs@6.6.7)(zone.js@0.11.5)
-      rxjs: 6.6.7
+      '@angular/core': 18.2.10(rxjs@7.8.2)(zone.js@0.11.5)
+      rxjs: 7.8.2
       tslib: 2.8.1
 
   '@angular/compiler-cli@12.2.16(@angular/compiler@12.2.16)(typescript@5.9.2)':
@@ -3927,9 +3927,9 @@ snapshots:
       tslib: 2.8.1
       zone.js: 0.11.5
 
-  '@angular/core@18.2.10(rxjs@6.6.7)(zone.js@0.11.5)':
+  '@angular/core@18.2.10(rxjs@7.8.2)(zone.js@0.11.5)':
     dependencies:
-      rxjs: 6.6.7
+      rxjs: 7.8.2
       tslib: 2.8.1
       zone.js: 0.11.5
 
@@ -4132,7 +4132,7 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
 
-  '@bazel/bazelisk@1.18.0': {}
+  '@bazel/bazelisk@1.26.0': {}
 
   '@bazel/buildifier@8.2.1': {}
 

@@ -252,7 +252,7 @@
     "build:syntaxes": "bazel run //syntaxes:syntaxes",
     "format": "pnpm ng-dev format all",
     "watch": "ibazel build //client:index.js //server:index.js",
-    "package": "scripts/build.sh package.json",
+    "package": "pnpm bazel build //:npm --config=release",
     "test": "bazel test --test_tag_filters=unit_test //...",
     "test:watch": "ibazel test --test_tag_filters=unit_test //...",
     "test:lsp": "bazel test --test_output=streamed //integration/lsp:test",

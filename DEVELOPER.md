@@ -23,7 +23,7 @@ pnpm compile
 If you'd like to force a clean build, you can delete the existing build artifacts
 by running
 ```shell
-./scripts/build.sh
+pnpm bazel build //:npm --config=release
 ```
 
 ## Formatting source code

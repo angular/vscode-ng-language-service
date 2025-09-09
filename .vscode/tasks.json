@@ -37,7 +37,7 @@
     {
       "type": "shell",
       "label": "build vsix",
-      "command": "./scripts/build.sh package.json"
+      "command": "pnpm bazel build //:npm --config=release"
     }
   ]
 }

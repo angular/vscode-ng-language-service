@@ -23,7 +23,7 @@ jobs:
         node-version: 14.x
     - run: pnpm install
     - run: cd integration/project
-    - run: scripts/build.sh package.json
+    - run: pnpm bazel build //:npm --config=release
     - run: xvfb-run -a pnpm run test:e2e
       if: runner.os == 'Linux'
     - run: pnpm run test:e2e

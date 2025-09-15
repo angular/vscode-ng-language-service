@@ -1,7 +1,6 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../dist/syntaxes"
-  },
-  "include": ["src"]
+    "types": ["node"]
+  }
 }

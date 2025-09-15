@@ -26,8 +26,11 @@ const TSSERVERLIB = 'typescript/lib/tsserverlibrary';
  * `typescript/lib/tsserverlibrary` is `typescript`.
  */
 function resolveWithMinVersion(
-    packageName: string, minVersionStr: string, probeLocations: string[],
-    rootPackage: string): NodeModule {
+  packageName: string,
+  minVersionStr: string,
+  probeLocations: string[],
+  rootPackage: string,
+): NodeModule {
   if (!packageName.startsWith(rootPackage)) {
     throw new Error(`${packageName} must be in the root package`);
   }
@@ -39,15 +42,16 @@ function resolveWithMinVersion(
     }
   }
   throw new Error(
-      `Failed to resolve '${packageName}' with minimum version '${minVersion}' from ` +
-      JSON.stringify(probeLocations, null, 2));
+    `Failed to resolve '${packageName}' with minimum version '${minVersion}' from ` +
+      JSON.stringify(probeLocations, null, 2),
+  );
 }
 
 /**
  * Resolve `typescript/lib/tsserverlibrary` from the given locations.
  * @param probeLocations
  */
-export function resolveTsServer(probeLocations: string[], tsdk: string|null): NodeModule {
+export function resolveTsServer(probeLocations: string[], tsdk: string | null): NodeModule {
   if (tsdk !== null) {
     const resolvedFromTsdk = resolveTsServerFromTsdk(tsdk, probeLocations);
     const minVersion = new Version(MIN_TS_VERSION);
@@ -55,17 +59,16 @@ export function resolveTsServer(probeLocations: string[], tsdk: string|null): No
       if (resolvedFromTsdk.version.greaterThanOrEqual(minVersion)) {
         return resolvedFromTsdk;
       } else {
-        console.warn(`Ignoring TSDK version specified in the TypeScript extension options ${
-            resolvedFromTsdk
-                .version} because it is lower than the required TS version for the language service (${
-            MIN_TS_VERSION}).`);
+        console.warn(
+          `Ignoring TSDK version specified in the TypeScript extension options ${resolvedFromTsdk.version} because it is lower than the required TS version for the language service (${MIN_TS_VERSION}).`,
+        );
       }
     }
   }
   return resolveWithMinVersion(TSSERVERLIB, MIN_TS_VERSION, probeLocations, 'typescript');
 }
 
-function resolveTsServerFromTsdk(tsdk: string, probeLocations: string[]): NodeModule|undefined {
+function resolveTsServerFromTsdk(tsdk: string, probeLocations: string[]): NodeModule | undefined {
   // `tsdk` is the folder path to the tsserver and lib*.d.ts files under a
   // TypeScript install, for example
   // - /google/src/head/depot/google3/third_party/javascript/node_modules/typescript/stable/lib
@@ -74,7 +77,7 @@ function resolveTsServerFromTsdk(tsdk: string, probeLocations: string[]): NodeMo
   if (path.isAbsolute(tsdk)) {
     probeLocations = [tsdk];
   } else {
-    probeLocations = probeLocations.map(location => path.join(location, tsdk));
+    probeLocations = probeLocations.map((location) => path.join(location, tsdk));
   }
   for (const location of probeLocations) {
     const tsserverlib = path.join(location, 'tsserverlibrary.js');
@@ -111,7 +114,7 @@ function resolveTsServerFromTsdk(tsdk: string, probeLocations: string[]): NodeMo
  * @param modulePath The path of the module to load.
  * @returns A Promise that resolves to the dynamically imported module.
  */
-export function loadEsmModule<T>(modulePath: string|URL): Promise<T> {
+export function loadEsmModule<T>(modulePath: string | URL): Promise<T> {
   return new Function('modulePath', `return import(modulePath);`)(modulePath) as Promise<T>;
 }
 

@@ -17,11 +17,14 @@ export const InlineStyles: GrammarDefinition = {
       begin: /(styles)\s*(:)/,
       beginCaptures: {
         1: {name: 'meta.object-literal.key.ts'},
-        2: {name: 'meta.object-literal.key.ts punctuation.separator.key-value.ts'}
+        2: {name: 'meta.object-literal.key.ts punctuation.separator.key-value.ts'},
       },
       end: /(?=,|})/,
-      patterns:
-          [{include: '#tsParenExpression'}, {include: '#tsBracketExpression'}, {include: '#style'}]
+      patterns: [
+        {include: '#tsParenExpression'},
+        {include: '#tsBracketExpression'},
+        {include: '#style'},
+      ],
     },
 
     tsParenExpression: {
@@ -29,7 +32,7 @@ export const InlineStyles: GrammarDefinition = {
       beginCaptures: {1: {name: 'meta.brace.round.ts'}},
       end: /\)/,
       endCaptures: {0: {name: 'meta.brace.round.ts'}},
-      patterns: [{include: '$self'}, {include: '#tsBracketExpression'}, {include: '#style'}]
+      patterns: [{include: '$self'}, {include: '#tsBracketExpression'}, {include: '#style'}],
     },
 
     'tsBracketExpression': {
@@ -37,7 +40,7 @@ export const InlineStyles: GrammarDefinition = {
       beginCaptures: {1: {name: 'meta.array.literal.ts meta.brace.square.ts'}},
       end: /\]/,
       endCaptures: {0: {name: 'meta.array.literal.ts meta.brace.square.ts'}},
-      patterns: [{include: '#style'}]
+      patterns: [{include: '#style'}],
     },
 
     style: {
@@ -47,7 +50,7 @@ export const InlineStyles: GrammarDefinition = {
       end: /\1/,
       endCaptures: {0: {name: 'string'}},
       contentName: 'source.css.scss',
-      patterns: [{include: 'source.css.scss'}]
-    }
-  }
+      patterns: [{include: 'source.css.scss'}],
+    },
+  },
 };

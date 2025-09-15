@@ -2,8 +2,5 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "resolveJsonModule": true,
-    "outDir": "../../dist/syntaxes/test"
-  },
-  "include": ["."],
-  "exclude": ["data"]
+  }
 }

@@ -26,5 +26,14 @@
       "function"
     ],
     "no-debugger": true
+  },
+  "linterOptions": {
+    "exclude": [
+      "syntaxes/test/cases.ts",
+      "syntaxes/test/data/host-object-literal.ts",
+      "syntaxes/test/data/inline-styles.ts",
+      "syntaxes/test/data/inline-template.ts",
+      "syntaxes/test/driver.ts"
+    ]
   }
 }

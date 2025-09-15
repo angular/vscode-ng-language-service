@@ -11,11 +11,8 @@ import {GrammarDefinition} from './types';
 export const TemplateBlocks: GrammarDefinition = {
   scopeName: 'template.blocks.ng',
   injectionSelector: 'L:text.html -comment -expression.ng -meta.tag -source.css -source.js',
-  patterns: [
-    {include: '#block'},
-  ],
+  patterns: [{include: '#block'}],
   repository: {
-
     transition: {
       match: '@',
       name: 'keyword.control.block.transition.ng',
@@ -23,12 +20,10 @@ export const TemplateBlocks: GrammarDefinition = {
 
     block: {
       begin:
-          /(@)(if|else if|else|defer|placeholder|loading|error|switch|case|default|for|empty)(?:\s*)/,
+        /(@)(if|else if|else|defer|placeholder|loading|error|switch|case|default|for|empty)(?:\s*)/,
       beginCaptures: {
         1: {
-          patterns: [
-            {include: '#transition'},
-          ]
+          patterns: [{include: '#transition'}],
         },
         2: {name: 'keyword.control.block.kind.ng'},
       },
@@ -95,11 +90,7 @@ export const TemplateBlocks: GrammarDefinition = {
         0: {name: 'punctuation.definition.block.ts'},
       },
       contentName: 'control.block.body.ng',
-      patterns: [
-        {include: 'text.html.derivative'},
-        {include: 'template.ng'},
-      ]
+      patterns: [{include: 'text.html.derivative'}, {include: 'template.ng'}],
     },
-
   },
 };

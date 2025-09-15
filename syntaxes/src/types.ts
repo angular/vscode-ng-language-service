@@ -7,9 +7,9 @@
  */
 
 export interface GrammarDefinition {
-  [key: string]: string|RegExp|GrammarDefinition|GrammarDefinition[];
+  [key: string]: string | RegExp | GrammarDefinition | GrammarDefinition[];
 }
 
 export interface JsonObject {
-  [key: string]: string|JsonObject|JsonObject[];
+  [key: string]: string | JsonObject | JsonObject[];
 }

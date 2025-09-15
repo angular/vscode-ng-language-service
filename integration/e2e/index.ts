@@ -4,10 +4,12 @@ import {runTests} from 'vscode-test';
 import {IS_BAZEL, PACKAGE_ROOT, PROJECT_PATH} from '../test_constants';
 
 async function main() {
-  const EXT_DEVELOPMENT_PATH =
-      IS_BAZEL ? join(PACKAGE_ROOT, 'npm') : join(PACKAGE_ROOT, 'dist', 'npm');
-  const EXT_TESTS_PATH = IS_BAZEL ? join(PACKAGE_ROOT, 'integration', 'e2e', 'jasmine') :
-                                    join(PACKAGE_ROOT, 'dist', 'integration', 'e2e', 'jasmine');
+  const EXT_DEVELOPMENT_PATH = IS_BAZEL
+    ? join(PACKAGE_ROOT, 'npm')
+    : join(PACKAGE_ROOT, 'dist', 'npm');
+  const EXT_TESTS_PATH = IS_BAZEL
+    ? join(PACKAGE_ROOT, 'integration', 'e2e', 'jasmine')
+    : join(PACKAGE_ROOT, 'dist', 'integration', 'e2e', 'jasmine');
 
   try {
     await runTests({

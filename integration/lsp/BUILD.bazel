@@ -1,21 +1,26 @@
-load("@aspect_rules_jasmine//jasmine:defs.bzl", "jasmine_test")
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@aspect_rules_jasmine//jasmine:defs.bzl", "jasmine_test")
 
 jasmine_test(
     name = "test",
-    data = [
-        "//integration",
-        "//integration/project",
-        "//integration/project:node_modules/@angular/core",
-        "//integration/project:node_modules/@angular/common",
-        "//integration/pre_standalone_project",
-        "//integration/pre_standalone_project:node_modules/@angular/core",
-        "//integration/pre_standalone_project:node_modules/@angular/common",
-        "//server:index",
-    ],
     args = ["*_spec.js"],
     chdir = package_name(),
-    tags = ["e2e", "no-sandbox"],
+    data = [
+        "//integration",
+        "//integration/pre_standalone_project",
+        "//integration/pre_standalone_project:node_modules/@angular/common",
+        "//integration/pre_standalone_project:node_modules/@angular/core",
+        "//integration/project",
+        "//integration/project:node_modules/@angular/common",
+        "//integration/project:node_modules/@angular/core",
+        "//server:index",
+    ],
+    node_modules = "//:node_modules",
+    shard_count = 2,
+    tags = [
+        "e2e",
+        "no-sandbox",
+    ],
 )
 
 copy_to_bin(
@@ -23,5 +28,5 @@ copy_to_bin(
     srcs = glob(["*.ts"]),
     # NB: there is an import cycle between integration/lsp/*.ts and integration/test_constants.ts so
     # they cannot be broken up into separate ts_project targets
-    visibility = ["//integration:__subpackages__"]
+    visibility = ["//integration:__subpackages__"],
 )

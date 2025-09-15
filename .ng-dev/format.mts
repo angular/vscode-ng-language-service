@@ -1,10 +1,10 @@
-import {FormatConfig} from '@angular/dev-infra-private/ng-dev';
+import {FormatConfig} from '@angular/ng-dev';
 
 /**
  * Configuration for the `ng-dev format` command.
  */
 export const format: FormatConfig = {
-  'clang-format': {
+  'prettier': {
     'matchers': [
       '**/*.{js,ts}',
     ],

@@ -1,6 +1,0 @@
-{
-  "spec_dir": "dist/integration/lsp",
-  "spec_files": [
-    "*_spec.js"
-  ]
-}

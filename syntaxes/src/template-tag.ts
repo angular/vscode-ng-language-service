@@ -18,15 +18,12 @@ export const TemplateTag: GrammarDefinition = {
     {include: '#templateBinding'},
   ],
   repository: {
-
     propertyBinding: {
       begin: /(\[\s*@?[-_a-zA-Z0-9.$]*%?\s*])(=)(["'])/,
       beginCaptures: {
         1: {
           name: 'entity.other.attribute-name.html entity.other.ng-binding-name.property.html',
-          patterns: [
-            {include: '#bindingKey'},
-          ],
+          patterns: [{include: '#bindingKey'}],
         },
         2: {name: 'punctuation.separator.key-value.html'},
         3: {name: 'string.quoted.html punctuation.definition.string.begin.html'},
@@ -38,9 +35,7 @@ export const TemplateTag: GrammarDefinition = {
       },
       name: 'meta.ng-binding.property.html',
       contentName: 'expression.ng',
-      patterns: [
-        {include: 'expression.ng'},
-      ],
+      patterns: [{include: 'expression.ng'}],
     },
 
     eventBinding: {
@@ -48,9 +43,7 @@ export const TemplateTag: GrammarDefinition = {
       beginCaptures: {
         1: {
           name: 'entity.other.attribute-name.html entity.other.ng-binding-name.event.html',
-          patterns: [
-            {include: '#bindingKey'},
-          ],
+          patterns: [{include: '#bindingKey'}],
         },
         2: {name: 'punctuation.separator.key-value.html'},
         3: {name: 'string.quoted.html punctuation.definition.string.begin.html'},
@@ -62,9 +55,7 @@ export const TemplateTag: GrammarDefinition = {
       },
       name: 'meta.ng-binding.event.html',
       contentName: 'expression.ng',
-      patterns: [
-        {include: 'expression.ng'},
-      ],
+      patterns: [{include: 'expression.ng'}],
     },
 
     twoWayBinding: {
@@ -72,9 +63,7 @@ export const TemplateTag: GrammarDefinition = {
       beginCaptures: {
         1: {
           name: 'entity.other.attribute-name.html entity.other.ng-binding-name.two-way.html',
-          patterns: [
-            {include: '#bindingKey'},
-          ],
+          patterns: [{include: '#bindingKey'}],
         },
         2: {name: 'punctuation.separator.key-value.html'},
         3: {name: 'string.quoted.html punctuation.definition.string.begin.html'},
@@ -86,9 +75,7 @@ export const TemplateTag: GrammarDefinition = {
       },
       name: 'meta.ng-binding.two-way.html',
       contentName: 'expression.ng',
-      patterns: [
-        {include: 'expression.ng'},
-      ],
+      patterns: [{include: 'expression.ng'}],
     },
 
     templateBinding: {
@@ -96,9 +83,7 @@ export const TemplateTag: GrammarDefinition = {
       beginCaptures: {
         1: {
           name: 'entity.other.attribute-name.html entity.other.ng-binding-name.template.html',
-          patterns: [
-            {include: '#bindingKey'},
-          ],
+          patterns: [{include: '#bindingKey'}],
         },
         2: {name: 'punctuation.separator.key-value.html'},
         3: {name: 'string.quoted.html punctuation.definition.string.begin.html'},
@@ -110,9 +95,7 @@ export const TemplateTag: GrammarDefinition = {
       },
       name: 'meta.ng-binding.template.html',
       contentName: 'expression.ng',
-      patterns: [
-        {include: 'expression.ng'},
-      ],
+      patterns: [{include: 'expression.ng'}],
     },
 
     bindingKey: {

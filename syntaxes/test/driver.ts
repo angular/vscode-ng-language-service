@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Usage:
-//   yarn test:syntaxes [options]
+//   pnpm test:syntaxes [options]
 //
 // Options:
 //   -u    update snapshot files (always passes)
@@ -20,8 +20,9 @@ interface TestCase {
 }
 
 const dummyGrammarDir = 'syntaxes/test/dummy';
-const DUMMY_GRAMMARS =
-    fs.readdirSync(dummyGrammarDir).map((file: string) => path.join(dummyGrammarDir, file));
+const DUMMY_GRAMMARS = fs
+  .readdirSync(dummyGrammarDir)
+  .map((file: string) => path.join(dummyGrammarDir, file));
 
 /** Wraps node's spawn in a Promise. */
 function spawn(...args: Parameters<typeof cp.spawn>): Promise<number> {
@@ -29,10 +30,8 @@ function spawn(...args: Parameters<typeof cp.spawn>): Promise<number> {
 
   return new Promise((resolve, reject) => {
     child.on('exit', (code: number) => {
-      if (code === 0)
-        resolve(0);
-      else
-        reject(code);
+      if (code === 0) resolve(0);
+      else reject(code);
     });
   });
 }
@@ -42,11 +41,18 @@ async function snapshotTest({scopeName, grammarFiles, testFile}: TestCase): Prom
   const grammarOptions = grammarFiles.reduce((acc, file) => [...acc, '-g', file], [] as string[]);
   const extraArgs = process.argv.slice(3);
   const options = [
-    'node_modules/vscode-tmgrammar-test/dist/src/snapshot.js', '-s', scopeName, ...grammarOptions,
-    '-t', testFile, ...extraArgs
+    'node_modules/vscode-tmgrammar-test/dist/src/snapshot.js',
+    '-s',
+    scopeName,
+    ...grammarOptions,
+    '-t',
+    testFile,
+    ...extraArgs,
   ];
 
-  return spawn('node', options, {stdio: 'inherit' /* use parent process IO */}).catch(code => code);
+  return spawn('node', options, {stdio: 'inherit' /* use parent process IO */}).catch(
+    (code) => code,
+  );
 }
 
 describe('snapshot tests', () => {

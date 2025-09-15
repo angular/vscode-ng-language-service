@@ -35,20 +35,28 @@ function tsDiagnosticCategoryToLspDiagnosticSeverity(category: ts.DiagnosticCate
  * @param scriptInfo Used to compute proper offset.
  */
 export function tsDiagnosticToLspDiagnostic(
-    tsDiag: ts.Diagnostic, projectService: ts.server.ProjectService): lsp.Diagnostic {
+  tsDiag: ts.Diagnostic,
+  projectService: ts.server.ProjectService,
+): lsp.Diagnostic {
   const textSpan: ts.TextSpan = {
     start: tsDiag.start || 0,
     length: tsDiag.length || 0,
   };
 
   const diagScriptInfo =
-      tsDiag.file !== undefined ? projectService.getScriptInfo(tsDiag.file.fileName) : undefined;
-  const range = diagScriptInfo !== undefined ? tsTextSpanToLspRange(diagScriptInfo, textSpan) :
-                                               lsp.Range.create(0, 0, 0, 0);
+    tsDiag.file !== undefined ? projectService.getScriptInfo(tsDiag.file.fileName) : undefined;
+  const range =
+    diagScriptInfo !== undefined
+      ? tsTextSpanToLspRange(diagScriptInfo, textSpan)
+      : lsp.Range.create(0, 0, 0, 0);
   const diag = lsp.Diagnostic.create(
-      range, ts.flattenDiagnosticMessageText(tsDiag.messageText, '\n'),
-      tsDiagnosticCategoryToLspDiagnosticSeverity(tsDiag.category), tsDiag.code, tsDiag.source,
-      tsRelatedInformationToLspRelatedInformation(projectService, tsDiag.relatedInformation));
+    range,
+    ts.flattenDiagnosticMessageText(tsDiag.messageText, '\n'),
+    tsDiagnosticCategoryToLspDiagnosticSeverity(tsDiag.category),
+    tsDiag.code,
+    tsDiag.source,
+    tsRelatedInformationToLspRelatedInformation(projectService, tsDiag.relatedInformation),
+  );
   diag.tags = tsDiag.reportsDeprecated !== undefined ? [lsp.DiagnosticTag.Deprecated] : undefined;
 
   return diag;

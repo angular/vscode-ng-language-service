@@ -1,14 +1,5 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../../dist/client/src/tests"
-  },
-  "references": [
-    {
-      "path": "../../tsconfig.json"
-    }
-  ],
-  "include": [
-    "*.ts"
-  ]
+  }
 }

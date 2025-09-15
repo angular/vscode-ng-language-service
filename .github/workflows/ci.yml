@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialize environment
+        uses: angular/dev-infra/github-actions/npm/checkout-and-setup-node@4b4659eabe75a67cebf4692c3c88a98275c67200
+      - name: Install node modules
+        run: pnpm install --frozen-lockfile
+      - name: Check Formatting
+        run: pnpm format --check
+      - name: Check Lint
+        run: |
+          pnpm tslint --project client/tsconfig.json
+          pnpm tslint --project server/tsconfig.json
+          pnpm tslint --project server/src/tests/tsconfig.json
+          pnpm tslint --project syntaxes/tsconfig.json
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialize environment
+        uses: angular/dev-infra/github-actions/npm/checkout-and-setup-node@4b4659eabe75a67cebf4692c3c88a98275c67200
+      - name: Install node modules
+        run: pnpm install --frozen-lockfile
+      - name: Ensure Build
+        run: pnpm bazel build //:npm --config=release
+      - name: Run Tests
+        run: pnpm bazel test //...

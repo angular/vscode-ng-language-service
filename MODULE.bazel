@@ -1,0 +1,69 @@
+"""Rules/toolchains for vscode-ng-language-service with Bazel."""
+
+module(
+    name = "vscode",
+)
+
+bazel_dep(name = "tar.bzl", version = "0.5.5")
+bazel_dep(name = "rules_nodejs", version = "6.5.0")
+bazel_dep(name = "bazel_skylib", version = "1.8.1")
+bazel_dep(name = "aspect_bazel_lib", version = "2.21.1")
+bazel_dep(name = "aspect_rules_esbuild", version = "0.22.1")
+bazel_dep(name = "aspect_rules_jasmine", version = "2.0.0")
+bazel_dep(name = "aspect_rules_js", version = "2.5.0")
+bazel_dep(name = "aspect_rules_ts", version = "3.7.0")
+
+rules_ts_ext = use_extension("@aspect_rules_ts//ts:extensions.bzl", "ext")
+rules_ts_ext.deps(
+    name = "angular_npm_typescript",
+    # Obtained by: curl --silent https://registry.npmjs.org/typescript/5.9.2 | jq -r '.dist.integrity'
+    ts_integrity = "sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A==",
+    ts_version = "5.9.2",
+)
+use_repo(rules_ts_ext, **{"npm_typescript": "angular_npm_typescript"})
+
+pnpm = use_extension("@aspect_rules_js//npm:extensions.bzl", "pnpm")
+use_repo(pnpm, "pnpm")
+
+npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm")
+npm.npm_translate_lock(
+    name = "npm",
+    data = [
+        "//:package.json",
+        "//:pnpm-workspace.yaml",
+        "//integration/pre_apf_project:package.json",
+        "//integration/pre_standalone_project:package.json",
+        "//integration/project:package.json",
+        "//integration/workspace:package.json",
+    ],
+    npmrc = "//:.npmrc",
+    pnpm_lock = "//:pnpm-lock.yaml",
+    public_hoist_packages = {
+        # Hoist transitive closure of npm deps needed for vsce; this set was determined manually by
+        # running `bazel build //:vsix` and burning down missing packages. We do this so that we
+        # don't have to run an additional `npm install` action to create a node_modules within the
+        # //:npm npm_package where the vsce build takes place.
+        "balanced-match@1.0.2": [""],
+        "brace-expansion@1.1.12": [""],
+        "concat-map@0.0.1": [""],
+        "lru-cache@6.0.0": [""],
+        "minimatch@3.1.2": [""],
+        "semver@7.7.2": [""],
+        "vscode-languageserver-types@3.16.0": [""],
+        "vscode-nls@5.2.0": [""],
+        "yallist@4.0.0": [""],
+    },
+    verify_node_modules_ignored = "//:.bazelignore",
+)
+use_repo(npm, "npm")
+
+node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
+node.toolchain(node_version = "22.11.0")
+use_repo(node, "nodejs_toolchains")
+use_repo(node, "nodejs_darwin_amd64")
+use_repo(node, "nodejs_darwin_arm64")
+use_repo(node, "nodejs_linux_amd64")
+use_repo(node, "nodejs_linux_arm64")
+use_repo(node, "nodejs_linux_ppc64le")
+use_repo(node, "nodejs_linux_s390x")
+use_repo(node, "nodejs_windows_amd64")

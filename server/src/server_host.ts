@@ -37,7 +37,7 @@ export class ServerHost implements ts.server.ServerHost {
     return ts.sys.writeOutputIsTTY!();
   }
 
-  readFile(path: string, encoding?: string): string|undefined {
+  readFile(path: string, encoding?: string): string | undefined {
     return ts.sys.readFile(path, encoding);
   }
 
@@ -54,14 +54,20 @@ export class ServerHost implements ts.server.ServerHost {
    * ignored in watchers that use native OS file watching
    */
   watchFile(
-      path: string, callback: ts.FileWatcherCallback, pollingInterval?: number,
-      options?: ts.WatchOptions): ts.FileWatcher {
+    path: string,
+    callback: ts.FileWatcherCallback,
+    pollingInterval?: number,
+    options?: ts.WatchOptions,
+  ): ts.FileWatcher {
     return ts.sys.watchFile!(path, callback, pollingInterval, options);
   }
 
   watchDirectory(
-      path: string, callback: ts.DirectoryWatcherCallback, recursive?: boolean,
-      options?: ts.WatchOptions): ts.FileWatcher {
+    path: string,
+    callback: ts.DirectoryWatcherCallback,
+    recursive?: boolean,
+    options?: ts.WatchOptions,
+  ): ts.FileWatcher {
     if (this.isG3 && path.startsWith('/google/src')) {
       return NOOP_WATCHER;
     }
@@ -105,12 +111,16 @@ export class ServerHost implements ts.server.ServerHost {
   }
 
   readDirectory(
-      path: string, extensions?: ReadonlyArray<string>, exclude?: ReadonlyArray<string>,
-      include?: ReadonlyArray<string>, depth?: number): string[] {
+    path: string,
+    extensions?: ReadonlyArray<string>,
+    exclude?: ReadonlyArray<string>,
+    include?: ReadonlyArray<string>,
+    depth?: number,
+  ): string[] {
     return ts.sys.readDirectory(path, extensions, exclude, include, depth);
   }
 
-  getModifiedTime(path: string): Date|undefined {
+  getModifiedTime(path: string): Date | undefined {
     return ts.sys.getModifiedTime!(path);
   }
 

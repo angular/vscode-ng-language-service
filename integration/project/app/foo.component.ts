@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import {Component, signal} from '@angular/core';
 
 @Component({
   templateUrl: 'foo.component.html',
@@ -9,7 +9,7 @@ export class FooComponent {
   sig = signal(1);
   x = {
     sig: signal(1),
-  }
+  };
   /** returns 1 */
   method() {
     return 1;

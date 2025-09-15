@@ -25,36 +25,46 @@ export function getHTMLVirtualContent(sf: ts.SourceFile): string {
   const documentText = sf.text;
 
   // Create a blank document with same text length
-  let content = documentText.split('\n')
-                    .map(line => {
-                      return ' '.repeat(line.length);
-                    })
-                    .join('\n');
+  let content = documentText
+    .split('\n')
+    .map((line) => {
+      return ' '.repeat(line.length);
+    })
+    .join('\n');
 
   // add back all the inline template regions in-place
   for (const region of inlineTemplateNodes) {
-    content = content.slice(0, region.getStart(sf) + 1) +
-        documentText.slice(region.getStart(sf) + 1, region.getEnd() - 1) +
-        content.slice(region.getEnd() - 1);
+    content =
+      content.slice(0, region.getStart(sf) + 1) +
+      documentText.slice(region.getStart(sf) + 1, region.getEnd() - 1) +
+      content.slice(region.getEnd() - 1);
   }
   return content;
 }
 
 function isInlineTemplateNode(node: ts.Node) {
   const assignment = getPropertyAssignmentFromValue(node, 'template');
-  return ts.isStringLiteralLike(node) && assignment !== null &&
-      getClassDeclFromDecoratorProp(assignment) !== null;
+  return (
+    ts.isStringLiteralLike(node) &&
+    assignment !== null &&
+    getClassDeclFromDecoratorProp(assignment) !== null
+  );
 }
 
 /**
  * Returns a property assignment from the assignment value if the property name
  * matches the specified `key`, or `null` if there is no match.
  */
-export function getPropertyAssignmentFromValue(value: ts.Node, key: string): ts.PropertyAssignment|
-    null {
+export function getPropertyAssignmentFromValue(
+  value: ts.Node,
+  key: string,
+): ts.PropertyAssignment | null {
   const propAssignment = value.parent;
-  if (!propAssignment || !ts.isPropertyAssignment(propAssignment) ||
-      propAssignment.name.getText() !== key) {
+  if (
+    !propAssignment ||
+    !ts.isPropertyAssignment(propAssignment) ||
+    propAssignment.name.getText() !== key
+  ) {
     return null;
   }
   return propAssignment;
@@ -76,8 +86,9 @@ export function getPropertyAssignmentFromValue(value: ts.Node, key: string): ts.
  *
  * @param propAsgnNode property assignment
  */
-export function getClassDeclFromDecoratorProp(propAsgnNode: ts.PropertyAssignment):
-    ts.ClassDeclaration|undefined {
+export function getClassDeclFromDecoratorProp(
+  propAsgnNode: ts.PropertyAssignment,
+): ts.ClassDeclaration | undefined {
   if (!propAsgnNode.parent || !ts.isObjectLiteralExpression(propAsgnNode.parent)) {
     return;
   }
@@ -98,7 +109,9 @@ export function getClassDeclFromDecoratorProp(propAsgnNode: ts.PropertyAssignmen
 }
 
 export function findAllMatchingNodes(
-    sf: ts.SourceFile, filter: (node: ts.Node) => boolean): ts.Node[] {
+  sf: ts.SourceFile,
+  filter: (node: ts.Node) => boolean,
+): ts.Node[] {
   const results: ts.Node[] = [];
   const stack: ts.Node[] = [sf];
 

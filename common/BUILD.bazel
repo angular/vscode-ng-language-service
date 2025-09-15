@@ -15,7 +15,6 @@ ts_config(
 ts_project(
     name = "common",
     srcs = glob(["*.ts"]),
-    composite = True,
     declaration = True,
     source_map = True,
     tsconfig = ":tsconfig",

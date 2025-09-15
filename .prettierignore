@@ -1,0 +1,5 @@
+.prettierrc
+pnpm-lock.yaml
+
+
+syntaxes/test/data/**

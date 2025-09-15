@@ -9,9 +9,6 @@ The dependencies of the `server` need to be duplicated in the root [`package.jso
 Therefore, if a new prod dependency is added to the server, it needs to be
 added to both [`package.json`](package.json) and [`server/package.json`](server/package.json).
 
-Note that we do not install the dependencies in [`server`](server),
-hence there should not be a `yarn.lock` file.
-
 ## Navigating Projects in IDE
 
 This repository contains multiple TypeScript projects, each with its own `tsconfig.json`.
@@ -20,48 +17,19 @@ As a result, some projects depend on the `.d.ts` output of their dependencies, l
 and `server` depend on `common`. In order to navigate the projects in your IDE,
 you need to first build them by running
 ```shell
-yarn compile
+pnpm compile
 ```
 
 If you'd like to force a clean build, you can delete the existing build artifacts
 by running
 ```shell
-./scripts/build.sh
+pnpm bazel build //:npm --config=release
 ```
 
 ## Formatting source code
 
-This repository uses the [NPM distribution](https://www.npmjs.com/package/clang-format) of
-[`clang-format`](http://clang.llvm.org/docs/ClangFormat.html) to format source code.
-
-Code is automatically formatted by running `yarn format`. You can also set up your IDE to format
-files on each save.
-
-### VS Code
-
-1. Install the
-[`Clang-Format` extension](https://marketplace.visualstudio.com/items?itemName=xaver.clang-format)
-for VS Code.
-2. Copy [`.vscode/recommended-settings.json`](./.vscode/recommended-settings.json) to a new
-   `.vscode/settings.json` file. VS Code will automatically pick up relevant formatting options for
-   the workspace from this file.
-
-### WebStorm / IntelliJ
-
-1. Install the [`ClangFormatIJ`](https://plugins.jetbrains.com/plugin/8396-clangformatij) plugin for
-   IntelliJ IDEs.
-2. Open `Preferences->Tools->clang-format`.
-3. Set the field named "PATH" to `<PATH_TO_REPOSITORY>/node_modules/.bin/`.
-
-### Vim
-
-1. Install [Vim Clang-Format](https://github.com/rhysd/vim-clang-format).
-2. Create a [project-specific `.vimrc`](https://andrew.stwrt.ca/posts/project-specific-vimrc/) in
-   the repository root directory containing
-
-```vim
-let g:clang_format#command = '<PATH_TO_REPOSITORY>/node_modules/.bin/clang-format'
-```
+This repository uses a common toolset provided in the angular organization for formatting, `ng-dev`. It is installed as a standard npm package,
+and can be run locally with `pnpm format`.
 
 ## Test Local Changes in VSCode
 

@@ -12,5 +12,4 @@ export class PostComponent {
   declarations: [PostComponent],
   exports: [PostComponent],
 })
-export class PostModule {
-}
+export class PostModule {}

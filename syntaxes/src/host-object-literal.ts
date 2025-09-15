@@ -20,7 +20,7 @@ export const HostObjectLiteral: GrammarDefinition = {
         // Key is shown as JS syntax.
         1: {name: 'meta.object-literal.key.ts'},
         // Colon is shown as JS syntax.
-        2: {name: 'meta.object-literal.key.ts punctuation.separator.key-value.ts'}
+        2: {name: 'meta.object-literal.key.ts punctuation.separator.key-value.ts'},
       },
       contentName: 'hostbindings.ng',
       end: /}/,
@@ -32,7 +32,7 @@ export const HostObjectLiteral: GrammarDefinition = {
         // Include the default TS syntax so that anything that doesn't
         // match the above will get the default highlighting.
         {include: 'source.ts'},
-      ]
+      ],
     },
 
     // A bound property inside `host`, e.g. `[attr.foo]="expr"` or `(click)="handleClick()"`.
@@ -46,13 +46,11 @@ export const HostObjectLiteral: GrammarDefinition = {
         // Closing quote is shown as a string.
         3: {name: 'string'},
         // Colon is shown as JS syntax.
-        4: {name: 'meta.object-literal.key.ts punctuation.separator.key-value.ts'}
+        4: {name: 'meta.object-literal.key.ts punctuation.separator.key-value.ts'},
       },
       contentName: 'hostbinding.dynamic.ng',
-      patterns: [
-        {include: '#ngHostBindingDynamicValue'},
-      ],
-      end: /(?=,|})/
+      patterns: [{include: '#ngHostBindingDynamicValue'}],
+      end: /(?=,|})/,
     },
 
     // Value of a bound property inside `host`.
@@ -72,7 +70,7 @@ export const HostObjectLiteral: GrammarDefinition = {
       endCaptures: {
         // Closing quote is shown as a string.
         0: {name: 'string'},
-      }
+      },
     },
 
     // Static value inside `host`.
@@ -95,7 +93,7 @@ export const HostObjectLiteral: GrammarDefinition = {
         // Use TypeScript highlighting for the value. This allows us to deal
         // with things like escaped strings and variables correctly.
         {include: 'source.ts'},
-      ]
+      ],
     },
-  }
+  },
 };

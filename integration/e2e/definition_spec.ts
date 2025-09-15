@@ -20,10 +20,13 @@ describe('Angular Ivy LS', () => {
     // For a complete list of standard commands, see
     // https://code.visualstudio.com/api/references/commands
     const definitions = await vscode.commands.executeCommand<vscode.LocationLink[]>(
-        DEFINITION_COMMAND, APP_COMPONENT_URI, position);
+      DEFINITION_COMMAND,
+      APP_COMPONENT_URI,
+      position,
+    );
     expect(definitions?.length).toBe(1);
     const def = definitions![0];
-    expect(def.targetUri.fsPath).toBe(APP_COMPONENT);  // in the same document
+    expect(def.targetUri.fsPath).toBe(APP_COMPONENT); // in the same document
     const {start, end} = def.targetRange;
     // Should start and end on line 6
     expect(start.line).toBe(7);

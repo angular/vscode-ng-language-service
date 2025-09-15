@@ -1,6 +1,6 @@
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
+load("@aspect_bazel_lib//lib:expand_template.bzl", "expand_template_rule")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
-load("@aspect_rules_js//js/private:expand_template.bzl", "expand_template")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 
 ts_config(
     name = "tsconfig",
@@ -25,7 +25,6 @@ esbuild(
         # Workaround for https://github.com/aspect-build/rules_esbuild/issues/58
         "resolveExtensions": [".js"],
     },
-    data = ["//server/src"],
     entry_point = "//server/src:banner.js",
     external = [
         "path",
@@ -35,13 +34,16 @@ esbuild(
     minify = False,
     platform = "node",
     sourcemap = "external",
+    deps = [
+        "//:node_modules/source-map-support",
+        "//server/src",
+    ],
 )
 
 esbuild(
     name = "index",
     srcs = [
         ":banner.js",
-        "//server/src",
     ],
     config = "esbuild.mjs",
     entry_point = "//server/src:server.js",
@@ -63,9 +65,13 @@ esbuild(
     visibility = [
         "//integration:__subpackages__",
     ],
+    deps = [
+        "//:node_modules/source-map-support",
+        "//server/src",
+    ],
 )
 
-expand_template(
+expand_template_rule(
     name = "package_json_expanded",
     out = "package_expanded.json",
     stamp_substitutions = {

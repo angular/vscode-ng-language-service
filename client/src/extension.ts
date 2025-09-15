@@ -19,14 +19,15 @@ export function activate(context: vscode.ExtensionContext) {
   registerCommands(client, context);
 
   // Restart the server on configuration change.
-  const disposable =
-      vscode.workspace.onDidChangeConfiguration(async (e: vscode.ConfigurationChangeEvent) => {
-        if (!e.affectsConfiguration('angular')) {
-          return;
-        }
-        await client.stop();
-        await client.start();
-      });
+  const disposable = vscode.workspace.onDidChangeConfiguration(
+    async (e: vscode.ConfigurationChangeEvent) => {
+      if (!e.affectsConfiguration('angular')) {
+        return;
+      }
+      await client.stop();
+      await client.start();
+    },
+  );
   context.subscriptions.push(client, disposable);
 
   client.start();

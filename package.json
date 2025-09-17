@@ -10,11 +10,11 @@
     "Angular",
     "multi-root ready"
   ],
-  "packageManager": "pnpm@10.16.1",
+  "packageManager": "pnpm@10.17.0",
   "engines": {
     "npm": "Please use pnpm instead of NPM to install dependencies",
     "yarn": "Please use pnpm instead of Yarn to install dependencies",
-    "pnpm": "10.16.1",
+    "pnpm": "10.17.0",
     "vscode": "^1.74.3"
   },
   "capabilities": {

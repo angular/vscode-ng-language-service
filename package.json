@@ -263,7 +263,7 @@
     "test:inspect-syntaxes": "bazel run --config=debug //syntaxes/test:test"
   },
   "dependencies": {
-    "@angular/language-service": "20.2.0-rc.1",
+    "@angular/language-service": "21.0.0-next.5",
     "typescript": "^5.9.2",
     "vscode-html-languageservice": "^4.2.5",
     "vscode-jsonrpc": "6.0.0",
@@ -273,8 +273,8 @@
     "vscode-uri": "3.0.7"
   },
   "devDependencies": {
-    "@angular/ng-dev": "https://github.com/angular/dev-infra-private-ng-dev-builds.git#586406bccb7ae283f803f1c36e127b7b16c942ce",
-    "@angular/core": "^20.0.0-rc.2",
+    "@angular/ng-dev": "https://github.com/angular/dev-infra-private-ng-dev-builds.git#ff6c1e3270622071c21d9de509f6c71bc11b0b1e",
+    "@angular/core": "^21.0.0-next",
     "@bazel/bazelisk": "1.26.0",
     "@bazel/buildifier": "8.2.1",
     "@bazel/ibazel": "0.16.2",

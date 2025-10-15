@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@angular/language-service':
-        specifier: 20.2.0-rc.1
-        version: registry.npmjs.org/@angular/language-service@20.2.0-rc.1
+        specifier: 20.3.5
+        version: registry.npmjs.org/@angular/language-service@20.3.5
       typescript:
         specifier: ^5.9.2
         version: registry.npmjs.org/typescript@5.9.2
@@ -438,10 +438,10 @@ packages:
       tslib: registry.npmjs.org/tslib@2.6.3
     dev: true
 
-  registry.npmjs.org/@angular/language-service@20.2.0-rc.1:
-    resolution: {integrity: sha512-0f6/gn1l6pLJH9DNMAK3wT1JhpKR7NQNmItNO/vM2P2S/8gzQUP62hvP5hCraR2lMwoXuSLD/EiJ4Nw/xw0nSQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-20.2.0-rc.1.tgz}
+  registry.npmjs.org/@angular/language-service@20.3.5:
+    resolution: {integrity: sha512-wLNi8Tad7SBY+QizywPWmFoTrl5AsE36t5DDeZbJ+FVannmCycrp68/RikHaywldacADtiI0+blCNu983nDMSg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@angular/language-service/-/language-service-20.3.5.tgz}
     name: '@angular/language-service'
-    version: 20.2.0-rc.1
+    version: 20.3.5
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
     dev: false
 
@@ -7400,7 +7400,7 @@ packages:
       socket.io: registry.npmjs.org/socket.io@4.7.5
       source-map: registry.npmjs.org/source-map@0.6.1
       tmp: registry.npmjs.org/tmp@0.2.3
-      ua-parser-js: registry.npmjs.org/ua-parser-js@0.7.40
+      ua-parser-js: registry.npmjs.org/ua-parser-js@0.7.41
       yargs: registry.npmjs.org/yargs@16.2.0
     transitivePeerDependencies:
       - bufferutil
@@ -10840,10 +10840,10 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  registry.npmjs.org/ua-parser-js@0.7.40:
-    resolution: {integrity: sha512-us1E3K+3jJppDBa3Tl0L3MOJiGhe1C6P0+nIvQAFYbxlMAx0h81eOwLmU57xgqToduDDPx3y5QsdjPfDu+FgOQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/ua-parser-js/-/ua-parser-js-0.7.40.tgz}
+  registry.npmjs.org/ua-parser-js@0.7.41:
+    resolution: {integrity: sha512-O3oYyCMPYgNNHuO7Jjk3uacJWZF8loBgwrfd/5LE/HyZ3lUIOdniQ7DNXJcIgZbwioZxk0fLfI4EVnetdiX5jg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/ua-parser-js/-/ua-parser-js-0.7.41.tgz}
     name: ua-parser-js
-    version: 0.7.40
+    version: 0.7.41
     hasBin: true
     dev: true
 

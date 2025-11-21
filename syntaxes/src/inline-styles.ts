@@ -10,7 +10,7 @@ import {GrammarDefinition} from './types';
 
 export const InlineStyles: GrammarDefinition = {
   scopeName: 'inline-styles.ng',
-  injectionSelector: 'L:source.ts#meta.decorator.ts -comment',
+  injectionSelector: 'L:(source.ts#meta.decorator.ts | source.tsx#meta.decorator.tsx) -comment',
   patterns: [{include: '#inlineStyles'}],
   repository: {
     inlineStyles: {
